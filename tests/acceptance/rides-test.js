@@ -3,6 +3,8 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 
+import moment from 'moment';
+
 moduleForAcceptance('Acceptance | rides');
 
 test('list existing rides with sortability', function(assert) {
@@ -101,8 +103,8 @@ test('create a ride', function(assert) {
     const lastRide = serverRides[serverRides.length - 1];
 
     assert.equal(lastRide.name, 'Edward');
-    assert.equal(lastRide.start, '2016-12-26T14:00:00.000Z');
-    assert.equal(lastRide.end, '2016-12-26T16:30:00.000Z');
+    assert.equal(moment(lastRide.start).format('YYYY-MM-DD HH:mm'), '2016-12-26 09:00');
+    assert.equal(moment(lastRide.end).format('YYYY-MM-DD HH:mm'), '2016-12-26 11:30');
     assert.equal(lastRide.institutionId, rockwood.id);
     assert.equal(lastRide.driverId, sun.id);
     assert.equal(lastRide.carOwnerId, sun.id);
