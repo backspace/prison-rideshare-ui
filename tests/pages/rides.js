@@ -9,7 +9,7 @@ import {
 
 export default create({
   visit: visitable('/rides'),
-  newRide: clickable('a'),
+  newRide: clickable('button.new'),
 
   rides: collection({
     itemScope: 'tbody tr',

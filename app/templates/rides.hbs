@@ -1,3 +1,15 @@
+{{#paper-toolbar as |toolbar|}}
+  {{#toolbar.tools}}
+    <h2>Rides</h2>
+    <span class='flex'></span>
+    {{#link-to 'rides.new'}}
+      {{#paper-button mini=true aria-label='New ride' class='new'}}
+        {{paper-icon 'add'}}
+      {{/paper-button}}
+    {{/link-to}}
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
+
 {{#paper-data-table sortProp='start' sortDir='desc' as |table|}}
   {{#table.head as |head|}}
     {{#head.column sortProp='start' class='date'}}Date{{/head.column}}
