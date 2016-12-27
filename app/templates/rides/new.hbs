@@ -12,6 +12,26 @@
   {{institution.name}}
 {{/paper-select}}
 
+{{#paper-select
+  class='driver'
+  placeholder="Driver"
+  selected=model.driver
+  options=people
+  onChange=(action (mut model.driver))
+  as |person|}}
+  {{person.name}}
+{{/paper-select}}
+
+{{#paper-select
+  class='car-owner'
+  placeholder="Car owner"
+  selected=model.carOwner
+  options=people
+  onChange=(action (mut model.carOwner))
+  as |person|}}
+  {{person.name}}
+{{/paper-select}}
+
 <label>Name {{input class='name' value=model.name}}</label>
 
 <button class='submit' {{action 'submit' model}}>Submit</button>

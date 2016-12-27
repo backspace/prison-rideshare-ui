@@ -5,4 +5,5 @@ export default function() {
   this.post('/rides');
 
   this.get('/institutions');
+  this.get('/people');
 }

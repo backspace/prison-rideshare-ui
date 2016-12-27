@@ -69,6 +69,10 @@ test('create a ride', function(assert) {
     name: 'Stony Mountain'
   });
 
+  const sun = server.create('person', {
+    name: 'Sun'
+  });
+
   page.visit();
   page.newRide();
 
@@ -80,6 +84,8 @@ test('create a ride', function(assert) {
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
+  selectChoose('md-input-container.driver', 'Sun');
+  selectChoose('md-input-container.car-owner', 'Sun');
 
   click('.submit');
 
@@ -98,6 +104,8 @@ test('create a ride', function(assert) {
     assert.equal(lastRide.start, '2016-12-26T14:00:00.000Z');
     assert.equal(lastRide.end, '2016-12-26T16:30:00.000Z');
     assert.equal(lastRide.institutionId, rockwood.id);
+    assert.equal(lastRide.driverId, sun.id);
+    assert.equal(lastRide.carOwnerId, sun.id);
 
     assert.equal(currentURL(), '/rides');
   });
