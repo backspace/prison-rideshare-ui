@@ -7,7 +7,10 @@ moduleForAcceptance('Acceptance | rides');
 
 test('list existing rides with sortability', function(assert) {
   server.create('ride', {
-    name: 'Edward'
+    name: 'Edward',
+    address: '91 Albert',
+    contact: 'jorts@example.com',
+    passengers: 3
   });
 
   server.create('ride', {
@@ -23,6 +26,9 @@ test('list existing rides with sortability', function(assert) {
 
     assert.equal(ride.name, 'Edward');
     assert.equal(ride.date, '2016-12-26 8:30pm — 10:00pm');
+    assert.equal(ride.address, '91 Albert');
+    assert.equal(ride.contact, 'jorts@example.com');
+    assert.equal(ride.passengers, '3');
 
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
   });

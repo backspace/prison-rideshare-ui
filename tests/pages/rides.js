@@ -16,7 +16,10 @@ export default create({
 
     item: {
       name: text('.name'),
-      date: text('.date')
+      date: text('.date'),
+      address: text('.address'),
+      contact: text('.contact'),
+      passengers: text('.passengers')
     },
 
     head: {
