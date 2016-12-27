@@ -1,7 +1,6 @@
-# prison-rideshare-ui
+# Prison Rideshare UI
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+This is an Ember front-end for the [prison rideshare API](https://github.com/backspace/prison-rideshare-api).
 
 ## Prerequisites
 
