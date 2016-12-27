@@ -47,6 +47,14 @@ test('list existing rides with sortability', function(assert) {
 });
 
 test('create a ride', function(assert) {
+  const rockwood = server.create('institution', {
+    name: 'Rockwood'
+  });
+
+  server.create('institution', {
+    name: 'Stony Mountain'
+  });
+
   page.visit();
   page.newRide();
 
@@ -56,6 +64,9 @@ test('create a ride', function(assert) {
 
   page.form.fillName('Edward');
 
+  // FIXME not really here, but keyboard input for this is broken, and hovering
+  selectChoose('md-input-container.institution', 'Rockwood');
+
   click('.submit');
 
   andThen(function() {
@@ -64,12 +75,15 @@ test('create a ride', function(assert) {
 
     assert.equal(ride.date, '2016-12-26 9:00am — 11:30am');
 
+    assert.equal(ride.institution, 'Rockwood');
+
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
 
     assert.equal(lastRide.name, 'Edward');
     assert.equal(lastRide.start, '2016-12-26T14:00:00.000Z');
     assert.equal(lastRide.end, '2016-12-26T16:30:00.000Z');
+    assert.equal(lastRide.institutionId, rockwood.id);
 
     assert.equal(currentURL(), '/rides');
   });

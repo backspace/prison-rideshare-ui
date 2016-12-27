@@ -2,6 +2,16 @@
 <label>Start {{input class='start' value=model.startTime type='time'}}</label>
 <label>End {{input class='end' value=model.endTime type='time'}}</label>
 
+{{#paper-select
+  class='institution'
+  placeholder="Institution"
+  selected=model.institution
+  options=institutions
+  onChange=(action (mut model.institution))
+  as |institution|}}
+  {{institution.name}}
+{{/paper-select}}
+
 <label>Name {{input class='name' value=model.name}}</label>
 
 <button class='submit' {{action 'submit' model}}>Submit</button>

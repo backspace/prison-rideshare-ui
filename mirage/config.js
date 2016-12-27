@@ -3,4 +3,6 @@ export default function() {
 
   this.get('/rides');
   this.post('/rides');
+
+  this.get('/institutions');
 }

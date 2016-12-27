@@ -1,6 +1,7 @@
 {
   "predef": [
     "server",
+    "selectChoose",
     "document",
     "window",
     "location",
