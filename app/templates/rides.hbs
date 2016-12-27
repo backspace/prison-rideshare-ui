@@ -1,7 +1,8 @@
 <ul>
 {{#each model as |ride|}}
   <li class='ride'>
-    <span class='start'>{{ride.start}}</span>
+    <span class='date'>{{moment-format ride.start 'YYYY-MM-DD'}}</span>
+    <span class='times'>{{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}</span>
     <span class='name'>{{ride.name}}</span>
   </li>
 {{/each}}

@@ -14,6 +14,8 @@ test('list existing rides', function(assert) {
     assert.equal(currentURL(), '/rides');
 
     assert.equal(find('.name').text(), 'Edward');
-    assert.equal(find('.start').text(), '2016-12-27T01:30:00.000Z');
+
+    assert.equal(find('.date').text(), '2016-12-26');
+    assert.equal(find('.times').text(), '8:30pm — 10:00pm');
   });
 });
