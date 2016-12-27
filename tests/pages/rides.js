@@ -16,8 +16,7 @@ export default create({
 
     item: {
       name: text('.name'),
-      date: text('.date'),
-      times: text('.times')
+      date: text('.date')
     },
 
     head: {

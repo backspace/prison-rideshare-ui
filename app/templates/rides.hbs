@@ -5,8 +5,7 @@
   {{#table.body as |body|}}
     {{#each (sort-by table.sortDesc model) as |ride|}}
       {{#body.row as |row|}}
-        {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}}{{/row.cell}}
-        {{#row.cell class='times'}}{{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}{{/row.cell}}
+        {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}{{/row.cell}}
         {{#row.cell class='name'}}{{ride.name}}{{/row.cell}}
       {{/body.row}}
     {{/each}}

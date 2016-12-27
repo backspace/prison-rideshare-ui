@@ -22,9 +22,7 @@ test('list existing rides with sortability', function(assert) {
     const ride = page.rides(0);
 
     assert.equal(ride.name, 'Edward');
-
-    assert.equal(ride.date, '2016-12-26');
-    assert.equal(ride.times, '8:30pm — 10:00pm');
+    assert.equal(ride.date, '2016-12-26 8:30pm — 10:00pm');
 
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
   });
@@ -52,8 +50,7 @@ test('create a ride', function(assert) {
     const ride = page.rides(0);
     assert.equal(ride.name, 'Edward');
 
-    assert.equal(ride.date, '2016-12-26');
-    assert.equal(ride.times, '9:00am — 11:30am');
+    assert.equal(ride.date, '2016-12-26 9:00am — 11:30am');
 
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
