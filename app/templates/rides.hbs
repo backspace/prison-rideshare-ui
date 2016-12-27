@@ -2,11 +2,9 @@
   {{#toolbar.tools}}
     <h2>Rides</h2>
     <span class='flex'></span>
-    {{#link-to 'rides.new'}}
-      {{#paper-button mini=true aria-label='New ride' class='new'}}
-        {{paper-icon 'add'}}
-      {{/paper-button}}
-    {{/link-to}}
+    {{#paper-button mini=true aria-label='New ride' class='new' onClick=(action 'newRide')}}
+      {{paper-icon 'add'}}
+    {{/paper-button}}
   {{/toolbar.tools}}
 {{/paper-toolbar}}
 
@@ -22,6 +20,57 @@
     {{#head.column}}Car owner{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
+    {{#if newRide}}
+      {{#body.row as |row|}}
+        {{#row.cell class='date'}}
+          <label>Date {{input class='date' value=newRide.date type='date'}}</label>
+          <label>Start {{input class='start' value=newRide.startTime type='time'}}</label>
+          <label>End {{input class='end' value=newRide.endTime type='time'}}</label>
+        {{/row.cell}}
+        {{#row.cell class='institution'}}
+          {{#paper-select
+            class='institution'
+            placeholder="Institution"
+            selected=newRide.institution
+            options=institutions
+            onChange=(action (mut newRide.institution))
+            as |institution|}}
+            {{institution.name}}
+          {{/paper-select}}
+        {{/row.cell}}
+        {{#row.cell class='name'}}
+          <label>Name {{input class='name' value=newRide.name}}</label>
+        {{/row.cell}}
+        {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
+        {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
+        {{#row.cell class='passengers'}}{{ride.passengers}}{{/row.cell}}
+        {{#row.cell class='driver'}}
+          {{#paper-select
+            class='driver'
+            placeholder="Driver"
+            selected=newRide.driver
+            options=people
+            onChange=(action (mut newRide.driver))
+            as |person|}}
+            {{person.name}}
+          {{/paper-select}}
+        {{/row.cell}}
+        {{#row.cell class='car-owner'}}
+          {{#paper-select
+            class='car-owner'
+            placeholder="Car owner"
+            selected=newRide.carOwner
+            options=people
+            onChange=(action (mut newRide.carOwner))
+            as |person|}}
+            {{person.name}}
+          {{/paper-select}}
+        {{/row.cell}}
+        {{#row.cell}}
+          <button class='submit' {{action 'submit' newRide}}>Submit</button>
+        {{/row.cell}}
+      {{/body.row}}
+    {{/if}}
     {{#each (sort-by table.sortDesc model) as |ride|}}
       {{#body.row as |row|}}
         {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}{{/row.cell}}
@@ -36,5 +85,3 @@
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}
-
-{{outlet}}
