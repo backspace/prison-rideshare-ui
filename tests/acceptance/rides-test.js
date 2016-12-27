@@ -1,6 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
+import page from 'prison-rideshare-ui/tests/pages/rides';
+
 moduleForAcceptance('Acceptance | rides');
 
 test('list existing rides', function(assert) {
@@ -8,34 +10,36 @@ test('list existing rides', function(assert) {
     name: 'Edward'
   });
 
-  visit('/rides');
+  page.visit();
 
   andThen(function() {
-    assert.equal(currentURL(), '/rides');
+    const ride = page.rides(0);
 
-    assert.equal(find('.name').text(), 'Edward');
+    assert.equal(ride.name, 'Edward');
 
-    assert.equal(find('.date').text(), '2016-12-26');
-    assert.equal(find('.times').text(), '8:30pm — 10:00pm');
+    assert.equal(ride.date, '2016-12-26');
+    assert.equal(ride.times, '8:30pm — 10:00pm');
   });
 });
 
 test('create a ride', function(assert) {
-  visit('/rides/new');
+  page.visit();
+  page.newRide();
 
-  fillIn('input.date', '2016-12-26');
-  fillIn('input.start', '09:00');
-  fillIn('input.end', '11:30');
+  page.form.fillDate('2016-12-26');
+  page.form.fillStart('09:00');
+  page.form.fillEnd('11:30');
 
-  fillIn('input.name', 'Edward');
+  page.form.fillName('Edward');
 
   click('.submit');
 
   andThen(function() {
-    assert.equal(find('.name').text(), 'Edward');
+    const ride = page.rides(0);
+    assert.equal(ride.name, 'Edward');
 
-    assert.equal(find('.date').text(), '2016-12-26');
-    assert.equal(find('.times').text(), '9:00am — 11:30am');
+    assert.equal(ride.date, '2016-12-26');
+    assert.equal(ride.times, '9:00am — 11:30am');
 
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
