@@ -10,6 +10,12 @@ test('list existing rides', function(assert) {
     name: 'Edward'
   });
 
+  server.create('ride', {
+    name: 'Chelsea',
+    start: new Date(2016, 11, 25, 10, 15),
+    end: new Date(2016, 11, 25, 12, 0)
+  });
+
   page.visit();
 
   andThen(function() {
@@ -19,6 +25,8 @@ test('list existing rides', function(assert) {
 
     assert.equal(ride.date, '2016-12-26');
     assert.equal(ride.times, '8:30pm — 10:00pm');
+
+    assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
   });
 });
 

@@ -1,6 +1,6 @@
-{{#paper-data-table as |table|}}
+{{#paper-data-table sortProp='start' sortDir='desc' as |table|}}
   {{#table.body as |body|}}
-    {{#each model as |ride|}}
+    {{#each (sort-by table.sortDesc model) as |ride|}}
       {{#body.row as |row|}}
         {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}}{{/row.cell}}
         {{#row.cell class='times'}}{{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}{{/row.cell}}
