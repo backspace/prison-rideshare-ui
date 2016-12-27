@@ -5,6 +5,7 @@ import moment from 'moment';
 
 export default DS.Model.extend({
   name: DS.attr(),
+  institution: DS.belongsTo(),
   address: DS.attr(),
   contact: DS.attr(),
   passengers: DS.attr(),

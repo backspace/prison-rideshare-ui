@@ -6,11 +6,16 @@ import page from 'prison-rideshare-ui/tests/pages/rides';
 moduleForAcceptance('Acceptance | rides');
 
 test('list existing rides with sortability', function(assert) {
+  const leavenworth = server.create('institution', {
+    name: 'Fort Leavenworth'
+  });
+
   server.create('ride', {
     name: 'Edward',
     address: '91 Albert',
     contact: 'jorts@example.com',
-    passengers: 3
+    passengers: 3,
+    institution: leavenworth
   });
 
   server.create('ride', {
@@ -26,6 +31,7 @@ test('list existing rides with sortability', function(assert) {
 
     assert.equal(ride.name, 'Edward');
     assert.equal(ride.date, '2016-12-26 8:30pm — 10:00pm');
+    assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
     assert.equal(ride.passengers, '3');
