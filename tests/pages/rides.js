@@ -12,7 +12,7 @@ export default create({
   newRide: clickable('a'),
 
   rides: collection({
-    itemScope: 'li',
+    itemScope: 'tr',
 
     item: {
       name: text('.name'),
