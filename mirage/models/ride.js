@@ -1,5 +1,8 @@
 import { Model, belongsTo } from 'ember-cli-mirage';
 
 export default Model.extend({
-  institution: belongsTo()
+  institution: belongsTo(),
+
+  driver: belongsTo('person'),
+  carOwner: belongsTo('person')
 });

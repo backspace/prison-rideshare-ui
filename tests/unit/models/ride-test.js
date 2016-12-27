@@ -3,7 +3,7 @@ import Ember from 'ember';
 import moment from 'moment';
 
 moduleForModel('ride', 'Unit | Model | ride', {
-  needs: ['model:institution']
+  needs: ['model:institution', 'model:person']
 });
 
 test('it processes incoming date and times', function(assert) {

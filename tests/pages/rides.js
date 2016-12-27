@@ -20,7 +20,10 @@ export default create({
       institution: text('.institution'),
       address: text('.address'),
       contact: text('.contact'),
-      passengers: text('.passengers')
+      passengers: text('.passengers'),
+
+      driver: text('.driver'),
+      carOwner: text('.car-owner')
     },
 
     head: {

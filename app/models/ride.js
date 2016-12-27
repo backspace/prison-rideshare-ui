@@ -13,6 +13,9 @@ export default DS.Model.extend({
   start: DS.attr(),
   end: DS.attr(),
 
+  driver: DS.belongsTo('person'),
+  carOwner: DS.belongsTo('person'),
+
   startTime: Ember.computed('date', 'start', timeGetAndSet('start')),
   endTime: Ember.computed('date', 'end', timeGetAndSet('end'))
 });

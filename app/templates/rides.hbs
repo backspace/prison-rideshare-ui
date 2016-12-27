@@ -6,6 +6,8 @@
     {{#head.column}}Pickup address{{/head.column}}
     {{#head.column}}Visitor phone/email{{/head.column}}
     {{#head.column}}Passengers{{/head.column}}
+    {{#head.column}}Driver{{/head.column}}
+    {{#head.column}}Car owner{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (sort-by table.sortDesc model) as |ride|}}
@@ -16,6 +18,8 @@
         {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
         {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
         {{#row.cell class='passengers'}}{{ride.passengers}}{{/row.cell}}
+        {{#row.cell class='driver'}}{{ride.driver.name}}{{/row.cell}}
+        {{#row.cell class='car-owner'}}{{ride.carOwner.name}}{{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}

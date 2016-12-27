@@ -10,12 +10,23 @@ test('list existing rides with sortability', function(assert) {
     name: 'Fort Leavenworth'
   });
 
+  const sun = server.create('person', {
+    name: 'Sun'
+  });
+
+  const lito = server.create('person', {
+    name: 'Lito'
+  });
+
   server.create('ride', {
     name: 'Edward',
     address: '91 Albert',
     contact: 'jorts@example.com',
     passengers: 3,
-    institution: leavenworth
+    institution: leavenworth,
+
+    driver: sun,
+    carOwner: lito
   });
 
   server.create('ride', {
@@ -35,6 +46,9 @@ test('list existing rides with sortability', function(assert) {
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
     assert.equal(ride.passengers, '3');
+
+    assert.equal(ride.driver, 'Sun');
+    assert.equal(ride.carOwner, 'Lito');
 
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
   });
