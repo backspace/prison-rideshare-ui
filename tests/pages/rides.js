@@ -12,12 +12,17 @@ export default create({
   newRide: clickable('a'),
 
   rides: collection({
-    itemScope: 'tr',
+    itemScope: 'tbody tr',
 
     item: {
       name: text('.name'),
       date: text('.date'),
       times: text('.times')
+    },
+
+    head: {
+      scope: 'thead',
+      clickDate: clickable('.date')
     }
   }),
 

@@ -1,4 +1,7 @@
 {{#paper-data-table sortProp='start' sortDir='desc' as |table|}}
+  {{#table.head as |head|}}
+    {{#head.column sortProp='start' class='date'}}Date{{/head.column}}
+  {{/table.head}}
   {{#table.body as |body|}}
     {{#each (sort-by table.sortDesc model) as |ride|}}
       {{#body.row as |row|}}

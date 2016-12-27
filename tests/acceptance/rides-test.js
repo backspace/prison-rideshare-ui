@@ -5,7 +5,7 @@ import page from 'prison-rideshare-ui/tests/pages/rides';
 
 moduleForAcceptance('Acceptance | rides');
 
-test('list existing rides', function(assert) {
+test('list existing rides with sortability', function(assert) {
   server.create('ride', {
     name: 'Edward'
   });
@@ -27,6 +27,12 @@ test('list existing rides', function(assert) {
     assert.equal(ride.times, '8:30pm — 10:00pm');
 
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
+  });
+
+  page.rides().head.clickDate();
+
+  andThen(function() {
+    assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the top');
   });
 });
 
