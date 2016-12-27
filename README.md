@@ -1,4 +1,4 @@
-# Prison Rideshare UI
+# Prison Rideshare UI [![Build Status](https://travis-ci.org/backspace/prison-rideshare-ui.svg?branch=primary)](https://travis-ci.org/backspace/prison-rideshare-ui)
 
 This is an Ember front-end for the [prison rideshare API](https://github.com/backspace/prison-rideshare-api).
 
