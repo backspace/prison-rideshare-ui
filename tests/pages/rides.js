@@ -12,7 +12,7 @@ export default create({
   newRide: clickable('button.new'),
 
   rides: collection({
-    itemScope: 'tbody tr',
+    itemScope: 'tbody tr.ride',
 
     item: {
       name: text('.name'),

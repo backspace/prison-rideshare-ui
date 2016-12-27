@@ -78,6 +78,10 @@ test('create a ride', function(assert) {
   page.visit();
   page.newRide();
 
+  andThen(() => {
+    assert.equal(page.rides().count, 0, 'there should be no row for an unsaved ride');
+  });
+
   page.form.fillDate('2016-12-26');
   page.form.fillStart('09:00');
   page.form.fillEnd('11:30');

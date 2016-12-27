@@ -71,8 +71,8 @@
         {{/row.cell}}
       {{/body.row}}
     {{/if}}
-    {{#each (sort-by table.sortDesc model) as |ride|}}
-      {{#body.row as |row|}}
+    {{#each (filter-by 'id' (sort-by table.sortDesc model)) as |ride|}}
+      {{#body.row class='ride' as |row|}}
         {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}{{/row.cell}}
         {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
         {{#row.cell class='name'}}{{ride.name}}{{/row.cell}}
