@@ -4,6 +4,7 @@ import {
   create,
   fillable,
   text,
+  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -22,6 +23,7 @@ export default create({
   fillDistance: fillable('.distance input'),
   fillFoodExpenses: fillable('.food-expenses input'),
   fillNotes: fillable('.report-notes textarea'),
+  notesValue: value('.report-notes textarea'),
 
   submit: clickable('button.submit')
 });
