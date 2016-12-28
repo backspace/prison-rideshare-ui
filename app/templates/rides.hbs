@@ -2,7 +2,7 @@
   {{#toolbar.tools}}
     <h2>Rides</h2>
     <span class='flex'></span>
-    {{#paper-button mini=true aria-label='New ride' class='new' onClick=(action 'newRide')}}
+    {{#paper-button mini=true aria-label='New ride' class='new' onClick=(action 'editingRide')}}
       {{paper-icon 'add'}}
     {{/paper-button}}
   {{/toolbar.tools}}
@@ -40,23 +40,23 @@
 {{/paper-data-table}}
 
 
-{{#if newRide}}
+{{#if editingRide}}
 {{#paper-dialog onClose=(action 'cancel') origin=dialogOrigin}}
 
   {{#paper-dialog-content}}
     <h2 class='md-title'>Record a ride request</h2>
     {{#paper-form onSubmit=(action 'submit') as |form|}}
       <div class='layout layout-sm-column'>
-        {{form.input class='date' label='Date' type='date' autofocus=true value=newRide.date onChange=(action (mut newRide.date))}}
-        {{form.input class='start' label='Start' type='time' value=newRide.startTime onChange=(action (mut newRide.startTime))}}
-        {{form.input class='end' label='End' type='time' value=newRide.endTime onChange=(action (mut newRide.endTime))}}
+        {{form.input class='date' label='Date' type='date' autofocus=true value=editingRide.date onChange=(action (mut editingRide.date))}}
+        {{form.input class='start' label='Start' type='time' value=editingRide.startTime onChange=(action (mut editingRide.startTime))}}
+        {{form.input class='end' label='End' type='time' value=editingRide.endTime onChange=(action (mut editingRide.endTime))}}
 
         {{#paper-select
           class='institution'
           placeholder="Institution"
-          selected=newRide.institution
+          selected=editingRide.institution
           options=institutions
-          onChange=(action (mut newRide.institution))
+          onChange=(action (mut editingRide.institution))
           as |institution|}}
           {{institution.name}}
         {{/paper-select}}
@@ -65,10 +65,10 @@
       <h3 class='md-title'>Visitor details</h3>
 
       <div class='layout layout-sm-column'>
-        {{form.input class='name' label='Name' value=newRide.name onChange=(action (mut newRide.name))}}
-        {{form.input class='passengers' label='Passengers' value=newRide.passengers onChange=(action (mut newRide.passengers))}}
-        {{form.input class='address' label='Address' value=newRide.address onChange=(action (mut newRide.address))}}
-        {{form.input class='contact' label='Contact' value=newRide.contact onChange=(action (mut newRide.contact))}}
+        {{form.input class='name' label='Name' value=editingRide.name onChange=(action (mut editingRide.name))}}
+        {{form.input class='passengers' label='Passengers' value=editingRide.passengers onChange=(action (mut editingRide.passengers))}}
+        {{form.input class='address' label='Address' value=editingRide.address onChange=(action (mut editingRide.address))}}
+        {{form.input class='contact' label='Contact' value=editingRide.contact onChange=(action (mut editingRide.contact))}}
       </div>
 
       <h4 class='md-title'>Driver/car owner: should not be here</h4>
@@ -77,18 +77,18 @@
         {{#paper-select
           class='driver'
           placeholder="Driver"
-          selected=newRide.driver
+          selected=editingRide.driver
           options=people
-          onChange=(action (mut newRide.driver))
+          onChange=(action (mut editingRide.driver))
           as |person|}}
           {{person.name}}
         {{/paper-select}}
         {{#paper-select
           class='car-owner'
           placeholder="Car owner"
-          selected=newRide.carOwner
+          selected=editingRide.carOwner
           options=people
-          onChange=(action (mut newRide.carOwner))
+          onChange=(action (mut editingRide.carOwner))
           as |person|}}
           {{person.name}}
         {{/paper-select}}
@@ -97,8 +97,8 @@
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=(action 'cancel' newRide)}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=(action 'submit' newRide)}}Save{{/paper-button}}
+    {{#paper-button class='cancel' onClick=(action 'cancel' editingRide)}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'submit' editingRide)}}Save{{/paper-button}}
   {{/paper-dialog-actions}}
 
 {{/paper-dialog}}

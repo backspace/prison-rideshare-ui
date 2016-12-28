@@ -7,24 +7,24 @@ export default Ember.Controller.extend({
   peopleService: Ember.inject.service('people'),
   people: Ember.computed.alias('peopleService.all'),
 
-  newRide: undefined,
+  editingRide: undefined,
 
   actions: {
-    newRide() {
-      this.set('newRide', this.store.createRecord('ride'));
+    editingRide() {
+      this.set('editingRide', this.store.createRecord('ride'));
     },
 
     editRide(model) {
-      this.set('newRide', model);
+      this.set('editingRide', model);
     },
 
     submit(model) {
-      return model.save().then(() => this.set('newRide', undefined));
+      return model.save().then(() => this.set('editingRide', undefined));
     },
 
     cancel(model) {
       model.rollbackAttributes();
-      this.set('newRide', undefined);
+      this.set('editingRide', undefined);
     }
   }
 });
