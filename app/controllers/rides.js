@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
     },
 
     cancel(model) {
-      model.destroyRecord();
+      model.rollbackAttributes();
       this.set('newRide', undefined);
     }
   }

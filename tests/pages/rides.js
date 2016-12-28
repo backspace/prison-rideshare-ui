@@ -43,6 +43,7 @@ export default create({
     fillContact: fillable('.contact input'),
     fillPassengers: fillable('.passengers input'),
 
-    submit: clickable('button.submit')
+    submit: clickable('button.submit'),
+    cancel: clickable('button.cancel')
   }
 });

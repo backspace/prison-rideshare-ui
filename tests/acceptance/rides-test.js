@@ -125,13 +125,26 @@ test('create and edit a ride', function(assert) {
   page.rides(0).edit();
 
   page.form.fillName('Ed');
-  page.form.submit();
+  page.form.cancel();
 
   andThen(function() {
-    assert.equal(page.rides(0).name, 'Ed + 1');
+    assert.equal(page.rides(0).name, 'Edward + 1');
 
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
-    assert.equal(lastRide.name, 'Ed');
+    assert.equal(lastRide.name, 'Edward');
+  });
+
+  page.rides(0).edit();
+
+  page.form.fillName('Edwina');
+  page.form.submit();
+
+  andThen(function() {
+    assert.equal(page.rides(0).name, 'Edwina + 1');
+
+    const serverRides = server.db.rides;
+    const lastRide = serverRides[serverRides.length - 1];
+    assert.equal(lastRide.name, 'Edwina');
   });
 });
