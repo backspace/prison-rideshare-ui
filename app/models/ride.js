@@ -17,7 +17,18 @@ export default DS.Model.extend({
   carOwner: DS.belongsTo('person'),
 
   startTime: Ember.computed('date', 'start', timeGetAndSet('start')),
-  endTime: Ember.computed('date', 'end', timeGetAndSet('end'))
+  endTime: Ember.computed('date', 'end', timeGetAndSet('end')),
+
+  namePlusPassengers: Ember.computed('name', 'passengers', function() {
+    const name = this.get('name');
+    const passengers = this.get('passengers');
+
+    if (passengers > 1) {
+      return `${name} + ${passengers - 1}`;
+    } else {
+      return name;
+    }
+  })
 });
 
 function timeGetAndSet(property) {

@@ -34,7 +34,8 @@ test('list existing rides with sortability', function(assert) {
   server.create('ride', {
     name: 'Chelsea',
     start: new Date(2016, 11, 25, 10, 15),
-    end: new Date(2016, 11, 25, 12, 0)
+    end: new Date(2016, 11, 25, 12, 0),
+    passengers: 1
   });
 
   page.visit();
@@ -42,12 +43,11 @@ test('list existing rides with sortability', function(assert) {
   andThen(function() {
     const ride = page.rides(0);
 
-    assert.equal(ride.name, 'Edward');
+    assert.equal(ride.name, 'Edward + 2');
     assert.equal(ride.date, '2016-12-26 8:30pm — 10:00pm');
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
-    assert.equal(ride.passengers, '3');
 
     assert.equal(ride.driver, 'Sun');
     assert.equal(ride.carOwner, 'Lito');
@@ -100,7 +100,7 @@ test('create a ride', function(assert) {
 
   andThen(function() {
     const ride = page.rides(0);
-    assert.equal(ride.name, 'Edward');
+    assert.equal(ride.name, 'Edward + 1');
 
     assert.equal(ride.date, '2016-12-26 9:00am — 11:30am');
 

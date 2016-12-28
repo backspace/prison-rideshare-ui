@@ -15,7 +15,6 @@
     {{#head.column}}Visitor name{{/head.column}}
     {{#head.column}}Pickup address{{/head.column}}
     {{#head.column}}Visitor phone/email{{/head.column}}
-    {{#head.column}}Passengers{{/head.column}}
     {{#head.column}}Driver{{/head.column}}
     {{#head.column}}Car owner{{/head.column}}
   {{/table.head}}
@@ -40,15 +39,13 @@
         {{/row.cell}}
         {{#row.cell class='name'}}
           <label>Name {{input class='name' value=newRide.name}}</label>
+          <label>Passengers {{input class='passengers' type='number' value=newRide.passengers}}</label>
         {{/row.cell}}
         {{#row.cell class='address'}}
           <label>Address {{input class='address' value=newRide.address}}</label>
         {{/row.cell}}
         {{#row.cell class='contact'}}
           <label>Contact {{input class='contact' value=newRide.contact}}</label>
-        {{/row.cell}}
-        {{#row.cell class='passengers'}}
-          <label>Passengers {{input class='passengers' type='number' value=newRide.passengers}}</label>
         {{/row.cell}}
         {{#row.cell class='driver'}}
           {{#paper-select
@@ -81,10 +78,9 @@
       {{#body.row class='ride' as |row|}}
         {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mma'}}{{/row.cell}}
         {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
-        {{#row.cell class='name'}}{{ride.name}}{{/row.cell}}
+        {{#row.cell class='name'}}{{ride.namePlusPassengers}}{{/row.cell}}
         {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
         {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
-        {{#row.cell class='passengers'}}{{ride.passengers}}{{/row.cell}}
         {{#row.cell class='driver'}}{{ride.driver.name}}{{/row.cell}}
         {{#row.cell class='car-owner'}}{{ride.carOwner.name}}{{/row.cell}}
       {{/body.row}}
