@@ -1,2 +1,7 @@
 @import 'ember-paper';
 @import 'paper-data-table';
+
+main {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,20 @@
+{{#paper-sidenav-container class="site-nav-container"}}
+  {{#paper-sidenav class="md-whiteframe-z2 site-sidenav" lockedOpen="gt-sm"
+    open=isSidenavOpen onToggle=(action (mut isSidenavOpen))}}
+
+    {{#paper-content}}
+      {{#paper-list}}
+        {{#paper-item}}
+          {{link-to 'Home' 'application'}}
+        {{/paper-item}}
+        {{#paper-item}}
+          {{link-to 'Rides' 'rides'}}
+        {{/paper-item}}
+      {{/paper-list}}
+    {{/paper-content}}
+  {{/paper-sidenav}}
+
+  <main>
+    {{outlet}}
+  </main>
+{{/paper-sidenav-container}}
