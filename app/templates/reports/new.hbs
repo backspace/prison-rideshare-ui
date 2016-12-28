@@ -1,10 +1,43 @@
-{{#each model as |ride|}}
-  {{#paper-radio
-    toggle=true
-    value="Blockless"
-    groupValue=blocklessValue
-    onChange=null
-  }}
-    {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
-  {{/paper-radio}}
-{{/each}}
+<h2 class='md-title'>Record details of a ride</h2>
+
+{{#paper-form onSubmit=(action 'submit') as |form|}}
+  <div class='layout layout-sm-column'>
+    {{#paper-radio-group
+      groupValue=(readonly editingRide)
+      onChange=(action (mut editingRide)) as |group|}}
+      {{#each model as |ride|}}
+        {{#group.radio value=ride}}
+          {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
+        {{/group.radio}}
+      {{/each}}
+    {{/paper-radio-group}}
+  </div>
+
+  {{#if editingRide}}
+    <div class='layout layout-sm-column'>
+      {{form.input class='distance'
+                   type='number'
+                   label='Distance in kilometres'
+                   value=editingRide.distance
+                   onChange=(action (mut editingRide.distance))}}
+
+      {{form.input class='food-expenses'
+                   type='number'
+                   label='Food expenses'
+                   value=editingRide.foodExpenses
+                   onChange=(action (mut editingRide.foodExpenses))}}
+    </div>
+    <div class='layout layout-sm-column'>
+      {{form.input class='report-notes'
+                   textarea=true
+                   label='Notes'
+                   placeholder='Leave blank unless there’s anything unusual about the ride or the reimbursement (like paying driver for gas instead of car owner, etc)'
+                   value=editingRide.reportNotes
+                   onChange=(action (mut editingRide.reportNotes))}}
+    </div>
+  {{/if}}
+
+  <div class="layout-row">
+    {{#paper-button class='submit' raised=true primary=true onClick=(action 'submit' editingRide)}}Save{{/paper-button}}
+  </div>
+{{/paper-form}}

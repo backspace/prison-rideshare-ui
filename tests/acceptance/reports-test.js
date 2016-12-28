@@ -38,4 +38,22 @@ test('submit a report for a ride', function(assert) {
     assert.equal(page.rides(0).label, 'Sun, Dec 25 at 10:15am to Remand Centre');
     assert.equal(page.rides(1).label, 'Tue, Dec 27 at 5:00pm to Fort Leavenworth');
   });
+
+  page.rides(0).choose();
+
+  page.fillDistance(75);
+  page.fillFoodExpenses(25.50);
+  page.fillNotes('These r the notes');
+
+  page.submit();
+
+  andThen(function() {
+    const firstRide = server.db.rides[0];
+
+    assert.equal(firstRide.distance, 75);
+    assert.equal(firstRide.foodExpenses, 25.50);
+    assert.equal(firstRide.reportNotes, 'These r the notes');
+
+    assert.equal(currentURL(), '/');
+  });
 });

@@ -19,6 +19,10 @@ export default DS.Model.extend({
   startTime: Ember.computed('date', 'start', timeGetAndSet('start')),
   endTime: Ember.computed('date', 'end', timeGetAndSet('end')),
 
+  distance: DS.attr(),
+  foodExpenses: DS.attr(),
+  reportNotes: DS.attr(),
+
   namePlusPassengers: Ember.computed('name', 'passengers', function() {
     const name = this.get('name');
     const passengers = this.get('passengers');
