@@ -33,13 +33,13 @@ export default create({
   }),
 
   form: {
-    fillDate: fillable('input.date'),
-    fillStart: fillable('input.start'),
-    fillEnd: fillable('input.end'),
-    fillName: fillable('input.name'),
-    fillAddress: fillable('input.address'),
-    fillContact: fillable('input.contact'),
-    fillPassengers: fillable('input.passengers'),
+    fillDate: fillable('.date input'),
+    fillStart: fillable('.start input'),
+    fillEnd: fillable('.end input'),
+    fillName: fillable('.name input'),
+    fillAddress: fillable('.address input'),
+    fillContact: fillable('.contact input'),
+    fillPassengers: fillable('.passengers input'),
 
     submit: clickable('button')
   }

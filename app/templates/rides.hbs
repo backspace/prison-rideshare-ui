@@ -19,61 +19,6 @@
     {{#head.column}}Car owner{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
-    {{#if newRide}}
-      {{#body.row as |row|}}
-        {{#row.cell class='date'}}
-          <label>Date {{input class='date' value=newRide.date type='date'}}</label>
-          <label>Start {{input class='start' value=newRide.startTime type='time'}}</label>
-          <label>End {{input class='end' value=newRide.endTime type='time'}}</label>
-        {{/row.cell}}
-        {{#row.cell class='institution'}}
-          {{#paper-select
-            class='institution'
-            placeholder="Institution"
-            selected=newRide.institution
-            options=institutions
-            onChange=(action (mut newRide.institution))
-            as |institution|}}
-            {{institution.name}}
-          {{/paper-select}}
-        {{/row.cell}}
-        {{#row.cell class='name'}}
-          <label>Name {{input class='name' value=newRide.name}}</label>
-          <label>Passengers {{input class='passengers' type='number' value=newRide.passengers}}</label>
-        {{/row.cell}}
-        {{#row.cell class='address'}}
-          <label>Address {{input class='address' value=newRide.address}}</label>
-        {{/row.cell}}
-        {{#row.cell class='contact'}}
-          <label>Contact {{input class='contact' value=newRide.contact}}</label>
-        {{/row.cell}}
-        {{#row.cell class='driver'}}
-          {{#paper-select
-            class='driver'
-            placeholder="Driver"
-            selected=newRide.driver
-            options=people
-            onChange=(action (mut newRide.driver))
-            as |person|}}
-            {{person.name}}
-          {{/paper-select}}
-        {{/row.cell}}
-        {{#row.cell class='car-owner'}}
-          {{#paper-select
-            class='car-owner'
-            placeholder="Car owner"
-            selected=newRide.carOwner
-            options=people
-            onChange=(action (mut newRide.carOwner))
-            as |person|}}
-            {{person.name}}
-          {{/paper-select}}
-        {{/row.cell}}
-        {{#row.cell}}
-          <button class='submit' {{action 'submit' newRide}}>Submit</button>
-        {{/row.cell}}
-      {{/body.row}}
-    {{/if}}
     {{#each (filter-by 'id' (sort-by table.sortDesc model)) as |ride|}}
       {{#body.row class='ride' as |row|}}
         {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mm'}}{{/row.cell}}
@@ -87,3 +32,68 @@
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}
+
+
+{{#if newRide}}
+{{#paper-dialog onClose=(action 'cancel') origin=dialogOrigin}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>Record a ride request</h2>
+    {{#paper-form onSubmit=(action 'submit') as |form|}}
+      <div class='layout layout-sm-column'>
+        {{form.input class='date' label='Date' type='date' autofocus=true value=newRide.date onChange=(action (mut newRide.date))}}
+        {{form.input class='start' label='Start' type='time' value=newRide.startTime onChange=(action (mut newRide.startTime))}}
+        {{form.input class='end' label='End' type='time' value=newRide.endTime onChange=(action (mut newRide.endTime))}}
+
+        {{#paper-select
+          class='institution'
+          placeholder="Institution"
+          selected=newRide.institution
+          options=institutions
+          onChange=(action (mut newRide.institution))
+          as |institution|}}
+          {{institution.name}}
+        {{/paper-select}}
+      </div>
+
+      <h3 class='md-title'>Visitor details</h3>
+
+      <div class='layout layout-sm-column'>
+        {{form.input class='name' label='Name' value=newRide.name onChange=(action (mut newRide.name))}}
+        {{form.input class='passengers' label='Passengers' value=newRide.passengers onChange=(action (mut newRide.passengers))}}
+        {{form.input class='address' label='Address' value=newRide.address onChange=(action (mut newRide.address))}}
+        {{form.input class='contact' label='Contact' value=newRide.contact onChange=(action (mut newRide.contact))}}
+      </div>
+
+      <h4 class='md-title'>Driver/car owner: should not be here</h4>
+
+      <div class='layout layout-sm-column'>
+        {{#paper-select
+          class='driver'
+          placeholder="Driver"
+          selected=newRide.driver
+          options=people
+          onChange=(action (mut newRide.driver))
+          as |person|}}
+          {{person.name}}
+        {{/paper-select}}
+        {{#paper-select
+          class='car-owner'
+          placeholder="Car owner"
+          selected=newRide.carOwner
+          options=people
+          onChange=(action (mut newRide.carOwner))
+          as |person|}}
+          {{person.name}}
+        {{/paper-select}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button onClick=(action 'cancel' newRide)}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'submit' newRide)}}Save{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}

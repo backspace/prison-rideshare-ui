@@ -16,6 +16,11 @@ export default Ember.Controller.extend({
 
     submit(model) {
       return model.save().then(() => this.set('newRide', undefined));
+    },
+
+    cancel(model) {
+      model.destroyRecord();
+      this.set('newRide', undefined);
     }
   }
 });
