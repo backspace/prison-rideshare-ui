@@ -1,0 +1,10 @@
+{{#each model as |ride|}}
+  {{#paper-radio
+    toggle=true
+    value="Blockless"
+    groupValue=blocklessValue
+    onChange=null
+  }}
+    {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
+  {{/paper-radio}}
+{{/each}}
