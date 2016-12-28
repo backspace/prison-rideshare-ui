@@ -96,7 +96,7 @@ test('create a ride', function(assert) {
   selectChoose('md-input-container.driver', 'Sun');
   selectChoose('md-input-container.car-owner', 'Sun');
 
-  click('.submit');
+  page.form.submit();
 
   andThen(function() {
     const ride = page.rides(0);
