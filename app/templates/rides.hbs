@@ -41,9 +41,15 @@
         {{#row.cell class='name'}}
           <label>Name {{input class='name' value=newRide.name}}</label>
         {{/row.cell}}
-        {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
-        {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
-        {{#row.cell class='passengers'}}{{ride.passengers}}{{/row.cell}}
+        {{#row.cell class='address'}}
+          <label>Address {{input class='address' value=newRide.address}}</label>
+        {{/row.cell}}
+        {{#row.cell class='contact'}}
+          <label>Contact {{input class='contact' value=newRide.contact}}</label>
+        {{/row.cell}}
+        {{#row.cell class='passengers'}}
+          <label>Passengers {{input class='passengers' type='number' value=newRide.passengers}}</label>
+        {{/row.cell}}
         {{#row.cell class='driver'}}
           {{#paper-select
             class='driver'

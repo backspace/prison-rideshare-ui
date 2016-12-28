@@ -37,6 +37,9 @@ export default create({
     fillStart: fillable('input.start'),
     fillEnd: fillable('input.end'),
     fillName: fillable('input.name'),
+    fillAddress: fillable('input.address'),
+    fillContact: fillable('input.contact'),
+    fillPassengers: fillable('input.passengers'),
 
     submit: clickable('button')
   }

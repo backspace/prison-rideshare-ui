@@ -87,6 +87,9 @@ test('create a ride', function(assert) {
   page.form.fillEnd('11:30');
 
   page.form.fillName('Edward');
+  page.form.fillAddress('114 Spence');
+  page.form.fillContact('jants@example.com');
+  page.form.fillPassengers(2);
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
@@ -109,6 +112,9 @@ test('create a ride', function(assert) {
     assert.equal(lastRide.name, 'Edward');
     assert.equal(moment(lastRide.start).format('YYYY-MM-DD HH:mm'), '2016-12-26 09:00');
     assert.equal(moment(lastRide.end).format('YYYY-MM-DD HH:mm'), '2016-12-26 11:30');
+    assert.equal(lastRide.address, '114 Spence');
+    assert.equal(lastRide.contact, 'jants@example.com');
+    assert.equal(lastRide.passengers, 2);
     assert.equal(lastRide.institutionId, rockwood.id);
     assert.equal(lastRide.driverId, sun.id);
     assert.equal(lastRide.carOwnerId, sun.id);
