@@ -14,6 +14,10 @@ export default Ember.Controller.extend({
       this.set('newRide', this.store.createRecord('ride'));
     },
 
+    editRide(model) {
+      this.set('newRide', model);
+    },
+
     submit(model) {
       return model.save().then(() => this.set('newRide', undefined));
     },

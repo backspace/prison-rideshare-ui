@@ -3,6 +3,7 @@ export default function() {
 
   this.get('/rides');
   this.post('/rides');
+  this.patch('/rides/:id');
 
   this.get('/institutions');
   this.get('/people');

@@ -17,6 +17,7 @@
     {{#head.column}}Visitor phone/email{{/head.column}}
     {{#head.column}}Driver{{/head.column}}
     {{#head.column}}Car owner{{/head.column}}
+    {{#head.column}}{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (filter-by 'id' (sort-by table.sortDesc model)) as |ride|}}
@@ -28,6 +29,11 @@
         {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
         {{#row.cell class='driver'}}{{ride.driver.name}}{{/row.cell}}
         {{#row.cell class='car-owner'}}{{ride.carOwner.name}}{{/row.cell}}
+        {{#row.cell}}
+          {{#paper-button iconButton=true aria-label='Edit ride' class='edit' onClick=(action 'editRide' ride)}}
+            {{paper-icon 'mode edit'}}
+          {{/paper-button}}
+        {{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}

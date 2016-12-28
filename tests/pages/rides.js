@@ -23,7 +23,9 @@ export default create({
       passengers: text('.passengers'),
 
       driver: text('.driver'),
-      carOwner: text('.car-owner')
+      carOwner: text('.car-owner'),
+
+      edit: clickable('button.edit')
     },
 
     head: {

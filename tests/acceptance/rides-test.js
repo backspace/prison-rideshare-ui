@@ -62,7 +62,7 @@ test('list existing rides with sortability', function(assert) {
   });
 });
 
-test('create a ride', function(assert) {
+test('create and edit a ride', function(assert) {
   const rockwood = server.create('institution', {
     name: 'Rockwood'
   });
@@ -120,5 +120,18 @@ test('create a ride', function(assert) {
     assert.equal(lastRide.carOwnerId, sun.id);
 
     assert.equal(currentURL(), '/rides');
+  });
+
+  page.rides(0).edit();
+
+  page.form.fillName('Ed');
+  page.form.submit();
+
+  andThen(function() {
+    assert.equal(page.rides(0).name, 'Ed + 1');
+
+    const serverRides = server.db.rides;
+    const lastRide = serverRides[serverRides.length - 1];
+    assert.equal(lastRide.name, 'Ed');
   });
 });
