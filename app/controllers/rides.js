@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default Ember.Controller.extend({
   institutionsService: Ember.inject.service('institutions'),
@@ -11,19 +12,24 @@ export default Ember.Controller.extend({
 
   actions: {
     editingRide() {
-      this.set('editingRide', this.store.createRecord('ride'));
+      this.set('editingRide', BufferedProxy.create({
+        content: this.store.createRecord('ride')
+      }));
     },
 
     editRide(model) {
-      this.set('editingRide', model);
+      this.set('editingRide', BufferedProxy.create({
+        content: model
+      }));
     },
 
-    submit(model) {
-      return model.save().then(() => this.set('editingRide', undefined));
+    submit(proxy) {
+      proxy.applyBufferedChanges();
+      return proxy.get('content').save().then(() => this.set('editingRide', undefined));
     },
 
-    cancel(model) {
-      model.rollbackAttributes();
+    cancel() {
+      this.get('editingRide').discardBufferedChanges();
       this.set('editingRide', undefined);
     }
   }

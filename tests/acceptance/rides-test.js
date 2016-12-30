@@ -138,6 +138,11 @@ test('create and edit a ride', function(assert) {
   page.rides(0).edit();
 
   page.form.fillName('Edwina');
+
+  andThen(() => {
+    assert.equal(page.rides(0).name, 'Edward + 1', 'expected the original model to not yet have changed');
+  });
+
   page.form.submit();
 
   andThen(function() {
