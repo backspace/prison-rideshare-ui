@@ -10,6 +10,7 @@ cache:
   directories:
     - $HOME/.npm
     - $HOME/.cache # includes bowers cache
+  yarn: true
 
 before_install:
   - npm config set spin false
