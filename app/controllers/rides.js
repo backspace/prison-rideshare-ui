@@ -11,7 +11,7 @@ export default Ember.Controller.extend({
   editingRide: undefined,
 
   actions: {
-    editingRide() {
+    newRide() {
       this.set('editingRide', BufferedProxy.create({
         content: this.store.createRecord('ride')
       }));
