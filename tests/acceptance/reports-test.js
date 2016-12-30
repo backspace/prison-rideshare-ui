@@ -30,6 +30,11 @@ moduleForAcceptance('Acceptance | reports', {
     });
 
     server.create('ride', { enabled: false });
+
+    server.create('ride', {
+      name: 'Assata',
+      distance: 100
+    });
   }
 });
 
