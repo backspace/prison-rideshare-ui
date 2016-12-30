@@ -1,17 +1,17 @@
 {{#paper-sidenav-container class="site-nav-container"}}
-  {{#paper-sidenav class="md-whiteframe-z2 site-sidenav" lockedOpen="gt-sm"
+  {{#paper-sidenav lockedOpen="gt-sm"
     open=isSidenavOpen onToggle=(action (mut isSidenavOpen))}}
 
     {{#paper-content}}
       {{#paper-list}}
         {{#paper-item}}
-          {{link-to 'Home' 'application'}}
+          {{#link-to 'application'}}<span>Home</span>{{/link-to}}
         {{/paper-item}}
         {{#paper-item}}
-          {{link-to 'Rides' 'rides'}}
+          {{#link-to 'rides'}}<span>Rides</span>{{/link-to}}
         {{/paper-item}}
         {{#paper-item}}
-          {{link-to 'Report' 'reports.new'}}
+          {{#link-to 'reports.new'}}<span>Report</span>{{/link-to}}
         {{/paper-item}}
       {{/paper-list}}
     {{/paper-content}}
