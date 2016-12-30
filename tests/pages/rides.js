@@ -3,6 +3,7 @@ import {
   collection,
   create,
   fillable,
+  hasClass,
   text,
   visitable
 } from 'ember-cli-page-object';
@@ -15,6 +16,8 @@ export default create({
     itemScope: 'tbody tr.ride',
 
     item: {
+      enabled: hasClass('md-checked', '.paper-switch'),
+
       name: text('.name'),
       date: text('.date'),
       institution: text('.institution'),

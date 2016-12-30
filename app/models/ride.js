@@ -4,6 +4,8 @@ import DS from 'ember-data';
 import moment from 'moment';
 
 export default DS.Model.extend({
+  enabled: DS.attr('boolean', {defaultValue: true}),
+
   name: DS.attr(),
   institution: DS.belongsTo(),
   address: DS.attr(),

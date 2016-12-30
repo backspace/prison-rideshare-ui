@@ -21,6 +21,8 @@ test('list existing rides with sortability', function(assert) {
   });
 
   server.create('ride', {
+    enabled: false,
+
     name: 'Edward',
     address: '91 Albert',
     contact: 'jorts@example.com',
@@ -43,6 +45,7 @@ test('list existing rides with sortability', function(assert) {
   andThen(function() {
     const ride = page.rides(0);
 
+    assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
     assert.equal(ride.name, 'Edward + 2');
     assert.equal(ride.date, '2016-12-26 8:30pm — 10:00');
     assert.equal(ride.institution, 'Fort Leavenworth');
@@ -52,6 +55,7 @@ test('list existing rides with sortability', function(assert) {
     assert.equal(ride.driver, 'Sun');
     assert.equal(ride.carOwner, 'Lito');
 
+    assert.ok(page.rides(1).enabled, 'expected the other ride to be enabled');
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
   });
 

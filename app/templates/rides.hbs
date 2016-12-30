@@ -10,6 +10,7 @@
 
 {{#paper-data-table sortProp='start' sortDir='desc' as |table|}}
   {{#table.head as |head|}}
+    {{head.column}}
     {{#head.column sortProp='start' class='date'}}Date{{/head.column}}
     {{#head.column}}Institution{{/head.column}}
     {{#head.column}}Visitor name{{/head.column}}
@@ -22,6 +23,9 @@
   {{#table.body as |body|}}
     {{#each (filter-by 'id' (sort-by table.sortDesc model)) as |ride|}}
       {{#body.row class='ride' as |row|}}
+        {{#row.cell class='enabled'}}
+          {{paper-switch value=ride.enabled}}
+        {{/row.cell}}
         {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mm'}}{{/row.cell}}
         {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
         {{#row.cell class='name'}}{{ride.namePlusPassengers}}{{/row.cell}}
