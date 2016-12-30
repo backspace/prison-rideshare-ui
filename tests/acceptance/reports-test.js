@@ -28,6 +28,8 @@ moduleForAcceptance('Acceptance | reports', {
       passengers: 1,
       institution: leavenworth
     });
+
+    server.create('ride', { enabled: false });
   }
 });
 
