@@ -46,6 +46,7 @@ test('list existing rides with sortability', function(assert) {
     const ride = page.rides(0);
 
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
+    assert.notOk(ride.switch.enabled, 'expected the switch to not be enabled');
     assert.equal(ride.name, 'Edward + 2');
     assert.equal(ride.date, '2016-12-26 8:30pm — 10:00');
     assert.equal(ride.institution, 'Fort Leavenworth');
@@ -63,6 +64,14 @@ test('list existing rides with sortability', function(assert) {
 
   andThen(function() {
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the top');
+  });
+
+  page.rides(0).switch.click();
+
+  andThen(() => {
+    const ride = page.rides(0);
+    assert.ok(ride.enabled, 'expected the later ride to have become enabled');
+    assert.ok(ride.switch.enabled, 'expected the switch to have become enabled');
   });
 });
 

@@ -16,7 +16,13 @@ export default create({
     itemScope: 'tbody tr.ride',
 
     item: {
-      enabled: hasClass('md-checked', '.paper-switch'),
+      enabled: hasClass('enabled'),
+
+      switch: {
+        scope: '.paper-switch',
+        enabled: hasClass('md-checked'),
+        click: clickable()
+      },
 
       name: text('.name'),
       date: text('.date'),

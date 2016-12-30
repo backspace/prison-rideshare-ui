@@ -39,3 +39,11 @@ md-sidenav {
     }
   }
 }
+
+table .ride {
+  opacity: 0.5;
+
+  &.enabled {
+    opacity: 1;
+  }
+}
