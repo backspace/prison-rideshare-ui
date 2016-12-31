@@ -11,6 +11,7 @@
     {{#head.column}}Car{{/head.column}}
     {{#head.column}}Reimbursements{{/head.column}}
     {{#head.column}}Owed{{/head.column}}
+    {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each model as |person|}}
@@ -20,7 +21,32 @@
         {{#row.cell class='car'}}{{person.carExpensesTotal}}{{/row.cell}}
         {{#row.cell class='reimbursements'}}{{person.reimbursementTotal}}{{/row.cell}}
         {{#row.cell class='owed'}}{{person.owed}}{{/row.cell}}
+        {{#row.cell}}
+          {{#paper-button iconButton=true aria-label='Add reimbursement' title='Add reimbursement' class='reimburse' onClick=(action 'addReimbursement' person)}}
+            {{paper-icon 'drafts'}}
+          {{/paper-button}}
+        {{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}
+
+{{#if editingReimbursement}}
+{{#paper-dialog}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>Create a reimbursement</h2>
+    {{#paper-form onSubmit=(action 'addReimbursement') as |form|}}
+      <div class='layout layout-sm-column'>
+        {{form.input class='amount' label='Amount' type='number' autofocus=true value=editingReimbursement.amount onChange=(action (mut editingReimbursement.amount))}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='cancel' onClick=(action 'cancel')}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'submit')}}Save{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}

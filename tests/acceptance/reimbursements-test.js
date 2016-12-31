@@ -29,7 +29,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
   }
 });
 
-test('list people', function(assert) {
+test('list people and create a reimbursement', function(assert) {
   server.logging = true;
   page.visit();
 
@@ -55,5 +55,26 @@ test('list people', function(assert) {
     assert.equal(will.foodExpenses, '0');
     assert.equal(will.carExpenses, '0');
     assert.equal(will.reimbursements, '0');
+  });
+
+  page.people(0).reimburseButton.click();
+
+  andThen(() => {
+    assert.equal(page.reimbursementForm.amountField.value, '22', 'expected the default reimbursement amount to equal the amount owed');
+  });
+
+  page.reimbursementForm.cancel();
+
+  andThen(() => {
+    assert.equal(page.people(0).owed, '22');
+  });
+
+  page.people(0).reimburseButton.click();
+
+  page.reimbursementForm.amountField.fill('10');
+  page.reimbursementForm.submit();
+
+  andThen(() => {
+    assert.equal(page.people(0).owed, '12');
   });
 });
