@@ -1,0 +1,18 @@
+{{#paper-toolbar as |toolbar|}}
+  {{#toolbar.tools}}
+    <h2>People</h2>
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
+
+{{#paper-data-table as |table|}}
+  {{#table.head as |head|}}
+    {{#head.column}}Name{{/head.column}}
+  {{/table.head}}
+  {{#table.body as |body|}}
+    {{#each model as |person|}}
+      {{#body.row class='person' as |row|}}
+        {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
+      {{/body.row}}
+    {{/each}}
+  {{/table.body}}
+{{/paper-data-table}}
