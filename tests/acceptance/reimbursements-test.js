@@ -15,7 +15,7 @@ test('list people', function(assert) {
 
   andThen(() => {
     assert.equal(page.people().count, 2, 'expected two people');
-    assert.equal(page.people(0).name, 'Sun');
-    assert.equal(page.people(1).name, 'Kala');
+    assert.equal(page.people(0).name, 'Kala');
+    assert.equal(page.people(1).name, 'Sun');
   });
 });
