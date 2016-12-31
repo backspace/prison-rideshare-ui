@@ -7,11 +7,13 @@
 {{#paper-data-table as |table|}}
   {{#table.head as |head|}}
     {{#head.column}}Name{{/head.column}}
+    {{#head.column}}Owed{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each model as |person|}}
       {{#body.row class='person' as |row|}}
         {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
+        {{#row.cell class='owed'}}{{person.owed}}{{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}

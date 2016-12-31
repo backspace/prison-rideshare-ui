@@ -12,7 +12,8 @@ export default create({
     itemScope: 'tbody tr.person',
 
     item: {
-      name: text('.name')
+      name: text('.name'),
+      owed: text('.owed')
     }
   })
 });

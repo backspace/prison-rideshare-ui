@@ -7,4 +7,5 @@ export default function() {
 
   this.get('/institutions');
   this.get('/people');
+  this.get('/reimbursements');
 }
