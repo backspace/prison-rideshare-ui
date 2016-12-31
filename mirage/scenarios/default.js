@@ -1,8 +1,9 @@
-export default function(server) {
-  const driver = server.create('person', {name: 'Driver'});
-  const carOwner = server.create('person', {name: 'Car Owner'});
+import { faker } from 'ember-cli-mirage';
 
-  const institutions = [
+export default function(server) {
+  const people = server.createList('person', 8);
+
+  const institutionNames = [
     'Brandon',
     'Headingley',
     'Milner Ridge',
@@ -10,11 +11,55 @@ export default function(server) {
     'Stony Mountain'
   ];
 
-  for (let i = 0; i < 5; i++) {
-    const institution = server.create('institution', {
-      name: institutions[i]
-    });
+  const institutions = institutionNames.map(name => server.create('institution', {name}));
 
-    server.create('ride', { institution, driver, carOwner });
+  for (let i = 0; i < 10; i++) {
+    const start = faker.date.recent(i*2);
+    const end = new Date(start.getTime() + 1000*60*60);
+
+    let reportAttributes = {};
+
+    if (faker.random.boolean()) {
+      reportAttributes = {
+        enabled: false
+      };
+    } else if (faker.random.boolean()) {
+      const carExpenses = randomCurrency();
+
+      reportAttributes = {
+        carExpenses: carExpenses,
+        distance: carExpenses/0.25,
+        foodExpenses: randomCurrency()
+      };
+    }
+
+    const ride = server.create('ride', Object.assign({
+      institution: faker.random.arrayElement(institutions),
+      driver: faker.random.arrayElement(people),
+      carOwner: faker.random.arrayElement(people),
+
+      start,
+      end
+    }, reportAttributes));
+
+    if (reportAttributes.carExpenses && faker.random.boolean()) {
+      server.create('reimbursement', {
+        person: ride.carOwner,
+        amount: reportAttributes.carExpenses
+      });
+    }
+
+    if (reportAttributes.foodExpenses && faker.random.boolean()) {
+      server.create('reimbursement', {
+        person: ride.driver,
+        amount: reportAttributes.foodExpenses
+      });
+    }
   }
+}
+
+function randomCurrency() {
+  const currency = faker.random.number({min: 0, max: 4000});
+
+  return Math.round(currency)/100;
 }
