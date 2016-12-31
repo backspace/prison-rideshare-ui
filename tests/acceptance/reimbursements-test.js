@@ -7,6 +7,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
   beforeEach() {
     const sun = server.create('person', {name: 'Sun'});
     const kala = server.create('person', {name: 'Kala'});
+    const will = server.create('person', {name: 'Will'});
 
     sun.createReimbursement({amount: 33});
     sun.createReimbursement({amount: 44});
@@ -20,6 +21,11 @@ moduleForAcceptance('Acceptance | reimbursements', {
       carOwner: kala,
       carExpenses: 44
     });
+
+    server.create('ride', {
+      driver: will,
+      carOwner: will
+    });
   }
 });
 
@@ -28,7 +34,7 @@ test('list people', function(assert) {
   page.visit();
 
   andThen(() => {
-    assert.equal(page.people().count, 2, 'expected two people');
+    assert.equal(page.people().count, 3, 'expected three people');
 
     const kala = page.people(0);
     assert.equal(kala.name, 'Kala');
@@ -43,5 +49,11 @@ test('list people', function(assert) {
     assert.equal(sun.foodExpenses, '154');
     assert.equal(sun.carExpenses, '0');
     assert.equal(sun.reimbursements, '77');
+
+    const will = page.people(2);
+    assert.equal(will.owed, '0');
+    assert.equal(will.foodExpenses, '0');
+    assert.equal(will.carExpenses, '0');
+    assert.equal(will.reimbursements, '0');
   });
 });
