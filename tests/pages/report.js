@@ -3,6 +3,7 @@ import {
   collection,
   create,
   fillable,
+  is,
   text,
   value,
   visitable
@@ -25,5 +26,9 @@ export default create({
   fillNotes: fillable('.report-notes textarea'),
   notesValue: value('.report-notes textarea'),
 
-  submit: clickable('button.submit')
+  submitButton: {
+    scope: 'button.submit',
+    disabled: is('[disabled]'),
+    click: clickable()
+  }
 });

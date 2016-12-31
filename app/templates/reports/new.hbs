@@ -18,6 +18,7 @@
                  type='number'
                  label='Distance in kilometres'
                  value=rideProxy.distance
+                 required=true
                  onChange=(action (mut rideProxy.distance))}}
 
     {{form.input class='food-expenses'
@@ -36,6 +37,10 @@
   </div>
 
   <div class="layout-row">
-    {{#paper-button class='submit' raised=true primary=true onClick=(action 'submit')}}Save{{/paper-button}}
+    {{#paper-button class='submit'
+                    raised=true primary=true
+                    onClick=(action 'submit')
+                    disabled=(or (not editingRide) form.isInvalid)}}Save{{/paper-button}}
+                    {{! FIXME simplify if/when form yields radio-group?}}
   </div>
 {{/paper-form}}

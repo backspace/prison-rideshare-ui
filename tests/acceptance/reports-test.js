@@ -46,15 +46,22 @@ test('submit a report for a ride', function(assert) {
 
     assert.equal(page.rides(0).label, 'Sun, Dec 25 at 10:15am to Remand Centre');
     assert.equal(page.rides(1).label, 'Tue, Dec 27 at 5:00pm to Fort Leavenworth');
+
+    assert.ok(page.submitButton.disabled, 'expected the form to not yet be valid');
   });
+
+  page.fillDistance(75);
+
+  andThen(() => assert.ok(page.submitButton.disabled, 'expected the form to still not be valid'));
 
   page.rides(0).choose();
 
-  page.fillDistance(75);
+  andThen(() => assert.notOk(page.submitButton.disabled, 'expected the form to be valid'));
+
   page.fillFoodExpenses(25.50);
   page.fillNotes('These r the notes');
 
-  page.submit();
+  page.submitButton.click();
 
   andThen(function() {
     const firstRide = server.db.rides[0];
