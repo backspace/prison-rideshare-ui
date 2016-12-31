@@ -8,13 +8,39 @@
   {{#table.head as |head|}}
     {{#head.column}}Person{{/head.column}}
     {{#head.column}}Amount{{/head.column}}
+    {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each model as |reimbursement|}}
       {{#body.row class='reimbursement' as |row|}}
         {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
         {{#row.cell class='amount'}}{{reimbursement.amount}}{{/row.cell}}
+        {{#row.cell}}
+          {{#paper-button iconButton=true aria-label='Edit reimbursement' class='edit' onClick=(action 'editReimbursement' reimbursement)}}
+            {{paper-icon 'mode edit'}}
+          {{/paper-button}}
+        {{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}
+
+{{#if editingReimbursement}}
+{{#paper-dialog}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>Edit a reimbursement</h2>
+    {{#paper-form onSubmit=(action 'submit') as |form|}}
+      <div class='layout layout-sm-column'>
+        {{form.input class='amount' label='Amount' type='number' autofocus=true value=editingReimbursement.amount onChange=(action (mut editingReimbursement.amount))}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='cancel' onClick=(action 'cancel')}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'submit')}}Save{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}

@@ -85,3 +85,21 @@ test('list people and create a reimbursement', function(assert) {
     assert.equal(reimbursementsPage.reimbursements(3).amount, '10');
   });
 });
+
+test('edit a reimbursement and the totals will be updated', function(assert) {
+  reimbursementsPage.visit();
+
+  reimbursementsPage.reimbursements(0).edit();
+  peoplePage.reimbursementForm.amountField.fill('44');
+  peoplePage.reimbursementForm.submit();
+
+  andThen(() => {
+    assert.equal(reimbursementsPage.reimbursements(0).amount, '44');
+  });
+
+  peoplePage.visit();
+
+  andThen(() => {
+    assert.equal(peoplePage.people(1).owed, '66');
+  });
+});

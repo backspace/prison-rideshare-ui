@@ -1,4 +1,5 @@
 import {
+  clickable,
   collection,
   create,
   text,
@@ -13,7 +14,9 @@ export default create({
 
     item: {
       name: text('.name'),
-      amount: text('.amount')
+      amount: text('.amount'),
+
+      edit: clickable('button')
     }
   })
 });

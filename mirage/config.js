@@ -10,4 +10,5 @@ export default function() {
 
   this.get('/reimbursements');
   this.post('reimbursements');
+  this.patch('/reimbursements/:id');
 }
