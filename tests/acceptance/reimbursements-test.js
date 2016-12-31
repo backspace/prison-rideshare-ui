@@ -12,10 +12,16 @@ moduleForAcceptance('Acceptance | reimbursements', {
     sun.createReimbursement({amount: 44});
 
     kala.createReimbursement({amount: 22});
+
+    server.create('ride', {
+      driver: sun,
+      foodExpenses: 154
+    });
   }
 });
 
 test('list people', function(assert) {
+  server.logging = true;
   page.visit();
 
   andThen(() => {
@@ -24,6 +30,6 @@ test('list people', function(assert) {
     assert.equal(page.people(0).name, 'Kala');
     assert.equal(page.people(0).owed, '-22');
     assert.equal(page.people(1).name, 'Sun');
-    assert.equal(page.people(1).owed, '-77');
+    assert.equal(page.people(1).owed, '77');
   });
 });

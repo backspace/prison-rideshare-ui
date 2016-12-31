@@ -1,5 +1,7 @@
 import { Model, hasMany } from 'ember-cli-mirage';
 
 export default Model.extend({
-  reimbursements: hasMany()
+  reimbursements: hasMany(),
+
+  drivings: hasMany('ride', {inverse: 'driver'})
 });
