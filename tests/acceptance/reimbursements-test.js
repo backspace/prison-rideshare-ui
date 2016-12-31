@@ -15,7 +15,10 @@ moduleForAcceptance('Acceptance | reimbursements', {
 
     server.create('ride', {
       driver: sun,
-      foodExpenses: 154
+      foodExpenses: 154,
+
+      carOwner: kala,
+      carExpenses: 44
     });
   }
 });
@@ -28,7 +31,7 @@ test('list people', function(assert) {
     assert.equal(page.people().count, 2, 'expected two people');
 
     assert.equal(page.people(0).name, 'Kala');
-    assert.equal(page.people(0).owed, '-22');
+    assert.equal(page.people(0).owed, '22');
     assert.equal(page.people(1).name, 'Sun');
     assert.equal(page.people(1).owed, '77');
   });

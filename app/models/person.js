@@ -14,7 +14,12 @@ export default DS.Model.extend({
   foodExpenseAmounts: Ember.computed.mapBy('drivings', 'foodExpenses'),
   foodExpensesTotal: Ember.computed.sum('foodExpenseAmounts'),
 
-  owed: Ember.computed('reimbursementTotal', 'foodExpensesTotal', function() {
-    return this.get('foodExpensesTotal') - this.get('reimbursementTotal');
+  carOwnings: DS.hasMany('ride', {inverse: 'carOwner'}),
+
+  carExpenseAmounts: Ember.computed.mapBy('carOwnings', 'carExpenses'),
+  carExpensesTotal: Ember.computed.sum('carExpenseAmounts'),
+
+  owed: Ember.computed('reimbursementTotal', 'foodExpensesTotal', 'carExpensesTotal', function() {
+    return ((this.get('carExpensesTotal') || 0) + (this.get('foodExpensesTotal') || 0)) - this.get('reimbursementTotal');
   })
 });

@@ -23,6 +23,7 @@ export default DS.Model.extend({
 
   distance: DS.attr(),
   foodExpenses: DS.attr(),
+  carExpenses: DS.attr(),
   reportNotes: DS.attr(),
 
   namePlusPassengers: Ember.computed('name', 'passengers', function() {
