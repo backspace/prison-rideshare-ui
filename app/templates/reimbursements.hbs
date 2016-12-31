@@ -1,0 +1,20 @@
+{{#paper-toolbar as |toolbar|}}
+  {{#toolbar.tools}}
+    <h2>Reimbursements</h2>
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
+
+{{#paper-data-table as |table|}}
+  {{#table.head as |head|}}
+    {{#head.column}}Person{{/head.column}}
+    {{#head.column}}Amount{{/head.column}}
+  {{/table.head}}
+  {{#table.body as |body|}}
+    {{#each model as |reimbursement|}}
+      {{#body.row class='reimbursement' as |row|}}
+        {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
+        {{#row.cell class='amount'}}{{reimbursement.amount}}{{/row.cell}}
+      {{/body.row}}
+    {{/each}}
+  {{/table.body}}
+{{/paper-data-table}}

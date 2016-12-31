@@ -1,7 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
-import page from 'prison-rideshare-ui/tests/pages/people';
+import peoplePage from 'prison-rideshare-ui/tests/pages/people';
+import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
 
 moduleForAcceptance('Acceptance | reimbursements', {
   beforeEach() {
@@ -30,50 +31,57 @@ moduleForAcceptance('Acceptance | reimbursements', {
 });
 
 test('list people and create a reimbursement', function(assert) {
-  page.visit();
+  peoplePage.visit();
 
   andThen(() => {
-    assert.equal(page.people().count, 3, 'expected three people');
+    assert.equal(peoplePage.people().count, 3, 'expected three people');
 
-    const kala = page.people(0);
+    const kala = peoplePage.people(0);
     assert.equal(kala.name, 'Kala');
     assert.equal(kala.owed, '22');
     assert.equal(kala.foodExpenses, '0');
     assert.equal(kala.carExpenses, '44');
     assert.equal(kala.reimbursements, '22');
 
-    const sun = page.people(1);
+    const sun = peoplePage.people(1);
     assert.equal(sun.name, 'Sun');
     assert.equal(sun.owed, '77');
     assert.equal(sun.foodExpenses, '154');
     assert.equal(sun.carExpenses, '0');
     assert.equal(sun.reimbursements, '77');
 
-    const will = page.people(2);
+    const will = peoplePage.people(2);
     assert.equal(will.owed, '0');
     assert.equal(will.foodExpenses, '0');
     assert.equal(will.carExpenses, '0');
     assert.equal(will.reimbursements, '0');
   });
 
-  page.people(0).reimburseButton.click();
+  peoplePage.people(0).reimburseButton.click();
 
   andThen(() => {
-    assert.equal(page.reimbursementForm.amountField.value, '22', 'expected the default reimbursement amount to equal the amount owed');
+    assert.equal(peoplePage.reimbursementForm.amountField.value, '22', 'expected the default reimbursement amount to equal the amount owed');
   });
 
-  page.reimbursementForm.cancel();
+  peoplePage.reimbursementForm.cancel();
 
   andThen(() => {
-    assert.equal(page.people(0).owed, '22');
+    assert.equal(peoplePage.people(0).owed, '22');
   });
 
-  page.people(0).reimburseButton.click();
+  peoplePage.people(0).reimburseButton.click();
 
-  page.reimbursementForm.amountField.fill('10');
-  page.reimbursementForm.submit();
+  peoplePage.reimbursementForm.amountField.fill('10');
+  peoplePage.reimbursementForm.submit();
 
   andThen(() => {
-    assert.equal(page.people(0).owed, '12');
+    assert.equal(peoplePage.people(0).owed, '12');
+  });
+
+  reimbursementsPage.visit();
+
+  andThen(() => {
+    assert.equal(reimbursementsPage.reimbursements().count, 4);
+    assert.equal(reimbursementsPage.reimbursements(3).amount, '10');
   });
 });
