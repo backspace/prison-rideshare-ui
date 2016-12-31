@@ -35,6 +35,10 @@ md-sidenav {
     color: white;
 
     &:hover {
+      background-color: color($color-indigo, '200');
+    }
+
+    &.active {
       background-color: color($color-indigo, '400');
     }
   }
