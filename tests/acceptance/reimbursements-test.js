@@ -30,7 +30,6 @@ moduleForAcceptance('Acceptance | reimbursements', {
 });
 
 test('list people and create a reimbursement', function(assert) {
-  server.logging = true;
   page.visit();
 
   andThen(() => {
