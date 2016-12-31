@@ -13,7 +13,10 @@ export default create({
 
     item: {
       name: text('.name'),
-      owed: text('.owed')
+      foodExpenses: text('.food'),
+      carExpenses: text('.car'),
+      reimbursements: text('.reimbursements'),
+      owed: text('.owed'),
     }
   })
 });

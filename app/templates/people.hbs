@@ -7,12 +7,18 @@
 {{#paper-data-table as |table|}}
   {{#table.head as |head|}}
     {{#head.column}}Name{{/head.column}}
+    {{#head.column}}Food{{/head.column}}
+    {{#head.column}}Car{{/head.column}}
+    {{#head.column}}Reimbursements{{/head.column}}
     {{#head.column}}Owed{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each model as |person|}}
       {{#body.row class='person' as |row|}}
         {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
+        {{#row.cell class='food'}}{{person.foodExpensesTotal}}{{/row.cell}}
+        {{#row.cell class='car'}}{{person.carExpensesTotal}}{{/row.cell}}
+        {{#row.cell class='reimbursements'}}{{person.reimbursementTotal}}{{/row.cell}}
         {{#row.cell class='owed'}}{{person.owed}}{{/row.cell}}
       {{/body.row}}
     {{/each}}

@@ -30,9 +30,18 @@ test('list people', function(assert) {
   andThen(() => {
     assert.equal(page.people().count, 2, 'expected two people');
 
-    assert.equal(page.people(0).name, 'Kala');
-    assert.equal(page.people(0).owed, '22');
-    assert.equal(page.people(1).name, 'Sun');
-    assert.equal(page.people(1).owed, '77');
+    const kala = page.people(0);
+    assert.equal(kala.name, 'Kala');
+    assert.equal(kala.owed, '22');
+    assert.equal(kala.foodExpenses, '0');
+    assert.equal(kala.carExpenses, '44');
+    assert.equal(kala.reimbursements, '22');
+
+    const sun = page.people(1);
+    assert.equal(sun.name, 'Sun');
+    assert.equal(sun.owed, '77');
+    assert.equal(sun.foodExpenses, '154');
+    assert.equal(sun.carExpenses, '0');
+    assert.equal(sun.reimbursements, '77');
   });
 });
