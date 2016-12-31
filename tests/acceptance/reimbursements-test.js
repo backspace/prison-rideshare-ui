@@ -60,10 +60,10 @@ test('list people and create a reimbursement', function(assert) {
   peoplePage.people(0).reimburseButton.click();
 
   andThen(() => {
-    assert.equal(peoplePage.reimbursementForm.amountField.value, '22', 'expected the default reimbursement amount to equal the amount owed');
+    assert.equal(reimbursementsPage.form.amountField.value, '22', 'expected the default reimbursement amount to equal the amount owed');
   });
 
-  peoplePage.reimbursementForm.cancel();
+  reimbursementsPage.form.cancel();
 
   andThen(() => {
     assert.equal(peoplePage.people(0).owed, '22');
@@ -71,8 +71,8 @@ test('list people and create a reimbursement', function(assert) {
 
   peoplePage.people(0).reimburseButton.click();
 
-  peoplePage.reimbursementForm.amountField.fill('10');
-  peoplePage.reimbursementForm.submit();
+  reimbursementsPage.form.amountField.fill('10');
+  reimbursementsPage.form.submit();
 
   andThen(() => {
     assert.equal(peoplePage.people(0).owed, '12');
@@ -90,8 +90,8 @@ test('edit a reimbursement and the totals will be updated', function(assert) {
   reimbursementsPage.visit();
 
   reimbursementsPage.reimbursements(0).edit();
-  peoplePage.reimbursementForm.amountField.fill('44');
-  peoplePage.reimbursementForm.submit();
+  reimbursementsPage.form.amountField.fill('44');
+  reimbursementsPage.form.submit();
 
   andThen(() => {
     assert.equal(reimbursementsPage.reimbursements(0).amount, '44');

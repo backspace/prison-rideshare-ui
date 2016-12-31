@@ -2,7 +2,9 @@ import {
   clickable,
   collection,
   create,
+  fillable,
   text,
+  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -18,5 +20,16 @@ export default create({
 
       edit: clickable('button')
     }
-  })
+  }),
+
+  form: {
+    amountField: {
+      scope: '.amount input',
+      value: value(),
+      fill: fillable()
+    },
+
+    submit: clickable('button.submit'),
+    cancel: clickable('button.cancel')
+  }
 });
