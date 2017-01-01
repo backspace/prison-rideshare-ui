@@ -16,9 +16,6 @@ export default Ember.Controller.extend({
     },
 
     cancel() {
-      const proxy = this.get('editingReimbursement');
-      proxy.get('content').destroyRecord();
-
       this.set('editingReimbursement', undefined);
     }
   }
