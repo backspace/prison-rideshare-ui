@@ -1,4 +1,5 @@
-{{#paper-dialog}}
+{{#paper-dialog clickOutsideToClose=true
+                onClose=cancel}}
 
   {{#paper-dialog-content}}
     <h2 class='md-title'>{{if reimbursement.isNew 'Create' 'Edit'}} a reimbursement</h2>
