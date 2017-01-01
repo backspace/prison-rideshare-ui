@@ -66,7 +66,7 @@ test('list existing rides with sortability', function(assert) {
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the top');
   });
 
-  page.rides(0).switch.click();
+  page.rides(1).switch.click();
 
   andThen(() => {
     const ride = page.rides(0);
