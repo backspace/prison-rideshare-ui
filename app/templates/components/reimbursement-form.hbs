@@ -7,6 +7,10 @@
       <div class='layout layout-sm-column'>
         {{form.input class='amount' label='Amount' type='number' autofocus=true value=reimbursement.amount onChange=(action (mut reimbursement.amount))}}
       </div>
+
+      <div class='layout layout-sm-column'>
+        {{#paper-checkbox value=reimbursement.donation onChange=(action (mut reimbursement.donation))}}Donation?{{/paper-checkbox}}
+      </div>
     {{/paper-form}}
   {{/paper-dialog-content}}
 

@@ -3,6 +3,7 @@ import {
   collection,
   create,
   fillable,
+  hasClass,
   isVisible,
   text,
   value,
@@ -30,6 +31,12 @@ export default create({
       scope: '.amount input',
       value: value(),
       fill: fillable()
+    },
+
+    donationCheckbox: {
+      scope: 'md-checkbox',
+      checked: hasClass('md-checked'),
+      click: clickable()
     },
 
     submit: clickable('button.submit'),

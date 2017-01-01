@@ -86,7 +86,7 @@ test('list people and create a reimbursement', function(assert) {
   });
 });
 
-test('edit a reimbursement and the totals will be updated', function(assert) {
+test('edit a reimbursement and the totals and donation status will be updated', function(assert) {
   reimbursementsPage.visit();
 
   andThen(() => {
@@ -94,11 +94,18 @@ test('edit a reimbursement and the totals will be updated', function(assert) {
   });
 
   reimbursementsPage.reimbursements(0).edit();
+
+  andThen(() => {
+    assert.ok(reimbursementsPage.form.donationCheckbox.checked, 'expected the donation checkbox to be checked');
+  });
+
   reimbursementsPage.form.amountField.fill('44');
+  reimbursementsPage.form.donationCheckbox.click();
   reimbursementsPage.form.submit();
 
   andThen(() => {
     assert.equal(reimbursementsPage.reimbursements(0).amount, '44');
+    assert.notOk(reimbursementsPage.reimbursements(0).donation, 'expected the first reimbursements to no longer be a donation');
   });
 
   peoplePage.visit();
