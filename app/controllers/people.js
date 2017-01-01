@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
       const proxy = BufferedProxy.create({content: reimbursement});
 
       proxy.set('person', person);
-      proxy.set('amount', person.get('owed'));
+      proxy.set('amountDollars', person.get('owedDollars'));
 
       this.set('editingReimbursement', proxy);
     },

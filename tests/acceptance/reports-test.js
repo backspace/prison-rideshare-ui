@@ -67,7 +67,7 @@ test('submit a report for a ride', function(assert) {
     const firstRide = server.db.rides[0];
 
     assert.equal(firstRide.distance, 75);
-    assert.equal(firstRide.foodExpenses, 25.50);
+    assert.equal(firstRide.foodExpenses, 2550);
     assert.equal(firstRide.reportNotes, 'These r the notes');
 
     assert.equal(currentURL(), '/rides');

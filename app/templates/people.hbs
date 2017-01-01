@@ -17,10 +17,10 @@
     {{#each model as |person|}}
       {{#body.row class='person' as |row|}}
         {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
-        {{#row.cell class='food'}}{{person.foodExpensesTotal}}{{/row.cell}}
-        {{#row.cell class='car'}}{{person.carExpensesTotal}}{{/row.cell}}
-        {{#row.cell class='reimbursements'}}{{person.reimbursementTotal}}{{/row.cell}}
-        {{#row.cell class='owed'}}{{person.owed}}{{/row.cell}}
+        {{#row.cell class='food'}}{{person.foodExpensesTotalDollars}}{{/row.cell}}
+        {{#row.cell class='car'}}{{person.carExpensesTotalDollars}}{{/row.cell}}
+        {{#row.cell class='reimbursements'}}{{person.reimbursementTotalDollars}}{{/row.cell}}
+        {{#row.cell class='owed'}}{{person.owedDollars}}{{/row.cell}}
         {{#row.cell}}
           {{#paper-button iconButton=true aria-label='Add reimbursement' title='Add reimbursement' class='reimburse' onClick=(action 'addReimbursement' person)}}
             {{paper-icon 'drafts'}}

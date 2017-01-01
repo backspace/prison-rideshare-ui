@@ -10,17 +10,17 @@ moduleForAcceptance('Acceptance | reimbursements', {
     const kala = server.create('person', {name: 'Kala'});
     const will = server.create('person', {name: 'Will'});
 
-    sun.createReimbursement({amount: 33, donation: true});
-    sun.createReimbursement({amount: 44});
+    sun.createReimbursement({amount: 3300, donation: true});
+    sun.createReimbursement({amount: 4400});
 
-    kala.createReimbursement({amount: 22});
+    kala.createReimbursement({amount: 2200});
 
     server.create('ride', {
       driver: sun,
-      foodExpenses: 154,
+      foodExpenses: 15400,
 
       carOwner: kala,
-      carExpenses: 44
+      carExpenses: 4400
     });
 
     server.create('ride', {

@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import DS from 'ember-data';
 
+import dollars from 'prison-rideshare-ui/utils/dollars';
+
 import moment from 'moment';
 
 export default DS.Model.extend({
@@ -22,7 +24,10 @@ export default DS.Model.extend({
   endTime: Ember.computed('date', 'end', timeGetAndSet('end')),
 
   distance: DS.attr(),
+
   foodExpenses: DS.attr({defaultValue: 0}),
+  foodExpensesDollars: dollars('foodExpenses'),
+
   carExpenses: DS.attr({defaultValue: 0}),
   reportNotes: DS.attr(),
 

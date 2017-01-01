@@ -28,7 +28,7 @@ export default function(server) {
 
       reportAttributes = {
         carExpenses: carExpenses,
-        distance: carExpenses/0.25,
+        distance: carExpenses/25,
         foodExpenses: randomCurrency()
       };
     }
@@ -63,5 +63,5 @@ export default function(server) {
 function randomCurrency() {
   const currency = faker.random.number({min: 0, max: 4000});
 
-  return Math.round(currency)/100;
+  return currency;
 }
