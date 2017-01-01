@@ -70,7 +70,7 @@ test('submit a report for a ride', function(assert) {
     assert.equal(firstRide.foodExpenses, 25.50);
     assert.equal(firstRide.reportNotes, 'These r the notes');
 
-    assert.equal(currentURL(), '/');
+    assert.equal(currentURL(), '/rides');
   });
 });
 
