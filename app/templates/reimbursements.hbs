@@ -26,21 +26,7 @@
 {{/paper-data-table}}
 
 {{#if editingReimbursement}}
-{{#paper-dialog}}
-
-  {{#paper-dialog-content}}
-    <h2 class='md-title'>Edit a reimbursement</h2>
-    {{#paper-form onSubmit=(action 'submit') as |form|}}
-      <div class='layout layout-sm-column'>
-        {{form.input class='amount' label='Amount' type='number' autofocus=true value=editingReimbursement.amount onChange=(action (mut editingReimbursement.amount))}}
-      </div>
-    {{/paper-form}}
-  {{/paper-dialog-content}}
-
-  {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=(action 'cancel')}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=(action 'submit')}}Save{{/paper-button}}
-  {{/paper-dialog-actions}}
-
-{{/paper-dialog}}
+{{reimbursement-form reimbursement=editingReimbursement
+                     cancel=(action 'cancel')
+                     save=(action 'submit')}}
 {{/if}}
