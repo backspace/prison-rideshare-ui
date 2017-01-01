@@ -3,6 +3,7 @@ import {
   collection,
   create,
   fillable,
+  isVisible,
   text,
   value,
   visitable
@@ -17,6 +18,8 @@ export default create({
     item: {
       name: text('.name'),
       amount: text('.amount'),
+
+      donation: isVisible('.donation .paper-icon'),
 
       edit: clickable('button')
     }

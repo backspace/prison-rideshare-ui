@@ -10,7 +10,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
     const kala = server.create('person', {name: 'Kala'});
     const will = server.create('person', {name: 'Will'});
 
-    sun.createReimbursement({amount: 33});
+    sun.createReimbursement({amount: 33, donation: true});
     sun.createReimbursement({amount: 44});
 
     kala.createReimbursement({amount: 22});
@@ -88,6 +88,10 @@ test('list people and create a reimbursement', function(assert) {
 
 test('edit a reimbursement and the totals will be updated', function(assert) {
   reimbursementsPage.visit();
+
+  andThen(() => {
+    assert.ok(reimbursementsPage.reimbursements(0).donation, 'expected the first reimbursement to be a donation');
+  });
 
   reimbursementsPage.reimbursements(0).edit();
   reimbursementsPage.form.amountField.fill('44');

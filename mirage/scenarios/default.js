@@ -45,14 +45,16 @@ export default function(server) {
     if (reportAttributes.carExpenses && faker.random.boolean()) {
       server.create('reimbursement', {
         person: ride.carOwner,
-        amount: reportAttributes.carExpenses
+        amount: reportAttributes.carExpenses,
+        donation: faker.random.boolean()
       });
     }
 
     if (reportAttributes.foodExpenses && faker.random.boolean()) {
       server.create('reimbursement', {
         person: ride.driver,
-        amount: reportAttributes.foodExpenses
+        amount: reportAttributes.foodExpenses,
+        donation: faker.random.boolean()
       });
     }
   }

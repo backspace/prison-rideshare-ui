@@ -8,6 +8,7 @@
   {{#table.head as |head|}}
     {{#head.column}}Person{{/head.column}}
     {{#head.column}}Amount{{/head.column}}
+    {{#head.column}}Donation?{{/head.column}}
     {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
@@ -15,6 +16,10 @@
       {{#body.row class='reimbursement' as |row|}}
         {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
         {{#row.cell class='amount'}}{{reimbursement.amount}}{{/row.cell}}
+        {{#row.cell class='donation'}}
+          {{#if reimbursement.donation}}{{paper-icon 'done'}}{{/if}}
+        {{/row.cell}}
+
         {{#row.cell}}
           {{#paper-button iconButton=true aria-label='Edit reimbursement' class='edit' onClick=(action 'editReimbursement' reimbursement)}}
             {{paper-icon 'mode edit'}}
