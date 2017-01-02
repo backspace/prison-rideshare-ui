@@ -5,6 +5,7 @@ import {
   fillable,
   hasClass,
   text,
+  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -51,6 +52,7 @@ export default create({
     fillAddress: fillable('.address input'),
     fillContact: fillable('.contact input'),
     fillPassengers: fillable('.passengers input'),
+    passengersValue: value('.passengers input'),
 
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')

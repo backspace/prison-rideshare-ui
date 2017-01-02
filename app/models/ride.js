@@ -12,7 +12,7 @@ export default DS.Model.extend({
   institution: DS.belongsTo(),
   address: DS.attr(),
   contact: DS.attr(),
-  passengers: DS.attr(),
+  passengers: DS.attr({defaultValue: 1}),
 
   start: DS.attr(),
   end: DS.attr(),

@@ -93,6 +93,8 @@ test('create and edit a ride', function(assert) {
 
   andThen(() => {
     assert.equal(page.rides().count, 0, 'there should be no row for an unsaved ride');
+
+    assert.equal(page.form.passengersValue, '1', 'the form should default to one passenger');
   });
 
   page.form.fillDate('2016-12-26');
