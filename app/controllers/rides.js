@@ -29,6 +29,12 @@ export default Ember.Controller.extend({
     },
 
     cancel() {
+      const model = this.get('editingRide.content');
+
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
+
       this.get('editingRide').discardBufferedChanges();
       this.set('editingRide', undefined);
     }
