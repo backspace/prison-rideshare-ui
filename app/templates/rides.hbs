@@ -8,6 +8,10 @@
   {{/toolbar.tools}}
 {{/paper-toolbar}}
 
+{{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
+  Show completed rides
+{{/paper-switch}}
+
 {{#paper-data-table sortProp='start' sortDir='desc' as |table|}}
   {{#table.head as |head|}}
     {{head.column}}

@@ -13,6 +13,14 @@ export default create({
   visit: visitable('/rides'),
   newRide: clickable('button.new'),
 
+  head: {
+    completedSwitch: {
+      scope: '.paper-switch.completed',
+      enabled: hasClass('md-checked'),
+      click: clickable('.md-thumb')
+    }
+  },
+
   rides: collection({
     itemScope: 'tbody tr.ride',
 

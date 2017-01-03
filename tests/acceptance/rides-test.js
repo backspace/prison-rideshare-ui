@@ -1,4 +1,4 @@
-import { test } from 'qunit';
+import { skip, test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
@@ -75,7 +75,7 @@ test('list existing rides with sortability', function(assert) {
   });
 });
 
-test('completed rides can be shown', function(assert) {
+skip('completed rides can be shown', function(assert) {
   server.create('ride');
   server.create('ride');
   server.create('ride', {
@@ -86,6 +86,14 @@ test('completed rides can be shown', function(assert) {
 
   andThen(() => {
     assert.equal(page.rides().count, 2, 'expected the completed ride to be hidden');
+    assert.notOk(page.head.completedSwitch.enabled, 'expected the completed switch to be off');
+  });
+
+  page.head.completedSwitch.click();
+
+  andThen(() => {
+    assert.equal(page.rides().count, 3, 'expected the completed ride to be showing');
+    assert.ok(page.head.completedSwitch.enabled, 'expected the completed switch to be on');
   });
 });
 

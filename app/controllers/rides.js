@@ -10,7 +10,17 @@ export default Ember.Controller.extend({
 
   editingRide: undefined,
 
-  filteredRides: Ember.computed.filterBy('model', 'notComplete'),
+  showCompleted: false,
+
+  notCompleteRides: Ember.computed.filterBy('model', 'notComplete'),
+
+  filteredRides: Ember.computed('showCompleted', 'model.@each.complete', function() {
+    if (this.get('showCompleted')) {
+      return this.get('model');
+    } else {
+      return this.get('notCompleteRides');
+    }
+  }),
 
   actions: {
     newRide() {
