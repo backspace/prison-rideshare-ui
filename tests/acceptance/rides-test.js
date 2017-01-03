@@ -75,6 +75,20 @@ test('list existing rides with sortability', function(assert) {
   });
 });
 
+test('completed rides can be shown', function(assert) {
+  server.create('ride');
+  server.create('ride');
+  server.create('ride', {
+    distance: 44
+  });
+
+  page.visit();
+
+  andThen(() => {
+    assert.equal(page.rides().count, 2, 'expected the completed ride to be hidden');
+  });
+});
+
 test('create and edit a ride', function(assert) {
   const rockwood = server.create('institution', {
     name: 'Rockwood'

@@ -10,6 +10,8 @@ export default Ember.Controller.extend({
 
   editingRide: undefined,
 
+  filteredRides: Ember.computed.filterBy('model', 'notComplete'),
+
   actions: {
     newRide() {
       this.set('editingRide', BufferedProxy.create({

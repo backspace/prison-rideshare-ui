@@ -21,7 +21,7 @@
     {{#head.column}}{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
-    {{#each (filter-by 'id' (sort-by table.sortDesc model)) as |ride|}}
+    {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
       {{#body.row class=(if ride.enabled 'ride enabled' 'ride') as |row|}}
         {{#row.cell}}
           {{paper-switch value=ride.enabled onChange=(action (mut ride.enabled))}}
