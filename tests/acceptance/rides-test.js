@@ -1,4 +1,4 @@
-import { skip, test } from 'qunit';
+import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
@@ -84,7 +84,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   });
 });
 
-skip('completed rides can be shown', function(assert) {
+test('completed rides can be shown', function(assert) {
   server.create('ride');
   server.create('ride');
   server.create('ride', {
