@@ -4,17 +4,17 @@
   {{/toolbar.tools}}
 {{/paper-toolbar}}
 
-{{#paper-data-table as |table|}}
+{{#paper-data-table sortProp='name' sortDir='asc' as |table|}}
   {{#table.head as |head|}}
-    {{#head.column}}Name{{/head.column}}
+    {{#head.column sortProp='name' class='name'}}Name{{/head.column}}
     {{#head.column}}Food{{/head.column}}
     {{#head.column}}Car{{/head.column}}
     {{#head.column}}Reimbursements{{/head.column}}
-    {{#head.column}}Owed{{/head.column}}
+    {{#head.column sortProp='owed' numeric=true class='owed'}}Owed{{/head.column}}
     {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
-    {{#each model as |person|}}
+    {{#each (sort-by table.sortDesc model) as |person|}}
       {{#body.row class='person' as |row|}}
         {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
         {{#row.cell class='food'}}{{person.foodExpensesTotalDollars}}{{/row.cell}}

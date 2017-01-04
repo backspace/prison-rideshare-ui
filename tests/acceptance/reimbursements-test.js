@@ -30,7 +30,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
   }
 });
 
-test('list people and create a reimbursement', function(assert) {
+test('list and sort people', function(assert) {
   peoplePage.visit();
 
   andThen(() => {
@@ -57,6 +57,29 @@ test('list people and create a reimbursement', function(assert) {
     assert.equal(will.reimbursements, '0');
   });
 
+  peoplePage.people().head.clickName();
+
+  andThen(() => {
+    assert.equal(peoplePage.people(0).name, 'Will');
+  });
+
+  // FIXME it’s preferable to sort in descending order by default!
+  peoplePage.people().head.clickOwed();
+  peoplePage.people().head.clickOwed();
+
+  andThen(() => {
+    assert.equal(peoplePage.people(0).name, 'Sun');
+  });
+
+  peoplePage.people().head.clickOwed();
+
+  andThen(() => {
+    assert.equal(peoplePage.people(0).name, 'Will');
+  });
+});
+
+test('create a reimbursement', function(assert) {
+  peoplePage.visit();
   peoplePage.people(0).reimburseButton.click();
 
   andThen(() => {

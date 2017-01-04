@@ -23,6 +23,12 @@ export default create({
         scope: 'button.reimburse',
         click: clickable()
       }
+    },
+
+    head: {
+      scope: 'thead',
+      clickName: clickable('.name'),
+      clickOwed: clickable('.owed')
     }
   })
 });
