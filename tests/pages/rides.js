@@ -14,6 +14,12 @@ export default create({
   newRide: clickable('button.new'),
 
   head: {
+    cancelledSwitch: {
+      scope: '.paper-switch.cancelled',
+      enabled: hasClass('md-checked'),
+      click: clickable('.md-thumb')
+    },
+
     completedSwitch: {
       scope: '.paper-switch.completed',
       enabled: hasClass('md-checked'),

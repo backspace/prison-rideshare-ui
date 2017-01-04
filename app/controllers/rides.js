@@ -11,15 +11,22 @@ export default Ember.Controller.extend({
   editingRide: undefined,
 
   showCompleted: false,
+  showCancelled: false,
 
-  notCompleteRides: Ember.computed.filterBy('model', 'notComplete'),
+  filteredRides: Ember.computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', function() {
+    const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
 
-  filteredRides: Ember.computed('showCompleted', 'model.@each.complete', function() {
-    if (this.get('showCompleted')) {
-      return this.get('model');
-    } else {
-      return this.get('notCompleteRides');
+    let rides = this.get('model');
+
+    if (!showCompleted) {
+      rides = rides.filterBy('complete', false);
     }
+
+    if (!showCancelled) {
+      rides = rides.filterBy('enabled');
+    }
+
+    return rides;
   }),
 
   actions: {

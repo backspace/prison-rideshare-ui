@@ -7,7 +7,7 @@ import moment from 'moment';
 
 moduleForAcceptance('Acceptance | rides');
 
-test('list existing rides with sortability', function(assert) {
+test('list existing rides with sortability, hiding cancelled ones by default', function(assert) {
   const leavenworth = server.create('institution', {
     name: 'Fort Leavenworth'
   });
@@ -42,7 +42,16 @@ test('list existing rides with sortability', function(assert) {
 
   page.visit();
 
+  andThen(() => {
+    assert.equal(page.rides().count, 1, 'expected the cancelled ride to be hidden');
+    assert.notOk(page.head.cancelledSwitch.enabled, 'expected the cancelled switch to be off');
+  });
+
+  page.head.cancelledSwitch.click();
+
   andThen(function() {
+    assert.equal(page.rides().count, 2, 'expected the cancelled ride to be shown');
+
     const ride = page.rides(0);
 
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');

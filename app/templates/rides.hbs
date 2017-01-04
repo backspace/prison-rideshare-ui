@@ -12,6 +12,10 @@
   Show completed rides
 {{/paper-switch}}
 
+{{#paper-switch class='cancelled' value=showCancelled onChange=(action (mut showCancelled))}}
+  Show cancelled rides
+{{/paper-switch}}
+
 {{#paper-data-table sortProp='start' sortDir='desc' as |table|}}
   {{#table.head as |head|}}
     {{head.column}}
