@@ -57,7 +57,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
     assert.notOk(ride.switch.enabled, 'expected the switch to not be enabled');
     assert.equal(ride.name, 'Edward + 2');
-    assert.equal(ride.date, '2016-12-26 8:30pm — 10:00');
+    assert.equal(ride.date, 'Mon Dec 26 8:30pm — 10:00');
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
@@ -148,7 +148,7 @@ test('create and edit a ride', function(assert) {
     const ride = page.rides(0);
     assert.equal(ride.name, 'Edward + 1');
 
-    assert.equal(ride.date, '2016-12-26 9:00am — 11:30');
+    assert.equal(ride.date, 'Mon Dec 26 9:00am — 11:30');
 
     assert.equal(ride.institution, 'Rockwood');
 

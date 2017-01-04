@@ -34,7 +34,7 @@
         {{#row.cell}}
           {{paper-switch value=ride.enabled onChange=(action (mut ride.enabled))}}
         {{/row.cell}}
-        {{#row.cell class='date'}}{{moment-format ride.start 'YYYY-MM-DD'}} {{moment-format ride.start 'h:mma'}} — {{moment-format ride.end 'h:mm'}}{{/row.cell}}
+        {{#row.cell class='date'}}{{ride-times ride}}{{/row.cell}}
         {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
         {{#row.cell class='name'}}{{ride.namePlusPassengers}}{{/row.cell}}
         {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
