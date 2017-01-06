@@ -1,5 +1,7 @@
 import { faker } from 'ember-cli-mirage';
 
+import RidesController from 'prison-rideshare-ui/controllers/rides';
+
 export default function(server) {
   const people = server.createList('person', 8);
 
@@ -21,7 +23,8 @@ export default function(server) {
 
     if (faker.random.boolean()) {
       reportAttributes = {
-        enabled: false
+        enabled: false,
+        cancellationReason: faker.random.arrayElement(RidesController.create().get('cancellationReasons'))
       };
     } else if (faker.random.boolean()) {
       const carExpenses = randomCurrency();
