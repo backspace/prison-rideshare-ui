@@ -34,12 +34,6 @@ export default create({
     item: {
       enabled: hasClass('enabled'),
 
-      switch: {
-        scope: '.paper-switch',
-        enabled: hasClass('md-checked'),
-        click: clickable()
-      },
-
       cancellation: {
         scope: '.cancellation',
         click: clickable('button'),
