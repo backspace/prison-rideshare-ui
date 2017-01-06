@@ -32,7 +32,9 @@ export default Ember.Controller.extend({
 
   cancellationReasons: [
     'lockdown',
-    'visitor'
+    'visitor',
+    'no car',
+    'no driver'
   ],
 
   actions: {
