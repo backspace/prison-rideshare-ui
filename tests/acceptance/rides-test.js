@@ -78,12 +78,18 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the top');
   });
 
-  page.rides(1).switch.click();
+  page.rides(1).cancellation.click();
 
-  andThen(() => {
-    const ride = page.rides(0);
-    assert.ok(ride.enabled, 'expected the later ride to have become enabled');
-    assert.ok(ride.switch.enabled, 'expected the switch to have become enabled');
+  andThen(function() {
+    assert.ok(page.cancellationForm.cancelled.checked, 'expected the cancellation box to be checked');
+    assert.equal(page.cancellationForm.reason.value, 'lockdown');
+  });
+
+  selectChoose('md-input-container.reason', 'visitor');
+  page.cancellationForm.save();
+
+  andThen(function() {
+    assert.ok(page.rides(1).cancellation.showsVisitor, 'expected the ride to now be cancelled by the visitor');
   });
 });
 

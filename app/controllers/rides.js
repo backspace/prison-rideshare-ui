@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
   people: Ember.computed.alias('peopleService.all'),
 
   editingRide: undefined,
+  editingCancellation: undefined,
 
   showCompleted: false,
   showCancelled: false,
@@ -28,6 +29,11 @@ export default Ember.Controller.extend({
 
     return rides;
   }),
+
+  cancellationReasons: [
+    'lockdown',
+    'visitor'
+  ],
 
   actions: {
     newRide() {
@@ -56,6 +62,24 @@ export default Ember.Controller.extend({
 
       this.get('editingRide').discardBufferedChanges();
       this.set('editingRide', undefined);
+    },
+
+    editCancellation(ride) {
+      this.set('editingCancellation', BufferedProxy.create({
+        content: ride
+      }));
+
+      this.set('editingCancellation.cancelled', true);
+    },
+
+    submitCancellation(proxy) {
+      proxy.applyBufferedChanges();
+      return proxy.get('content').save().then(() => this.set('editingCancellation'), undefined);
+    },
+
+    cancelCancellation() {
+      this.get('editingCancellation').discardBufferedChanges();
+      this.set('editingCancellation', undefined);
     }
   }
 });

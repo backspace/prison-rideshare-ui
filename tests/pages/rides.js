@@ -42,7 +42,9 @@ export default create({
 
       cancellation: {
         scope: '.cancellation',
+        click: clickable('button'),
         showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
+        showsVisitor: isVisible('button md-icon[md-font-icon="perm identity"]'),
         showsNotCancelled: isVisible('button md-icon[md-font-icon=delete]')
       },
 
@@ -77,5 +79,20 @@ export default create({
 
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')
+  },
+
+  cancellationForm: {
+    scope: '.md-dialog-container',
+
+    cancelled: {
+      scope: 'md-checkbox',
+      checked: hasClass('md-checked'),
+      click: clickable()
+    },
+
+    reason: {
+      value: text('.ember-power-select-selected-item')
+    },
+    save: clickable('button.submit')
   }
 });

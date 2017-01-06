@@ -44,7 +44,9 @@ export default DS.Model.extend({
   }),
 
   complete: Ember.computed.gt('distance', 0),
-  notComplete: Ember.computed.not('complete')
+  notComplete: Ember.computed.not('complete'),
+
+  cancelled: Ember.computed.not('enabled')
 });
 
 function timeGetAndSet(property) {

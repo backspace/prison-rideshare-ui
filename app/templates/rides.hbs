@@ -43,10 +43,11 @@
         {{#row.cell class='driver'}}{{ride.driver.name}}{{/row.cell}}
         {{#row.cell class='car-owner'}}{{ride.carOwner.name}}{{/row.cell}}
         {{#row.cell class='cancellation'}}
-          {{#if (eq ride.cancellationReason 'lockdown')}}
-            <button>{{paper-icon 'lock'}}</button>
-          {{/if}}
-          {{#if ride.enabled}}<button>{{paper-icon 'delete'}}</button>{{/if}}
+          {{#paper-button iconButton aria-label=(if ride.enabled 'Cancel ride' 'Edit cancellation') onClick=(action 'editCancellation' ride)}}
+            {{#if (eq ride.cancellationReason 'lockdown')}}{{paper-icon 'lock'}}{{/if}}
+            {{#if (eq ride.cancellationReason 'visitor')}}{{paper-icon 'perm identity'}}{{/if}}
+            {{#if ride.enabled}}{{paper-icon 'delete'}}{{/if}}
+          {{/paper-button}}
         {{/row.cell}}
         {{#row.cell}}
           {{#paper-button iconButton=true aria-label='Edit ride' class='edit' onClick=(action 'editRide' ride)}}
@@ -118,6 +119,38 @@
   {{#paper-dialog-actions class='layout-row'}}
     {{#paper-button class='cancel' onClick=(action 'cancel' editingRide)}}Cancel{{/paper-button}}
     {{#paper-button class='submit' primary=true onClick=(action 'submit' editingRide)}}Save{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}
+
+{{#if editingCancellation}}
+{{#paper-dialog onClose=(action 'cancelCancellation')}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>Cancel a ride</h2>
+    {{#paper-form onSubmit=(action 'submitCancellation') as |form|}}
+      <div class='layout layout-sm-column'>
+        {{#paper-checkbox
+          value=editingCancellation.cancelled
+          onChange=(action (mut editingCancellation.cancelled))}}Cancelled?{{/paper-checkbox}}
+
+        {{#paper-select
+          class='reason'
+          placeholder='Reason'
+          selected=editingCancellation.cancellationReason
+          options=cancellationReasons
+          onChange=(action (mut editingCancellation.cancellationReason))
+          as |reason|}}
+          {{reason}}
+        {{/paper-select}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='cancel' onClick=(action 'cancelCancellation')}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'submitCancellation' editingCancellation)}}Save{{/paper-button}}
   {{/paper-dialog-actions}}
 
 {{/paper-dialog}}
