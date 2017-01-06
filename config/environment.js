@@ -22,7 +22,9 @@ module.exports = function(environment) {
       // when it is created
     },
 
-    apiNamespace: undefined
+    DS: {
+     host: 'http://localhost:4000'
+    }
   };
 
   if (environment === 'development') {
@@ -46,15 +48,14 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
 
-    ENV.apiNamespace = 'api';
+    ENV.DS.namespace = 'api';
+    ENV.DS.host = undefined;
   }
 
   if (environment === 'production') {
     ENV['ember-cli-mirage'] = {
       enabled: true
     };
-
-    ENV.apiNamespace = 'api';
   }
 
   return ENV;
