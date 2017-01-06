@@ -69,7 +69,17 @@ export default Ember.Controller.extend({
         content: ride
       }));
 
-      this.set('editingCancellation.cancelled', true);
+      if (ride.get('enabled')) {
+        this.set('editingCancellation.cancelled', true);
+      }
+    },
+
+    cancelledChanged(cancelled) {
+      if (!cancelled) {
+        this.set('editingCancellation.cancellationReason', null);
+      }
+
+      this.set('editingCancellation.cancelled', cancelled);
     },
 
     submitCancellation(proxy) {

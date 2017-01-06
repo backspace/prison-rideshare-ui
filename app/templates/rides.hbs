@@ -133,7 +133,7 @@
       <div class='layout layout-sm-column'>
         {{#paper-checkbox
           value=editingCancellation.cancelled
-          onChange=(action (mut editingCancellation.cancelled))}}Cancelled?{{/paper-checkbox}}
+          onChange=(action 'cancelledChanged')}}Cancelled?{{/paper-checkbox}}
 
         {{#paper-select
           class='reason'

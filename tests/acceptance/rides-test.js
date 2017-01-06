@@ -91,6 +91,17 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(function() {
     assert.ok(page.rides(1).cancellation.showsVisitor, 'expected the ride to now be cancelled by the visitor');
   });
+
+  page.rides(1).cancellation.click();
+  page.cancellationForm.cancelled.click();
+  page.cancellationForm.save();
+
+  andThen(function() {
+    assert.ok(page.rides(1).enabled, 'expected the ride to no longer be cancelled');
+    assert.ok(page.rides(1).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
+    assert.notOk(page.rides(1).cancellation.showsVisitor, 'expected the ride to not show the visitor as a reason');
+    assert.notOk(page.rides(1).cancellation.showsLockdown, 'expected the ride not show lockdown as a reason');
+  });
 });
 
 test('completed rides can be shown', function(assert) {

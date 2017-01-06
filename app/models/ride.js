@@ -46,7 +46,16 @@ export default DS.Model.extend({
   complete: Ember.computed.gt('distance', 0),
   notComplete: Ember.computed.not('complete'),
 
-  cancelled: Ember.computed.not('enabled')
+  cancelled: Ember.computed('enabled', {
+    get() {
+      return !this.get('enabled');
+    },
+
+    set(key, value) {
+      this.set('enabled', !value);
+      return value;
+    }
+  })
 });
 
 function timeGetAndSet(property) {
