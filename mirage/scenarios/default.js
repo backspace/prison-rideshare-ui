@@ -15,7 +15,7 @@ export default function(server) {
 
   const institutions = institutionNames.map(name => server.create('institution', {name}));
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 25; i++) {
     const start = faker.date.recent(i*2);
     const end = new Date(start.getTime() + 1000*60*60);
 
