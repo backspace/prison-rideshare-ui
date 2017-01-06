@@ -42,7 +42,8 @@ export default create({
 
       cancellation: {
         scope: '.cancellation',
-        showsLockdown: isVisible('button md-icon[md-font-icon=lock]')
+        showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
+        showsNotCancelled: isVisible('button md-icon[md-font-icon=delete]')
       },
 
       name: text('.name'),

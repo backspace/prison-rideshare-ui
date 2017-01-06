@@ -46,6 +46,7 @@
           {{#if (eq ride.cancellationReason 'lockdown')}}
             <button>{{paper-icon 'lock'}}</button>
           {{/if}}
+          {{#if ride.enabled}}<button>{{paper-icon 'delete'}}</button>{{/if}}
         {{/row.cell}}
         {{#row.cell}}
           {{#paper-button iconButton=true aria-label='Edit ride' class='edit' onClick=(action 'editRide' ride)}}

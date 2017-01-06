@@ -68,6 +68,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.carOwner, 'Lito');
 
     assert.ok(page.rides(1).enabled, 'expected the other ride to be enabled');
+    assert.ok(page.rides(1).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
   });
 
