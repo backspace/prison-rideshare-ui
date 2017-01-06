@@ -22,6 +22,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
   server.create('ride', {
     enabled: false,
+    cancellationReason: 'lockdown',
 
     name: 'Edward',
     address: '91 Albert',
@@ -56,6 +57,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
     assert.notOk(ride.switch.enabled, 'expected the switch to not be enabled');
+    assert.ok(ride.cancellation.showsLockdown, 'expected the cancelled ride to show lockdown for the reason');
     assert.equal(ride.name, 'Edward + 2');
     assert.equal(ride.date, 'Mon Dec 26 8:30pm — 10:00');
     assert.equal(ride.institution, 'Fort Leavenworth');

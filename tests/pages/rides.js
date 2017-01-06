@@ -4,6 +4,7 @@ import {
   create,
   fillable,
   hasClass,
+  isVisible,
   text,
   value,
   visitable
@@ -37,6 +38,11 @@ export default create({
         scope: '.paper-switch',
         enabled: hasClass('md-checked'),
         click: clickable()
+      },
+
+      cancellation: {
+        scope: '.cancellation',
+        showsLockdown: isVisible('button md-icon[md-font-icon=lock]')
       },
 
       name: text('.name'),

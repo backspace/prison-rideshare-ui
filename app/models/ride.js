@@ -7,6 +7,7 @@ import moment from 'moment';
 
 export default DS.Model.extend({
   enabled: DS.attr('boolean', {defaultValue: true}),
+  cancellationReason: DS.attr(),
 
   name: DS.attr(),
   institution: DS.belongsTo(),
