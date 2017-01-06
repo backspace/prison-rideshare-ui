@@ -1,0 +1,18 @@
+{{#paper-dialog}}
+  {{#paper-dialog-content}}
+    {{#paper-form onSubmit=(action 'login') as |form|}}
+      <div class='layout layout-row'>
+        {{form.input class='email' type='email' label='Email' autofocus=true value=email onChange=(action (mut email))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password' type='password' label='Password' value=password onChange=(action (mut password))}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    <div class='layout layout-row'>
+      {{#paper-button class='submit' primary=true raised=true onClick=(action 'login')}}Log in{{/paper-button}}
+    </div>
+  {{/paper-dialog-actions}}
+{{/paper-dialog}}
