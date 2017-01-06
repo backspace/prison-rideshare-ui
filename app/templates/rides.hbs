@@ -39,7 +39,7 @@
         {{#row.cell class='driver'}}{{ride.driver.name}}{{/row.cell}}
         {{#row.cell class='car-owner'}}{{ride.carOwner.name}}{{/row.cell}}
         {{#row.cell class='cancellation'}}
-          {{#paper-button iconButton aria-label=(if ride.enabled 'Cancel ride' 'Edit cancellation') onClick=(action 'editCancellation' ride)}}
+          {{#paper-button iconButton=true aria-label=(if ride.enabled 'Cancel ride' 'Edit cancellation') onClick=(action 'editCancellation' ride)}}
             {{#if (eq ride.cancellationReason 'lockdown')}}{{paper-icon 'lock'}}{{/if}}
             {{#if (eq ride.cancellationReason 'visitor')}}{{paper-icon 'perm identity'}}{{/if}}
             {{#if ride.enabled}}{{paper-icon 'delete'}}{{/if}}
