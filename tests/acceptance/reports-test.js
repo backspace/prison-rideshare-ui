@@ -1,6 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
+import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+
 import page from 'prison-rideshare-ui/tests/pages/report';
 
 moduleForAcceptance('Acceptance | reports', {
@@ -35,6 +37,9 @@ moduleForAcceptance('Acceptance | reports', {
       name: 'Assata',
       distance: 100
     });
+
+    // FIXME this should not be required
+    authenticateSession(this.application);
   }
 });
 

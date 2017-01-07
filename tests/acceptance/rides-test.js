@@ -1,11 +1,17 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
+import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+
 import page from 'prison-rideshare-ui/tests/pages/rides';
 
 import moment from 'moment';
 
-moduleForAcceptance('Acceptance | rides');
+moduleForAcceptance('Acceptance | rides', {
+  beforeEach() {
+    authenticateSession(this.application);
+  }
+});
 
 test('list existing rides with sortability, hiding cancelled ones by default', function(assert) {
   const leavenworth = server.create('institution', {

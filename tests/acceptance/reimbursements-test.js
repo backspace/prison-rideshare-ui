@@ -1,6 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
+import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+
 import peoplePage from 'prison-rideshare-ui/tests/pages/people';
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
 
@@ -27,6 +29,8 @@ moduleForAcceptance('Acceptance | reimbursements', {
       driver: will,
       carOwner: will
     });
+
+    authenticateSession(this.application);
   }
 });
 

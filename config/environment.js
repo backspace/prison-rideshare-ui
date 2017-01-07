@@ -23,7 +23,13 @@ module.exports = function(environment) {
     },
 
     DS: {
-     host: 'http://localhost:4000'
+     host: 'http://localhost:4000',
+     namespace: ''
+    },
+
+    'ember-simple-auth': {
+      authenticationRoute: 'login',
+      routeAfterAuthentication: 'index'
     }
   };
 
