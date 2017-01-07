@@ -1,0 +1,21 @@
+{{#paper-dialog}}
+  {{#paper-dialog-content}}
+    {{#paper-form onSubmit=(action 'register') as |form|}}
+      <div class='layout layout-row'>
+        {{form.input class='email' type='email' label='Email' autofocus=true value=model.email onChange=(action (mut model.email))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password' type='password' label='Password' value=model.password onChange=(action (mut model.password))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=model.passwordConfirmation onChange=(action (mut model.passwordConfirmation))}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    <div class='layout layout-row'>
+      {{#paper-button class='submit' primary=true raised=true onClick=(action 'register')}}Register{{/paper-button}}
+    </div>
+  {{/paper-dialog-actions}}
+{{/paper-dialog}}
