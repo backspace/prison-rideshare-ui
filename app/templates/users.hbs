@@ -1,0 +1,22 @@
+{{#paper-toolbar as |toolbar|}}
+  {{#toolbar.tools}}
+    <h2>Users</h2>
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
+
+{{#paper-data-table as |table|}}
+  {{#table.head as |head|}}
+    {{#head.column}}Email{{/head.column}}
+    {{#head.column}}Admin?{{/head.column}}
+  {{/table.head}}
+  {{#table.body as |body|}}
+    {{#each model as |user|}}
+      {{#body.row class='user' as |row|}}
+        {{#row.cell class='email'}}{{user.email}}{{/row.cell}}
+        {{#row.cell}}
+          {{paper-checkbox value=user.admin onChange=(action (mut user.admin))}}
+        {{/row.cell}}
+      {{/body.row}}
+    {{/each}}
+  {{/table.body}}
+{{/paper-data-table}}

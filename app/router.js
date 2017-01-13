@@ -15,6 +15,8 @@ Router.map(function() {
     this.route('new');
   });
 
+  this.route('users');
+
   this.route('login');
   this.route('register');
 });
