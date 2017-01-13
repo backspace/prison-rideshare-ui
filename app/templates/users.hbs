@@ -14,7 +14,7 @@
       {{#body.row class='user' as |row|}}
         {{#row.cell class='email'}}{{user.email}}{{/row.cell}}
         {{#row.cell}}
-          {{paper-checkbox value=user.admin onChange=(action (mut user.admin))}}
+          {{paper-checkbox value=user.admin onChange=(action 'updateUserAdmin' user)}}
         {{/row.cell}}
       {{/body.row}}
     {{/each}}

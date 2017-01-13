@@ -13,4 +13,5 @@ export default function() {
   this.patch('/reimbursements/:id');
 
   this.get('/users');
+  this.patch('/users/:id');
 }

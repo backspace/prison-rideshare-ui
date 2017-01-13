@@ -21,7 +21,7 @@ moduleForAcceptance('Acceptance | reports', {
   }
 });
 
-test('list users', function(assert) {
+test('list users and update admin status', function(assert) {
   page.visit();
 
   andThen(function() {
@@ -32,5 +32,15 @@ test('list users', function(assert) {
 
     assert.equal(page.users(1).email, 'ghi@jkl.com');
     assert.notOk(page.users(1).adminCheckbox.checked);
+  });
+
+  page.users(1).adminCheckbox.click();
+
+  andThen(function() {
+    assert.ok(page.users(1).adminCheckbox.checked);
+
+    const serverUsers = server.db.users;
+    const lastUser = serverUsers[serverUsers.length - 1];
+    assert.ok(lastUser.admin);
   });
 });
