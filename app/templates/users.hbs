@@ -14,7 +14,8 @@
       {{#body.row class='user' as |row|}}
         {{#row.cell class='email'}}{{user.email}}{{/row.cell}}
         {{#row.cell}}
-          {{paper-checkbox value=user.admin onChange=(action 'updateUserAdmin' user)}}
+          {{!FIXME add a test for disabled}}
+          {{paper-checkbox value=user.admin disabled=(eq user session.currentUser) onChange=(action 'updateUserAdmin' user)}}
         {{/row.cell}}
       {{/body.row}}
     {{/each}}
