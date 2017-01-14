@@ -19,6 +19,12 @@
         {{#paper-item}}
           {{#link-to 'users'}}<span>Users</span>{{/link-to}}
         {{/paper-item}}
+        {{#if session.isAuthenticated}}
+          {{paper-divider}}
+          {{#paper-item }}
+            <span class='session'>Logged in as {{session.currentUser.email}}</span>
+          {{/paper-item}}
+        {{/if}}
       {{/paper-list}}
     {{/paper-content}}
   {{/paper-sidenav}}

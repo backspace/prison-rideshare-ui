@@ -25,7 +25,7 @@ md-sidenav {
     align-items: stretch;
   }
 
-  md-list-item a {
+  md-list-item a, md-list-item .session {
     display: flex;
     align-items: center;
     padding-left: 16px;
@@ -33,7 +33,9 @@ md-sidenav {
 
     text-decoration: none;
     color: white;
+  }
 
+  md-list-item a {
     &:hover {
       background-color: color($color-indigo, '200');
     }
