@@ -21,8 +21,8 @@
         {{/paper-item}}
         {{#if session.isAuthenticated}}
           {{paper-divider}}
-          {{#paper-item }}
-            <span class='session'>Logged in as {{session.currentUser.email}}</span>
+          {{#paper-item}}
+            <span onclick={{action 'logout'}} class='session'>Log out {{session.currentUser.email}}</span>
           {{/paper-item}}
         {{/if}}
       {{/paper-list}}

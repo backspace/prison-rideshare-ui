@@ -33,9 +33,7 @@ md-sidenav {
 
     text-decoration: none;
     color: white;
-  }
 
-  md-list-item a {
     &:hover {
       background-color: color($color-indigo, '200');
     }
