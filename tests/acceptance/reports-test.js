@@ -16,19 +16,19 @@ moduleForAcceptance('Acceptance | reports', {
     });
 
     server.create('ride', {
-      name: 'Chelsea',
-      start: new Date(2016, 11, 25, 10, 15),
-      end: new Date(2016, 11, 25, 12, 0),
-      passengers: 1,
-      institution: remand
-    });
-
-    server.create('ride', {
       name: 'Edward',
       start: new Date(2016, 11, 27, 17, 0),
       end: new Date(2016, 11, 27, 19, 0),
       passengers: 1,
       institution: leavenworth
+    });
+
+    server.create('ride', {
+      name: 'Chelsea',
+      start: new Date(2016, 11, 25, 10, 15),
+      end: new Date(2016, 11, 25, 12, 0),
+      passengers: 1,
+      institution: remand
     });
 
     server.create('ride', { enabled: false });
@@ -69,11 +69,11 @@ test('submit a report for a ride', function(assert) {
   page.submitButton.click();
 
   andThen(function() {
-    const firstRide = server.db.rides[0];
+    const changedRide = server.db.rides[1];
 
-    assert.equal(firstRide.distance, 75);
-    assert.equal(firstRide.foodExpenses, 2550);
-    assert.equal(firstRide.reportNotes, 'These r the notes');
+    assert.equal(changedRide.distance, 75);
+    assert.equal(changedRide.foodExpenses, 2550);
+    assert.equal(changedRide.reportNotes, 'These r the notes');
 
     assert.equal(currentURL(), '/rides');
   });

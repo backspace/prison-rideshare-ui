@@ -5,7 +5,7 @@
     {{#paper-radio-group
       groupValue=(readonly rideProxy.content)
       onChange=(action 'setRide') as |group|}}
-      {{#each model as |ride|}}
+      {{#each (sort-by 'start' model) as |ride|}}
         {{#group.radio value=ride}}
           {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
         {{/group.radio}}
