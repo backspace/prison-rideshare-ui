@@ -71,6 +71,8 @@ export default create({
     fillPassengers: fillable('.passengers input'),
     passengersValue: value('.passengers input'),
 
+    fillNotes: fillable('.request-notes textarea'),
+
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')
   },

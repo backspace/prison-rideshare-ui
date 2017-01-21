@@ -89,6 +89,14 @@
         {{form.input class='contact' label='Contact' value=editingRide.contact onChange=(action (mut editingRide.contact))}}
       </div>
 
+      <div class='layout layout-sm-column'>
+        {{form.input class='request-notes'
+                     textarea=true
+                     label='Notes'
+                     value=editingRide.requestNotes
+                     onChange=(action (mut editingRide.requestNotes))}}
+      </div>
+
       <h4 class='md-title'>Driver/car owner: should not be here</h4>
 
       <div class='layout layout-sm-column'>

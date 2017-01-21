@@ -24,6 +24,8 @@ export default DS.Model.extend({
   startTime: Ember.computed('date', 'start', timeGetAndSet('start')),
   endTime: Ember.computed('date', 'end', timeGetAndSet('end')),
 
+  requestNotes: DS.attr(),
+
   distance: DS.attr(),
 
   foodExpenses: DS.attr({defaultValue: 0}),

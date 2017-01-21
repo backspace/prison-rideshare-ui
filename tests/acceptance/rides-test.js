@@ -162,6 +162,8 @@ test('create and edit a ride', function(assert) {
   page.form.fillContact('jants@example.com');
   page.form.fillPassengers(2);
 
+  page.form.fillNotes('Some request notes?');
+
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
   selectChoose('md-input-container.driver', 'Sun');
@@ -189,6 +191,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.institutionId, rockwood.id);
     assert.equal(lastRide.driverId, sun.id);
     assert.equal(lastRide.carOwnerId, sun.id);
+    assert.equal(lastRide.requestNotes, 'Some request notes?');
 
     assert.equal(currentURL(), '/rides');
   });
