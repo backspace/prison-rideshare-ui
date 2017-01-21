@@ -15,7 +15,7 @@ moduleForAcceptance('Acceptance | reports', {
       name: 'Remand Centre'
     });
 
-    server.create('ride', {
+    const edwardRide = server.create('ride', {
       name: 'Edward',
       start: new Date(2016, 11, 27, 17, 0),
       end: new Date(2016, 11, 27, 19, 0),
@@ -37,6 +37,8 @@ moduleForAcceptance('Acceptance | reports', {
       name: 'Assata',
       distance: 100
     });
+
+    server.create('ride', { combinedWith: edwardRide });
 
     // FIXME this should not be required
     authenticateSession(this.application);

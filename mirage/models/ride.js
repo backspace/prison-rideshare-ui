@@ -4,5 +4,7 @@ export default Model.extend({
   institution: belongsTo(),
 
   driver: belongsTo('person'),
-  carOwner: belongsTo('person')
+  carOwner: belongsTo('person'),
+
+  combinedWith: belongsTo('ride')
 });

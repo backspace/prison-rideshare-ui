@@ -9,6 +9,9 @@ export default DS.Model.extend({
   enabled: DS.attr('boolean', {defaultValue: true}),
   cancellationReason: DS.attr(),
 
+  combinedWith: DS.belongsTo('ride', {inverse: 'children'}),
+  children: DS.hasMany('ride', {inverse: 'combinedWith'}),
+
   name: DS.attr(),
   institution: DS.belongsTo(),
   address: DS.attr(),
