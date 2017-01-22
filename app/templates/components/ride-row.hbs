@@ -8,14 +8,26 @@
     {{#if combined}}
       {{paper-icon 'merge type'}}
     {{else}}
-      {{ride.driver.name}}
+      {{#paper-select
+        selected=ride.driver
+        options=people
+        onChange=(action 'setDriver')
+        as |person|}}
+        {{person.name}}
+      {{/paper-select}}
     {{/if}}
   {{/row.cell}}
   {{#row.cell class='car-owner'}}
     {{#if combined}}
       {{paper-icon 'merge type'}}
     {{else}}
-      {{ride.carOwner.name}}
+      {{#paper-select
+        selected=ride.carOwner
+        options=people
+        onChange=(action 'setCarOwner')
+        as |person|}}
+        {{person.name}}
+      {{/paper-select}}
     {{/if}}
   {{/row.cell}}
   {{#row.cell class='cancellation'}}

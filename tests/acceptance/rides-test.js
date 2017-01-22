@@ -74,8 +74,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
 
-    assert.equal(ride.driver, 'Sun');
-    assert.equal(ride.carOwner, 'Lito');
+    assert.equal(ride.driver.text, 'Sun');
+    assert.equal(ride.carOwner.text, 'Lito');
 
     assert.ok(page.rides(1).enabled, 'expected the other ride to be enabled');
     assert.ok(page.rides(1).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
@@ -152,6 +152,10 @@ test('create and edit a ride', function(assert) {
     name: 'Sun'
   });
 
+  const lito = server.create('person', {
+    name: 'Lito'
+  });
+
   page.visit();
   page.newRide();
 
@@ -174,8 +178,6 @@ test('create and edit a ride', function(assert) {
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
-  selectChoose('md-input-container.driver', 'Sun');
-  selectChoose('md-input-container.car-owner', 'Sun');
 
   page.form.submit();
 
@@ -197,9 +199,33 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.contact, 'jants@example.com');
     assert.equal(lastRide.passengers, 2);
     assert.equal(lastRide.institutionId, rockwood.id);
+    assert.equal(lastRide.requestNotes, 'Some request notes?');
+  });
+
+  page.rides(0).driver.click();
+  selectChoose('.driver md-input-container', 'Sun');
+
+  andThen(function() {
+    assert.equal(page.rides(0).driver.text, 'Sun');
+    assert.equal(page.rides(0).carOwner.text, 'Sun', 'expected the car owner to be set automatically');
+
+    const serverRides = server.db.rides;
+    const lastRide = serverRides[serverRides.length - 1];
+
     assert.equal(lastRide.driverId, sun.id);
     assert.equal(lastRide.carOwnerId, sun.id);
-    assert.equal(lastRide.requestNotes, 'Some request notes?');
+  });
+
+  page.rides(0).carOwner.click();
+  selectChoose('.car-owner md-input-container', 'Lito');
+
+  andThen(function() {
+    assert.equal(page.rides(0).carOwner.text, 'Lito');
+
+    const serverRides = server.db.rides;
+    const lastRide = serverRides[serverRides.length - 1];
+
+    assert.equal(lastRide.carOwnerId, lito.id);
   });
 
   page.rides(0).edit();

@@ -49,8 +49,17 @@ export default create({
       contact: text('.contact'),
       passengers: text('.passengers'),
 
-      driver: text('.driver'),
-      carOwner: text('.car-owner'),
+      driver: {
+        scope: '.driver',
+        text: text(),
+        click: clickable()
+      },
+
+      carOwner: {
+        scope: '.car-owner',
+        text: text(),
+        click: clickable()
+      },
 
       isCombined: isVisible('.driver md-icon[md-font-icon="merge type"]'),
 

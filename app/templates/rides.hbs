@@ -30,9 +30,9 @@
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
-      {{ride-row body=body ride=ride editCancellation=(action 'editCancellation') editRide=(action 'editRide')}}
+      {{ride-row body=body ride=ride editCancellation=(action 'editCancellation') editRide=(action 'editRide') people=people}}
       {{#each ride.children as |child|}}
-        {{ride-row body=body ride=child combined=true editCancellation=(action 'editCancellation') editRide=(action 'editRide')}}
+        {{ride-row body=body ride=child combined=true editCancellation=(action 'editCancellation') editRide=(action 'editRide') people=people}}
       {{/each}}
     {{/each}}
   {{/table.body}}
@@ -76,29 +76,6 @@
                      label='Notes'
                      value=editingRide.requestNotes
                      onChange=(action (mut editingRide.requestNotes))}}
-      </div>
-
-      <h4 class='md-title'>Driver/car owner: should not be here</h4>
-
-      <div class='layout layout-sm-column'>
-        {{#paper-select
-          class='driver'
-          placeholder="Driver"
-          selected=editingRide.driver
-          options=people
-          onChange=(action (mut editingRide.driver))
-          as |person|}}
-          {{person.name}}
-        {{/paper-select}}
-        {{#paper-select
-          class='car-owner'
-          placeholder="Car owner"
-          selected=editingRide.carOwner
-          options=people
-          onChange=(action (mut editingRide.carOwner))
-          as |person|}}
-          {{person.name}}
-        {{/paper-select}}
       </div>
     {{/paper-form}}
   {{/paper-dialog-content}}

@@ -50,4 +50,8 @@ table .ride {
   &.enabled {
     opacity: 1;
   }
+
+  md-input-container {
+    margin: 18px 0 0;
+  }
 }
