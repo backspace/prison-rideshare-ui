@@ -1,4 +1,4 @@
-import { Model, belongsTo } from 'ember-cli-mirage';
+import { Model, belongsTo, hasMany } from 'ember-cli-mirage';
 
 export default Model.extend({
   institution: belongsTo(),
@@ -6,5 +6,6 @@ export default Model.extend({
   driver: belongsTo('person'),
   carOwner: belongsTo('person'),
 
-  combinedWith: belongsTo('ride')
+  combinedWith: belongsTo('ride'),
+  children: hasMany('ride')
 });

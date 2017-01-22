@@ -17,7 +17,7 @@ export default Ember.Controller.extend({
   filteredRides: Ember.computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
 
-    let rides = this.get('model');
+    let rides = this.get('model').rejectBy('isCombined');
 
     if (!showCompleted) {
       rides = rides.filterBy('complete', false);

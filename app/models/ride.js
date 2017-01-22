@@ -12,6 +12,11 @@ export default DS.Model.extend({
   combinedWith: DS.belongsTo('ride', {inverse: 'children'}),
   children: DS.hasMany('ride', {inverse: 'combinedWith'}),
 
+  isCombined: Ember.computed('combinedWith', function() {
+    // FIXME this seems questionable
+    return this.serialize().data.relationships['combined-with'].data;
+  }),
+
   name: DS.attr(),
   institution: DS.belongsTo(),
   address: DS.attr(),

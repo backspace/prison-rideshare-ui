@@ -1,0 +1,35 @@
+{{#body.row class=(if ride.enabled 'ride enabled' 'ride') as |row|}}
+  {{#row.cell class='date'}}{{ride-times ride}}{{/row.cell}}
+  {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
+  {{#row.cell class='name'}}{{ride.namePlusPassengers}}{{/row.cell}}
+  {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
+  {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
+  {{#row.cell class='driver'}}
+    {{#if combined}}
+      {{paper-icon 'merge type'}}
+    {{else}}
+      {{ride.driver.name}}
+    {{/if}}
+  {{/row.cell}}
+  {{#row.cell class='car-owner'}}
+    {{#if combined}}
+      {{paper-icon 'merge type'}}
+    {{else}}
+      {{ride.carOwner.name}}
+    {{/if}}
+  {{/row.cell}}
+  {{#row.cell class='cancellation'}}
+    {{#paper-button iconButton=true aria-label=(if ride.enabled 'Cancel ride' 'Edit cancellation') title=(if ride.enabled 'Cancel ride' 'Edit cancellation') onClick=(action editCancellation ride)}}
+      {{#if (eq ride.cancellationReason 'lockdown')}}{{paper-icon 'lock'}}{{/if}}
+      {{#if (eq ride.cancellationReason 'visitor')}}{{paper-icon 'perm identity'}}{{/if}}
+      {{#if (eq ride.cancellationReason 'no car')}}{{paper-icon 'directions car'}}{{/if}}
+      {{#if (eq ride.cancellationReason 'no driver')}}{{paper-icon 'rowing'}}{{/if}} {{!FIXME what icon?}}
+      {{#if ride.enabled}}{{paper-icon 'delete'}}{{/if}}
+    {{/paper-button}}
+  {{/row.cell}}
+  {{#row.cell}}
+    {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action editRide ride)}}
+      {{paper-icon 'mode edit'}}
+    {{/paper-button}}
+  {{/row.cell}}
+{{/body.row}}
