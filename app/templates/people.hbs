@@ -26,6 +26,11 @@
             {{paper-icon 'drafts'}}
           {{/paper-button}}
         {{/row.cell}}
+        {{#row.cell}}
+          {{#paper-button iconButton=true aria-label='Edit person' title='Edit person' class='edit' onClick=(action 'editPerson' person)}}
+            {{paper-icon 'mode edit'}}
+          {{/paper-button}}
+        {{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}
@@ -35,4 +40,25 @@
 {{reimbursement-form reimbursement=editingReimbursement
                      cancel=(action 'cancel')
                      save=(action 'submit')}}
+{{/if}}
+
+{{#if editingPerson}}
+{{#paper-dialog clickOutsideToClose=true
+                onClose=(action 'cancelPerson')}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>Edit person</h2>
+    {{#paper-form onSubmit=savePerson as |form|}}
+      <div class='layout layout-sm-column'>
+        {{form.input class='name' label='Name' autofocus=true value=editingPerson.name onChange=(action (mut editingPerson.name))}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='cancel' onClick=(action 'cancelPerson')}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'savePerson')}}Save{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
 {{/if}}

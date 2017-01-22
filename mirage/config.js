@@ -6,7 +6,9 @@ export default function() {
   this.patch('/rides/:id');
 
   this.get('/institutions');
+
   this.get('/people');
+  this.patch('/people/:id');
 
   this.get('/reimbursements');
   this.post('reimbursements');

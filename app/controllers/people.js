@@ -24,6 +24,22 @@ export default Ember.Controller.extend({
       proxy.get('content').destroyRecord();
 
       this.set('editingReimbursement', undefined);
+    },
+
+    editPerson(person) {
+      const proxy = BufferedProxy.create({content: person});
+
+      this.set('editingPerson', proxy);
+    },
+
+    savePerson() {
+      const proxy = this.get('editingPerson');
+      proxy.applyBufferedChanges();
+      return proxy.get('content').save().then(() => this.set('editingPerson', undefined));
+    },
+
+    cancelPerson() {
+      this.set('editingPerson', undefined);
     }
   }
 });
