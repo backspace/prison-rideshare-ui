@@ -200,8 +200,6 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.driverId, sun.id);
     assert.equal(lastRide.carOwnerId, sun.id);
     assert.equal(lastRide.requestNotes, 'Some request notes?');
-
-    assert.equal(currentURL(), '/rides');
   });
 
   page.rides(0).edit();
