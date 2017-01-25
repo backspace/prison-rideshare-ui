@@ -22,7 +22,7 @@ export default Ember.Component.extend({
     if (this.get('ride.enabled')) {
       return 'Cancel ride';
     } else {
-      return 'Edit cancellation';
+      return `Edit cancellation: ${this.get('ride.cancellationReason')}`;
     }
   }),
 
