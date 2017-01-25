@@ -18,6 +18,14 @@ export default Ember.Component.extend({
     return icon || 'help';
   }),
 
+  cancellationButtonLabel: Ember.computed('ride.enabled', 'ride.cancellationReason', function() {
+    if (this.get('ride.enabled')) {
+      return 'Cancel ride';
+    } else {
+      return 'Edit cancellation';
+    }
+  }),
+
   actions: {
     setDriver(driver) {
       const ride = this.get('ride');

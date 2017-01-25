@@ -31,7 +31,7 @@
     {{/if}}
   {{/row.cell}}
   {{#row.cell class='cancellation'}}
-    {{#paper-button iconButton=true aria-label=(if ride.enabled 'Cancel ride' 'Edit cancellation') title=(if ride.enabled 'Cancel ride' 'Edit cancellation') onClick=(action editCancellation ride)}}
+    {{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
       {{#if ride.enabled}}
         {{paper-icon 'delete'}}
       {{else}}
