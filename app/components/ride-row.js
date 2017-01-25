@@ -5,7 +5,12 @@ const reasonToIcon = {
   'visitor': 'perm identity',
   'no car': 'directions car',
   // FIXME better icon!
-  'no driver': 'rowing'
+  'no driver': 'rowing',
+  'weather': 'cloud',
+  'transfer': 'shuffle',
+  'error': 'error',
+  'visitor missing': 'perm identity',
+  'driver missing': 'directions car'
 };
 
 export default Ember.Component.extend({
