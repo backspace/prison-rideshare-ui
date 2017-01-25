@@ -1,7 +1,22 @@
 import Ember from 'ember';
 
+const reasonToIcon = {
+  'lockdown': 'lock',
+  'visitor': 'perm identity',
+  'no car': 'directions car',
+  // FIXME better icon!
+  'no driver': 'rowing'
+};
+
 export default Ember.Component.extend({
   tagName: '',
+
+  cancellationIcon: Ember.computed('ride.cancellationReason', function() {
+    const reason = this.get('ride.cancellationReason');
+    const icon = reasonToIcon[reason];
+
+    return icon || 'help';
+  }),
 
   actions: {
     setDriver(driver) {
