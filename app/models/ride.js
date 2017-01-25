@@ -13,8 +13,9 @@ export default DS.Model.extend({
   children: DS.hasMany('ride', {inverse: 'combinedWith'}),
 
   isCombined: Ember.computed('combinedWith', function() {
+    const combinedWithRelationship = this.serialize().data.relationships['combined-with'];
     // FIXME this seems questionable
-    return this.serialize().data.relationships['combined-with'].data;
+    return combinedWithRelationship && combinedWithRelationship.data;
   }),
 
   name: DS.attr(),
