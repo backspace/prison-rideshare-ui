@@ -9,8 +9,8 @@ registerPowerSelectHelpers();
 export default function startApp(attrs) {
   let application;
 
-  // use defaults, but you can override
-  let attributes = Ember.assign({}, config.APP, attrs);
+  let attributes = Ember.merge({}, config.APP);
+  attributes = Ember.merge(attributes, attrs); // use defaults, but you can override;
 
   Ember.run(() => {
     application = Application.create(attributes);
