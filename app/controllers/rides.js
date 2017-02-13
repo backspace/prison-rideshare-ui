@@ -1,6 +1,10 @@
 import Ember from 'ember';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
+import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+
+const reasons = Object.keys(reasonToIcon);
+
 export default Ember.Controller.extend({
   institutionsService: Ember.inject.service('institutions'),
   institutions: Ember.computed.alias('institutionsService.all'),
@@ -30,12 +34,7 @@ export default Ember.Controller.extend({
     return rides;
   }),
 
-  cancellationReasons: [
-    'lockdown',
-    'visitor',
-    'no car',
-    'no driver'
-  ],
+  cancellationReasons: reasons,
 
   actions: {
     newRide() {
