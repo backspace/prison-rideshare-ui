@@ -4,30 +4,24 @@
   {{#row.cell class='name'}}{{ride.namePlusPassengers}}{{/row.cell}}
   {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
   {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
-  {{#row.cell class='driver'}}
+  {{#row.cell class='driver-and-car-owner'}}
     {{#if combined}}
       {{paper-icon 'merge type'}}
     {{else}}
-      {{#paper-select
+      <span class='driver'>{{#paper-select
         selected=ride.driver
         options=people
         onChange=(action 'setDriver')
         as |person|}}
         {{person.name}}
-      {{/paper-select}}
-    {{/if}}
-  {{/row.cell}}
-  {{#row.cell class='car-owner'}}
-    {{#if combined}}
-      {{paper-icon 'merge type'}}
-    {{else}}
-      {{#paper-select
+      {{/paper-select}}</span>
+      <span class='car-owner'>{{#paper-select
         selected=ride.carOwner
         options=people
         onChange=(action 'setCarOwner')
         as |person|}}
         {{person.name}}
-      {{/paper-select}}
+      {{/paper-select}}</span>
     {{/if}}
   {{/row.cell}}
   {{#row.cell class='cancellation'}}
