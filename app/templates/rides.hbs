@@ -24,7 +24,6 @@
     {{#head.column}}Pickup address{{/head.column}}
     {{#head.column}}Driver/car owner{{/head.column}}
     {{#head.column}}{{/head.column}}
-    {{#head.column}}{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}

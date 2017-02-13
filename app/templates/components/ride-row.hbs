@@ -26,16 +26,14 @@
       {{/paper-select}}</span>
     {{/if}}
   {{/row.cell}}
-  {{#row.cell class='cancellation'}}
-    {{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
+  {{#row.cell}}
+    <span class='cancellation'>{{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
       {{#if ride.enabled}}
         {{paper-icon 'delete'}}
       {{else}}
         {{paper-icon cancellationIcon}}
       {{/if}}
-    {{/paper-button}}
-  {{/row.cell}}
-  {{#row.cell}}
+    {{/paper-button}}</span>
     {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action editRide ride)}}
       {{paper-icon 'mode edit'}}
     {{/paper-button}}
