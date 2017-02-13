@@ -1,9 +1,11 @@
 {{#body.row class=(if ride.enabled 'ride enabled' 'ride') as |row|}}
   {{#row.cell class='date'}}{{ride-times ride}}{{/row.cell}}
   {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
-  {{#row.cell class='name'}}{{ride.namePlusPassengers}}{{/row.cell}}
+  {{#row.cell class='name-and-contact'}}
+    <div class='name'>{{ride.namePlusPassengers}}</div>
+    <div class='contact'>{{ride.contact}}</div>
+  {{/row.cell}}
   {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
-  {{#row.cell class='contact'}}{{ride.contact}}{{/row.cell}}
   {{#row.cell class='driver-and-car-owner'}}
     {{#if combined}}
       {{paper-icon 'merge type'}}
