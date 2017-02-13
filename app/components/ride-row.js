@@ -1,17 +1,5 @@
 import Ember from 'ember';
-
-const reasonToIcon = {
-  'lockdown': 'lock',
-  'visitor': 'perm identity',
-  'no car': 'directions car',
-  // FIXME better icon!
-  'no driver': 'rowing',
-  'weather': 'cloud',
-  'transfer': 'shuffle',
-  'error': 'error',
-  'visitor missing': 'perm identity',
-  'driver missing': 'directions car'
-};
+import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
 export default Ember.Component.extend({
   tagName: '',
