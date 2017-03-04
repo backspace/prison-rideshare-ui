@@ -40,6 +40,13 @@ moduleForAcceptance('Acceptance | reports', {
 
     server.create('ride', { combinedWith: edwardRide });
 
+    // This ride should not display because it’s in the future.
+    server.create('ride', {
+      name: 'Future',
+      start: new Date(new Date().getTime() + 1000*60*60*24),
+      end: new Date(new Date().getTime() + 1000*60*60*24 + 1000)
+    });
+
     // FIXME this should not be required
     authenticateSession(this.application);
   }
