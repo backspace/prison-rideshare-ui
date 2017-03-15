@@ -76,13 +76,10 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
-
   });
 
   page.rides(0).edit();
-
   andThen(() => assert.equal(page.form.notice, 'You are editing a cancelled ride!'));
-
   page.form.cancel();
 
   andThen(() => {
@@ -146,6 +143,10 @@ test('completed rides can be shown', function(assert) {
     assert.equal(page.rides().count, 3, 'expected the completed ride to be showing');
     assert.ok(page.head.completedSwitch.enabled, 'expected the completed switch to be on');
   });
+
+  page.rides(0).edit();
+  andThen(() => assert.equal(page.form.notice, 'You are editing a ride that has already had its report completed!'));
+  page.form.cancel();
 });
 
 test('create and edit a ride', function(assert) {
