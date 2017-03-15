@@ -1,10 +1,6 @@
 import Ember from 'ember';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
-
-const reasons = Object.keys(reasonToIcon);
-
 export default Ember.Controller.extend({
   peopleService: Ember.inject.service('people'),
   people: Ember.computed.alias('peopleService.all'),
@@ -30,8 +26,6 @@ export default Ember.Controller.extend({
 
     return rides;
   }),
-
-  cancellationReasons: reasons,
 
   actions: {
     newRide() {
@@ -70,14 +64,6 @@ export default Ember.Controller.extend({
       if (ride.get('enabled')) {
         this.set('editingCancellation.cancelled', true);
       }
-    },
-
-    cancelledChanged(cancelled) {
-      if (!cancelled) {
-        this.set('editingCancellation.cancellationReason', null);
-      }
-
-      this.set('editingCancellation.cancelled', cancelled);
     },
 
     submitCancellation(proxy) {

@@ -43,35 +43,7 @@
 {{/if}}
 
 {{#if editingCancellation}}
-{{#paper-dialog onClose=(action 'cancelCancellation') clickOutsideToClose=true}}
-
-  {{#paper-dialog-content}}
-    <h2 class='md-title'>Cancel a ride</h2>
-    {{#paper-form onSubmit=(action 'submitCancellation') as |form|}}
-      <div class='layout layout-sm-column'>
-        {{#paper-checkbox
-          value=editingCancellation.cancelled
-          onChange=(action 'cancelledChanged')}}Cancelled?{{/paper-checkbox}}
-      </div>
-
-      <div class='layout layout-sm-column'>
-        {{#paper-select
-          class='reason'
-          placeholder='Reason'
-          selected=editingCancellation.cancellationReason
-          options=cancellationReasons
-          onChange=(action (mut editingCancellation.cancellationReason))
-          as |reason|}}
-          {{reason}}
-        {{/paper-select}}
-      </div>
-    {{/paper-form}}
-  {{/paper-dialog-content}}
-
-  {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=(action 'cancelCancellation')}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=(action 'submitCancellation' editingCancellation)}}Save{{/paper-button}}
-  {{/paper-dialog-actions}}
-
-{{/paper-dialog}}
+{{cancellation-form ride=editingCancellation
+                    save=(action 'submitCancellation' editingCancellation)
+                    cancel=(action 'cancelCancellation' editingCancellation)}}
 {{/if}}
