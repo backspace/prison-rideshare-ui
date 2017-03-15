@@ -6,9 +6,6 @@ import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 const reasons = Object.keys(reasonToIcon);
 
 export default Ember.Controller.extend({
-  institutionsService: Ember.inject.service('institutions'),
-  institutions: Ember.computed.alias('institutionsService.all'),
-
   peopleService: Ember.inject.service('people'),
   people: Ember.computed.alias('peopleService.all'),
 
@@ -35,16 +32,6 @@ export default Ember.Controller.extend({
   }),
 
   cancellationReasons: reasons,
-
-  warning: Ember.computed('editingRide.cancellationReason', function() {
-    const reason = this.get('editingRide.cancellationReason');
-
-    if (reason) {
-      return 'You are editing a cancelled ride!';
-    } else {
-      return false;
-    }
-  }),
 
   actions: {
     newRide() {
