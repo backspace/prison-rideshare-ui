@@ -36,6 +36,16 @@ export default Ember.Controller.extend({
 
   cancellationReasons: reasons,
 
+  warning: Ember.computed('editingRide.cancellationReason', function() {
+    const reason = this.get('editingRide.cancellationReason');
+
+    if (reason) {
+      return 'You are editing a cancelled ride!';
+    } else {
+      return false;
+    }
+  }),
+
   actions: {
     newRide() {
       this.set('editingRide', BufferedProxy.create({

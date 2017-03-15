@@ -77,6 +77,15 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
 
+  });
+
+  page.rides(0).edit();
+
+  andThen(() => assert.equal(page.form.notice, 'You are editing a cancelled ride!'));
+
+  page.form.cancel();
+
+  andThen(() => {
     assert.ok(page.rides(1).enabled, 'expected the other ride to be enabled');
     assert.ok(page.rides(1).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');

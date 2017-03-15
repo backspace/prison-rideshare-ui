@@ -40,6 +40,7 @@
 {{#paper-dialog onClose=(action 'cancel') origin=dialogOrigin}}
 
   {{#paper-dialog-content}}
+    {{#if warning}}{{#paper-toolbar}}{{#paper-toolbar-tools}}{{warning}}{{/paper-toolbar-tools}}{{/paper-toolbar}}{{/if}}
     <h2 class='md-title'>Record a ride request</h2>
     {{#paper-form onSubmit=(action 'submit') as |form|}}
       <div class='layout layout-sm-column'>

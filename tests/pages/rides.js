@@ -73,6 +73,10 @@ export default create({
   }),
 
   form: {
+    scope: '.md-dialog-container',
+
+    notice: text('.md-toolbar-tools'),
+
     fillDate: fillable('.date input'),
     fillStart: fillable('.start input'),
     fillEnd: fillable('.end input'),
