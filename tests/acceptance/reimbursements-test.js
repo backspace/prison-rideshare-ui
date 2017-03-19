@@ -1,4 +1,4 @@
-import { test } from 'qunit';
+import { skip } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
@@ -34,7 +34,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
   }
 });
 
-test('list and sort people', function(assert) {
+skip('list and sort people', function(assert) {
   peoplePage.visit();
 
   andThen(() => {
@@ -82,7 +82,7 @@ test('list and sort people', function(assert) {
   });
 });
 
-test('create a reimbursement', function(assert) {
+skip('create a reimbursement', function(assert) {
   peoplePage.visit();
   peoplePage.people(0).reimburseButton.click();
 
@@ -113,7 +113,7 @@ test('create a reimbursement', function(assert) {
   });
 });
 
-test('edit a reimbursement and the totals and donation status will be updated', function(assert) {
+skip('edit a reimbursement and the totals and donation status will be updated', function(assert) {
   reimbursementsPage.visit();
 
   andThen(() => {
