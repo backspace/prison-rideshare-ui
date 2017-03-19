@@ -3,6 +3,8 @@ import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
+import sum from 'ember-cpm/macros/sum';
+
 export default DS.Model.extend({
   person: DS.belongsTo(),
 
@@ -22,8 +24,6 @@ export default DS.Model.extend({
   carExpenses: Ember.computed.sum('rideCarExpenses'),
   carExpensesDollars: dollars('carExpenses'),
 
-  totalExpenses: Ember.computed('foodExpenses', 'carExpenses', function() {
-    return this.get('foodExpenses') + this.get('carExpenses');
-  }),
+  totalExpenses: sum('foodExpenses', 'carExpenses'),
   totalExpensesDollars: dollars('totalExpenses')
 });

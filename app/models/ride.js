@@ -5,6 +5,9 @@ import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import moment from 'moment';
 
+import sum from 'ember-cpm/macros/sum';
+import difference from 'ember-cpm/macros/difference';
+
 export default DS.Model.extend({
   enabled: DS.attr('boolean', {defaultValue: true}),
   cancellationReason: DS.attr(),
@@ -47,26 +50,18 @@ export default DS.Model.extend({
   carExpenses: DS.attr({defaultValue: 0}),
   carExpensesDollars: dollars('carExpenses'),
 
-  totalExpenses: Ember.computed('foodExpenses', 'carExpenses', function() {
-    return this.get('foodExpenses') + this.get('carExpenses');
-  }),
+  totalExpenses: sum('foodExpenses', 'carExpenses'),
   totalExpensesDollars: dollars('totalExpenses'),
 
   reimbursementFoodExpenses: Ember.computed.mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: Ember.computed.sum('reimbursementFoodExpenses'),
-  outstandingFoodExpenses: Ember.computed('reimbursementFoodExpensesSum', 'foodExpenses', function() {
-    return this.get('foodExpenses') - this.get('reimbursementFoodExpensesSum');
-  }),
+  outstandingFoodExpenses: difference('foodExpenses', 'reimbursementFoodExpensesSum'),
 
   reimbursementCarExpenses: Ember.computed.mapBy('reimbursements', 'carExpenses'),
   reimbursementCarExpensesSum: Ember.computed.sum('reimbursementCarExpenses'),
-  outstandingCarExpenses: Ember.computed('reimbursementCarExpensesSum', 'carExpenses', function() {
-    return this.get('carExpenses') - this.get('reimbursementCarExpenses');
-  }),
+  outstandingCarExpenses: difference('carExpenses', 'reimbursementCarExpensesSum'),
 
-  outstandingTotalExpenses: Ember.computed('outstandingFoodExpenses', 'outstandingCarExpenses', function() {
-    return this.get('outstandingFoodExpenses') + this.get('outstandingCarExpenses');
-  }),
+  outstandingTotalExpenses: sum('outstandingFoodExpenses', 'outstandingCarExpenses'),
 
   namePlusPassengers: Ember.computed('name', 'passengers', function() {
     const name = this.get('name');
