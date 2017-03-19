@@ -30,6 +30,13 @@ export default DS.Model.extend({
   start: DS.attr(),
   end: DS.attr(),
 
+  rideTimes: Ember.computed('start', 'end', function () {
+    const start = this.get('start');
+    const end = this.get('end');
+
+    return `${moment(start).format('ddd MMM D h:mma')} — ${moment(end).format('h:mm')}`;
+  }),
+
   driver: DS.belongsTo('person'),
   carOwner: DS.belongsTo('person'),
 

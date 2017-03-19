@@ -21,7 +21,7 @@
       {{/body.row}}
       {{#each debt.rides as |ride|}}
         {{#body.row class='ride' as |row|}}
-          {{#row.cell class='date'}}{{ride-times ride}}{{/row.cell}}
+          {{#row.cell class='date'}}{{ride.rideTimes}}{{/row.cell}}
           {{#row.cell class='food-expenses'}}
             {{#if (eq ride.driver.id debt.person.id)}}
               {{ride.foodExpensesDollars}}

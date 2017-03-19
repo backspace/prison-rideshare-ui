@@ -1,5 +1,5 @@
 {{#body.row class=(if ride.enabled 'ride enabled' 'ride') as |row|}}
-  {{#row.cell class='date'}}{{ride-times ride}}{{/row.cell}}
+  {{#row.cell class='date'}}{{ride.rideTimes}}{{/row.cell}}
   {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
   {{#row.cell class='name-and-contact'}}
     <div class='name'>{{ride.namePlusPassengers}}</div>
