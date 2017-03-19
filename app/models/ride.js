@@ -37,13 +37,20 @@ export default DS.Model.extend({
 
   distance: DS.attr(),
 
+  reportNotes: DS.attr(),
+
   reimbursements: DS.hasMany(),
 
   foodExpenses: DS.attr({defaultValue: 0}),
   foodExpensesDollars: dollars('foodExpenses'),
 
   carExpenses: DS.attr({defaultValue: 0}),
-  reportNotes: DS.attr(),
+  carExpensesDollars: dollars('carExpenses'),
+
+  totalExpenses: Ember.computed('foodExpenses', 'carExpenses', function() {
+    return this.get('foodExpenses') + this.get('carExpenses');
+  }),
+  totalExpensesDollars: dollars('totalExpenses'),
 
   reimbursementFoodExpenses: Ember.computed.mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: Ember.computed.sum('reimbursementFoodExpenses'),

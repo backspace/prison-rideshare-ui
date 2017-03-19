@@ -9,13 +9,23 @@ export default create({
   visit: visitable('/debts'),
 
   people: collection({
-    itemScope: 'tbody tr.debt',
+    itemScope: 'tbody',
 
     item: {
       name: text('.name'),
-      foodExpenses: text('.food-expenses'),
-      carExpenses: text('.car-expenses'),
-      totalExpenses: text('.total-expenses')
+      foodExpenses: text('.person .food-expenses'),
+      carExpenses: text('.person .car-expenses'),
+      totalExpenses: text('.person .total-expenses'),
+
+      rides: collection({
+        itemScope: 'tr.ride',
+
+        item: {
+          date: text('.date'),
+          foodExpenses: text('.food-expenses'),
+          carExpenses: text('.car-expenses'),
+        }
+      })
     }
   })
 });
