@@ -7,5 +7,8 @@ export default Model.extend({
   carOwner: belongsTo('person'),
 
   combinedWith: belongsTo('ride'),
-  children: hasMany('ride')
+  children: hasMany('ride'),
+
+  reimbursements: hasMany(),
+  debt: hasMany()
 });

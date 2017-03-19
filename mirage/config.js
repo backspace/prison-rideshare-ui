@@ -10,6 +10,8 @@ export default function() {
   this.get('/people');
   this.patch('/people/:id');
 
+  this.get('/debts');
+
   this.get('/reimbursements');
   this.post('reimbursements');
   this.patch('/reimbursements/:id');

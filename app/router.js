@@ -8,6 +8,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('people');
+  this.route('debts');
   this.route('reimbursements');
   this.route('rides');
 

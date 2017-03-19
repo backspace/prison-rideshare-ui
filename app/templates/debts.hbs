@@ -1,0 +1,24 @@
+{{#paper-toolbar as |toolbar|}}
+  {{#toolbar.tools}}
+    <h2>Debts</h2>
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
+
+{{#paper-data-table as |table|}}
+  {{#table.head as |head|}}
+    {{#head.column}}Person{{/head.column}}
+    {{#head.column}}Food{{/head.column}}
+    {{#head.column}}Car{{/head.column}}
+    {{#head.column}}Total{{/head.column}}
+  {{/table.head}}
+  {{#table.body as |body|}}
+    {{#each model as |debt|}}
+      {{#body.row class='debt' as |row|}}
+        {{#row.cell class='name'}}{{debt.person.name}}{{/row.cell}}
+        {{#row.cell class='food-expenses'}}{{debt.foodExpensesDollars}}{{/row.cell}}
+        {{#row.cell class='car-expenses'}}{{debt.carExpensesDollars}}{{/row.cell}}
+        {{#row.cell class='total-expenses'}}{{debt.totalExpensesDollars}}{{/row.cell}}
+      {{/body.row}}
+    {{/each}}
+  {{/table.body}}
+{{/paper-data-table}}
