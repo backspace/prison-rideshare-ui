@@ -76,6 +76,10 @@ test('debts are listed', function(assert) {
     assert.equal(sunRide.foodExpenses, '154');
     assert.equal(sunRide.carExpenses, '0');
 
+    assert.equal(sun.reimbursements().count, '1', 'expected the Kala reimbursement to be hidden');
+    assert.equal(sun.reimbursements(0).foodExpenses, '44');
+    assert.equal(sun.reimbursements(0).carExpenses, '0');
+
     const will = page.people(1);
     assert.equal(will.foodExpenses, '19.19');
     assert.equal(will.carExpenses, '19.19');

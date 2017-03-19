@@ -25,6 +25,16 @@ export default create({
           foodExpenses: text('.food-expenses'),
           carExpenses: text('.car-expenses'),
         }
+      }),
+
+      // TODO this should be nested but table rows 😢
+      reimbursements: collection({
+        itemScope: 'tr.reimbursement',
+
+        item: {
+          foodExpenses: text('.food-expenses'),
+          carExpenses: text('.car-expenses')
+        }
       })
     }
   })
