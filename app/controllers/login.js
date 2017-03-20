@@ -4,7 +4,9 @@ export default Ember.Controller.extend({
   session: Ember.inject.service(),
 
   actions: {
-    login() {
+    login(event) {
+      event.preventDefault();
+
       const user = this.get('model');
 
       this.get('session').authenticate(
