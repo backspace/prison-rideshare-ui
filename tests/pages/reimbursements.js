@@ -13,6 +13,17 @@ import {
 export default create({
   visit: visitable('/reimbursements'),
 
+  people: collection({
+    itemScope: 'tbody tr.person',
+
+    item: {
+      name: text('.name'),
+      foodExpenses: text('.food-expenses'),
+      carExpenses: text('.car-expenses'),
+      totalExpenses: text('.total-expenses')
+    }
+  }),
+
   reimbursements: collection({
     itemScope: 'tbody tr.reimbursement',
 

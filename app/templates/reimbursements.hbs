@@ -7,24 +7,18 @@
 {{#paper-data-table as |table|}}
   {{#table.head as |head|}}
     {{#head.column}}Person{{/head.column}}
-    {{#head.column}}Amount{{/head.column}}
-    {{#head.column}}Donation?{{/head.column}}
+    {{#head.column}}Food{{/head.column}}
+    {{#head.column}}Car{{/head.column}}
+    {{#head.column}}Total{{/head.column}}
     {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
-    {{#each model as |reimbursement|}}
-      {{#body.row class='reimbursement' as |row|}}
-        {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
-        {{#row.cell class='amount'}}{{reimbursement.amountDollars}}{{/row.cell}}
-        {{#row.cell class='donation'}}
-          {{#if reimbursement.donation}}{{paper-icon 'done'}}{{/if}}
-        {{/row.cell}}
-
-        {{#row.cell}}
-          {{#paper-button iconButton=true aria-label='Edit reimbursement' class='edit' onClick=(action 'editReimbursement' reimbursement)}}
-            {{paper-icon 'mode edit'}}
-          {{/paper-button}}
-        {{/row.cell}}
+    {{#each personAndReimbursements as |personAndReimbursementsInstanceLol|}}
+      {{#body.row class='person' as |row|}}
+        {{#row.cell class='name'}}{{personAndReimbursementsInstanceLol.person.name}}{{/row.cell}}
+        {{#row.cell class='food-expenses'}}{{personAndReimbursementsInstanceLol.foodExpensesDollars}}{{/row.cell}}
+        {{#row.cell class='car-expenses'}}{{personAndReimbursementsInstanceLol.carExpensesDollars}}{{/row.cell}}
+        {{#row.cell class='total-expenses'}}{{personAndReimbursementsInstanceLol.totalExpensesDollars}}{{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}

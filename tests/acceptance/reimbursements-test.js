@@ -1,4 +1,4 @@
-import { skip } from 'qunit';
+import { skip, test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
@@ -12,10 +12,10 @@ moduleForAcceptance('Acceptance | reimbursements', {
     const kala = server.create('person', {name: 'Kala'});
     const will = server.create('person', {name: 'Will'});
 
-    sun.createReimbursement({amount: 3300, donation: true});
-    sun.createReimbursement({amount: 4400});
+    sun.createReimbursement({carExpenses: 3300});
+    sun.createReimbursement({foodExpenses: 4400});
 
-    kala.createReimbursement({amount: 2200});
+    kala.createReimbursement({carExpenses: 2200});
 
     server.create('ride', {
       driver: sun,
@@ -32,6 +32,26 @@ moduleForAcceptance('Acceptance | reimbursements', {
 
     authenticateSession(this.application);
   }
+});
+
+test('list reimbursements', function(assert) {
+  reimbursementsPage.visit();
+
+  andThen(() => {
+    assert.equal(reimbursementsPage.people().count, 2, 'expected two people with reimbursements');
+
+    const kala = reimbursementsPage.people(0);
+    assert.equal(kala.name, 'Kala');
+    assert.equal(kala.foodExpenses, '0');
+    assert.equal(kala.carExpenses, '22');
+    assert.equal(kala.totalExpenses, '22');
+
+    const sun = reimbursementsPage.people(1);
+    assert.equal(sun.name, 'Sun');
+    assert.equal(sun.foodExpenses, '44');
+    assert.equal(sun.carExpenses, '33');
+    assert.equal(sun.totalExpenses, '77');
+  });
 });
 
 skip('list and sort people', function(assert) {
