@@ -4,25 +4,27 @@
 
     {{#paper-content}}
       {{#paper-list}}
-        {{#paper-item}}
-          {{#link-to 'people'}}<span>People</span>{{/link-to}}
-        {{/paper-item}}
-        {{#paper-item}}
-          {{#link-to 'reimbursements'}}<span>Reimbursements</span>{{/link-to}}
-        {{/paper-item}}
-        {{#paper-item}}
-          {{#link-to 'debts'}}<span>Debts</span>{{/link-to}}
-        {{/paper-item}}
-        {{#paper-item}}
-          {{#link-to 'rides'}}<span>Rides</span>{{/link-to}}
-        {{/paper-item}}
+        {{#if session.isAuthenticated}}
+          {{#paper-item}}
+            {{#link-to 'people'}}<span>People</span>{{/link-to}}
+          {{/paper-item}}
+          {{#paper-item}}
+            {{#link-to 'reimbursements'}}<span>Reimbursements</span>{{/link-to}}
+          {{/paper-item}}
+          {{#paper-item}}
+            {{#link-to 'debts'}}<span>Debts</span>{{/link-to}}
+          {{/paper-item}}
+          {{#paper-item}}
+            {{#link-to 'rides'}}<span>Rides</span>{{/link-to}}
+          {{/paper-item}}
+        {{/if}}
         {{#paper-item}}
           {{#link-to 'reports.new'}}<span>Report</span>{{/link-to}}
         {{/paper-item}}
-        {{#paper-item}}
-          {{#link-to 'users'}}<span>Users</span>{{/link-to}}
-        {{/paper-item}}
         {{#if session.isAuthenticated}}
+          {{#paper-item}}
+            {{#link-to 'users'}}<span>Users</span>{{/link-to}}
+          {{/paper-item}}
           {{paper-divider}}
           {{#paper-item}}
             <span onclick={{action 'logout'}} class='session'>Log out {{session.currentUser.email}}</span>
