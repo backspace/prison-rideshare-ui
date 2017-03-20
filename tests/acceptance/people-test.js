@@ -5,7 +5,7 @@ import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-sim
 
 import page from 'prison-rideshare-ui/tests/pages/people';
 
-moduleForAcceptance('Acceptance | reimbursements', {
+moduleForAcceptance('Acceptance | people', {
   beforeEach() {
     server.create('person', {name: 'Sun'});
     server.create('person', {name: 'Kala'});
