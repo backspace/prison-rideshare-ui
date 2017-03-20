@@ -8,7 +8,7 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  visit: visitable('/people'),
+  visit: visitable('/drivers'),
 
   people: collection({
     itemScope: 'tbody tr.person',
