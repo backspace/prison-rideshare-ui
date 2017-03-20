@@ -5,7 +5,10 @@ import sum from 'ember-cpm/macros/sum';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
 export default Ember.Controller.extend({
-  filteredReimbursements: Ember.computed.alias('model'),
+  reimbursements: Ember.computed.alias('model'),
+  filteredReimbursements: Ember.computed('reimbursements.@each.processed', function() {
+    return this.get('reimbursements').rejectBy('processed');
+  }),
 
   personAndReimbursements: Ember.computed('filteredReimbursements.@each.person', function() {
     const reimbursements = this.get('filteredReimbursements');

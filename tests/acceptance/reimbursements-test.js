@@ -16,6 +16,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
     sun.createReimbursement({foodExpenses: 4400});
 
     kala.createReimbursement({carExpenses: 2200});
+    kala.createReimbursement({foodExpenses: 1100, processed: true});
 
     server.create('ride', {
       driver: sun,
@@ -42,7 +43,7 @@ test('list reimbursements', function(assert) {
 
     const kala = reimbursementsPage.people(0);
     assert.equal(kala.name, 'Kala');
-    assert.equal(kala.foodExpenses, '0');
+    assert.equal(kala.foodExpenses, '0', 'expected the processed reimbursement to be excluded');
     assert.equal(kala.carExpenses, '22');
     assert.equal(kala.totalExpenses, '22');
 

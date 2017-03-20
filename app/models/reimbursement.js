@@ -7,6 +7,7 @@ export default DS.Model.extend({
 
   person: DS.belongsTo(),
   donation: DS.attr('boolean'),
+  processed: DS.attr('boolean'),
 
   foodExpensesDollars: dollars('foodExpenses'),
   carExpensesDollars: dollars('carExpenses')
