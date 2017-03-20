@@ -2,7 +2,9 @@ import Ember from 'ember';
 import fetch from 'ember-network/fetch';
 import config from '../config/environment';
 
-export default Ember.Route.extend({
+import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
+
+export default Ember.Route.extend(ApplicationRouteMixin, {
   session: Ember.inject.service(),
 
   afterModel() {
