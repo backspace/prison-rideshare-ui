@@ -22,7 +22,8 @@ export default create({
       carExpenses: text('.car-expenses'),
       totalExpenses: text('.total-expenses'),
 
-      process: clickable('.process')
+      process: clickable('.process'),
+      donate: clickable('.donate')
     }
   }),
 

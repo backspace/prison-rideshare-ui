@@ -23,6 +23,9 @@
           {{#paper-button class='process' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol)}}
             Process
           {{/paper-button}}
+          {{#paper-button class='donate' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol true)}}
+            Donate
+          {{/paper-button}}
         {{/row.cell}}
       {{/body.row}}
     {{/each}}

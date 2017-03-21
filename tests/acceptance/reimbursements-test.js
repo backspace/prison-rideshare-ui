@@ -66,6 +66,15 @@ test('process reimbursements', function(assert) {
     assert.ok(sun1.processed);
     assert.ok(sun2.processed);
   });
+
+  reimbursementsPage.people(0).donate();
+
+  andThen(() => {
+    const [, , k] = server.db.reimbursements;
+
+    assert.ok(k.processed, 'expected the reimbursement to have been marked as processed');
+    assert.ok(k.donation, 'expected the reimbursement to have been marked as a donation');
+  })
 });
 
 skip('list and sort people', function(assert) {

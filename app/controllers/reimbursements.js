@@ -30,9 +30,14 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    processReimbursements(personAndReimbursements) {
+    processReimbursements(personAndReimbursements, donation) {
       personAndReimbursements.get('reimbursements').forEach(reimbursement => {
         reimbursement.set('processed', true);
+
+        if (donation) {
+          reimbursement.set('donation', true);
+        }
+
         reimbursement.save();
       });
     },
