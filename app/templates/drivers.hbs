@@ -7,25 +7,12 @@
 {{#paper-data-table sortProp='name' sortDir='asc' as |table|}}
   {{#table.head as |head|}}
     {{#head.column sortProp='name' class='name'}}Name{{/head.column}}
-    {{#head.column}}Food{{/head.column}}
-    {{#head.column}}Car{{/head.column}}
-    {{#head.column}}Reimbursements{{/head.column}}
-    {{#head.column sortProp='owed' numeric=true class='owed'}}Owed{{/head.column}}
     {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (sort-by table.sortDesc model) as |person|}}
       {{#body.row class='person' as |row|}}
         {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
-        {{#row.cell class='food'}}{{person.foodExpensesTotalDollars}}{{/row.cell}}
-        {{#row.cell class='car'}}{{person.carExpensesTotalDollars}}{{/row.cell}}
-        {{#row.cell class='reimbursements'}}{{person.reimbursementTotalDollars}}{{/row.cell}}
-        {{#row.cell class='owed'}}{{person.owedDollars}}{{/row.cell}}
-        {{#row.cell}}
-          {{#paper-button iconButton=true aria-label='Add reimbursement' title='Add reimbursement' class='reimburse' onClick=(action 'addReimbursement' person)}}
-            {{paper-icon 'drafts'}}
-          {{/paper-button}}
-        {{/row.cell}}
         {{#row.cell}}
           {{#paper-button iconButton=true aria-label='Edit person' title='Edit person' class='edit' onClick=(action 'editPerson' person)}}
             {{paper-icon 'mode edit'}}

@@ -15,23 +15,7 @@ export default create({
 
     item: {
       name: text('.name'),
-      foodExpenses: text('.food'),
-      carExpenses: text('.car'),
-      reimbursements: text('.reimbursements'),
-      owed: text('.owed'),
-
-      reimburseButton: {
-        scope: 'button.reimburse',
-        click: clickable()
-      },
-
       edit: clickable('button.edit')
-    },
-
-    head: {
-      scope: 'thead',
-      clickName: clickable('.name'),
-      clickOwed: clickable('.owed')
     }
   }),
 
