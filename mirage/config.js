@@ -11,6 +11,7 @@ export default function() {
   this.patch('/people/:id');
 
   this.get('/debts');
+  this.delete('/debts/:id');
 
   this.get('/reimbursements');
   this.post('reimbursements');

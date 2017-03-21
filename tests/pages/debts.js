@@ -1,4 +1,5 @@
 import {
+  clickable,
   collection,
   create,
   text,
@@ -16,6 +17,8 @@ export default create({
       foodExpenses: text('.person .food-expenses'),
       carExpenses: text('.person .car-expenses'),
       totalExpenses: text('.person .total-expenses'),
+
+      reimburse: clickable('.person .reimburse'),
 
       rides: collection({
         itemScope: 'tr.ride',

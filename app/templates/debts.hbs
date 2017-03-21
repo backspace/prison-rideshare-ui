@@ -10,6 +10,7 @@
     {{#head.column}}Food{{/head.column}}
     {{#head.column}}Car{{/head.column}}
     {{#head.column}}Total{{/head.column}}
+    {{head.column}}
   {{/table.head}}
     {{#each model as |debt|}}
     {{#table.body class='debt' as |body|}}
@@ -18,6 +19,11 @@
         {{#row.cell class='food-expenses'}}{{debt.foodExpensesDollars}}{{/row.cell}}
         {{#row.cell class='car-expenses'}}{{debt.carExpensesDollars}}{{/row.cell}}
         {{#row.cell class='total-expenses'}}{{debt.totalExpensesDollars}}{{/row.cell}}
+        {{#row.cell}}
+          {{#paper-button class='reimburse' onClick=(action 'reimburse' debt)}}
+            Reimburse
+          {{/paper-button}}
+        {{/row.cell}}
       {{/body.row}}
       {{#each debt.rides as |ride|}}
         {{#body.row class='ride' as |row|}}

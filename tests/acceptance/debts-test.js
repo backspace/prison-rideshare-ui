@@ -87,3 +87,13 @@ test('debts are listed', function(assert) {
     assert.equal(will.rides().count, '1');
   });
 });
+
+test('a debt can be reimbursed', function(assert) {
+  page.visit();
+  page.people(0).reimburse();
+
+  andThen(() => {
+    assert.equal(page.people().count, 1, 'expected the debt to have disappeared');
+    assert.equal(server.db.debts.length, 1, 'expected the debt to have been deleted on the server');
+  });
+});
