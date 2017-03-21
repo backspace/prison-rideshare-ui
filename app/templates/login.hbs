@@ -1,6 +1,6 @@
 {{#paper-dialog}}
   {{#paper-form onSubmit=(action 'login') as |form|}}
-    <form onsubmit= {{action form.onSubmit}}>
+    <form onsubmit={{action form.onSubmit}}>
       {{#paper-dialog-content}}
         <h2 class='md-title'>Log in</h2>
         {{link-to 'Create an account' 'register'}}
@@ -13,7 +13,7 @@
         </div>
       {{/paper-dialog-content}}
 
-      {{#paper-dialog-actions class='layout-row' }}
+      {{#paper-dialog-actions class='layout-row'}}
         <div class='layout layout-row'>
           {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'login')}}Log in{{/form.submit-button}}
         </div>
