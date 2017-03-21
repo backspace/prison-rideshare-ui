@@ -24,16 +24,12 @@
           {{#row.cell class='date'}}{{ride.rideTimes}}{{/row.cell}}
           {{#row.cell class='food-expenses'}}
             {{#if (eq ride.driver.id debt.person.id)}}
-              {{ride.foodExpensesDollars}}
-            {{else}}
-              0
+              {{if ride.foodExpensesDollars ride.foodExpensesDollars}}
             {{/if}}
           {{/row.cell}}
           {{#row.cell class='car-expenses'}}
             {{#if (eq ride.carOwner.id debt.person.id)}}
-              {{ride.carExpensesDollars}}
-            {{else}}
-              0
+              {{if ride.carExpensesDollars ride.carExpensesDollars}}
             {{/if}}
           {{/row.cell}}
           {{row.cell}}
@@ -42,8 +38,8 @@
           {{#if (eq reimbursement.person.id debt.person.id)}}
             {{#body.row class='reimbursement' as |row|}}
               {{#row.cell}}{{/row.cell}}
-              {{#row.cell class='food-expenses'}}{{reimbursement.foodExpensesDollars}}{{/row.cell}}
-              {{#row.cell class='car-expenses'}}{{reimbursement.carExpensesDollars}}{{/row.cell}}
+              {{#row.cell class='food-expenses'}}{{if reimbursement.foodExpensesDollars reimbursement.foodExpensesDollars}}{{/row.cell}}
+              {{#row.cell class='car-expenses'}}{{if reimbursement.carExpensesDollars reimbursement.carExpensesDollars}}{{/row.cell}}
               {{row.cell}}
             {{/body.row}}
           {{/if}}
