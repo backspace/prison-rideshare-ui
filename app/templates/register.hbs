@@ -1,6 +1,7 @@
 {{#paper-dialog}}
   {{#paper-dialog-content}}
     <h2 class='md-title'>Create an account</h2>
+    {{link-to 'Already have one?' 'login'}}
 
     {{#paper-form onSubmit=(action 'register') as |form|}}
       <div class='layout layout-row'>
