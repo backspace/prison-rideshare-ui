@@ -55,6 +55,19 @@ test('list reimbursements', function(assert) {
   });
 });
 
+test('process reimbursements', function(assert) {
+  reimbursementsPage.visit();
+
+  reimbursementsPage.people(1).process();
+
+  andThen(() => {
+    const [sun1, sun2,] = server.db.reimbursements;
+
+    assert.ok(sun1.processed);
+    assert.ok(sun2.processed);
+  });
+});
+
 skip('list and sort people', function(assert) {
   peoplePage.visit();
 

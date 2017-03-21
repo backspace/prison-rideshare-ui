@@ -30,6 +30,13 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
+    processReimbursements(personAndReimbursements) {
+      personAndReimbursements.get('reimbursements').forEach(reimbursement => {
+        reimbursement.set('processed', true);
+        reimbursement.save();
+      });
+    },
+
     editReimbursement(reimbursement) {
       const proxy = BufferedProxy.create({content: reimbursement});
 

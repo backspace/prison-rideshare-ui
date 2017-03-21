@@ -20,7 +20,9 @@ export default create({
       name: text('.name'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),
-      totalExpenses: text('.total-expenses')
+      totalExpenses: text('.total-expenses'),
+
+      process: clickable('.process')
     }
   }),
 

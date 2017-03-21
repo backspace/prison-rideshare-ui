@@ -19,6 +19,11 @@
         {{#row.cell class='food-expenses'}}{{personAndReimbursementsInstanceLol.foodExpensesDollars}}{{/row.cell}}
         {{#row.cell class='car-expenses'}}{{personAndReimbursementsInstanceLol.carExpensesDollars}}{{/row.cell}}
         {{#row.cell class='total-expenses'}}{{personAndReimbursementsInstanceLol.totalExpensesDollars}}{{/row.cell}}
+        {{#row.cell}}
+          {{#paper-button class='process' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol)}}
+            Process
+          {{/paper-button}}
+        {{/row.cell}}
       {{/body.row}}
     {{/each}}
   {{/table.body}}
