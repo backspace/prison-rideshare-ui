@@ -77,54 +77,6 @@ test('process reimbursements', function(assert) {
   })
 });
 
-skip('list and sort people', function(assert) {
-  peoplePage.visit();
-
-  andThen(() => {
-    assert.equal(peoplePage.people().count, 3, 'expected three people');
-
-    const kala = peoplePage.people(0);
-    assert.equal(kala.name, 'Kala');
-    assert.equal(kala.owed, '22');
-    assert.equal(kala.foodExpenses, '0');
-    assert.equal(kala.carExpenses, '44');
-    assert.equal(kala.reimbursements, '22');
-
-    const sun = peoplePage.people(1);
-    assert.equal(sun.name, 'Sun');
-    assert.equal(sun.owed, '77');
-    assert.equal(sun.foodExpenses, '154');
-    assert.equal(sun.carExpenses, '0');
-    assert.equal(sun.reimbursements, '77');
-
-    const will = peoplePage.people(2);
-    assert.equal(will.owed, '0');
-    assert.equal(will.foodExpenses, '0');
-    assert.equal(will.carExpenses, '0');
-    assert.equal(will.reimbursements, '0');
-  });
-
-  peoplePage.people().head.clickName();
-
-  andThen(() => {
-    assert.equal(peoplePage.people(0).name, 'Will');
-  });
-
-  // FIXME it’s preferable to sort in descending order by default!
-  peoplePage.people().head.clickOwed();
-  peoplePage.people().head.clickOwed();
-
-  andThen(() => {
-    assert.equal(peoplePage.people(0).name, 'Sun');
-  });
-
-  peoplePage.people().head.clickOwed();
-
-  andThen(() => {
-    assert.equal(peoplePage.people(0).name, 'Will');
-  });
-});
-
 skip('create a reimbursement', function(assert) {
   peoplePage.visit();
   peoplePage.people(0).reimburseButton.click();
