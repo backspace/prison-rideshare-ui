@@ -22,3 +22,12 @@ install:
 
 script:
   - npm test
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: ef8/fIVrnn+xN/Rs3GuM9l9J7pp4NQwBqlWpNeBp399qwxYesL3ry6mQ9C5myn0rVnVSJ2X7Uj131oA+HtkIgnbxmsmat7I859S7jTd4qEgyjUNVEOKpvXXnRIn7atNlWs5RGc3VX+TInRDj8c7SmePBZqNieXKLeVrPvGUyyZ+XvbNieZxwgm18xbxrWc9BOiTu28w+YNl+uR6Om2GA6wRt3VgvEtDJKNIaA08acZ4kaqPJvflE9UhWk9ZyHt6/ekoIrfD9JD+TNRVqFnTxh820D/AIm0DrhUoFOdvvQCw72jUaTLCjzoBzbz32ErT8DyB2IpwshGxZjM6m8k+VjI2lMP7uAOU2+hQZrOl0x6QMexk+pPVbd5bCTLBXxZNHlsr2VU7IZLGrjz7a71KIdqpKeKNKv+FFiC8KoQ3/2QEaqEgEJp3WcEoxxcN6Sft7xhPHfM4dQZoO+9oVWCOxXqzX6DWEr2JY7WwNIpRi5oHU2TMRHULtlwsTIbr9I2o30HWH9oxQBnrr+hJbGmOrpH/Y5Q8ZyRSYh6UUNqTSNC6uyz/VhwtDTPLwkRL5AcJyhj+n3IkzblbMmrjJoBfNN3XgplrGvg98yvJenVoMPkt5xqFjZLc/d3pXuN8L4Pueuxe+4PCWAB9TZcnZ3Dcsqers1UVA3ZSgFYBhhrY+hSA=
+  app: prison-rideshare-sandbox
+  on:
+    repo: backspace/prison-rideshare-ui
+    branch: primary
