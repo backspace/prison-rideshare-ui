@@ -3,6 +3,8 @@
     <form onsubmit={{action form.onSubmit}}>
       {{#paper-dialog-content}}
         <h2 class='md-title'>Log in</h2>
+        {{#if sandbox}}{{#paper-toolbar}}{{#paper-toolbar-tools}}Log in as the admin “jorts@jants.ca” with password “password”.{{/paper-toolbar-tools}}{{/paper-toolbar}}{{/if}}
+
         {{link-to 'Create an account' 'register'}}
 
         <div class='layout layout-row'>
