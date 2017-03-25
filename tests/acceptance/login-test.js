@@ -4,18 +4,28 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/login';
-// import nav from 'prison-rideshare-ui/tests/pages/nav';
+import nav from 'prison-rideshare-ui/tests/pages/nav';
 
 moduleForAcceptance('Acceptance | login', {
 });
 
 test('successful login forwards to the rides list', function(assert) {
-  server.post('/token', () => {
-    authenticateSession(this.application);
+  server.post('/token', schema => {
+    authenticateSession(this.application, {access_token: 'abcdef'});
+
+    // FIXME yeah…
+    schema.create('user', {
+      email: 'jorts@jants.ca',
+      password: 'aaaaaaaaa'
+    });
 
     return {
       access_token: 'abcdef'
     };
+  });
+
+  server.get('/users/current', ({ users }) => {
+    return users.first();
   });
 
   page.visit();
@@ -27,6 +37,6 @@ test('successful login forwards to the rides list', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/rides');
-    // assert.equal(nav.session, 'Log out testuser@example.com');
+    assert.equal(nav.session, 'Log out jorts@jants.ca');
   });
 });
