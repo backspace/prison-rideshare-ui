@@ -17,9 +17,9 @@ test('authenticated users are redirected to the rides list', function(assert) {
 test('authenticated users are redirected to the report form after logging out', function(assert) {
   authenticateSession(this.application);
   visit('/rides');
-  nav.logOut();
+  nav.session.click();
 
-  andThen(() => assert.ok(nav.isLoggedOut, 'expected the sidebar to show not being logged in'));
+  andThen(() => assert.ok(nav.session.isHidden, 'expected the sidebar to show not being logged in'));
 });
 
 test('unauthenticated users are redirected to the report form', function(assert) {

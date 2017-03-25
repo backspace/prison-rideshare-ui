@@ -37,6 +37,6 @@ test('successful login forwards to the rides list', function(assert) {
 
   andThen(() => {
     assert.equal(currentURL(), '/rides');
-    assert.equal(nav.session, 'Log out jorts@jants.ca');
+    assert.equal(nav.session.text, 'Log out jorts@jants.ca');
   });
 });
