@@ -3,6 +3,8 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
+import nav from 'prison-rideshare-ui/tests/pages/nav';
+
 moduleForAcceptance('Acceptance | authentication', {
 });
 
@@ -10,6 +12,14 @@ test('authenticated users are redirected to the rides list', function(assert) {
   authenticateSession(this.application);
   visit('/');
   andThen(() => assert.equal(currentURL(), '/rides'));
+});
+
+test('authenticated users are redirected to the report form after logging out', function(assert) {
+  authenticateSession(this.application);
+  visit('/rides');
+  nav.logOut();
+
+  andThen(() => assert.ok(nav.isLoggedOut, 'expected the sidebar to show not being logged in'));
 });
 
 test('unauthenticated users are redirected to the report form', function(assert) {
