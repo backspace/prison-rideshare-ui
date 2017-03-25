@@ -16,3 +16,8 @@ test('unauthenticated users are redirected to the report form', function(assert)
   visit('/');
   andThen(() => assert.equal(currentURL(), '/reports/new'));
 });
+
+test('unauthenticated users are redirected to log in from authenticated routes', assert => {
+  visit('/debts');
+  andThen(() => assert.equal(currentURL(), '/login'));
+});
