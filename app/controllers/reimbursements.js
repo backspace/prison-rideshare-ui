@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import BufferedProxy from 'ember-buffered-proxy/proxy';
+// import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 import sum from 'ember-cpm/macros/sum';
 import dollars from 'prison-rideshare-ui/utils/dollars';
@@ -42,21 +42,23 @@ export default Ember.Controller.extend({
       });
     },
 
-    editReimbursement(reimbursement) {
-      const proxy = BufferedProxy.create({content: reimbursement});
+    // Reimbursement editing will surely return!
 
-      this.set('editingReimbursement', proxy);
-    },
-
-    submit() {
-      const proxy = this.get('editingReimbursement');
-      proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingReimbursement', undefined));
-    },
-
-    cancel() {
-      this.set('editingReimbursement', undefined);
-    }
+    // editReimbursement(reimbursement) {
+    //   const proxy = BufferedProxy.create({content: reimbursement});
+    //
+    //   this.set('editingReimbursement', proxy);
+    // },
+    //
+    // submit() {
+    //   const proxy = this.get('editingReimbursement');
+    //   proxy.applyBufferedChanges();
+    //   return proxy.get('content').save().then(() => this.set('editingReimbursement', undefined));
+    // },
+    //
+    // cancel() {
+    //   this.set('editingReimbursement', undefined);
+    // }
   }
 });
 
