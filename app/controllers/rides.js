@@ -16,7 +16,7 @@ export default Ember.Controller.extend({
   showCompleted: false,
   showCancelled: false,
 
-  filteredRides: Ember.computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', function() {
+  filteredRides: Ember.computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
 
     let rides = this.get('model').rejectBy('isCombined');
@@ -91,6 +91,11 @@ export default Ember.Controller.extend({
       } else {
         this.set('rideToCombine', ride);
       }
+    },
+
+    uncombineRide(ride) {
+      ride.set('combinedWith', null);
+      ride.save();
     }
   }
 });

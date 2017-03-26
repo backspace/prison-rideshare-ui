@@ -270,7 +270,7 @@ test('create and edit a ride', function(assert) {
   });
 });
 
-test('rides can be combined', function(assert) {
+test('rides can be combined and uncombined', function(assert) {
   const today = new Date();
   const yesterday = new Date(today.getTime() - 1000*60*60*24);
 
@@ -287,5 +287,11 @@ test('rides can be combined', function(assert) {
     assert.equal(page.rides(1).name, 'C', 'expected the combined-into ride to have moved');
     assert.equal(page.rides(2).name, 'A', 'expected the combined ride to have moved');
     assert.ok(page.rides(2).isCombined, 'expected the combined ride to show as combined');
+  });
+
+  page.rides(2).combine();
+
+  andThen(() => {
+    assert.equal(page.rides(0).name, 'A', 'expected the formerly-combined ride to have returned');
   });
 });

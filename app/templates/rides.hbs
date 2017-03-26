@@ -27,9 +27,9 @@
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
-      {{ride-row body=body ride=ride editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') people=people}}
+      {{ride-row body=body ride=ride editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people}}
       {{#each ride.children as |child|}}
-        {{ride-row body=body ride=child combined=true editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') people=people}}
+        {{ride-row body=body ride=child combined=true editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people}}
       {{/each}}
     {{/each}}
   {{/table.body}}
