@@ -61,7 +61,10 @@ export default create({
         click: clickable()
       },
 
-      combine: clickable('button.combine'),
+      combineButton: {
+        scope: 'button.combine',
+        isActive: hasClass('md-raised')
+      },
 
       isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="merge type"]'),
 
