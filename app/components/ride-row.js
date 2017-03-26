@@ -2,6 +2,10 @@ import Ember from 'ember';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
 export default Ember.Component.extend({
+  classAttribute: Ember.computed('ride.enabled', 'uncombinable', function() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''}`;
+  }),
+
   tagName: '',
 
   cancellationIcon: Ember.computed('ride.cancellationReason', function() {
@@ -25,6 +29,18 @@ export default Ember.Component.extend({
     } else {
       return 'Combine with another ride';
     }
+  }),
+
+  uncombinable: Ember.computed('rideToCombine.id', 'rideToCombine.start', 'ride.start', function() {
+    const sixHours = 1000*60*60*6;
+    const rideToCombineStart = this.get('rideToCombine.start');
+
+    if (!rideToCombineStart) {
+      return false;
+    } else {
+      return Math.abs(new Date(rideToCombineStart).getTime() - new Date(this.get('ride.start')).getTime()) > sixHours;
+    }
+
   }),
 
   actions: {

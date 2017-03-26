@@ -52,6 +52,10 @@ table .ride {
     opacity: 1;
   }
 
+  &.uncombinable {
+    opacity: 0.5;
+  }
+
   md-input-container {
     margin: 18px 0 0;
   }

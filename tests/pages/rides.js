@@ -34,6 +34,7 @@ export default create({
 
     item: {
       enabled: hasClass('enabled'),
+      isUncombinable: hasClass('uncombinable'),
 
       cancellation: {
         scope: '.cancellation',
