@@ -5,6 +5,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 export default Ember.Route.extend(ApplicationRouteMixin, {
   session: Ember.inject.service(),
   account: Ember.inject.service(),
+  flashMessages: Ember.inject.service(),
 
   beforeModel() {
     return this._loadCurrentUser();
@@ -16,6 +17,9 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
   },
 
   _loadCurrentUser() {
-    return this.get('account').loadCurrentUser().catch(() => this.get('session').invalidate());
+    return this.get('account').loadCurrentUser().catch(() => {
+      this.get('flashMessages').warning('Please log in');
+      this.get('session').invalidate();
+    });
   }
 });

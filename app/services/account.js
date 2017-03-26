@@ -25,7 +25,7 @@ export default Service.extend({
           const currentUser = this.get('store').push(data);
           this.set('session.currentUser', currentUser);
           resolve();
-        });
+        }).catch(reject);
       } else {
         resolve();
       }
