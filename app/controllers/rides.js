@@ -2,6 +2,11 @@ import Ember from 'ember';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default Ember.Controller.extend({
+  queryParams: {
+    showCompleted: 'completed',
+    showCancelled: 'cancelled'
+  },
+
   peopleService: Ember.inject.service('people'),
   people: Ember.computed.alias('peopleService.all'),
 
