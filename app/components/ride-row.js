@@ -19,6 +19,14 @@ export default Ember.Component.extend({
     }
   }),
 
+  combineButtonLabel: Ember.computed('ride.id', 'rideToCombine.id', function() {
+    if (this.get('ride.id') == this.get('rideToCombine.id')) {
+      return 'Cancel combining';
+    } else {
+      return 'Combine with another ride';
+    }
+  }),
+
   actions: {
     setDriver(driver) {
       const ride = this.get('ride');

@@ -284,12 +284,14 @@ test('rides can be combined and uncombined', function(assert) {
 
   andThen(() => {
     assert.ok(page.rides(0).combineButton.isActive, 'expected the combine button to indicate it is active');
+    assert.equal(page.rides(0).combineButton.title, 'Cancel combining');
   });
 
   page.rides(0).combineButton.click();
 
   andThen(() => {
     assert.notOk(page.rides(0).combineButton.isActive, 'expected the button to have become inactive after clicking');
+    assert.equal(page.rides(0).combineButton.title, 'Combine with another ride');
   });
 
   page.rides(0).combineButton.click();
@@ -299,6 +301,7 @@ test('rides can be combined and uncombined', function(assert) {
     assert.equal(page.rides(1).name, 'C', 'expected the combined-into ride to have moved');
     assert.equal(page.rides(2).name, 'A', 'expected the combined ride to have moved');
     assert.ok(page.rides(2).isCombined, 'expected the combined ride to show as combined');
+    assert.equal(page.rides(2).combineButton.title, 'Uncombine this ride');
   });
 
   page.rides(2).combineButton.click();

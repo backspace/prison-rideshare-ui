@@ -1,4 +1,5 @@
 import {
+  attribute,
   clickable,
   collection,
   create,
@@ -63,7 +64,8 @@ export default create({
 
       combineButton: {
         scope: 'button.combine',
-        isActive: hasClass('md-raised')
+        isActive: hasClass('md-raised'),
+        title: attribute('title')
       },
 
       isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="merge type"]'),
