@@ -79,6 +79,18 @@ export default Ember.Controller.extend({
     cancelCancellation() {
       this.get('editingCancellation').discardBufferedChanges();
       this.set('editingCancellation', undefined);
+    },
+
+    combineRide(ride) {
+      if (this.get('rideToCombine')) {
+        const rideToCombine = this.get('rideToCombine');
+
+        rideToCombine.set('combinedWith', ride);
+
+        rideToCombine.save();
+      } else {
+        this.set('rideToCombine', ride);
+      }
     }
   }
 });

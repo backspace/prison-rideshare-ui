@@ -61,6 +61,8 @@ export default create({
         click: clickable()
       },
 
+      combine: clickable('button.combine'),
+
       isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="merge type"]'),
 
       edit: clickable('button.edit')

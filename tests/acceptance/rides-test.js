@@ -269,3 +269,23 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.name, 'Edwina');
   });
 });
+
+test('rides can be combined', function(assert) {
+  const today = new Date();
+  const yesterday = new Date(today.getTime() - 1000*60*60*24);
+
+  server.create('ride', {name: 'A', passengers: 1, start: today, end: today});
+  server.create('ride', {name: 'B', passengers: 1, start: today, end: today});
+  server.create('ride', {name: 'C', passengers: 1, start: yesterday, end: yesterday});
+
+  page.visit();
+
+  page.rides(0).combine();
+  page.rides(2).combine();
+
+  andThen(() => {
+    assert.equal(page.rides(1).name, 'C', 'expected the combined-into ride to have moved');
+    assert.equal(page.rides(2).name, 'A', 'expected the combined ride to have moved');
+    assert.ok(page.rides(2).isCombined, 'expected the combined ride to show as combined');
+  });
+});
