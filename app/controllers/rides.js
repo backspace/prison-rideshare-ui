@@ -87,10 +87,10 @@ export default Ember.Controller.extend({
 
         if (rideToCombine.id == ride.id) {
           this.set('rideToCombine', undefined);
-        } else {          
+        } else {
           rideToCombine.set('combinedWith', ride);
 
-          rideToCombine.save();
+          rideToCombine.save().then(() => this.set('rideToCombine', undefined));
         }
       } else {
         this.set('rideToCombine', ride);
