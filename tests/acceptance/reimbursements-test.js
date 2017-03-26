@@ -35,7 +35,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
   }
 });
 
-test('list reimbursements', function(assert) {
+test('list reimbursements and optionally show processed ones', function(assert) {
   reimbursementsPage.visit();
 
   andThen(() => {
@@ -52,6 +52,19 @@ test('list reimbursements', function(assert) {
     assert.equal(sun.foodExpenses, '44');
     assert.equal(sun.carExpenses, '33');
     assert.equal(sun.totalExpenses, '77');
+
+    assert.equal(reimbursementsPage.reimbursements().count, 0, 'expected no processed reimbursements to be shown');
+  });
+
+  reimbursementsPage.processedSwitch.click();
+
+  andThen(() => {
+    assert.equal(reimbursementsPage.reimbursements().count, 1, 'expected the processed reimbursement to be shown');
+
+    const processed = reimbursementsPage.reimbursements(0);
+    assert.equal(processed.name, 'Kala');
+    assert.equal(processed.foodExpenses, '11');
+    assert.equal(processed.carExpenses, '');
   });
 });
 

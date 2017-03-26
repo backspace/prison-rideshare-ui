@@ -32,13 +32,20 @@ export default create({
 
     item: {
       name: text('.name'),
-      amount: text('.amount'),
+      foodExpenses: text('.food-expenses'),
+      carExpenses: text('.car-expenses'),
 
       donation: isVisible('.donation .paper-icon'),
 
       edit: clickable('button')
     }
   }),
+
+  processedSwitch: {
+    scope: '.paper-switch.processed',
+    enabled: hasClass('md-checked'),
+    click: clickable('.md-thumb')
+  },
 
   form: {
     amountField: {
