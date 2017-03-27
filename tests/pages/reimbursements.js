@@ -34,8 +34,6 @@ export default create({
       date: text('.date'),
       name: text('.name'),
       ride: text('.ride'),
-      foodExpenses: text('.food-expenses'),
-      carExpenses: text('.car-expenses'),
 
       expenses: text('.expenses span'),
       isFoodExpense: isVisible('.paper-icon[md-font-icon="local cafe"]'),
