@@ -26,9 +26,11 @@
         as |person|}}
         {{person.name}}
       {{/paper-select}}</span>
-      {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
-        {{paper-icon 'merge type'}}
-      {{/paper-button}}
+      {{#unless ride.children}}
+        {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
+          {{paper-icon 'merge type'}}
+        {{/paper-button}}
+      {{/unless}}
     {{/if}}
   {{/row.cell}}
   {{#row.cell}}

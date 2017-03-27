@@ -275,10 +275,15 @@ test('rides can be combined and uncombined', function(assert) {
   const yesterday = new Date(today.getTime() - 1000*60*60*24);
 
   server.create('ride', {name: 'A', passengers: 1, start: today, end: today});
-  server.create('ride', {name: 'B', passengers: 1, start: today, end: today});
+  const parentRide = server.create('ride', {name: 'B', passengers: 1, start: today, end: today});
   server.create('ride', {name: 'C', passengers: 1, start: yesterday, end: yesterday});
+  server.create('ride', {name: 'D', combinedWith: parentRide});
 
   page.visit();
+
+  andThen(() => {
+    assert.ok(page.rides(1).combineButton.isHidden, 'expected a ride that already has one combined with it to not a have a button to combine');
+  });
 
   page.rides(0).combineButton.click();
 
@@ -287,7 +292,7 @@ test('rides can be combined and uncombined', function(assert) {
     assert.equal(page.rides(0).combineButton.title, 'Cancel combining');
 
     assert.notOk(page.rides(1).isUncombinable, 'expected the ride on the same day to be combinable');
-    assert.ok(page.rides(2).isUncombinable, 'expected the ride on the day before to not be combinable');
+    assert.ok(page.rides(3).isUncombinable, 'expected the ride on the day before to not be combinable');
   });
 
   page.rides(0).combineButton.click();
@@ -298,16 +303,16 @@ test('rides can be combined and uncombined', function(assert) {
   });
 
   page.rides(0).combineButton.click();
-  page.rides(2).combineButton.click();
+  page.rides(3).combineButton.click();
 
   andThen(() => {
-    assert.equal(page.rides(1).name, 'C', 'expected the combined-into ride to have moved');
-    assert.equal(page.rides(2).name, 'A', 'expected the combined ride to have moved');
-    assert.ok(page.rides(2).isCombined, 'expected the combined ride to show as combined');
-    assert.equal(page.rides(2).combineButton.title, 'Uncombine this ride');
+    assert.equal(page.rides(2).name, 'C', 'expected the combined-into ride to have moved');
+    assert.equal(page.rides(3).name, 'A', 'expected the combined ride to have moved');
+    assert.ok(page.rides(3).isCombined, 'expected the combined ride to show as combined');
+    assert.equal(page.rides(3).combineButton.title, 'Uncombine this ride');
   });
 
-  page.rides(2).combineButton.click();
+  page.rides(3).combineButton.click();
 
   andThen(() => {
     assert.equal(page.rides(0).name, 'A', 'expected the formerly-combined ride to have returned');
