@@ -26,11 +26,11 @@
         as |person|}}
         {{person.name}}
       {{/paper-select}}</span>
-      {{#unless ride.children}}
+      {{#if (or (not ride.children) rideToCombine)}}
         {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
           {{paper-icon 'merge type'}}
         {{/paper-button}}
-      {{/unless}}
+      {{/if}}
     {{/if}}
   {{/row.cell}}
   {{#row.cell}}

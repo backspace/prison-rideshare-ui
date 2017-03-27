@@ -291,6 +291,8 @@ test('rides can be combined and uncombined', function(assert) {
     assert.ok(page.rides(0).combineButton.isActive, 'expected the combine button to indicate it is active');
     assert.equal(page.rides(0).combineButton.title, 'Cancel combining');
 
+    assert.ok(page.rides(1).combineButton.isVisible, 'expected the already-combined-with ride to be combinable-with');
+
     assert.notOk(page.rides(1).isUncombinable, 'expected the ride on the same day to be combinable');
     assert.ok(page.rides(3).isUncombinable, 'expected the ride on the day before to not be combinable');
   });
