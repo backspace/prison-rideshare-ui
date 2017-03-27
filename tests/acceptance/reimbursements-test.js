@@ -16,7 +16,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
     sun.createReimbursement({foodExpenses: 4400});
 
     kala.createReimbursement({carExpenses: 2200});
-    kala.createReimbursement({foodExpenses: 1100, processed: true});
+    kala.createReimbursement({foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
 
     server.create('ride', {
       driver: sun,
@@ -62,6 +62,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.equal(reimbursementsPage.reimbursements().count, 1, 'expected the processed reimbursement to be shown');
 
     const processed = reimbursementsPage.reimbursements(0);
+    assert.equal(processed.date, '2017-03-26');
     assert.equal(processed.name, 'Kala');
     assert.equal(processed.foodExpenses, '11');
     assert.equal(processed.carExpenses, '');

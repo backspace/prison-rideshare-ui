@@ -31,6 +31,7 @@ export default create({
     itemScope: 'tbody tr.reimbursement',
 
     item: {
+      date: text('.date'),
       name: text('.name'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),

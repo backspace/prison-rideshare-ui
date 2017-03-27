@@ -10,5 +10,7 @@ export default DS.Model.extend({
   processed: DS.attr('boolean'),
 
   foodExpensesDollars: dollars('foodExpenses'),
-  carExpensesDollars: dollars('carExpenses')
+  carExpensesDollars: dollars('carExpenses'),
+
+  insertedAt: DS.attr('date')
 });

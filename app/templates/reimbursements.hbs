@@ -39,6 +39,7 @@
     {{#if showProcessed}}
       {{#each processedReimbursements as |reimbursement|}}
         {{#body.row class='reimbursement' as |row|}}
+          {{#row.cell class='date'}}{{moment-format reimbursement.insertedAt 'YYYY-MM-DD'}}{{/row.cell}}
           {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
           {{#row.cell class='food-expenses'}}{{if reimbursement.foodExpensesDollars reimbursement.foodExpensesDollars}}{{/row.cell}}
           {{#row.cell class='car-expenses'}}{{if reimbursement.carExpensesDollars reimbursement.carExpensesDollars}}{{/row.cell}}
