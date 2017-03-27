@@ -9,6 +9,7 @@ import {
 
 export default create({
   visit: visitable('/drivers'),
+  newPerson: clickable('button.new'),
 
   people: collection({
     itemScope: 'tbody tr.person',

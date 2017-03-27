@@ -27,6 +27,12 @@ export default Ember.Controller.extend({
     //   this.set('editingReimbursement', undefined);
     // },
 
+    newPerson() {
+      this.set('editingPerson', BufferedProxy.create({
+        content: this.store.createRecord('person')
+      }));
+    },
+
     editPerson(person) {
       const proxy = BufferedProxy.create({content: person});
 
@@ -40,6 +46,12 @@ export default Ember.Controller.extend({
     },
 
     cancelPerson() {
+      const model = this.get('editingPerson.content');
+
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
+
       this.set('editingPerson', undefined);
     }
   }

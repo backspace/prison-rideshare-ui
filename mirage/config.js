@@ -10,6 +10,7 @@ export default function() {
   this.get('/institutions');
 
   this.get('/people');
+  this.post('/people');
   this.patch('/people/:id');
 
   this.get('/debts');

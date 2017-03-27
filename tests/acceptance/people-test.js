@@ -44,3 +44,18 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
     assert.equal(will.name, 'William');
   });
 });
+
+test('a person can be created', function(assert) {
+  page.visit();
+
+  page.newPerson();
+  page.form.nameField.fill('Capheus');
+  page.form.submit();
+
+  andThen(() => {
+    assert.equal(page.people(0).name, 'Capheus');
+
+    const [,,,capheus] = server.db.people;
+    assert.equal(capheus.name, 'Capheus');
+  });
+});
