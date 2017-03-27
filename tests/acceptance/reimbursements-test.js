@@ -17,6 +17,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
 
     kala.createReimbursement({carExpenses: 2200});
     kala.createReimbursement({foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
+    kala.createReimbursement({carExpenses: 999, processed: true, insertedAt: new Date(2017, 2, 25)});
 
     server.create('ride', {
       driver: sun,
@@ -59,13 +60,19 @@ test('list reimbursements and optionally show processed ones', function(assert) 
   reimbursementsPage.processedSwitch.click();
 
   andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements().count, 1, 'expected the processed reimbursement to be shown');
+    assert.equal(reimbursementsPage.reimbursements().count, 2, 'expected the processed reimbursement sto be shown');
 
-    const processed = reimbursementsPage.reimbursements(0);
-    assert.equal(processed.date, '2017-03-26');
-    assert.equal(processed.name, 'Kala');
-    assert.equal(processed.foodExpenses, '11');
-    assert.equal(processed.carExpenses, '');
+    const foodProcessed = reimbursementsPage.reimbursements(0);
+    assert.equal(foodProcessed.date, '2017-03-26');
+    assert.equal(foodProcessed.name, 'Kala');
+    assert.equal(foodProcessed.expenses, '11');
+    assert.ok(foodProcessed.isFoodExpense, 'expected a food expense icon');
+
+    const carProcessed = reimbursementsPage.reimbursements(1);
+    assert.equal(carProcessed.date, '2017-03-25');
+    assert.equal(carProcessed.name, 'Kala');
+    assert.equal(carProcessed.expenses, '9.99');
+    assert.ok(carProcessed.isCarExpense, 'expected a car expense icon');
   });
 });
 

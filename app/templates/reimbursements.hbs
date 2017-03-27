@@ -41,16 +41,20 @@
     {{#table.head as |head|}}
       {{#head.column}}Date{{/head.column}}
       {{#head.column}}Person{{/head.column}}
-      {{#head.column}}Food{{/head.column}}
-      {{#head.column}}Car{{/head.column}}
+      {{#head.column}}Expense{{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
       {{#each processedReimbursements as |reimbursement|}}
         {{#body.row class='reimbursement' as |row|}}
           {{#row.cell class='date'}}{{moment-format reimbursement.insertedAt 'YYYY-MM-DD'}}{{/row.cell}}
           {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
-          {{#row.cell class='food-expenses'}}{{if reimbursement.foodExpensesDollars reimbursement.foodExpensesDollars}}{{/row.cell}}
-          {{#row.cell class='car-expenses'}}{{if reimbursement.carExpensesDollars reimbursement.carExpensesDollars}}{{/row.cell}}
+          {{#row.cell class='expenses'}}
+            {{#if reimbursement.foodExpensesDollars}}
+              {{paper-icon 'local cafe'}} <span>{{reimbursement.foodExpensesDollars}}</span>
+            {{else}}
+              {{paper-icon 'local gas station'}} <span>{{reimbursement.carExpensesDollars}}</span>
+            {{/if}}
+          {{/row.cell}}
         {{/body.row}}
       {{/each}}
     {{/table.body}}
