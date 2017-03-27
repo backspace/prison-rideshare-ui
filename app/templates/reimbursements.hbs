@@ -42,6 +42,7 @@
       {{#head.column}}Date{{/head.column}}
       {{#head.column}}Person{{/head.column}}
       {{#head.column}}Expense{{/head.column}}
+      {{#head.column}}Donation?{{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
       {{#each processedReimbursements as |reimbursement|}}
@@ -54,6 +55,9 @@
             {{else}}
               {{paper-icon 'local gas station'}} <span>{{reimbursement.carExpensesDollars}}</span>
             {{/if}}
+          {{/row.cell}}
+          {{#row.cell class='donation'}}
+            {{#if reimbursement.donation}}{{paper-icon 'done'}}{{/if}}
           {{/row.cell}}
         {{/body.row}}
       {{/each}}

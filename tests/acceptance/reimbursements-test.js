@@ -17,7 +17,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
 
     kala.createReimbursement({carExpenses: 2200});
     kala.createReimbursement({foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
-    kala.createReimbursement({carExpenses: 999, processed: true, insertedAt: new Date(2017, 2, 25)});
+    kala.createReimbursement({carExpenses: 999, processed: true, donation: true, insertedAt: new Date(2017, 2, 25)});
 
     server.create('ride', {
       driver: sun,
@@ -67,12 +67,14 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.equal(foodProcessed.name, 'Kala');
     assert.equal(foodProcessed.expenses, '11');
     assert.ok(foodProcessed.isFoodExpense, 'expected a food expense icon');
+    assert.notOk(foodProcessed.isDonation, 'expected the food expense to not have been donated');
 
     const carProcessed = reimbursementsPage.reimbursements(1);
     assert.equal(carProcessed.date, '2017-03-25');
     assert.equal(carProcessed.name, 'Kala');
     assert.equal(carProcessed.expenses, '9.99');
     assert.ok(carProcessed.isCarExpense, 'expected a car expense icon');
+    assert.ok(carProcessed.isDonation, 'expected the car expense to have been donated');
   });
 });
 

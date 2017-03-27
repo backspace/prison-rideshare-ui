@@ -40,7 +40,7 @@ export default create({
       isFoodExpense: isVisible('.paper-icon[md-font-icon="local cafe"]'),
       isCarExpense: isVisible('.paper-icon[md-font-icon="local gas station"]'),
 
-      donation: isVisible('.donation .paper-icon'),
+      isDonation: isVisible('.donation .paper-icon'),
 
       edit: clickable('button')
     }
