@@ -1,12 +1,8 @@
-{{#paper-toolbar as |toolbar|}}
-  {{#toolbar.tools}}
-    <h2>Rides</h2>
-    <span class='flex'></span>
-    {{#paper-button mini=true aria-label='New ride' title='New ride' class='new' onClick=(action 'newRide')}}
-      {{paper-icon 'add'}}
-    {{/paper-button}}
-  {{/toolbar.tools}}
-{{/paper-toolbar}}
+{{#toolbar-header title='Rides'}}
+  {{#paper-button mini=true aria-label='New ride' title='New ride' class='new' onClick=(action 'newRide')}}
+    {{paper-icon 'add'}}
+  {{/paper-button}}
+{{/toolbar-header}}
 
 {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
   Show reported-upon rides

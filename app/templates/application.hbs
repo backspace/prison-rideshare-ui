@@ -6,7 +6,7 @@
 
 {{#paper-sidenav-container class="site-nav-container"}}
   {{#paper-sidenav lockedOpen="gt-sm"
-    open=isSidenavOpen onToggle=(action (mut isSidenavOpen))}}
+    open=sidebar.open onToggle=(action (mut sidebar.open))}}
 
     {{#paper-content}}
       {{#paper-list}}

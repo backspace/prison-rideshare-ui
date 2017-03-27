@@ -1,12 +1,8 @@
-{{#paper-toolbar as |toolbar|}}
-  {{#toolbar.tools}}
-    <h2>Drivers</h2>
-    <span class='flex'></span>
-    {{#paper-button mini=true aria-label='New driver' title='New driver' class='new' onClick=(action 'newPerson')}}
-      {{paper-icon 'add'}}
-    {{/paper-button}}
-  {{/toolbar.tools}}
-{{/paper-toolbar}}
+{{#toolbar-header title='Drivers'}}
+  {{#paper-button mini=true aria-label='New driver' title='New driver' class='new' onClick=(action 'newPerson')}}
+    {{paper-icon 'add'}}
+  {{/paper-button}}
+{{/toolbar-header}}
 
 {{#paper-data-table sortProp='name' sortDir='asc' as |table|}}
   {{#table.head as |head|}}

@@ -1,0 +1,10 @@
+{{#paper-toolbar as |toolbar|}}
+  {{#toolbar.tools}}
+    {{#paper-button iconButton=true onClick=(action 'toggleSidebar')}}
+      {{paper-icon "menu"}}
+    {{/paper-button}}
+    <h2>{{title}}</h2>
+    <span class='flex'></span>
+    {{yield}}
+  {{/toolbar.tools}}
+{{/paper-toolbar}}
