@@ -16,7 +16,9 @@ export default Ember.Controller.extend({
 
   showProcessed: false,
 
-  processedReimbursements: Ember.computed.filterBy('reimbursements', 'processed'),
+  unsortedProcessedReimbursements: Ember.computed.filterBy('reimbursements', 'processed'),
+  processedReimbursementsSorting: ['insertedAt:desc'],
+  processedReimbursements: Ember.computed.sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting'),
 
   personAndReimbursements: Ember.computed('filteredReimbursements.@each.person', function() {
     const reimbursements = this.get('filteredReimbursements');

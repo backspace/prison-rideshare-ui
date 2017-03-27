@@ -16,8 +16,8 @@ moduleForAcceptance('Acceptance | reimbursements', {
     sun.createReimbursement({foodExpenses: 4400});
 
     kala.createReimbursement({carExpenses: 2200});
-    kala.createReimbursement({foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
     kala.createReimbursement({carExpenses: 999, processed: true, donation: true, insertedAt: new Date(2017, 2, 25)});
+    kala.createReimbursement({foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
 
     server.create('ride', {
       driver: sun,
