@@ -12,5 +12,7 @@ export default DS.Model.extend({
   foodExpensesDollars: dollars('foodExpenses'),
   carExpensesDollars: dollars('carExpenses'),
 
+  ride: DS.belongsTo(),
+
   insertedAt: DS.attr('date')
 });

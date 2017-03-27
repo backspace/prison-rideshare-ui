@@ -12,12 +12,24 @@ moduleForAcceptance('Acceptance | reimbursements', {
     const kala = server.create('person', {name: 'Kala'});
     const will = server.create('person', {name: 'Will'});
 
+    const leavenworth = server.create('institution', {
+      name: 'Fort Leavenworth'
+    });
+
     sun.createReimbursement({carExpenses: 3300});
     sun.createReimbursement({foodExpenses: 4400});
 
     kala.createReimbursement({carExpenses: 2200});
-    kala.createReimbursement({carExpenses: 999, processed: true, donation: true, insertedAt: new Date(2017, 2, 25)});
-    kala.createReimbursement({foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
+
+    const reimbursedRide = server.create('ride', {
+      institution: leavenworth,
+      start: new Date(2017, 2, 22),
+      driver: kala,
+      carOwner: kala
+    });
+
+    kala.createReimbursement({ride: reimbursedRide, carExpenses: 999, processed: true, donation: true, insertedAt: new Date(2017, 2, 25)});
+    kala.createReimbursement({ride: reimbursedRide, foodExpenses: 1100, processed: true, insertedAt: new Date(2017, 2, 26)});
 
     server.create('ride', {
       driver: sun,
@@ -65,6 +77,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     const foodProcessed = reimbursementsPage.reimbursements(0);
     assert.equal(foodProcessed.date, '2017-03-26');
     assert.equal(foodProcessed.name, 'Kala');
+    assert.equal(foodProcessed.ride, '2017-03-22 to Fort Leavenworth');
     assert.equal(foodProcessed.expenses, '11');
     assert.ok(foodProcessed.isFoodExpense, 'expected a food expense icon');
     assert.notOk(foodProcessed.isDonation, 'expected the food expense to not have been donated');

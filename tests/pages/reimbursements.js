@@ -33,6 +33,7 @@ export default create({
     item: {
       date: text('.date'),
       name: text('.name'),
+      ride: text('.ride'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),
 

@@ -41,6 +41,7 @@
     {{#table.head as |head|}}
       {{#head.column}}Date{{/head.column}}
       {{#head.column}}Person{{/head.column}}
+      {{#head.column}}Ride{{/head.column}}
       {{#head.column}}Expense{{/head.column}}
       {{#head.column}}Donation?{{/head.column}}
     {{/table.head}}
@@ -49,6 +50,7 @@
         {{#body.row class='reimbursement' as |row|}}
           {{#row.cell class='date'}}{{moment-format reimbursement.insertedAt 'YYYY-MM-DD'}}{{/row.cell}}
           {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
+          {{#row.cell class='ride'}}{{#if (and reimbursement.ride.start reimbursement.ride.institution.name)}}{{moment-format reimbursement.ride.start 'YYYY-MM-DD'}} to {{reimbursement.ride.institution.name}}{{/if}}{{/row.cell}}
           {{#row.cell class='expenses'}}
             {{#if reimbursement.foodExpensesDollars}}
               {{paper-icon 'local cafe'}} <span>{{reimbursement.foodExpensesDollars}}</span>
