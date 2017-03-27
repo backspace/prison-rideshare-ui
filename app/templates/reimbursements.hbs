@@ -29,27 +29,33 @@
         {{/row.cell}}
       {{/body.row}}
     {{/each}}
-    {{#body.row as |row|}}
-      {{#row.cell colspan=5}}
-        {{#paper-switch class='processed' value=showProcessed onChange=(action (mut showProcessed))}}
-          Show processed reimbursements
-        {{/paper-switch}}
-      {{/row.cell}}
-    {{/body.row}}
-    {{#if showProcessed}}
+  {{/table.body}}
+{{/paper-data-table}}
+
+{{#paper-switch class='processed' value=showProcessed onChange=(action (mut showProcessed))}}
+  Show processed reimbursements
+{{/paper-switch}}
+
+{{#if showProcessed}}
+  {{#paper-data-table as |table|}}
+    {{#table.head as |head|}}
+      {{#head.column}}Date{{/head.column}}
+      {{#head.column}}Person{{/head.column}}
+      {{#head.column}}Food{{/head.column}}
+      {{#head.column}}Car{{/head.column}}
+    {{/table.head}}
+    {{#table.body as |body|}}
       {{#each processedReimbursements as |reimbursement|}}
         {{#body.row class='reimbursement' as |row|}}
           {{#row.cell class='date'}}{{moment-format reimbursement.insertedAt 'YYYY-MM-DD'}}{{/row.cell}}
           {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
           {{#row.cell class='food-expenses'}}{{if reimbursement.foodExpensesDollars reimbursement.foodExpensesDollars}}{{/row.cell}}
           {{#row.cell class='car-expenses'}}{{if reimbursement.carExpensesDollars reimbursement.carExpensesDollars}}{{/row.cell}}
-          {{row.cell}}
-          {{row.cell}}
         {{/body.row}}
       {{/each}}
-    {{/if}}
-  {{/table.body}}
-{{/paper-data-table}}
+    {{/table.body}}
+  {{/paper-data-table}}
+{{/if}}
 
 {{#if editingReimbursement}}
 {{reimbursement-form reimbursement=editingReimbursement
