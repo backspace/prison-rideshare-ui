@@ -11,14 +11,16 @@
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (sort-by table.sortDesc model) as |person|}}
-      {{#body.row class='person' as |row|}}
-        {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
-        {{#row.cell}}
-          {{#paper-button iconButton=true aria-label='Edit person' title='Edit person' class='edit' onClick=(action 'editPerson' person)}}
-            {{paper-icon 'mode edit'}}
-          {{/paper-button}}
-        {{/row.cell}}
-      {{/body.row}}
+      {{#unless person.isNew}}
+        {{#body.row class='person' as |row|}}
+          {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
+          {{#row.cell}}
+            {{#paper-button iconButton=true aria-label='Edit person' title='Edit person' class='edit' onClick=(action 'editPerson' person)}}
+              {{paper-icon 'mode edit'}}
+            {{/paper-button}}
+          {{/row.cell}}
+        {{/body.row}}
+      {{/unless}}
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}

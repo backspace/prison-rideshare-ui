@@ -52,10 +52,14 @@ test('a person can be created', function(assert) {
   page.visit();
 
   page.newPerson();
+
+  andThen(() => assert.equal(page.people().count, '3', 'expected the new person to not yet be listed'));
+
   page.form.nameField.fill('Capheus');
   page.form.submit();
 
   andThen(() => {
+    assert.equal(page.people().count, '4', 'expected the new person to have been added to the list');
     assert.equal(page.people(0).name, 'Capheus');
 
     const [,,,capheus] = server.db.people;
