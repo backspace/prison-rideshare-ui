@@ -5,4 +5,6 @@ export default Ember.Route.extend(UnauthenticatedRouteMixin, {
   model() {
     return this.store.createRecord('user');
   },
+
+  titleToken: 'Log in'
 });

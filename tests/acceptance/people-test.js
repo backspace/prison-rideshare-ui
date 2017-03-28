@@ -4,6 +4,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/people';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | people', {
   beforeEach() {
@@ -23,6 +24,8 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
   page.form.cancel();
 
   andThen(() => {
+    assert.equal(shared.title, 'Drivers · Prison Rideshare');
+
     assert.equal(page.people(2).name, 'Will');
 
     const serverPeople = server.db.people;

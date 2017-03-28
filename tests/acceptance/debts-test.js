@@ -4,6 +4,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/debts';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | debts', {
   beforeEach() {
@@ -62,6 +63,8 @@ test('debts are listed', function(assert) {
   page.visit();
 
   andThen(() => {
+    assert.equal(shared.title, 'Debts · Prison Rideshare');
+
     assert.equal(page.people().count, 2, 'only people with outstanding debts are listed');
 
     const sun = page.people(0);

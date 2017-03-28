@@ -31,6 +31,8 @@ test('successful login forwards to the rides list', function(assert) {
 
   page.visit();
 
+  andThen(() => assert.equal(shared.title, 'Log in · Prison Rideshare'));
+
   page.fillEmail('jorts@jants.ca');
   page.fillPassword('aaaaaaaaa');
 

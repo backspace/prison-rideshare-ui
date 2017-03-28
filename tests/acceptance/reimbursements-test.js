@@ -5,6 +5,7 @@ import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-sim
 
 import peoplePage from 'prison-rideshare-ui/tests/pages/people';
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | reimbursements', {
   beforeEach() {
@@ -52,6 +53,8 @@ test('list reimbursements and optionally show processed ones', function(assert) 
   reimbursementsPage.visit();
 
   andThen(() => {
+    assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
+
     assert.equal(reimbursementsPage.people().count, 2, 'expected two people with reimbursements');
 
     const kala = reimbursementsPage.people(0);

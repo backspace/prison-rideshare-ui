@@ -5,6 +5,8 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
+  title: text('title:nth-of-type(2)', { testContainer: 'html' }),
+
   session: {
     scope: '.site-nav-container .session'
   },

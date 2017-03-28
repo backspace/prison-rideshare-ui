@@ -11,6 +11,10 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
     return this._loadCurrentUser();
   },
 
+  title(tokens) {
+    return `${tokens.join(' · ')} · Prison Rideshare`;
+  },
+
   sessionAuthenticated() {
     this._super(...arguments);
     this._loadCurrentUser();

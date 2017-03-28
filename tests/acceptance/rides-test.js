@@ -4,6 +4,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 import moment from 'moment';
 
@@ -55,6 +56,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   page.visit();
 
   andThen(() => {
+    assert.equal(shared.title, 'Rides · Prison Rideshare');
+
     assert.equal(page.rides().count, 2, 'expected the cancelled ride to be hidden');
     assert.notOk(page.head.cancelledSwitch.enabled, 'expected the cancelled switch to be off');
   });

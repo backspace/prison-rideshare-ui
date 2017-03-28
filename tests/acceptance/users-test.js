@@ -4,6 +4,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/users';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | reports', {
   beforeEach() {
@@ -25,6 +26,8 @@ test('list users and update admin status', function(assert) {
   page.visit();
 
   andThen(function() {
+    assert.equal(shared.title, 'Users · Prison Rideshare');
+
     assert.equal(page.users().count, 2, 'expected two users');
 
     assert.equal(page.users(0).email, 'abc@def.com');

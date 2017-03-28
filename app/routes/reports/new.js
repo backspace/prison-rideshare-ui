@@ -7,5 +7,7 @@ export default Ember.Route.extend({
     return this.store.findAll('ride').then(rides => rides.filterBy('enabled').filterBy('notComplete').rejectBy('isCombined').reject(ride => {
       return ride.get('start') > now;
     }));
-  }
+  },
+
+  titleToken: 'Ride report'
 });

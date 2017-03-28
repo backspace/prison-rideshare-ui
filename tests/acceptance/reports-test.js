@@ -4,6 +4,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/report';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | reports', {
   beforeEach() {
@@ -56,6 +57,8 @@ test('submit a report for a ride', function(assert) {
   page.visit();
 
   andThen(function() {
+    assert.equal(shared.title, 'Ride report · Prison Rideshare');
+
     assert.equal(page.rides().count, 2, 'expected two rides to choose from');
 
     assert.equal(page.rides(0).label, 'Sun, Dec 25 at 10:15am to Remand Centre');
