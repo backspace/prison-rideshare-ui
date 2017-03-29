@@ -175,19 +175,19 @@ test('create and edit a ride', function(assert) {
   andThen(() => {
     assert.equal(page.rides().count, 0, 'there should be no row for an unsaved ride');
 
-    assert.equal(page.form.passengersValue, '1', 'the form should default to one passenger');
+    assert.equal(page.form.passengers.value, '1', 'the form should default to one passenger');
   });
 
-  page.form.fillDate('2016-12-26');
-  page.form.fillStart('09:00');
-  page.form.fillEnd('11:30');
+  page.form.date.fillIn('2016-12-26');
+  page.form.start.fillIn('09:00');
+  page.form.end.fillIn('11:30');
 
-  page.form.fillName('Edward');
-  page.form.fillAddress('114 Spence');
-  page.form.fillContact('jants@example.com');
-  page.form.fillPassengers(2);
+  page.form.name.fillIn('Edward');
+  page.form.address.fillIn('114 Spence');
+  page.form.contact.fillIn('jants@example.com');
+  page.form.passengers.fillIn(2);
 
-  page.form.fillNotes('Some request notes?');
+  page.form.notes.fillIn('Some request notes?');
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
@@ -243,7 +243,7 @@ test('create and edit a ride', function(assert) {
 
   page.rides(0).edit();
 
-  page.form.fillName('Ed');
+  page.form.name.fillIn('Ed');
   page.form.cancel();
 
   andThen(function() {
@@ -256,7 +256,7 @@ test('create and edit a ride', function(assert) {
 
   page.rides(0).edit();
 
-  page.form.fillName('Edwina');
+  page.form.name.fillIn('Edwina');
 
   andThen(() => {
     assert.equal(page.rides(0).name, 'Edward + 1', 'expected the original model to not yet have changed');

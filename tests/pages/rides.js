@@ -3,11 +3,9 @@ import {
   clickable,
   collection,
   create,
-  fillable,
   hasClass,
   isVisible,
   text,
-  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -85,16 +83,37 @@ export default create({
 
     notice: text('.md-toolbar-tools'),
 
-    fillDate: fillable('.date input'),
-    fillStart: fillable('.start input'),
-    fillEnd: fillable('.end input'),
-    fillName: fillable('.name input'),
-    fillAddress: fillable('.address input'),
-    fillContact: fillable('.contact input'),
-    fillPassengers: fillable('.passengers input'),
-    passengersValue: value('.passengers input'),
+    date: {
+      scope: '.date input',
+    },
 
-    fillNotes: fillable('.request-notes textarea'),
+    start: {
+      scope: '.start input',
+    },
+
+    end: {
+      scope: '.end input',
+    },
+
+    name: {
+      scope: '.name input',
+    },
+
+    address: {
+      scope: '.address input',
+    },
+
+    contact: {
+      scope: '.contact input',
+    },
+
+    passengers: {
+      scope: '.passengers input',
+    },
+
+    notes: {
+      scope: '.request-notes textarea',
+    },
 
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')
