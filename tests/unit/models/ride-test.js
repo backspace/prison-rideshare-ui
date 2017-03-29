@@ -23,3 +23,12 @@ test('it processes incoming date and times', function(assert) {
   const end = model.get('end');
   assert.equal(moment(end).format('YYYY-MM-DD h:mma'), '2016-12-26 11:22pm');
 });
+
+test('it extracts the date from the start datetime', function(assert) {
+  const model = this.subject({
+    start: new Date(2017, 2, 28, 14, 23)
+  });
+
+  const date = model.get('date');
+  assert.equal(moment(date).format('YYYY-MM-DD'), '2017-03-28');
+});

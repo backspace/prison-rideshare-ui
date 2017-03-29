@@ -82,7 +82,14 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   });
 
   page.rides(0).edit();
-  andThen(() => assert.equal(page.form.notice, 'You are editing a cancelled ride!'));
+
+  andThen(() => {
+    assert.equal(page.form.notice, 'You are editing a cancelled ride!');
+    assert.equal(page.form.date.value, '2016-12-26', 'expected the date to be extracted from the start datetime');
+    assert.equal(page.form.start.value, '8:30pm', 'expected the start time to be extracted from the datetime');
+    assert.equal(page.form.end.value, '10:00pm', 'expected the end time to be extracted from the datetime');
+  });
+
   page.form.cancel();
 
   andThen(() => {

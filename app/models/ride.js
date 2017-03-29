@@ -41,6 +41,27 @@ export default DS.Model.extend({
   startTime: Ember.computed('date', 'start', timeGetAndSet('start')),
   endTime: Ember.computed('date', 'end', timeGetAndSet('end')),
 
+  date: Ember.computed('start', {
+    get() {
+      return moment(this.get('start')).format('YYYY-MM-DD');
+    },
+    set(key, value) {
+      const dateString = moment(value).format('YYYY-MM-DD');
+
+      const time = this.get('start');
+
+      if (time) {
+        const timeString = moment(time).format('h:mma');
+
+        this.set('start', moment(`${dateString} ${timeString}`).toDate());
+      } else {
+        this.set('start', moment(`${dateString}`).toDate());
+      }
+
+      return moment(this.get('start')).format('YYYY-MM-DD');
+    }
+  }),
+
   requestNotes: DS.attr(),
 
   distance: DS.attr(),
