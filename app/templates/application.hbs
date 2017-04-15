@@ -10,7 +10,7 @@
 
     {{#paper-content}}
       {{#paper-list}}
-        {{#if session.isAuthenticated}}
+        {{#if session.currentUser.admin}}
           {{#paper-item}}
             {{#link-to 'drivers'}}<span>Drivers</span>{{/link-to}}
           {{/paper-item}}
@@ -28,10 +28,12 @@
           {{#link-to 'reports.new'}}<span>Report</span>{{/link-to}}
         {{/paper-item}}
         {{#if session.isAuthenticated}}
-          {{#paper-item}}
-            {{#link-to 'users'}}<span>Users</span>{{/link-to}}
-          {{/paper-item}}
-          {{paper-divider}}
+          {{#if session.currentUser.admin}}
+            {{#paper-item}}
+              {{#link-to 'users'}}<span>Users</span>{{/link-to}}
+            {{/paper-item}}
+            {{paper-divider}}
+          {{/if}}
           {{#paper-item}}
             <span onclick={{action 'logout'}} class='session'>Log out {{session.currentUser.email}}</span>
           {{/paper-item}}
