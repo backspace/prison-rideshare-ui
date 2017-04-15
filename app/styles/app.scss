@@ -12,6 +12,16 @@ main {
   overflow-x: scroll;
 }
 
+md-toolbar {
+  md-chips {
+    margin-left: 1rem;
+
+    .md-chips.md-chips {
+      box-shadow: none;
+    }
+  }
+}
+
 md-sidenav {
   width: 150px;
   background-color: color($color-indigo, '600');

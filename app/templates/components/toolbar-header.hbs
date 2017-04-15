@@ -4,6 +4,7 @@
       {{paper-icon "menu"}}
     {{/paper-button}}
     <h2>{{title}}</h2>
+    {{#paper-chips readOnly=true content=chips as |item|}}<span title='{{item.title}}'>{{item.label}}</span>{{/paper-chips}}
     <span class='flex'></span>
     {{yield}}
   {{/toolbar.tools}}
