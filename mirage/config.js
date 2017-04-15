@@ -1,6 +1,8 @@
 export default function() {
   this.passthrough('/write-coverage');
 
+  this.logging = true;
+
   this.namespace = '/api';
 
   this.get('/rides');
