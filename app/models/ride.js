@@ -25,8 +25,8 @@ export default DS.Model.extend({
   contact: DS.attr(),
   passengers: DS.attr({defaultValue: 1}),
 
-  start: DS.attr(),
-  end: DS.attr(),
+  start: DS.attr('date'),
+  end: DS.attr('date'),
 
   rideTimes: Ember.computed('start', 'end', function () {
     const start = this.get('start');
@@ -119,7 +119,7 @@ function timeGetAndSet(property) {
   return {
     get() {
       const time = this.get(property);
-      return moment(time).format('h:mma');
+      return moment(time).format('HH:mm');
     },
     set(key, value) {
       const date = this.get('date');

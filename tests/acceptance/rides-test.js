@@ -86,8 +86,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(() => {
     assert.equal(page.form.notice, 'You are editing a cancelled ride!');
     assert.equal(page.form.date.value, '2016-12-26', 'expected the date to be extracted from the start datetime');
-    assert.equal(page.form.start.value, '8:30pm', 'expected the start time to be extracted from the datetime');
-    assert.equal(page.form.end.value, '10:00pm', 'expected the end time to be extracted from the datetime');
+    // FIXME this being 24-hour time is meh, despite my personal fondness. Cross-browser support for the time input type is a letdown!
+    assert.equal(page.form.start.value, '20:30', 'expected the start time to be extracted from the datetime');
+    assert.equal(page.form.end.value, '22:00', 'expected the end time to be extracted from the datetime');
   });
 
   page.form.cancel();
