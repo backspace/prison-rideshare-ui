@@ -1,46 +1,48 @@
 {{toolbar-header title='Record ride details'}}
 
-{{#paper-form onSubmit=(action 'submit') as |form|}}
-  <div class='layout layout-sm-column'>
-    {{#paper-radio-group
-      groupValue=(readonly rideProxy.content)
-      onChange=(action 'setRide') as |group|}}
-      {{#each (sort-by 'start' model) as |ride|}}
-        {{#group.radio value=ride}}
-          {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
-        {{/group.radio}}
-      {{/each}}
-    {{/paper-radio-group}}
-  </div>
+<div class='form-container'>
+  {{#paper-form onSubmit=(action 'submit') as |form|}}
+    <div class='layout layout-sm-column'>
+      {{#paper-radio-group
+        groupValue=(readonly rideProxy.content)
+        onChange=(action 'setRide') as |group|}}
+        {{#each (sort-by 'start' model) as |ride|}}
+          {{#group.radio value=ride}}
+            {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
+          {{/group.radio}}
+        {{/each}}
+      {{/paper-radio-group}}
+    </div>
 
-  <div class='layout layout-sm-column'>
-    {{form.input class='distance'
-                 type='number'
-                 label='Distance in kilometres'
-                 value=rideProxy.distance
-                 required=true
-                 onChange=(action (mut rideProxy.distance))}}
+    <div class='layout layout-sm-column'>
+      {{form.input class='distance'
+                   type='number'
+                   label='Distance in kilometres'
+                   value=rideProxy.distance
+                   required=true
+                   onChange=(action (mut rideProxy.distance))}}
 
-    {{form.input class='food-expenses'
-                 type='number'
-                 label='Food expenses'
-                 value=rideProxy.foodExpensesDollars
-                 onChange=(action (mut rideProxy.foodExpensesDollars))}}
-  </div>
-  <div class='layout layout-sm-column'>
-    {{form.input class='report-notes'
-                 textarea=true
-                 label='Notes'
-                 placeholder='Leave blank unless there’s anything unusual about the ride or the reimbursement (like paying driver for gas instead of car owner, etc)'
-                 value=rideProxy.reportNotes
-                 onChange=(action (mut rideProxy.reportNotes))}}
-  </div>
+      {{form.input class='food-expenses'
+                   type='number'
+                   label='Food expenses'
+                   value=rideProxy.foodExpensesDollars
+                   onChange=(action (mut rideProxy.foodExpensesDollars))}}
+    </div>
+    <div class='layout layout-sm-column'>
+      {{form.input class='report-notes'
+                   textarea=true
+                   label='Notes'
+                   placeholder='Leave blank unless there’s anything unusual about the ride or the reimbursement (like paying driver for gas instead of car owner, etc)'
+                   value=rideProxy.reportNotes
+                   onChange=(action (mut rideProxy.reportNotes))}}
+    </div>
 
-  <div class="layout-row">
-    {{#paper-button class='submit'
-                    raised=true primary=true
-                    onClick=(action 'submit')
-                    disabled=(or (not editingRide) form.isInvalid)}}Save{{/paper-button}}
-                    {{! FIXME simplify if/when form yields radio-group?}}
-  </div>
-{{/paper-form}}
+    <div class="layout-row">
+      {{#paper-button class='submit'
+                      raised=true primary=true
+                      onClick=(action 'submit')
+                      disabled=(or (not editingRide) form.isInvalid)}}Save{{/paper-button}}
+                      {{! FIXME simplify if/when form yields radio-group?}}
+    </div>
+  {{/paper-form}}
+</div>
