@@ -31,8 +31,7 @@
     <div class='layout layout-sm-column'>
       {{form.input class='report-notes'
                    textarea=true
-                   label='Notes'
-                   placeholder='Leave blank unless there’s anything unusual about the ride or the reimbursement (like paying driver for gas instead of car owner, etc)'
+                   label='Anything unusual to report?'
                    value=rideProxy.reportNotes
                    onChange=(action (mut rideProxy.reportNotes))}}
     </div>
