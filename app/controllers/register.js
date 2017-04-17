@@ -8,7 +8,14 @@ export default Ember.Controller.extend({
       event.preventDefault();
 
       const user = this.get('model');
-      user.save();
+      
+      return user.save().then(() => {
+        return this.get('session').authenticate(
+          'authenticator:application',
+          user.get('email'),
+          user.get('password')
+        );
+      });
     }
   }
 });

@@ -1,10 +1,31 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
+import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+
 import page from 'prison-rideshare-ui/tests/pages/register';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | registration', {
+  beforeEach() {
+    server.post('/token', schema => {
+      authenticateSession(this.application, {access_token: 'abcdef'});
+
+      // FIXME yeah…
+      schema.create('user', {
+        email: 'jorts@jants.ca',
+        password: 'aaaaaaaaa'
+      });
+
+      return {
+        access_token: 'abcdef'
+      };
+    });
+
+    server.get('/users/current', ({ users }) => {
+      return users.first();
+    });
+  }
 });
 
 test('registrations are sent to the server, currently with no followup', function(assert) {
@@ -25,5 +46,7 @@ test('registrations are sent to the server, currently with no followup', functio
 
     assert.equal(user.email, 'jorts@jants.ca');
     assert.equal(user.password, 'aaaaaaaaa');
+
+    assert.equal(shared.session.text, 'Log out jorts@jants.ca');
   });
 });
