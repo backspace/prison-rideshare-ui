@@ -1,26 +1,24 @@
 {{#paper-dialog}}
   {{#paper-form onSubmit=(action 'register') as |form|}}
-    <form onsubmit={{action form.onSubmit}}>
-      {{#paper-dialog-content}}
-        <h2 class='md-title'>Create an account</h2>
-        {{link-to 'Already have one?' 'login'}}
+    {{#paper-dialog-content}}
+      <h2 class='md-title'>Create an account</h2>
+      {{link-to 'Already have one?' 'login'}}
 
-        <div class='layout layout-row'>
-          {{form.input class='email' type='email' label='Email' autofocus=true value=model.email onChange=(action (mut model.email))}}
-        </div>
-        <div class='layout layout-row'>
-          {{form.input class='password' type='password' label='Password' value=model.password onChange=(action (mut model.password))}}
-        </div>
-        <div class='layout layout-row'>
-          {{form.input class='password-confirmation' type='password' label='Password confirmation' value=model.passwordConfirmation onChange=(action (mut model.passwordConfirmation))}}
-        </div>
-      {{/paper-dialog-content}}
+      <div class='layout layout-row'>
+        {{form.input class='email' type='email' label='Email' autofocus=true value=model.email onChange=(action (mut model.email))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password' type='password' label='Password' value=model.password onChange=(action (mut model.password))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=model.passwordConfirmation onChange=(action (mut model.passwordConfirmation))}}
+      </div>
+    {{/paper-dialog-content}}
 
-      {{#paper-dialog-actions class='layout-row'}}
-        <div class='layout layout-row'>
-          {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'register')}}Register{{/form.submit-button}}
-        </div>
-      {{/paper-dialog-actions}}
-    </form>
+    {{#paper-dialog-actions class='layout-row'}}
+      <div class='layout layout-row'>
+        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'register')}}Register{{/form.submit-button}}
+      </div>
+    {{/paper-dialog-actions}}
   {{/paper-form}}
 {{/paper-dialog}}

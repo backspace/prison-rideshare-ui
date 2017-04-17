@@ -5,22 +5,20 @@
     {{/paper-toolbar-tools}}
   {{/paper-toolbar}}
   {{#paper-form onSubmit=(action 'login') as |form|}}
-    <form onsubmit={{action form.onSubmit}}>
-      {{#paper-dialog-content}}
-        <div class='layout layout-row'>
-          {{form.input class='email' type='email' label='Email' autofocus=true value=model.email onChange=(action (mut model.email))}}
-        </div>
-        <div class='layout layout-row'>
-          {{form.input class='password' type='password' label='Password' value=model.password onChange=(action (mut model.password))}}
-        </div>
-      {{/paper-dialog-content}}
+    {{#paper-dialog-content}}
+      <div class='layout layout-row'>
+        {{form.input class='email' type='email' label='Email' autofocus=true value=model.email onChange=(action (mut model.email))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password' type='password' label='Password' value=model.password onChange=(action (mut model.password))}}
+      </div>
+    {{/paper-dialog-content}}
 
-      {{#paper-dialog-actions class='layout-row'}}
-        <div class='layout layout-row'>
-          {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'login')}}Log in{{/form.submit-button}}
-          {{#paper-button href='/register' class='flex-order--1'}}Register{{/paper-button}}
-        </div>
-      {{/paper-dialog-actions}}
-    </form>
+    {{#paper-dialog-actions class='layout-row'}}
+      <div class='layout layout-row'>
+        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'login')}}Log in{{/form.submit-button}}
+        {{#paper-button href='/register' class='flex-order--1'}}Register{{/paper-button}}
+      </div>
+    {{/paper-dialog-actions}}
   {{/paper-form}}
 {{/paper-dialog}}
