@@ -25,10 +25,6 @@ moduleForAcceptance('Acceptance | login', {
 });
 
 test('successful login forwards to the rides list', function(assert) {
-  server.get('/users/current', ({ users }) => {
-    return users.first();
-  });
-
   page.visit();
 
   andThen(() => assert.equal(shared.title, 'Log in · Prison Rideshare'));

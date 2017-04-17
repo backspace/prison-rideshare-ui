@@ -24,4 +24,8 @@ export default function() {
 
   this.get('/users');
   this.patch('/users/:id');
+
+  this.get('/users/current', ({ users }) => {
+    return users.first();
+  });
 }

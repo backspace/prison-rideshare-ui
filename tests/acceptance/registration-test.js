@@ -8,6 +8,8 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | registration', {
   beforeEach() {
+    // FIXME this is duplicated here and in login-test because it needs access to the application
+    // which seems impossible from mirage/config
     server.post('/token', schema => {
       authenticateSession(this.application, {access_token: 'abcdef'});
 
@@ -20,10 +22,6 @@ moduleForAcceptance('Acceptance | registration', {
       return {
         access_token: 'abcdef'
       };
-    });
-
-    server.get('/users/current', ({ users }) => {
-      return users.first();
     });
   }
 });
