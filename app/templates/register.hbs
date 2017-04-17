@@ -1,9 +1,11 @@
 {{#paper-dialog}}
+  {{#paper-toolbar}}
+    {{#paper-toolbar-tools}}
+      <h2 class='md-title'>Register</h2>
+    {{/paper-toolbar-tools}}
+  {{/paper-toolbar}}
   {{#paper-form onSubmit=(action 'register') as |form|}}
     {{#paper-dialog-content}}
-      <h2 class='md-title'>Create an account</h2>
-      {{link-to 'Already have one?' 'login'}}
-
       <div class='layout layout-row'>
         {{form.input class='email' type='email' label='Email' autofocus=true value=model.email onChange=(action (mut model.email))}}
       </div>
@@ -18,6 +20,7 @@
     {{#paper-dialog-actions class='layout-row'}}
       <div class='layout layout-row'>
         {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'register')}}Register{{/form.submit-button}}
+        {{#paper-button href='/login' class='flex-order--1'}}Log in{{/paper-button}}
       </div>
     {{/paper-dialog-actions}}
   {{/paper-form}}
