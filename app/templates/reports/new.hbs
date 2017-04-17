@@ -14,21 +14,22 @@
       {{/paper-radio-group}}
     </div>
 
-    <div class='layout layout-sm-column'>
+    <div class='layout-column'>
       {{form.input class='distance'
                    type='number'
                    label='Distance in kilometres'
                    value=rideProxy.distance
                    required=true
                    onChange=(action (mut rideProxy.distance))}}
-
+    </div>
+    <div class='layout-column'>
       {{form.input class='food-expenses'
                    type='number'
                    label='Food expenses if wanting reimbursement'
                    value=rideProxy.foodExpensesDollars
                    onChange=(action (mut rideProxy.foodExpensesDollars))}}
     </div>
-    <div class='layout layout-sm-column'>
+    <div class='layout-column'>
       {{#form.input class='report-notes'
                    textarea=true
                    label='Notes'
