@@ -29,11 +29,15 @@
                    onChange=(action (mut rideProxy.foodExpensesDollars))}}
     </div>
     <div class='layout layout-sm-column'>
-      {{form.input class='report-notes'
+      {{#form.input class='report-notes'
                    textarea=true
-                   label='Anything unusual to report?'
+                   label='Notes'
                    value=rideProxy.reportNotes
-                   onChange=(action (mut rideProxy.reportNotes))}}
+                   onChange=(action (mut rideProxy.reportNotes)) as |textHelper|}}
+        {{#unless textHelper.hasValue}}
+          <div class="hint">Anything unusual, like paying the driver for gas instead of car owner.</div>
+        {{/unless}}
+      {{/form.input}}
     </div>
 
     <div class="layout-row">
