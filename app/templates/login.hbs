@@ -12,6 +12,9 @@
       <div class='layout layout-row'>
         {{form.input class='password' type='password' label='Password' value=model.password onChange=(action (mut model.password))}}
       </div>
+      {{#if error}}
+        <div class='error'>There was an error logging you in.</div>
+      {{/if}}
     {{/paper-dialog-content}}
 
     {{#paper-dialog-actions class='layout-row'}}

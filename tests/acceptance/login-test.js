@@ -54,3 +54,16 @@ test('a failure from the current endpoint logs the user out', function(assert) {
     // Also, invalidating the session means this flash message won’t even survive.
   });
 });
+
+test('a failed login shows an error', function(assert) {
+  server.post('/token', () => { return {}; }, 401);
+
+  page.visit();
+  page.fillEmail('x');
+  page.submit();
+
+  andThen(() => {
+    assert.equal(currentURL(), '/login');
+    assert.equal(page.error, 'There was an error logging you in.');
+  });
+});

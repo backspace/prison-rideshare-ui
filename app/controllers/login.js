@@ -13,7 +13,9 @@ export default Ember.Controller.extend({
         'authenticator:application',
         user.get('email'),
         user.get('password')
-      );
+      ).catch(error => {
+        this.set('error', error);
+      })
     }
   }
 });
