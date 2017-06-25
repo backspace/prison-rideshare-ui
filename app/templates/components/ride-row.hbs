@@ -36,7 +36,7 @@
   {{#row.cell}}
     <span class='cancellation'>{{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
       {{#if ride.enabled}}
-        {{paper-icon 'delete'}}
+        {{paper-icon 'highlight off'}}
       {{else}}
         {{paper-icon cancellationIcon}}
       {{/if}}
