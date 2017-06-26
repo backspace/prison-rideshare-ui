@@ -23,6 +23,17 @@ moduleForAcceptance('Acceptance | debts', {
       end: new Date(2016, 11, 25, 12, 0)
     });
 
+    const secondSunRide = server.create('ride', {
+      driver: sun,
+      foodExpenses: 1000,
+
+      carOwner: sun,
+      carExpenses: 0,
+
+      start: new Date(2016, 11, 26, 10, 15),
+      end: new Date(2016, 11, 25, 12, 0)
+    });
+
     const willRide = server.create('ride', {
       driver: will,
       foodExpenses: 1919,
@@ -48,7 +59,7 @@ moduleForAcceptance('Acceptance | debts', {
       person: sun
     });
     // FIXME is this a Mirage bug? This was formerly within the creation but the mock server was returning *both* rides.
-    firstDebt.rides = [sunRide];
+    firstDebt.rides = [sunRide, secondSunRide];
 
     const secondDebt = server.create('debt', {
       person: will
@@ -68,13 +79,17 @@ test('debts are listed', function(assert) {
     assert.equal(page.people().count, 2, 'only people with outstanding debts are listed');
 
     const sun = page.people(0);
-    assert.equal(sun.foodExpenses, '110');
+    assert.equal(sun.foodExpenses, '120');
     assert.equal(sun.carExpenses, '0');
-    assert.equal(sun.totalExpenses, '110');
+    assert.equal(sun.totalExpenses, '120');
 
-    assert.equal(sun.rides().count, '1');
+    assert.equal(sun.rides().count, '2');
 
-    const sunRide = sun.rides(0);
+    const recentSunRide = sun.rides(0);
+    assert.equal(recentSunRide.date, 'Mon Dec 26 10:15am — 12:00');
+    assert.equal(recentSunRide.foodExpenses, '10');
+
+    const sunRide = sun.rides(1);
     assert.equal(sunRide.date, 'Sun Dec 25 10:15am — 12:00');
     assert.equal(sunRide.foodExpenses, '154');
     assert.equal(sunRide.carExpenses, '');

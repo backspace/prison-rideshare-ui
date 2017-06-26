@@ -10,6 +10,9 @@ export default DS.Model.extend({
 
   rides: DS.hasMany(),
 
+  descendingRides: Ember.computed.sort('rides', 'descendingRideSort'),
+  descendingRideSort: ['start:desc'],
+
   ridesWithFoodExpenses: Ember.computed('rides.@each.driver', 'person', function() {
     return this.get('rides').filterBy('driver.id', this.get('person.id'));
   }),

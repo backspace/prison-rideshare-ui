@@ -21,7 +21,7 @@
           {{/paper-button}}
         {{/row.cell}}
       {{/body.row}}
-      {{#each debt.rides as |ride|}}
+      {{#each debt.descendingRides as |ride|}}
         {{#body.row class='ride' as |row|}}
           {{#row.cell class='date'}}{{ride.rideTimes}}{{/row.cell}}
           {{#row.cell class='food-expenses'}}
