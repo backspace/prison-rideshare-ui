@@ -66,5 +66,9 @@ export default create({
 
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')
+  },
+
+  noReimbursementsMessage: {
+    scope: '.no-reimbursements'
   }
 });

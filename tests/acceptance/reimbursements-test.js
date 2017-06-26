@@ -113,6 +113,8 @@ test('process reimbursements', function(assert) {
 
     assert.ok(k.processed, 'expected the reimbursement to have been marked as processed');
     assert.ok(k.donation, 'expected the reimbursement to have been marked as a donation');
+
+    assert.ok(reimbursementsPage.noReimbursementsMessage.isVisible);
   })
 });
 

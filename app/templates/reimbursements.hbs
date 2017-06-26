@@ -1,32 +1,42 @@
 {{toolbar-header title='Reimbursements'}}
 
-{{#paper-data-table as |table|}}
-  {{#table.head as |head|}}
-    {{#head.column}}Person{{/head.column}}
-    {{#head.column}}Food{{/head.column}}
-    {{#head.column}}Car{{/head.column}}
-    {{#head.column}}Total{{/head.column}}
-    {{head.column}}
-  {{/table.head}}
-  {{#table.body as |body|}}
-    {{#each personAndReimbursements as |personAndReimbursementsInstanceLol|}}
-      {{#body.row class='person' as |row|}}
-        {{#row.cell class='name'}}{{personAndReimbursementsInstanceLol.person.name}}{{/row.cell}}
-        {{#row.cell class='food-expenses'}}{{personAndReimbursementsInstanceLol.foodExpensesDollars}}{{/row.cell}}
-        {{#row.cell class='car-expenses'}}{{personAndReimbursementsInstanceLol.carExpensesDollars}}{{/row.cell}}
-        {{#row.cell class='total-expenses'}}{{personAndReimbursementsInstanceLol.totalExpensesDollars}}{{/row.cell}}
-        {{#row.cell}}
-          {{#paper-button class='process' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol)}}
-            Process
-          {{/paper-button}}
-          {{#paper-button class='donate' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol true)}}
-            Donate
-          {{/paper-button}}
-        {{/row.cell}}
+{{#if personAndReimbursements}}
+  {{#paper-data-table as |table|}}
+    {{#table.head as |head|}}
+      {{#head.column}}Person{{/head.column}}
+      {{#head.column}}Food{{/head.column}}
+      {{#head.column}}Car{{/head.column}}
+      {{#head.column}}Total{{/head.column}}
+      {{head.column}}
+    {{/table.head}}
+    {{#table.body as |body|}}
+      {{#each personAndReimbursements as |personAndReimbursementsInstanceLol|}}
+        {{#body.row class='person' as |row|}}
+          {{#row.cell class='name'}}{{personAndReimbursementsInstanceLol.person.name}}{{/row.cell}}
+          {{#row.cell class='food-expenses'}}{{personAndReimbursementsInstanceLol.foodExpensesDollars}}{{/row.cell}}
+          {{#row.cell class='car-expenses'}}{{personAndReimbursementsInstanceLol.carExpensesDollars}}{{/row.cell}}
+          {{#row.cell class='total-expenses'}}{{personAndReimbursementsInstanceLol.totalExpensesDollars}}{{/row.cell}}
+          {{#row.cell}}
+            {{#paper-button class='process' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol)}}
+              Process
+            {{/paper-button}}
+            {{#paper-button class='donate' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol true)}}
+              Donate
+            {{/paper-button}}
+          {{/row.cell}}
+        {{/body.row}}
+      {{/each}}
+    {{/table.body}}
+  {{/paper-data-table}}
+{{else}}
+  {{#paper-data-table as |table|}}
+    {{#table.body as |body|}}
+      {{#body.row as |row|}}
+        {{#row.cell class='no-reimbursements'}}There are no unprocessed reimbursements to view.{{/row.cell}}
       {{/body.row}}
-    {{/each}}
-  {{/table.body}}
-{{/paper-data-table}}
+    {{/table.body}}
+  {{/paper-data-table}}
+{{/if}}
 
 {{#paper-switch class='processed' value=showProcessed onChange=(action (mut showProcessed))}}
   Show processed reimbursements
