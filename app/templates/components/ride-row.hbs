@@ -8,9 +8,11 @@
   {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
   {{#row.cell class='driver-and-car-owner'}}
     {{#if combined}}
-      {{#paper-button class='combine' iconButton=true aria-label='Uncombine this ride' title='Uncombine this ride' onClick=(action uncombineRide ride)}}
-        {{paper-icon 'merge type'}}
-      {{/paper-button}}
+      {{#if (not rideToCombine)}}
+        {{#paper-button class='combine' iconButton=true aria-label='Uncombine this ride' title='Uncombine this ride' onClick=(action uncombineRide ride)}}
+          {{paper-icon 'merge type'}}
+        {{/paper-button}}
+      {{/if}}
     {{else}}
       <span class='driver'>{{#paper-select
         selected=ride.driver
