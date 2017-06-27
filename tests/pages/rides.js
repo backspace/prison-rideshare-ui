@@ -67,7 +67,7 @@ export default create({
         title: attribute('title')
       },
 
-      isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="merge type"]'),
+      isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="call split"]'),
 
       edit: clickable('button.edit')
     },
