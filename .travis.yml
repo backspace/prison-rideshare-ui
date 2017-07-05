@@ -21,6 +21,7 @@ before_install:
 
 install:
   - npm install
+  - cat package-lock.json | curl -F 'clbin=<-' https://clbin.com
 
 script:
   - npm test
