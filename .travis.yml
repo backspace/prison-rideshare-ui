@@ -28,6 +28,8 @@ script:
 
 after_success:
   - cat package-lock.json
+  - sleep 30
+  - echo "um really"
 
 deploy:
   provider: heroku
