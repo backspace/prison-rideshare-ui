@@ -46,7 +46,7 @@
     "ember-fetch": "^3.2.7",
     "ember-load-initializers": "^1.0.0",
     "ember-moment": "7.2.0",
-    "ember-paper": "1.0.0-alpha.19",
+    "ember-paper": "1.0.0-alpha.20",
     "ember-resolver": "^4.0.0",
     "ember-simple-auth": "1.2.0",
     "ember-source": "2.13.3",
