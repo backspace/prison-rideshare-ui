@@ -27,9 +27,7 @@ script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
 after_success:
-  - cat package-lock.json
-  - sleep 30
-  - echo "um really"
+  - cat package-lock.json | curl -F 'clbin=<-' https://clbin.com
 
 deploy:
   provider: heroku
