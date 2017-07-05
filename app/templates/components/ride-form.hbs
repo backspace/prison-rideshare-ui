@@ -4,29 +4,41 @@
     {{#if warning}}{{#paper-toolbar}}{{#paper-toolbar-tools}}{{warning}}{{/paper-toolbar-tools}}{{/paper-toolbar}}{{/if}}
     <h2 class='md-title'>Record a ride request</h2>
     {{#paper-form onSubmit=save as |form|}}
-      <div class='layout layout-sm-column'>
-        {{form.input class='date' label='Date' type='date' autofocus=true value=ride.date onChange=(action (mut ride.date))}}
-        {{form.input class='start' label='Start' type='time' value=ride.startTime onChange=(action (mut ride.startTime))}}
-        {{form.input class='end' label='End' type='time' value=ride.endTime onChange=(action (mut ride.endTime))}}
+      <div class='layout-row layout-xs-column'>
+        <div class='flex'>
+          {{form.input class='date' label='Date' type='date' autofocus=true value=ride.date onChange=(action (mut ride.date))}}
+        </div>
+        <div class='flex'>
+          {{form.input class='start' label='Start' type='time' value=ride.startTime onChange=(action (mut ride.startTime))}}
+          {{form.input class='end' label='End' type='time' value=ride.endTime onChange=(action (mut ride.endTime))}}
+        </div>
 
-        {{#paper-select
-          class='institution'
-          placeholder="Institution"
-          selected=ride.institution
-          options=institutions
-          onChange=(action (mut ride.institution))
-          as |institution|}}
-          {{institution.name}}
-        {{/paper-select}}
+        <div class='flex'>
+          {{#paper-select
+            class='institution'
+            placeholder="Institution"
+            selected=ride.institution
+            options=institutions
+            onChange=(action (mut ride.institution))
+            as |institution|}}
+            {{institution.name}}
+          {{/paper-select}}
+        </div>
       </div>
 
       <h3 class='md-title'>Visitor details</h3>
 
-      <div class='layout layout-sm-column'>
-        {{form.input class='name' label='Name' value=ride.name onChange=(action (mut ride.name))}}
-        {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers))}}
-        {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address))}}
-        {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact))}}
+      <div class='layout-row layout-xs-column'>
+        <div class='flex'>
+          {{form.input class='name' label='Name' value=ride.name onChange=(action (mut ride.name))}}
+          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers))}}
+        </div>
+        <div class='flex'>
+          {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address))}}
+        </div>
+        <div class='flex'>
+          {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact))}}
+        </div>
       </div>
 
       <div class='layout layout-sm-column'>
