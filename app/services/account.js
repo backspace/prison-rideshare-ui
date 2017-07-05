@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-import fetch from 'ember-network/fetch';
+import fetch from 'fetch';
 import config from '../config/environment';
 
 const { inject: { service }, RSVP, Service, isEmpty } = Ember;
