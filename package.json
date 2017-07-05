@@ -55,7 +55,7 @@
     "paper-data-table": "xomaczar/paper-data-table#ember@2.10.1"
   },
   "engines": {
-    "node": ">= 4"
+    "node": "6.9.1"
   },
   "private": true
 }
