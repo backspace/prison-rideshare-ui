@@ -21,14 +21,10 @@ before_install:
 
 install:
   - npm install
-  - cat package-lock.json | curl -F 'clbin=<-' https://clbin.com
 
 script:
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
-
-after_success:
-  - cat package-lock.json | curl -F 'clbin=<-' https://clbin.com
 
 deploy:
   provider: heroku
