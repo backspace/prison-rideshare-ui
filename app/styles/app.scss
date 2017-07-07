@@ -95,3 +95,20 @@ md-table-container.debts .person .name {
   transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
   color: grey;
 }
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(359deg);}
+}
+
+.ember-load-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 200%;
+
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}

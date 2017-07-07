@@ -44,6 +44,7 @@
     "ember-data": "2.14.3",
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "^3.2.7",
+    "ember-load": "0.0.12",
     "ember-load-initializers": "^1.0.0",
     "ember-moment": "7.2.0",
     "ember-paper": "1.0.0-alpha.20",
