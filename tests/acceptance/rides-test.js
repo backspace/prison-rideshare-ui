@@ -123,6 +123,15 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   });
 
   page.rides(2).cancellation.click();
+  page.cancellationForm.other.fillIn('other!');
+  page.cancellationForm.save();
+
+  andThen(function() {
+    assert.ok(page.rides(2).cancellation.showsOther, 'expected the ride to now be cancelled with another reason');
+    assert.equal(page.rides(2).cancellation.title, 'Edit cancellation: other!');
+  });
+
+  page.rides(2).cancellation.click();
   page.cancellationForm.cancelled.click();
   page.cancellationForm.save();
 

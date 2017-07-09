@@ -39,7 +39,10 @@ export default create({
         click: clickable('button'),
         showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
         showsVisitor: isVisible('button md-icon[md-font-icon="perm identity"]'),
-        showsNotCancelled: isVisible('button md-icon[md-font-icon="highlight off"]')
+        showsNotCancelled: isVisible('button md-icon[md-font-icon="highlight off"]'),
+        showsOther: isVisible('button md-icon[md-font-icon="help"]'),
+
+        title: attribute('title', 'button')
       },
 
       name: text('.name'),
@@ -135,6 +138,11 @@ export default create({
     reason: {
       value: text('.ember-power-select-selected-item')
     },
+
+    other: {
+      scope: '.md-input',
+    },
+
     save: clickable('button.submit')
   }
 });

@@ -20,6 +20,12 @@
           {{reason}}
         {{/paper-select}}
       </div>
+
+      {{form.input class='other'
+                   label='Other reason'
+                   value=ride.cancellationReason
+                   onChange=(action (mut ride.cancellationReason))}}
+
     {{/paper-form}}
   {{/paper-dialog-content}}
 
