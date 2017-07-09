@@ -99,6 +99,10 @@ export default create({
       scope: '.name input',
     },
 
+    nameError: {
+      scope: '.name .paper-input-error'
+    },
+
     address: {
       scope: '.address input',
     },

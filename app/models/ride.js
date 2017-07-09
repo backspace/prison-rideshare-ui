@@ -25,6 +25,16 @@ export default DS.Model.extend({
   contact: DS.attr(),
   passengers: DS.attr({defaultValue: 1}),
 
+  validationErrors: Ember.computed('errors.[]', function() {
+    const attributes = Ember.get(this.constructor, 'attributes');
+
+    return attributes._keys.list.reduce((response, key) => {
+      const errors = this.get(`errors.${key}`) || [];
+      response[key] = errors.mapBy('message');
+      return response;
+    }, {});
+  }),
+
   start: DS.attr('date'),
   end: DS.attr('date'),
 

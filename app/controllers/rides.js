@@ -47,7 +47,9 @@ export default Ember.Controller.extend({
 
     submit(proxy) {
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingRide', undefined));
+      return proxy.get('content').save().then(() => this.set('editingRide', undefined)).catch(() => {
+        // FIXME what is to be done?
+      });
     },
 
     cancel() {

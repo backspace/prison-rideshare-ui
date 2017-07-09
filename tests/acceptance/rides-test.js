@@ -281,6 +281,26 @@ test('create and edit a ride', function(assert) {
   });
 });
 
+test('ride validation errors are displayed', function(assert) {
+  server.post('/rides', {
+      errors: [{
+        'source': {
+          'pointer': '/data/attributes/name'
+        },
+        'detail': 'Name can\'t be blank'
+      }]
+    }, 422);
+
+  page.visit();
+  page.newRide();
+
+  page.form.submit();
+
+  andThen(() => {
+    assert.equal(page.form.nameError.text, 'Name can\'t be blank');
+  });
+});
+
 test('rides can be combined and uncombined', function(assert) {
   const today = new Date();
   const yesterday = new Date(today.getTime() - 1000*60*60*24);

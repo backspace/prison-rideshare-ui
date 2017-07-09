@@ -9,8 +9,8 @@
           {{form.input class='date' label='Date' type='date' autofocus=true value=ride.date onChange=(action (mut ride.date))}}
         </div>
         <div class='flex'>
-          {{form.input class='start' label='Start' type='time' value=ride.startTime onChange=(action (mut ride.startTime))}}
-          {{form.input class='end' label='End' type='time' value=ride.endTime onChange=(action (mut ride.endTime))}}
+          {{form.input class='start' label='Start' type='time' value=ride.startTime onChange=(action (mut ride.startTime)) errors=ride.validationErrors.start isTouched=ride.validationErrors.start.length}}
+          {{form.input class='end' label='End' type='time' value=ride.endTime onChange=(action (mut ride.endTime)) errors=ride.validationErrors.end isTouched=ride.validationErrors.end.length}}
         </div>
 
         <div class='flex'>
@@ -30,14 +30,14 @@
 
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
-          {{form.input class='name' label='Name' value=ride.name onChange=(action (mut ride.name))}}
-          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers))}}
+          {{form.input class='name' label='Name' value=ride.name onChange=(action (mut ride.name)) errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length}}
+          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=ride.validationErrors.passengers.length}}
         </div>
         <div class='flex'>
-          {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address))}}
+          {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address)) errors=ride.validationErrors.address isTouched=ride.validationErrors.address.length}}
         </div>
         <div class='flex'>
-          {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact))}}
+          {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact)) errors=ride.validationErrors.contact isTouched=ride.validationErrors.contact.length}}
         </div>
       </div>
 
