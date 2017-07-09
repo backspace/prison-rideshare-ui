@@ -8,7 +8,10 @@ const reasonToIcon = {
   'transfer': 'shuffle',
   'error': 'error',
   'visitor missing': 'perm identity',
-  'driver missing': 'directions car'
+  'driver missing': 'directions car',
+  'driver cancelled': 'hot tub',
+  'released': 'lock open',
+  'jail cancelled': 'alarm off',
 };
 
 export default reasonToIcon;
