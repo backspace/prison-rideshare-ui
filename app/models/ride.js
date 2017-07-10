@@ -48,30 +48,6 @@ export default DS.Model.extend({
   driver: DS.belongsTo('person'),
   carOwner: DS.belongsTo('person'),
 
-  startTime: Ember.computed('date', 'start', timeGetAndSet('start')),
-  endTime: Ember.computed('date', 'end', timeGetAndSet('end')),
-
-  date: Ember.computed('start', {
-    get() {
-      return moment(this.get('start')).format('YYYY-MM-DD');
-    },
-    set(key, value) {
-      const dateString = moment(value).format('YYYY-MM-DD');
-
-      const time = this.get('start');
-
-      if (time) {
-        const timeString = moment(time).format('h:mma');
-
-        this.set('start', moment(`${dateString} ${timeString}`).toDate());
-      } else {
-        this.set('start', moment(`${dateString}`).toDate());
-      }
-
-      return moment(this.get('start')).format('YYYY-MM-DD');
-    }
-  }),
-
   requestNotes: DS.attr(),
 
   distance: DS.attr(),
@@ -124,20 +100,3 @@ export default DS.Model.extend({
     }
   })
 });
-
-function timeGetAndSet(property) {
-  return {
-    get() {
-      const time = this.get(property);
-      return moment(time).format('HH:mm');
-    },
-    set(key, value) {
-      const date = this.get('date');
-      const dateString = moment(date).format('YYYY-MM-DD');
-
-      // FIXME inefficient, no?
-      this.set(property, moment(`${dateString} ${value}`).toDate());
-      return value;
-    }
-  };
-}
