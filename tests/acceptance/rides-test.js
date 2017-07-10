@@ -85,10 +85,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
   andThen(() => {
     assert.equal(page.form.notice, 'You are editing a cancelled ride!');
-    assert.equal(page.form.date.value, '2016-12-26', 'expected the date to be extracted from the start datetime');
-    // FIXME this being 24-hour time is meh, despite my personal fondness. Cross-browser support for the time input type is a letdown!
-    assert.equal(page.form.start.value, '20:30', 'expected the start time to be extracted from the datetime');
-    assert.equal(page.form.end.value, '22:00', 'expected the end time to be extracted from the datetime');
+
+    assert.ok(page.form.start.value.startsWith('Mon Dec 26 2016 20:30:00'), `expected the start time ${page.form.start.value} to start with 'Mon Dec 26 2016 20:30:00'`);
+    assert.ok(page.form.end.value.startsWith('Mon Dec 26 2016 22:00:00'), `expected the end time ${page.form.end.value} to end with 'Mon Dec 26 2016 22:00:00'`);
   });
 
   page.form.cancel();
@@ -195,9 +194,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(page.form.passengers.value, '1', 'the form should default to one passenger');
   });
 
-  page.form.date.fillIn('2016-12-26');
-  page.form.start.fillIn('09:00');
-  page.form.end.fillIn('11:30');
+  page.form.timespan.fillIn('Dec 26 2016 from 9 to 11:30');
 
   page.form.name.fillIn('Edward');
   page.form.address.fillIn('114 Spence');

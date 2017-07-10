@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import chrono from 'npm:chrono-node';
 
 export default Ember.Component.extend({
   institutionsService: Ember.inject.service('institutions'),
@@ -15,5 +16,25 @@ export default Ember.Component.extend({
     } else {
       return false;
     }
-  })
+  }),
+
+  actions: {
+    timespanUpdated(value) {
+      this.set('ride.timespan', value);
+
+      const parsed = ((chrono.parse(value) || [])[0] || {});
+
+      Ember.run.debounce(this, 'handleUpdatedTimespan', parsed, 500);
+    }
+  },
+
+  handleUpdatedTimespan(parsed) {
+    if (parsed.start) {
+      this.set('ride.start', parsed.start.date());
+    }
+
+    if (parsed.end) {
+      this.set('ride.end', parsed.end.date());
+    }
+  }
 });

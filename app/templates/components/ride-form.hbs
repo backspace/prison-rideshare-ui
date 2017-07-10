@@ -4,15 +4,18 @@
     {{#if warning}}{{#paper-toolbar}}{{#paper-toolbar-tools}}{{warning}}{{/paper-toolbar-tools}}{{/paper-toolbar}}{{/if}}
     <h2 class='md-title'>Record a ride request</h2>
     {{#paper-form onSubmit=save as |form|}}
+      <div class='layout-column'>
+        {{form.input class='timespan' label='Timespan' textarea=true value=ride.timespan onChange=(action 'timespanUpdated')}}
+      </div>
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
-          {{form.input class='date' label='Date' type='date' autofocus=true value=ride.date onChange=(action (mut ride.date))}}
+          {{form.input class='start' label='Start' value=ride.start disabled=true onChange=null}}
         </div>
         <div class='flex'>
-          {{form.input class='start' label='Start' type='time' value=ride.startTime onChange=(action (mut ride.startTime)) errors=ride.validationErrors.start isTouched=ride.validationErrors.start.length}}
-          {{form.input class='end' label='End' type='time' value=ride.endTime onChange=(action (mut ride.endTime)) errors=ride.validationErrors.end isTouched=ride.validationErrors.end.length}}
+          {{form.input class='end' label='End' value=ride.end disabled=true onChange=null}}
         </div>
-
+      </div>
+      <div class='layout-row layout-xs-column'>
         <div class='flex'>
           {{#paper-select
             class='institution'

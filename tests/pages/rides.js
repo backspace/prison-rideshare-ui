@@ -86,16 +86,16 @@ export default create({
 
     notice: text('.md-toolbar-tools'),
 
-    date: {
-      scope: '.date input',
+    timespan: {
+      scope: '.timespan textarea'
     },
 
     start: {
-      scope: '.start input',
+      scope: '.start input'
     },
 
     end: {
-      scope: '.end input',
+      scope: '.end input'
     },
 
     name: {
