@@ -22,19 +22,17 @@ export default Ember.Component.extend({
     timespanUpdated(value) {
       this.set('ride.timespan', value);
 
-      const parsed = ((chrono.parse(value) || [])[0] || {});
+      const [parsed] = chrono.parse(value);
 
-      Ember.run.debounce(this, 'handleUpdatedTimespan', parsed, 500);
-    }
-  },
+      if (parsed) {
+        if (parsed.start) {
+          this.set('ride.start', parsed.start.date());
+        }
 
-  handleUpdatedTimespan(parsed) {
-    if (parsed.start) {
-      this.set('ride.start', parsed.start.date());
-    }
-
-    if (parsed.end) {
-      this.set('ride.end', parsed.end.date());
+        if (parsed.end) {
+          this.set('ride.end', parsed.end.date());
+        }
+      }
     }
   }
 });
