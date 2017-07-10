@@ -42,7 +42,8 @@ export default Ember.Controller.extend({
     savePerson() {
       const proxy = this.get('editingPerson');
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingPerson', undefined));
+      return proxy.get('content').save().then(() => this.set('editingPerson', undefined))
+        .catch(() => {});
     },
 
     cancelPerson() {

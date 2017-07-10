@@ -66,3 +66,22 @@ test('a person can be created', function(assert) {
     assert.equal(capheus.name, 'Capheus');
   });
 });
+
+test('person validation errors are displayed', function(assert) {
+  server.post('/people', {
+      errors: [{
+        'source': {
+          'pointer': '/data/attributes/name'
+        },
+        'detail': 'Name can\'t be blank'
+      }]
+    }, 422);
+
+  page.visit();
+  page.newPerson();
+  page.form.submit();
+
+  andThen(() => {
+    assert.equal(page.form.nameError.text, 'Name can\'t be blank');
+  });
+});

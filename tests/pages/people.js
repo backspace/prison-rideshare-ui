@@ -26,6 +26,10 @@ export default create({
       fill: fillable()
     },
 
+    nameError: {
+      scope: '.name .paper-input-error'
+    },
+
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')
   }
