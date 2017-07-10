@@ -2,7 +2,7 @@
 
   {{#paper-dialog-content}}
     {{#if warning}}{{#paper-toolbar}}{{#paper-toolbar-tools}}{{warning}}{{/paper-toolbar-tools}}{{/paper-toolbar}}{{/if}}
-    <h2 class='md-title'>Record a ride request</h2>
+    <h2 class='md-title'>{{if ride.isNew 'Record' 'Edit'}} a ride request</h2>
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout-column'>
         {{#form.input class='timespan' label='Timespan' textarea=true value=ride.timespan onChange=(action 'timespanUpdated') as |textHelper|}}
