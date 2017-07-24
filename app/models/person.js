@@ -18,4 +18,14 @@ export default DS.Model.extend({
       return response;
     }, {});
   }),
+
+  initials: Ember.computed('name', function() {
+    const name = this.get('name');
+
+    if (!name || name === '') {
+      return '??';
+    } else {
+      return name.toUpperCase().split(/[ -]/).map(segment => segment[0]).join('');
+    }
+  }),
 });
