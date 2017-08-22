@@ -43,6 +43,10 @@ module.exports = function(environment) {
     ENV['ember-cli-mirage'] = {
       enabled: false
     };
+
+    if (process.env.API_HOST) {
+      ENV.DS.host = process.env.API_HOST;
+    }
   }
 
   if (environment === 'test') {
