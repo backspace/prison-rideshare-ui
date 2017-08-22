@@ -48,3 +48,9 @@
     {{/paper-button}}
   {{/row.cell}}
 {{/body.row}}
+{{#if ride.requestNotes}}
+  {{#body.row class='notes' as |row|}}
+    {{row.cell}}
+    {{#row.cell class='notes' colspan=6}}{{ride.requestNotes}}{{/row.cell}}
+  {{/body.row}}
+{{/if}}

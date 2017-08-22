@@ -37,6 +37,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     passengers: 3,
     institution: leavenworth,
 
+    requestNotes: 'These are some request notes.',
+
     driver: sun,
     carOwner: lito
   });
@@ -79,6 +81,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
+
+    assert.equal(page.notes().count, 1, 'expected the notes to be visible');
+    assert.equal(page.notes(0).text, 'These are some request notes.');
   });
 
   page.rides(0).edit();
@@ -190,6 +195,7 @@ test('create and edit a ride', function(assert) {
 
   andThen(() => {
     assert.equal(page.rides().count, 0, 'there should be no row for an unsaved ride');
+    assert.equal(page.notes().count, 0, 'there should be no notes when there are no rides');
 
     assert.equal(page.form.passengers.value, '1', 'the form should default to one passenger');
   });
@@ -201,7 +207,6 @@ test('create and edit a ride', function(assert) {
   page.form.contact.fillIn('jants@example.com');
   page.form.passengers.fillIn(2);
 
-  page.form.notes.fillIn('Some request notes?');
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
@@ -226,7 +231,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.contact, 'jants@example.com');
     assert.equal(lastRide.passengers, 2);
     assert.equal(lastRide.institutionId, rockwood.id);
-    assert.equal(lastRide.requestNotes, 'Some request notes?');
+    assert.equal(lastRide.requestNotes, undefined, 'expected the notes to have been unspecified');
   });
 
   page.rides(0).driver.click();
@@ -235,6 +240,8 @@ test('create and edit a ride', function(assert) {
   andThen(function() {
     assert.equal(page.rides(0).driver.text, 'Sun');
     assert.equal(page.rides(0).carOwner.text, 'Sun', 'expected the car owner to be set automatically');
+
+    assert.equal(page.notes().count, 0, 'expected no notes on the new ride');
 
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
@@ -271,6 +278,7 @@ test('create and edit a ride', function(assert) {
   page.rides(0).edit();
 
   page.form.name.fillIn('Edwina');
+  page.form.notes.fillIn('Some request notes?');
 
   andThen(() => {
     assert.equal(page.rides(0).name, 'Edward + 1', 'expected the original model to not yet have changed');
@@ -281,9 +289,13 @@ test('create and edit a ride', function(assert) {
   andThen(function() {
     assert.equal(page.rides(0).name, 'Edwina + 1');
 
+    assert.equal(page.notes().count, 1, 'expected the notes for the new ride to show');
+    assert.equal(page.notes(0).text, 'Some request notes?');
+
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
     assert.equal(lastRide.name, 'Edwina');
+    assert.equal(lastRide.requestNotes, 'Some request notes?');
   });
 });
 
