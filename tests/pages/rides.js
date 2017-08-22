@@ -72,11 +72,7 @@ export default create({
 
       isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="call split"]'),
 
-      edit: clickable('button.edit'),
-
-      note: {
-        scope: 'button.note'
-      }
+      edit: clickable('button.edit')
     },
 
     head: {
