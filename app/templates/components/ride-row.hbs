@@ -46,5 +46,10 @@
     {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action editRide ride)}}
       {{paper-icon 'mode edit'}}
     {{/paper-button}}
+    {{#if ride.requestNotes}}
+      {{#paper-button iconButton=true aria-label='View request note' title='View request note' class='note'}}
+        {{paper-icon 'comment'}}
+      {{/paper-button}}
+    {{/if}}
   {{/row.cell}}
 {{/body.row}}

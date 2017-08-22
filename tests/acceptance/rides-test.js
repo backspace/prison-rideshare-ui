@@ -37,6 +37,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     passengers: 3,
     institution: leavenworth,
 
+    requestNotes: 'These are some request notes.',
+
     driver: sun,
     carOwner: lito
   });
@@ -76,6 +78,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
+    assert.ok(ride.note.isVisible, 'expected the ride to show that it has a note');
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
@@ -96,6 +99,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.ok(page.rides(1).enabled, 'expected the other ride to be enabled');
     assert.ok(page.rides(1).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
+    assert.ok(page.rides(1).note.isHidden, 'expected the other ride to not have a note');
 
     assert.ok(page.rides(2).name, 'Visitor', 'expected the combined ride to be beneath its parent');
     assert.ok(page.rides(2).isCombined, 'expected the combined ride to show it is combined');
