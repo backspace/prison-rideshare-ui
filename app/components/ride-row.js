@@ -8,6 +8,8 @@ export default Ember.Component.extend({
 
   tagName: '',
 
+  showNotes: false,
+
   cancellationIcon: Ember.computed('ride.cancellationReason', function() {
     const reason = this.get('ride.cancellationReason');
     const icon = reasonToIcon[reason];
@@ -63,6 +65,10 @@ export default Ember.Component.extend({
 
       ride.set('carOwner', carOwner);
       return ride.save();
+    },
+
+    toggleNotes() {
+      this.toggleProperty('showNotes');
     }
   }
 });

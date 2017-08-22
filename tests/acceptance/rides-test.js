@@ -82,6 +82,21 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
+
+    assert.equal(page.notes().count, 0, 'expected no notes to be showing');
+  });
+
+  page.rides(0).note.click();
+
+  andThen(() => {
+    assert.equal(page.notes().count, 1, 'expected the notes to be showing');
+    assert.equal(page.notes(0).text, 'These are some request notes.');
+  });
+
+  page.rides(0).note.click();
+
+  andThen(() => {
+    assert.equal(page.notes().count, 0, 'expected the notes to be hiding again');
   });
 
   page.rides(0).edit();

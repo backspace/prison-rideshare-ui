@@ -47,9 +47,14 @@
       {{paper-icon 'mode edit'}}
     {{/paper-button}}
     {{#if ride.requestNotes}}
-      {{#paper-button iconButton=true aria-label='View request note' title='View request note' class='note'}}
+      {{#paper-button iconButton=true aria-label='View request note' title='View request note' class='note' onClick=(action 'toggleNotes')}}
         {{paper-icon 'comment'}}
       {{/paper-button}}
     {{/if}}
   {{/row.cell}}
 {{/body.row}}
+{{#if showNotes}}
+  {{#body.row class='notes' as |row|}}
+    {{#row.cell class='notes'}}{{ride.requestNotes}}{{/row.cell}}
+  {{/body.row}}
+{{/if}}

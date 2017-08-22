@@ -85,6 +85,14 @@ export default create({
     }
   }),
 
+  notes: collection({
+    itemScope: 'tr.notes',
+
+    item: {
+      text: text('td.notes')
+    }
+  }),
+
   form: {
     scope: '.md-dialog-container',
 
