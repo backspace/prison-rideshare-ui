@@ -4,6 +4,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/people';
+import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | people', {
@@ -11,6 +12,8 @@ moduleForAcceptance('Acceptance | people', {
     server.create('person', {name: 'Sun'});
     server.create('person', {name: 'Kala'});
     server.create('person', {name: 'Will'});
+
+    server.create('ride');
 
     authenticateSession(this.application);
   }
@@ -48,7 +51,10 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
   });
 });
 
-test('a person can be created', function(assert) {
+test('a person can be created and chosen for a ride', function(assert) {
+  ridesPage.visit();
+  ridesPage.rides(0).driver.click();
+
   page.visit();
 
   page.newPerson();
@@ -64,6 +70,14 @@ test('a person can be created', function(assert) {
 
     const [,,,capheus] = server.db.people;
     assert.equal(capheus.name, 'Capheus');
+  });
+
+  ridesPage.visit();
+  ridesPage.rides(0).driver.click();
+  selectChoose('.driver md-input-container', 'Capheus');
+
+  andThen(() => {
+    assert.equal(ridesPage.rides(0).driver.text, 'Capheus');
   });
 });
 
