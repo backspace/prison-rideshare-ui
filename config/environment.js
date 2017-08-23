@@ -31,7 +31,9 @@ module.exports = function(environment) {
     'ember-simple-auth': {
       authenticationRoute: 'login',
       routeAfterAuthentication: 'index'
-    }
+    },
+
+    sentry: {}
   };
 
   if (environment === 'development') {
@@ -64,6 +66,12 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    if (process.env.SENTRY_DSN) {
+      ENV.sentry = {
+        dsn: process.env.SENTRY_DSN
+      };
+    }
+
     if (process.env.API_HOST) {
       ENV.DS.host = process.env.API_HOST;
     } else {
