@@ -16,8 +16,6 @@ moduleForAcceptance('Acceptance | reports', {
       name: 'Remand Centre'
     });
 
-    const francine = server.create('person', {name: 'Francine Pascal'});
-
     const edwardRide = server.create('ride', {
       name: 'Edward',
       start: new Date(2016, 11, 27, 17, 0),
@@ -32,7 +30,7 @@ moduleForAcceptance('Acceptance | reports', {
       end: new Date(2016, 11, 25, 12, 0),
       passengers: 1,
       institution: remand,
-      driver: francine
+      initials: 'francine'
     });
 
     server.create('ride', { enabled: false });
@@ -64,7 +62,7 @@ test('submit a report for a ride', function(assert) {
 
     assert.equal(page.rides().count, 2, 'expected two rides to choose from');
 
-    assert.equal(page.rides(0).label, 'FP: Sun, Dec 25 at 10:15am to Remand Centre');
+    assert.equal(page.rides(0).label, 'francine: Sun, Dec 25 at 10:15am to Remand Centre');
     assert.equal(page.rides(1).label, 'Tue, Dec 27 at 5:00pm to Fort Leavenworth');
 
     assert.ok(page.submitButton.disabled, 'expected the form to not yet be valid');

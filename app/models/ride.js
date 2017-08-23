@@ -47,6 +47,7 @@ export default DS.Model.extend({
 
   driver: DS.belongsTo('person'),
   carOwner: DS.belongsTo('person'),
+  initials: DS.attr('string'),
 
   requestNotes: DS.attr(),
 

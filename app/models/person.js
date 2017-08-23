@@ -17,15 +17,5 @@ export default DS.Model.extend({
       response[key] = errors.mapBy('message');
       return response;
     }, {});
-  }),
-
-  initials: Ember.computed('name', function() {
-    const name = this.get('name');
-
-    if (!name || name === '') {
-      return '??';
-    } else {
-      return name.toUpperCase().split(/[ -]/).map(segment => segment[0]).join('');
-    }
-  }),
+  })
 });

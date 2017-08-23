@@ -8,7 +8,7 @@
         onChange=(action 'setRide') as |group|}}
         {{#each (sort-by 'start' model) as |ride|}}
           {{#group.radio value=ride}}
-            {{#if ride.driver}}{{ride.driver.initials}}: {{/if}}{{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
+            {{#if ride.initials}}{{ride.initials}}: {{/if}}{{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
           {{/group.radio}}
         {{/each}}
       {{/paper-radio-group}}
