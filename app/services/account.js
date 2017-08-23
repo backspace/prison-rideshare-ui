@@ -16,7 +16,7 @@ export default Service.extend({
       const token = this.get('session.data.authenticated.access_token');
 
       if (!isEmpty(token)) {
-        fetch(`${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/users/current`, {
+        fetch(`${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace.length > 0 ? `${config.DS.namespace}/` : ''}users/current`, {
           type: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
