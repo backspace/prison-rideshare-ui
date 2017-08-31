@@ -68,7 +68,7 @@ test('submit a report for a ride', function(assert) {
     assert.ok(page.submitButton.disabled, 'expected the form to not yet be valid');
   });
 
-  page.fillDistance(75);
+  page.distance.fillIn(75);
 
   andThen(() => assert.ok(page.submitButton.disabled, 'expected the form to still not be valid'));
 
@@ -76,8 +76,8 @@ test('submit a report for a ride', function(assert) {
 
   andThen(() => assert.notOk(page.submitButton.disabled, 'expected the form to be valid'));
 
-  page.fillFoodExpenses(25.50);
-  page.fillNotes('These r the notes');
+  page.foodExpenses.fillIn(25.50);
+  page.notes.fillIn('These r the notes');
 
   page.submitButton.click();
 
@@ -97,17 +97,17 @@ test('partially completing a report and changing the ride doesn’t erase the va
 
   page.visit();
 
-  page.fillNotes(longReport);
+  page.notes.fillIn(longReport);
 
   page.rides(0).choose();
 
   andThen(() => {
-    assert.equal(page.notesValue, longReport);
+    assert.equal(page.notes.value, longReport);
   });
 
   page.rides(1).choose();
 
   andThen(() => {
-    assert.equal(page.notesValue, longReport);
+    assert.equal(page.notes.value, longReport);
   });
 });

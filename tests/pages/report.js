@@ -2,10 +2,8 @@ import {
   clickable,
   collection,
   create,
-  fillable,
   is,
   text,
-  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -21,10 +19,9 @@ export default create({
     }
   }),
 
-  fillDistance: fillable('.distance input'),
-  fillFoodExpenses: fillable('.food-expenses input'),
-  fillNotes: fillable('.report-notes textarea'),
-  notesValue: value('.report-notes textarea'),
+  distance: { scope: '.distance input' },
+  foodExpenses: { scope: '.food-expenses input' },
+  notes: { scope: '.report-notes textarea' },
 
   submitButton: {
     scope: 'button.submit',
