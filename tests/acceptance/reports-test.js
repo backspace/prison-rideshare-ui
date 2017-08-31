@@ -48,13 +48,12 @@ moduleForAcceptance('Acceptance | reports', {
       start: new Date(new Date().getTime() + 1000*60*60*24),
       end: new Date(new Date().getTime() + 1000*60*60*24 + 1000)
     });
-
-    // FIXME this should not be required
-    authenticateSession(this.application);
   }
 });
 
 test('submit a report for a ride', function(assert) {
+  authenticateSession(this.application);
+
   page.visit();
 
   andThen(function() {
@@ -89,6 +88,25 @@ test('submit a report for a ride', function(assert) {
     assert.equal(changedRide.reportNotes, 'These r the notes');
 
     assert.equal(currentURL(), '/rides');
+  });
+});
+
+
+test('submitting a report clears the form', function(assert) {
+  page.visit();
+
+  page.distance.fillIn(75);
+  page.rides(0).choose();
+  page.foodExpenses.fillIn(25.50);
+  page.notes.fillIn('These r the notes');
+
+  page.submitButton.click();
+
+  andThen(function() {
+    assert.equal(currentURL(), '/reports/new');
+    assert.equal(page.distance.value, '', 'expected the distance field to be empty');
+    assert.equal(page.foodExpenses.value, '', 'expected the food expenses to have been cleared');
+    assert.equal(page.notes.value, '', 'expected the notes to be empty');
   });
 });
 

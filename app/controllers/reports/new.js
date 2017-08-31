@@ -17,6 +17,7 @@ export default Ember.Controller.extend({
       proxy.applyBufferedChanges();
       return proxy.get('content').save().then(() => {
         this.set('editingRide', undefined);
+        this.set('rideProxy.content', undefined);
         this.transitionToRoute('application');
       });
     }
