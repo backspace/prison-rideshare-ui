@@ -72,8 +72,14 @@ md-sidenav {
   }
 }
 
-.rides table .notes td {
-  border-top: 0
+.rides table {
+  .notes td, .report td {
+    border-top: 0;
+  }
+
+  .report .distance::after {
+    content: ' km';
+  }
 }
 
 md-table-container.debts .person .name {

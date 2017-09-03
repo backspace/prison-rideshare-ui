@@ -153,7 +153,9 @@ test('completed rides can be shown', function(assert) {
   server.create('ride');
   server.create('ride');
   server.create('ride', {
-    distance: 44
+    distance: 44,
+    foodExpenses: 5555,
+    reportNotes: 'Some report notes?'
   });
 
   page.visit();
@@ -168,6 +170,11 @@ test('completed rides can be shown', function(assert) {
   andThen(() => {
     assert.equal(page.rides().count, 3, 'expected the completed ride to be showing');
     assert.ok(page.head.completedSwitch.enabled, 'expected the completed switch to be on');
+
+    assert.equal(page.reports().count, 1, 'expected the report to be rendered');
+    assert.equal(page.reports(0).distance, '44');
+    assert.equal(page.reports(0).foodExpenses, '55.55');
+    assert.equal(page.reports(0).notes, 'Some report notes?');
   });
 
   page.rides(0).edit();

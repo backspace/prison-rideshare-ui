@@ -89,6 +89,16 @@ export default create({
     }
   }),
 
+  reports: collection({
+    itemScope: 'tr.report',
+
+    item: {
+      distance: text('.distance'),
+      foodExpenses: text('.food-expenses'),
+      notes: text('.notes')
+    }
+  }),
+
   form: {
     scope: '.md-dialog-container',
 
