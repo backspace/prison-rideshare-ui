@@ -33,7 +33,9 @@ module.exports = function(environment) {
       routeAfterAuthentication: 'index'
     },
 
-    sentry: {}
+    sentry: {},
+
+    mirageLogging: process.env.MIRAGE_LOGGING === 'false' ? false : true
   };
 
   if (environment === 'development') {

@@ -11,6 +11,7 @@ cache:
 
 env:
   - COVERAGE=true
+  - MIRAGE_LOGGING=false
 
 before_install:
   - npm config set spin false
