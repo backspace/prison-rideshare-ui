@@ -119,7 +119,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(page.cancellationForm.reason.value, 'lockdown');
   });
 
-  selectChoose('md-input-container.reason', 'visitor');
+  // FIXME why did this stop working with Ember Paper beta 2?
+  // selectChoose('md-input-container.reason', 'visitor');
+  page.cancellationForm.other.fillIn('visitor');
   page.cancellationForm.save();
 
   andThen(function() {
