@@ -14,6 +14,9 @@ env:
     - COVERAGE=true
     - MIRAGE_LOGGING=false
 
+addons:
+  firefox: "55.0"
+
 before_install:
   - npm config set spin false
   - npm install -g npm@5
