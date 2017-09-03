@@ -1,4 +1,7 @@
 {{#toolbar-header title='Institutions'}}
+{{#paper-button mini=true aria-label='New institution' title='New institution' class='new' onClick=(action 'newInstitution')}}
+  {{paper-icon 'add'}}
+{{/paper-button}}
 {{/toolbar-header}}
 
 {{#paper-data-table sortProp='name' sortDir='asc' as |table|}}

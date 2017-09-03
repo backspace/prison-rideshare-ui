@@ -51,3 +51,22 @@ test('institutions can be listed and edited', function(assert) {
     assert.equal(milnerRidge.rate, '44');
   });
 });
+
+test('institutions can be created', function(assert) {
+  page.visit();
+
+  page.newInstitution();
+
+  andThen(() => {
+    assert.equal(page.form.rateField.value, '0');
+  });
+
+  page.form.nameField.fillIn('Remand Centre');
+  page.form.rateField.fillIn('0.55');
+  page.form.submit();
+
+  andThen(() => {
+    const [, , remand] = server.db.institutions;
+    assert.equal(remand.name, 'Remand Centre');
+  });
+});

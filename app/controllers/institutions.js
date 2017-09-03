@@ -3,6 +3,12 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default Ember.Controller.extend({
   actions: {
+    newInstitution() {
+      this.set('editingInstitution', BufferedProxy.create({
+        content: this.store.createRecord('institution')
+      }));
+    },
+
     editInstitution(institution) {
       const proxy = BufferedProxy.create({content: institution});
 

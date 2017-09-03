@@ -8,6 +8,7 @@ import {
 
 export default create({
   visit: visitable('/institutions'),
+  newInstitution: clickable('button.new'),
 
   institutions: collection({
     itemScope: 'tbody tr.institution',

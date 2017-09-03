@@ -4,7 +4,7 @@ import dollars from 'prison-rideshare-ui/utils/dollars';
 
 export default DS.Model.extend({
   name: DS.attr(),
-  rate: DS.attr('number'),
+  rate: DS.attr('number', {defaultValue: 0}),
 
   rateDollars: dollars('rate'),
 
