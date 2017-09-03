@@ -12,6 +12,7 @@ export default function() {
   this.patch('/rides/:id');
 
   this.get('/institutions');
+  this.patch('/institutions/:id');
 
   this.get('/people');
   this.post('/people');

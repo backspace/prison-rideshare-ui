@@ -1,4 +1,5 @@
 import {
+  clickable,
   collection,
   create,
   text,
@@ -13,7 +14,22 @@ export default create({
 
     item: {
       name: text('.name'),
-      rate: text('.rate')
+      rate: text('.rate'),
+
+      edit: clickable('button.edit')
     }
-  })
+  }),
+
+  form: {
+    nameField: {
+      scope: '.name input'
+    },
+
+    rateField: {
+      scope: '.rate input'
+    },
+
+    submit: clickable('button.submit'),
+    cancel: clickable('button.cancel')
+  }
 });

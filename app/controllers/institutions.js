@@ -1,0 +1,29 @@
+import Ember from 'ember';
+import BufferedProxy from 'ember-buffered-proxy/proxy';
+
+export default Ember.Controller.extend({
+  actions: {
+    editInstitution(institution) {
+      const proxy = BufferedProxy.create({content: institution});
+
+      this.set('editingInstitution', proxy);
+    },
+
+    saveInstitution() {
+      const proxy = this.get('editingInstitution');
+      proxy.applyBufferedChanges();
+      return proxy.get('content').save().then(() => this.set('editingInstitution', undefined))
+        .catch(() => {});
+    },
+
+    cancelInstitution() {
+      const model = this.get('editingInstitution.content');
+
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
+
+      this.set('editingInstitution', undefined);
+    }
+  }
+});

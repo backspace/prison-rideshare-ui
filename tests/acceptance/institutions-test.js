@@ -15,7 +15,7 @@ moduleForAcceptance('Acceptance | institutions', {
   }
 });
 
-test('institutions can be listed', function(assert) {
+test('institutions can be listed and edited', function(assert) {
   page.visit();
 
   andThen(() => {
@@ -26,5 +26,28 @@ test('institutions can be listed', function(assert) {
     assert.equal(page.institutions(0).rate, '0.35');
     assert.equal(page.institutions(1).name, 'Milner Ridge');
     assert.equal(page.institutions(1).rate, '0.25');
+  });
+
+  page.institutions(1).edit();
+  page.form.nameField.fillIn('Morlner Rordge');
+  page.form.cancel();
+
+  andThen(() => {
+    const [milnerRidge] = server.db.institutions;
+
+    assert.equal(milnerRidge.name, 'Milner Ridge');
+    assert.equal(page.institutions(1).name, 'Milner Ridge');
+  });
+
+  page.institutions(1).edit();
+  page.form.nameField.fillIn('Marlner Rardge');
+  page.form.rateField.fillIn('0.44');
+  page.form.submit();
+
+  andThen(() => {
+    const [milnerRidge] = server.db.institutions;
+
+    assert.equal(milnerRidge.name, 'Marlner Rardge');
+    assert.equal(milnerRidge.rate, '44');
   });
 });

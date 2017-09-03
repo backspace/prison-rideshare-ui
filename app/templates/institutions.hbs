@@ -13,8 +13,37 @@
         {{#body.row class='institution' as |row|}}
           {{#row.cell class='name'}}{{institution.name}}{{/row.cell}}
           {{#row.cell class='rate'}}{{institution.rateDollars}}{{/row.cell}}
+          {{#row.cell}}
+            {{#paper-button iconButton=true aria-label='Edit institution' title='Edit institution' class='edit' onClick=(action 'editInstitution' institution)}}
+              {{paper-icon 'mode edit'}}
+            {{/paper-button}}
+          {{/row.cell}}
         {{/body.row}}
       {{/unless}}
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}
+
+{{#if editingInstitution}}
+{{#paper-dialog clickOutsideToClose=true
+                onClose=(action 'cancelInstitution')}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>{{if editingInstitution.isNew 'New' 'Edit'}} institution</h2>
+    {{#paper-form onSubmit=saveInstitution as |form|}}
+      <div class='layout layout-sm-column'>
+        {{form.input class='name' label='Name' autofocus=true value=editingInstitution.name onChange=(action (mut editingInstitution.name)) errors=editingInstitution.validationErrors.name isTouched=editingInstitution.validationErrors.name.length}}
+      </div>
+      <div class='layout layout-sm-column'>
+        {{form.input class='rate' label='Rate' value=editingInstitution.rateDollars onChange=(action (mut editingInstitution.rateDollars)) errors=editingInstitution.validationErrors.rate isTouched=editingInstitution.validationErrors.rate.length}}
+      </div>
+    {{/paper-form}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='cancel' onClick=(action 'cancelInstitution')}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=(action 'saveInstitution')}}Save{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}
