@@ -7,7 +7,7 @@ export default function(property) {
     },
 
     set(key, value) {
-      this.set(property, value*100);
+      this.set(property, Math.floor(value*100));
       return value;
     }
   });

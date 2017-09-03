@@ -15,4 +15,5 @@ test('converts from cents to dollars', function(assert) {
 
 test('converts from dollars to cents', function(assert) {
   assert.equal(ClassWithDollars.create({dollars: 5.25}).get('cents'), 525);
+  assert.equal(ClassWithDollars.create({dollars: 0.55}).get('cents'), 55, 'expected floating point rounding');
 });
