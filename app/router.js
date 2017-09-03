@@ -12,6 +12,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('institutions');
   this.route('drivers');
   this.route('debts');
   this.route('reimbursements');

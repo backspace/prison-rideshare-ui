@@ -1,0 +1,20 @@
+{{#toolbar-header title='Institutions'}}
+{{/toolbar-header}}
+
+{{#paper-data-table sortProp='name' sortDir='asc' as |table|}}
+  {{#table.head as |head|}}
+    {{#head.column sortProp='name' class='name'}}Name{{/head.column}}
+    {{#head.column}}Rate{{/head.column}}
+    {{head.column}}
+  {{/table.head}}
+  {{#table.body as |body|}}
+    {{#each (sort-by table.sortDesc model) as |institution|}}
+      {{#unless institution.isNew}}
+        {{#body.row class='institution' as |row|}}
+          {{#row.cell class='name'}}{{institution.name}}{{/row.cell}}
+          {{#row.cell class='rate'}}{{institution.rateDollars}}{{/row.cell}}
+        {{/body.row}}
+      {{/unless}}
+    {{/each}}
+  {{/table.body}}
+{{/paper-data-table}}
