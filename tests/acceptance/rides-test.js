@@ -120,6 +120,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   });
 
   selectChoose('md-input-container.reason', 'visitor');
+  andThen(() => console.log($('md-dialog')[0].innerHTML));
   page.cancellationForm.save();
 
   andThen(function() {
