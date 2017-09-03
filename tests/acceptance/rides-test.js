@@ -123,6 +123,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   page.cancellationForm.save();
 
   andThen(function() {
+    console.log('html??????');
+    console.log($('tr.ride:eq(2) .cancellation')[0].innerHTML);
     assert.ok(page.rides(2).cancellation.showsVisitor, 'expected the ride to now be cancelled by the visitor');
   });
 
