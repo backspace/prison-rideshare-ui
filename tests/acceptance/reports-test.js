@@ -131,3 +131,21 @@ test('partially completing a report and changing the ride doesn’t erase the va
     assert.equal(page.notes.value, longReport);
   });
 });
+
+test('a failure to save keeps the values and displays an error', function(assert) {
+  server.patch('/rides/:id', () => { return {}; }, 422);
+
+  page.visit();
+
+  page.distance.fillIn(75);
+  page.rides(0).choose();
+
+  page.submitButton.click();
+
+  andThen(function() {
+    assert.equal(shared.toast.text, 'There was an error saving your report!');
+
+    assert.equal(currentURL(), '/reports/new');
+    assert.equal(page.distance.value, '75', 'expected the distance field to have the same value');
+  });
+});

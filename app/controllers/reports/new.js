@@ -23,6 +23,8 @@ export default Ember.Controller.extend({
         this.set('editingRide', undefined);
         this.set('rideProxy.content', undefined);
         this.transitionToRoute('application');
+      }, () => {
+        this.get('paperToaster').show('There was an error saving your report!', { duration: config.toastDuration });
       });
     }
   }

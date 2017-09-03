@@ -17,7 +17,14 @@ export default function(name, options = {}) {
 
     afterEach() {
       let afterEach = options.afterEach && options.afterEach.apply(this, arguments);
-      return resolve(afterEach).then(() => destroyApp(this.application));
+
+      const toaster = this.application.__container__.lookup('service:paper-toaster');
+      const activeToast = toaster.get('activeToast');
+      const cancelToastPromise = activeToast ?
+        resolve(Ember.run(() => toaster.cancelToast(activeToast))) :
+        resolve(true);
+
+      return cancelToastPromise.then(() => resolve(afterEach)).then(() => destroyApp(this.application));
     }
   });
 }
