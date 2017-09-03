@@ -1,7 +1,9 @@
+import config from 'prison-rideshare-ui/config/environment';
+
 export default function() {
   this.passthrough('/write-coverage');
 
-  this.logging = true;
+  this.logging = config.mirageLogging;
 
   this.namespace = '/api';
 

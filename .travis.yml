@@ -11,6 +11,7 @@ cache:
 
 env:
   - COVERAGE=true
+  - MIRAGE_LOGGING=false
 
 addons:
   firefox: "55.0"
