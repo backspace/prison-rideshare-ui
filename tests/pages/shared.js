@@ -17,5 +17,9 @@ export default create({
     item: {
       text: text()
     }
-  })
+  }),
+
+  toast: {
+    scope: '.md-toast-content span'
+  }
 });

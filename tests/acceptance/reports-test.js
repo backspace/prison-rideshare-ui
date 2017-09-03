@@ -88,6 +88,8 @@ test('submit a report for a ride', function(assert) {
     assert.equal(changedRide.reportNotes, 'These r the notes');
 
     assert.equal(currentURL(), '/rides');
+
+    assert.equal(shared.toast.text, 'Your report was saved');
   });
 });
 

@@ -35,7 +35,8 @@ module.exports = function(environment) {
 
     sentry: {},
 
-    mirageLogging: process.env.MIRAGE_LOGGING === 'false' ? false : true
+    mirageLogging: process.env.MIRAGE_LOGGING === 'false' ? false : true,
+    toastDuration: 3000
   };
 
   if (environment === 'development') {
@@ -65,6 +66,8 @@ module.exports = function(environment) {
 
     ENV.DS.namespace = 'api';
     ENV.DS.host = undefined;
+
+    ENV.toastDuration = false;
   }
 
   if (environment === 'production') {
