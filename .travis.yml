@@ -10,7 +10,9 @@ cache:
     - $HOME/.npm
 
 env:
-  - COVERAGE=true
+  global:
+    - COVERAGE=true
+    - MIRAGE_LOGGING=false
 
 before_install:
   - npm config set spin false
