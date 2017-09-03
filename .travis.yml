@@ -15,7 +15,7 @@ env:
     - MIRAGE_LOGGING=false
 
 addons:
-  firefox: "55.0"
+  firefox: latest
 
 before_install:
   - npm config set spin false
