@@ -323,6 +323,12 @@ test('matching visitors are suggested', function(assert) {
     assert.equal(page.form.name.suggestions(0).text, 'Francine');
     assert.equal(page.form.name.suggestions(1).text, 'frank');
   });
+
+  page.form.name.suggestions(1).click();
+
+  andThen(() => {
+    assert.equal(page.form.contact.value, 'frank@jants.ca');
+  });
 });
 
 test('ride validation errors are displayed', function(assert) {

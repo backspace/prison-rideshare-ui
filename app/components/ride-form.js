@@ -38,6 +38,12 @@ export default Ember.Component.extend({
 
     searchRides(name) {
       return this.get('store').query('ride', {'filter[name]': name});
+    },
+
+    autocompleteSelectionChanged(ride) {
+      if (ride) {
+        this.set('ride.contact', ride.get('contact'));
+      }
     }
   }
 });

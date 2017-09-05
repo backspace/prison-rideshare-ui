@@ -37,12 +37,11 @@
         <div class='flex'>
           {{#form.autocomplete
             label='Name'
-            searchText=(readonly ride.name)
-            onSearchTextChange=(action (mut ride.name))
-            selected=ride.name
+            selected=ride
+            onSelectionChange=(action 'autocompleteSelectionChanged')
             search=(action 'searchRides')
-            searchField='name'
-            labelPath='name'
+            searchField='ride.name'
+            labelPath='ride.name'
 
             errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length
             as |ride autocomplete|}}
