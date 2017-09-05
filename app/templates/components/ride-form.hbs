@@ -36,7 +36,7 @@
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
           {{#form.autocomplete
-            class='name' label='Name'
+            label='Name'
             searchText=(readonly ride.name)
             onSearchTextChange=(action (mut ride.name))
             selected=ride.name
