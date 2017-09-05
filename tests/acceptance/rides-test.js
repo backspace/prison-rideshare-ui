@@ -308,6 +308,21 @@ test('create and edit a ride', function(assert) {
   });
 });
 
+test('matching visitors are suggested', function(assert) {
+  server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
+  server.create('ride', { name: 'Pascal' });
+  server.create('ride', { name: 'frank', contact: 'frank@jants.ca' });
+
+  page.visit();
+  page.newRide();
+
+  page.form.name.fillIn('fran');
+
+  andThen(() => {
+    assert.equal(page.form.name.suggestions().count, 2);
+  });
+});
+
 test('ride validation errors are displayed', function(assert) {
   server.post('/rides', {
       errors: [{

@@ -35,7 +35,22 @@
 
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
-          {{form.input class='name' label='Name' value=ride.name onChange=(action (mut ride.name)) errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length}}
+          {{#form.autocomplete
+            class='name' label='Name'
+            searchText=(readonly ride.name)
+            onSearchTextChange=(action (mut ride.name))
+            selected=ride.name
+            search=(action 'searchRides')
+            searchField='name'
+            labelPath='name'
+
+            errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length
+            as |ride autocomplete|}}
+            {{paper-autocomplete-highlight
+              label=ride.name
+              searchText=autocomplete.searchText
+              flags='i'}}
+          {{/form.autocomplete}}
           {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=ride.validationErrors.passengers.length}}
         </div>
         <div class='flex'>

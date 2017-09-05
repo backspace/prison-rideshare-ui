@@ -118,6 +118,10 @@ export default create({
 
     name: {
       scope: '.name input',
+
+      suggestions: collection({
+        itemScope: '.ember-power-select-option'
+      })
     },
 
     nameError: {

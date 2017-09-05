@@ -33,6 +33,10 @@ export default Ember.Component.extend({
           this.set('ride.end', parsed.end.date());
         }
       }
+    },
+
+    searchRides(name) {
+      return this.store.query('ride', {'filter[name]': name});
     }
   }
 });

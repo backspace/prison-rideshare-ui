@@ -7,7 +7,13 @@ export default function() {
 
   this.namespace = '/api';
 
-  this.get('/rides');
+  this.get('/rides', ({rides}, {queryParams}) => {
+    if (queryParams["filter[name]"]) {
+      return rides.all()[0];
+    } else {
+      return rides.all();
+    }
+  });
   this.post('/rides');
   this.patch('/rides/:id');
 
