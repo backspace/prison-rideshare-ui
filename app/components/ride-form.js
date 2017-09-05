@@ -43,6 +43,7 @@ export default Ember.Component.extend({
     autocompleteSelectionChanged(ride) {
       if (ride) {
         this.set('ride.name', ride.get('name'));
+        this.set('ride.address', ride.get('address'));
         this.set('ride.contact', ride.get('contact'));
       }
     }

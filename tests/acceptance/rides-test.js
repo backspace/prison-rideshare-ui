@@ -311,7 +311,7 @@ test('create and edit a ride', function(assert) {
 test('matching visitors are suggested', function(assert) {
   server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
   server.create('ride', { name: 'Pascal' });
-  server.create('ride', { name: 'frank', contact: 'frank@jants.ca' });
+  server.create('ride', { name: 'frank', address: '91 Albert St.', contact: 'frank@jants.ca' });
 
   page.visit();
   page.newRide();
@@ -331,6 +331,7 @@ test('matching visitors are suggested', function(assert) {
     assert.equal(find('md-autocomplete input').val(), 'frank');
     // assert.equal(page.form.name.value, 'frank');
     assert.equal(page.form.contact.value, 'frank@jants.ca');
+    assert.equal(page.form.address.value, '91 Albert St.');
   });
 });
 
