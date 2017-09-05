@@ -327,6 +327,9 @@ test('matching visitors are suggested', function(assert) {
   page.form.name.suggestions(1).click();
 
   andThen(() => {
+    // FIXME the page object field value is "" but it works via jQuery? 🤔
+    assert.equal(find('md-autocomplete input').val(), 'frank');
+    // assert.equal(page.form.name.value, 'frank');
     assert.equal(page.form.contact.value, 'frank@jants.ca');
   });
 });

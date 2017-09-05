@@ -40,8 +40,9 @@
             selected=ride
             onSelectionChange=(action 'autocompleteSelectionChanged')
             search=(action 'searchRides')
-            searchField='ride.name'
-            labelPath='ride.name'
+            searchField='name'
+            labelPath='name'
+            searchText=(readonly ride.name)
 
             errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length
             as |ride autocomplete|}}
