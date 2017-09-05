@@ -3,6 +3,7 @@ import {
   clickable,
   collection,
   create,
+  fillable,
   hasClass,
   isVisible,
   text,
@@ -117,9 +118,12 @@ export default create({
     },
 
     name: {
-      scope: '.name input',
+      scope: 'md-autocomplete',
+
+      fillIn: fillable('input'),
 
       suggestions: collection({
+        resetScope: true,
         itemScope: '.ember-power-select-option'
       })
     },

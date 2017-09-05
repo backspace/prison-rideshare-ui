@@ -4,6 +4,7 @@ import chrono from 'npm:chrono-node';
 export default Ember.Component.extend({
   institutionsService: Ember.inject.service('institutions'),
   institutions: Ember.computed.alias('institutionsService.all'),
+  store: Ember.inject.service('store'),
 
   warning: Ember.computed('ride.cancellationReason', 'ride.complete', function() {
     const reason = this.get('ride.cancellationReason');
@@ -36,7 +37,7 @@ export default Ember.Component.extend({
     },
 
     searchRides(name) {
-      return this.store.query('ride', {'filter[name]': name});
+      return this.get('store').query('ride', {'filter[name]': name});
     }
   }
 });

@@ -320,6 +320,8 @@ test('matching visitors are suggested', function(assert) {
 
   andThen(() => {
     assert.equal(page.form.name.suggestions().count, 2);
+    assert.equal(page.form.name.suggestions(0).text, 'Francine');
+    assert.equal(page.form.name.suggestions(1).text, 'frank');
   });
 });
 
