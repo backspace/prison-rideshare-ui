@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import chrono from 'npm:chrono-node';
 
+import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
+
 export default Ember.Component.extend({
   institutionsService: Ember.inject.service('institutions'),
   institutions: Ember.computed.alias('institutionsService.all'),
@@ -37,7 +39,9 @@ export default Ember.Component.extend({
     },
 
     searchRides(name) {
-      return this.get('store').query('ride', {'filter[name]': name});
+      return this.get('store').query('ride', {'filter[name]': name}).then(rides => {
+        return deduplicateVisitorSuggestions(rides);
+      });
     },
 
     autocompleteSelectionChanged(ride) {

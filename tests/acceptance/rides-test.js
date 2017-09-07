@@ -308,10 +308,11 @@ test('create and edit a ride', function(assert) {
   });
 });
 
-test('matching visitors are suggested', function(assert) {
+test('matching visitors are suggested with some deduplication', function(assert) {
   server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
   server.create('ride', { name: 'Pascal' });
   server.create('ride', { name: 'frank', address: '91 Albert St.', contact: 'frank@jants.ca' });
+  server.create('ride', { name: 'Frank', address: '91 Albert St.', contact: 'frank@jants.ca' });
 
   page.visit();
   page.newRide();
