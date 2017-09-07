@@ -124,7 +124,13 @@ export default create({
 
       suggestions: collection({
         resetScope: true,
-        itemScope: '.ember-power-select-option'
+        itemScope: '.ember-power-select-option',
+
+        item: {
+          name: text('.name'),
+          address: text('address'),
+          contact: text('.contact')
+        }
       })
     },
 

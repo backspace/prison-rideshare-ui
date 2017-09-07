@@ -46,10 +46,16 @@
 
             errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length
             as |ride autocomplete|}}
-            {{paper-autocomplete-highlight
-              label=ride.name
-              searchText=autocomplete.searchText
-              flags='i'}}
+            <div class='visitor-autocomplete-option'>
+              <span class='name'>
+                {{paper-autocomplete-highlight
+                  label=ride.name
+                  searchText=autocomplete.searchText
+                  flags='i'}}
+              </span>
+              <address>{{ride.address}}</address>
+              <span class='contact'>{{ride.contact}}</span>
+            </div>
           {{/form.autocomplete}}
         </div>
       </div>

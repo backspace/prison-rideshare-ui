@@ -320,8 +320,17 @@ test('matching visitors are suggested', function(assert) {
 
   andThen(() => {
     assert.equal(page.form.name.suggestions().count, 2);
-    assert.equal(page.form.name.suggestions(0).text, 'Francine');
-    assert.equal(page.form.name.suggestions(1).text, 'frank');
+
+    page.form.name.suggestions(0).as(francine => {
+      assert.equal(francine.name, 'Francine');
+      assert.equal(francine.contact, 'jorts@jants.ca');
+    });
+
+    page.form.name.suggestions(1).as(frank => {
+      assert.equal(frank.name, 'frank');
+      assert.equal(frank.address, '91 Albert St.');
+      assert.equal(frank.contact, 'frank@jants.ca');
+    });
   });
 
   page.form.name.suggestions(1).click();

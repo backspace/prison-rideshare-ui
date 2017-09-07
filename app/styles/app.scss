@@ -122,3 +122,11 @@ md-table-container.debts .person .name {
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+
+.visitor-autocomplete-option {
+  display: flex;
+
+  > * {
+    padding-right: 1em;
+  }
+}
