@@ -39,6 +39,7 @@
             label='Name'
             selected=ride
             onSelectionChange=(action 'autocompleteSelectionChanged')
+            onSearchTextChange=(action (mut ride.name))
             search=(action 'searchRides')
             searchField='name'
             labelPath='name'
