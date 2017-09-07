@@ -51,13 +51,21 @@
               searchText=autocomplete.searchText
               flags='i'}}
           {{/form.autocomplete}}
-          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=ride.validationErrors.passengers.length}}
         </div>
+      </div>
+      <div class='layout-row layout-xs-column'>
         <div class='flex'>
           {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address)) errors=ride.validationErrors.address isTouched=ride.validationErrors.address.length}}
         </div>
+      </div>
+      <div class='layout-row layout-xs-column'>
         <div class='flex'>
           {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact)) errors=ride.validationErrors.contact isTouched=ride.validationErrors.contact.length}}
+        </div>
+      </div>
+      <div class='layout-row layout-xs-column'>
+        <div class='flex'>
+          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=ride.validationErrors.passengers.length}}
         </div>
       </div>
 
