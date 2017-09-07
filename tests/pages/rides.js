@@ -135,7 +135,7 @@ export default create({
     },
 
     nameError: {
-      scope: '.name .paper-input-error'
+      scope: 'md-autocomplete .paper-input-error'
     },
 
     address: {
