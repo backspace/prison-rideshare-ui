@@ -18,6 +18,7 @@
         selected=ride.driver
         options=people
         onChange=(action 'setDriver')
+        allowClear=true
         as |person|}}
         {{person.name}}
       {{/paper-select}}</span>
@@ -25,6 +26,7 @@
         selected=ride.carOwner
         options=people
         onChange=(action 'setCarOwner')
+        allowClear=true
         as |person|}}
         {{person.name}}
       {{/paper-select}}</span>

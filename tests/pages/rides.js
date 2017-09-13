@@ -55,13 +55,13 @@ export default create({
 
       driver: {
         scope: '.driver',
-        text: text(),
+        text: text('.ember-power-select-selected-item'),
         click: clickable()
       },
 
       carOwner: {
         scope: '.car-owner',
-        text: text(),
+        text: text('.ember-power-select-selected-item'),
         click: clickable()
       },
 
