@@ -21,3 +21,8 @@ test('it keeps elements where the name is the same but the other details are dif
   const result = deduplicateVisitorSuggestions([essun, essunAtCastrima]);
   assert.deepEqual(result, [essun, essunAtCastrima]);
 });
+
+test('it truncates at 3 rides', function(assert) {
+  const result = deduplicateVisitorSuggestions(new Array(10));
+  assert.equal(result.length, 3);
+});

@@ -1,13 +1,19 @@
 import Ember from 'ember';
 
+const SUGGESTION_COUNT = 3;
+
 export default function deduplicateVisitorSuggestions(rides) {
-  return rides.reduce((deduplicated, ride) => {
+  const deduplicatedRides = rides.reduce((deduplicated, ride) => {
     if (deduplicated.every(chosenRide => ridesAreDissimilar(chosenRide, ride))) {
       deduplicated.push(ride);
     }
 
     return deduplicated;
   }, []);
+
+  deduplicatedRides.splice(SUGGESTION_COUNT);
+
+  return deduplicatedRides;
 }
 
 function ridesAreDissimilar(a, b) {
