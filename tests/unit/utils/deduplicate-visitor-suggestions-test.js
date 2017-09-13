@@ -23,6 +23,13 @@ test('it keeps elements where the name is the same but the other details are dif
 });
 
 test('it truncates at 3 rides', function(assert) {
-  const result = deduplicateVisitorSuggestions(new Array(10));
+  const rides = Array.from(new Array(10), (_, index) => {
+    return {
+      name: `${index}`,
+      address: `${index}`,
+      contact: `${index}`
+    };
+  })
+  const result = deduplicateVisitorSuggestions(rides);
   assert.equal(result.length, 3);
 });
