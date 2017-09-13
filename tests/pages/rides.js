@@ -3,6 +3,7 @@ import {
   clickable,
   collection,
   create,
+  fillable,
   hasClass,
   isVisible,
   text,
@@ -117,11 +118,24 @@ export default create({
     },
 
     name: {
-      scope: '.name input',
+      scope: 'md-autocomplete',
+
+      fillIn: fillable('input'),
+
+      suggestions: collection({
+        resetScope: true,
+        itemScope: '.ember-power-select-option',
+
+        item: {
+          name: text('.name'),
+          address: text('address'),
+          contact: text('.contact')
+        }
+      })
     },
 
     nameError: {
-      scope: '.name .paper-input-error'
+      scope: 'md-autocomplete .paper-input-error'
     },
 
     address: {

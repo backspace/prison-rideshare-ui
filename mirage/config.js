@@ -7,7 +7,18 @@ export default function() {
 
   this.namespace = '/api';
 
-  this.get('/rides');
+  this.get('/rides', function({rides}, {queryParams}) {
+    if (queryParams["filter[name]"]) {
+      // FIXME this is a mess, no better way???
+      const nameFilter = queryParams["filter[name]"];
+      const matchingRides = rides.all().models.filter(ride => (ride.name || '').toLowerCase().includes(nameFilter));
+      return {
+        data: matchingRides.map(ride => this.serialize(ride)['data'])
+      }
+    } else {
+      return rides.all();
+    }
+  });
   this.post('/rides');
   this.patch('/rides/:id');
 

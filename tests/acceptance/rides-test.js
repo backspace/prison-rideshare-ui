@@ -308,6 +308,43 @@ test('create and edit a ride', function(assert) {
   });
 });
 
+test('matching visitors are suggested with some deduplication', function(assert) {
+  server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
+  server.create('ride', { name: 'Pascal' });
+  server.create('ride', { name: 'frank', address: '91 Albert St.', contact: 'frank@jants.ca' });
+  server.create('ride', { name: 'Frank', address: '91 Albert St.', contact: 'frank@jants.ca' });
+
+  page.visit();
+  page.newRide();
+
+  page.form.name.fillIn('fran');
+
+  andThen(() => {
+    assert.equal(page.form.name.suggestions().count, 2);
+
+    page.form.name.suggestions(0).as(francine => {
+      assert.equal(francine.name, 'Francine');
+      assert.equal(francine.contact, 'jorts@jants.ca');
+    });
+
+    page.form.name.suggestions(1).as(frank => {
+      assert.equal(frank.name, 'frank');
+      assert.equal(frank.address, '91 Albert St.');
+      assert.equal(frank.contact, 'frank@jants.ca');
+    });
+  });
+
+  page.form.name.suggestions(1).click();
+
+  andThen(() => {
+    // FIXME the page object field value is "" but it works via jQuery? 🤔
+    assert.equal(find('md-autocomplete input').val(), 'frank');
+    // assert.equal(page.form.name.value, 'frank');
+    assert.equal(page.form.contact.value, 'frank@jants.ca');
+    assert.equal(page.form.address.value, '91 Albert St.');
+  });
+});
+
 test('ride validation errors are displayed', function(assert) {
   server.post('/rides', {
       errors: [{

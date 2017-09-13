@@ -1,9 +1,12 @@
 import Ember from 'ember';
 import chrono from 'npm:chrono-node';
 
+import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
+
 export default Ember.Component.extend({
   institutionsService: Ember.inject.service('institutions'),
   institutions: Ember.computed.alias('institutionsService.all'),
+  store: Ember.inject.service('store'),
 
   warning: Ember.computed('ride.cancellationReason', 'ride.complete', function() {
     const reason = this.get('ride.cancellationReason');
@@ -32,6 +35,20 @@ export default Ember.Component.extend({
         if (parsed.end) {
           this.set('ride.end', parsed.end.date());
         }
+      }
+    },
+
+    searchRides(name) {
+      return this.get('store').query('ride', {'filter[name]': name}).then(rides => {
+        return deduplicateVisitorSuggestions(rides);
+      });
+    },
+
+    autocompleteSelectionChanged(ride) {
+      if (ride) {
+        this.set('ride.name', ride.get('name'));
+        this.set('ride.address', ride.get('address'));
+        this.set('ride.contact', ride.get('contact'));
       }
     }
   }

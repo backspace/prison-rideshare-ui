@@ -35,14 +35,44 @@
 
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
-          {{form.input class='name' label='Name' value=ride.name onChange=(action (mut ride.name)) errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length}}
-          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=ride.validationErrors.passengers.length}}
+          {{#form.autocomplete
+            label='Name'
+            selected=ride
+            onSelectionChange=(action 'autocompleteSelectionChanged')
+            onSearchTextChange=(action (mut ride.name))
+            search=(action 'searchRides')
+            searchField='name'
+            labelPath='name'
+            searchText=(readonly ride.name)
+
+            errors=ride.validationErrors.name isTouched=ride.validationErrors.name.length
+            as |ride autocomplete|}}
+            <div class='visitor-autocomplete-option'>
+              <span class='name'>
+                {{paper-autocomplete-highlight
+                  label=ride.name
+                  searchText=autocomplete.searchText
+                  flags='i'}}
+              </span>
+              <address>{{ride.address}}</address>
+              <span class='contact'>{{ride.contact}}</span>
+            </div>
+          {{/form.autocomplete}}
         </div>
+      </div>
+      <div class='layout-row layout-xs-column'>
         <div class='flex'>
           {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address)) errors=ride.validationErrors.address isTouched=ride.validationErrors.address.length}}
         </div>
+      </div>
+      <div class='layout-row layout-xs-column'>
         <div class='flex'>
           {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact)) errors=ride.validationErrors.contact isTouched=ride.validationErrors.contact.length}}
+        </div>
+      </div>
+      <div class='layout-row layout-xs-column'>
+        <div class='flex'>
+          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=ride.validationErrors.passengers.length}}
         </div>
       </div>
 
