@@ -69,7 +69,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(function() {
     assert.equal(page.rides().count, 3, 'expected the cancelled ride to be shown');
 
-    const ride = page.rides(0);
+    const ride = page.rides(2);
 
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
     assert.ok(ride.cancellation.showsLockdown, 'expected the cancelled ride to show lockdown for the reason');
@@ -86,7 +86,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(page.notes(0).text, 'These are some request notes.');
   });
 
-  page.rides(0).edit();
+  page.rides(2).edit();
 
   andThen(() => {
     assert.equal(page.form.notice, 'You are editing a cancelled ride!');
@@ -98,21 +98,21 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   page.form.cancel();
 
   andThen(() => {
-    assert.ok(page.rides(1).enabled, 'expected the other ride to be enabled');
-    assert.ok(page.rides(1).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
-    assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
+    assert.ok(page.rides(0).enabled, 'expected the other ride to be enabled');
+    assert.ok(page.rides(0).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
+    assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
 
-    assert.ok(page.rides(2).name, 'Visitor', 'expected the combined ride to be beneath its parent');
-    assert.ok(page.rides(2).isCombined, 'expected the combined ride to show it is combined');
+    assert.ok(page.rides(1).name, 'Visitor', 'expected the combined ride to be beneath its parent');
+    assert.ok(page.rides(1).isCombined, 'expected the combined ride to show it is combined');
   });
 
   page.rides().head.clickDate();
 
   andThen(function() {
-    assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the top');
+    assert.equal(page.rides(1).name, 'Chelsea', 'expected the earlier ride to be sorted to the top');
   });
 
-  page.rides(2).cancellation.click();
+  page.rides(0).cancellation.click();
 
   andThen(function() {
     assert.ok(page.cancellationForm.cancelled.checked, 'expected the cancellation box to be checked');
@@ -125,27 +125,27 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   page.cancellationForm.save();
 
   andThen(function() {
-    assert.ok(page.rides(2).cancellation.showsVisitor, 'expected the ride to now be cancelled by the visitor');
+    assert.ok(page.rides(0).cancellation.showsVisitor, 'expected the ride to now be cancelled by the visitor');
   });
 
-  page.rides(2).cancellation.click();
+  page.rides(0).cancellation.click();
   page.cancellationForm.other.fillIn('other!');
   page.cancellationForm.save();
 
   andThen(function() {
-    assert.ok(page.rides(2).cancellation.showsOther, 'expected the ride to now be cancelled with another reason');
-    assert.equal(page.rides(2).cancellation.title, 'Edit cancellation: other!');
+    assert.ok(page.rides(0).cancellation.showsOther, 'expected the ride to now be cancelled with another reason');
+    assert.equal(page.rides(0).cancellation.title, 'Edit cancellation: other!');
   });
 
-  page.rides(2).cancellation.click();
+  page.rides(0).cancellation.click();
   page.cancellationForm.cancelled.click();
   page.cancellationForm.save();
 
   andThen(function() {
-    assert.ok(page.rides(2).enabled, 'expected the ride to no longer be cancelled');
-    assert.ok(page.rides(2).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
-    assert.notOk(page.rides(2).cancellation.showsVisitor, 'expected the ride to not show the visitor as a reason');
-    assert.notOk(page.rides(2).cancellation.showsLockdown, 'expected the ride not show lockdown as a reason');
+    assert.ok(page.rides(0).enabled, 'expected the ride to no longer be cancelled');
+    assert.ok(page.rides(0).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
+    assert.notOk(page.rides(0).cancellation.showsVisitor, 'expected the ride to not show the visitor as a reason');
+    assert.notOk(page.rides(0).cancellation.showsLockdown, 'expected the ride not show lockdown as a reason');
   });
 });
 
@@ -177,7 +177,7 @@ test('completed rides can be shown', function(assert) {
     assert.equal(page.reports(0).notes, 'Some report notes?');
   });
 
-  page.rides(0).edit();
+  page.rides(2).edit();
   andThen(() => assert.equal(page.form.notice, 'You are editing a ride that has already had its report completed!'));
   page.form.cancel();
 });
@@ -330,11 +330,11 @@ test('ride validation errors are displayed', function(assert) {
 
 test('rides can be combined and uncombined', function(assert) {
   const today = new Date();
-  const yesterday = new Date(today.getTime() - 1000*60*60*24);
+  const tomorrow = new Date(today.getTime() + 1000*60*60*24);
 
   server.create('ride', {name: 'A', passengers: 1, start: today, end: today});
   const parentRide = server.create('ride', {name: 'B', passengers: 1, start: today, end: today});
-  server.create('ride', {name: 'C', passengers: 1, start: yesterday, end: yesterday});
+  server.create('ride', {name: 'C', passengers: 1, start: tomorrow, end: tomorrow});
   server.create('ride', {name: 'D', combinedWith: parentRide});
 
   page.visit();
