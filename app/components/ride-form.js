@@ -50,6 +50,13 @@ export default Ember.Component.extend({
         this.set('ride.address', ride.get('address'));
         this.set('ride.contact', ride.get('contact'));
       }
+    },
+
+    matchInstitution(option, searchTerm) {
+      const name = Ember.get(option, 'name');
+      const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
+
+      return result ? 1 : -1;
     }
   }
 });

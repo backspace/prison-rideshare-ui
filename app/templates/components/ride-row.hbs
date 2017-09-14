@@ -19,6 +19,7 @@
         options=people
         onChange=(action 'setDriver')
         allowClear=true
+        matcher=(action 'match')
         as |person|}}
         {{person.name}}
       {{/paper-select}}</span>
@@ -27,6 +28,7 @@
         options=people
         onChange=(action 'setCarOwner')
         allowClear=true
+        matcher=(action 'match')
         as |person|}}
         {{person.name}}
       {{/paper-select}}</span>

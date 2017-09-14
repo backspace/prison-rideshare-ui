@@ -63,6 +63,13 @@ export default Ember.Component.extend({
 
       ride.set('carOwner', carOwner);
       return ride.save();
+    },
+
+    match(option, searchTerm) {
+      const name = Ember.get(option, 'name');
+      const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
+
+      return result ? 1 : -1;
     }
   }
 });
