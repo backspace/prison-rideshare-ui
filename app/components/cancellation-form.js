@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
-const reasons = Object.keys(reasonToIcon);
+const reasons = Object.keys(reasonToIcon).sort();
 
 export default Ember.Component.extend({
   reasons,
