@@ -4,7 +4,10 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 export default Ember.Controller.extend({
   queryParams: {
     showCompleted: 'completed',
-    showCancelled: 'cancelled'
+    showCancelled: 'cancelled',
+
+    sortProp: 'sort',
+    sortDir: 'dir',
   },
 
   peopleService: Ember.inject.service('people'),
@@ -15,6 +18,9 @@ export default Ember.Controller.extend({
 
   showCompleted: false,
   showCancelled: false,
+
+  sortProp: 'start',
+  sortDir: 'asc',
 
   filteredRides: Ember.computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
