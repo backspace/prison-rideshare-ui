@@ -4,6 +4,11 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   name: DS.attr(),
 
+  email: DS.attr('string'),
+  mobile: DS.attr('string'),
+  landline: DS.attr('string'),
+  notes: DS.attr('string'),
+
   reimbursements: DS.hasMany(),
 
   drivings: DS.hasMany('ride', {inverse: 'driver'}),
