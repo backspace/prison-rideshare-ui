@@ -1,4 +1,5 @@
 import {
+  attribute,
   clickable,
   collection,
   create,
@@ -16,6 +17,26 @@ export default create({
 
     item: {
       name: text('.name'),
+
+      email: {
+        scope: '.email',
+        href: attribute('href', 'a')
+      },
+
+      landline: {
+        scope: '.landline',
+        href: attribute('href', 'a')
+      },
+
+      mobile: {
+        scope: '.mobile',
+        href: attribute('href', 'a')
+      },
+
+      notes: {
+        scope: '.notes'
+      },
+
       edit: clickable('button.edit')
     }
   }),

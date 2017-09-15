@@ -9,14 +9,29 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | people', {
   beforeEach() {
-    server.create('person', {name: 'Sun'});
-    server.create('person', {name: 'Kala'});
+    server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?'});
+    server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111'});
     server.create('person', {name: 'Will'});
 
     server.create('ride');
 
     authenticateSession(this.application);
   }
+});
+
+test('people are listed', function(assert) {
+  page.visit();
+
+  andThen(() => {
+    page.people(1).as(sun => {
+      assert.equal(sun.name, 'Sun');
+      assert.equal(sun.email.text, 'sun@sense8');
+      assert.equal(sun.email.href, 'mailto:sun@sense8');
+      assert.equal(sun.landline.text, '111');
+      assert.equal(sun.landline.href, 'tel:111');
+      assert.equal(sun.notes.text, 'notes?');
+    });
+  });
 });
 
 test('people can be edited, cancelled edits are discarded', function(assert) {
