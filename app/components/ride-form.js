@@ -25,7 +25,7 @@ export default Ember.Component.extend({
     timespanUpdated(value) {
       this.set('ride.timespan', value);
 
-      const [parsed] = chrono.parse(value);
+      const [parsed] = chrono.parse(value, new Date(), {forwardDatesOnly: true});
 
       if (parsed) {
         if (parsed.start) {
