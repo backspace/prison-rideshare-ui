@@ -51,6 +51,34 @@ export default create({
       scope: '.name .paper-input-error'
     },
 
+    // TODO rule of three?
+    email: {
+      scope: '.email',
+      field: {
+        scope: 'input'
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    mobile: {
+      scope: '.mobile',
+      field: {
+        scope: 'input'
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    notes: {
+      scope: '.notes',
+      field: {
+        scope: 'textarea'
+      }
+    },
+
     submit: clickable('button.submit'),
     cancel: clickable('button.cancel')
   }

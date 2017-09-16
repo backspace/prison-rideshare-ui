@@ -54,6 +54,9 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
 
   page.people(2).edit();
   page.form.nameField.fill('William');
+  page.form.email.field.fillIn('will@sense8');
+  page.form.mobile.field.fillIn('111');
+  page.form.notes.field.fillIn('notes.');
   page.form.submit();
 
   andThen(() => {
@@ -63,6 +66,7 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
     const will = serverPeople[serverPeople.length - 1];
 
     assert.equal(will.name, 'William');
+    assert.equal(will.email, 'will@sense8');
   });
 });
 
@@ -103,6 +107,11 @@ test('person validation errors are displayed', function(assert) {
           'pointer': '/data/attributes/name'
         },
         'detail': 'Name can\'t be blank'
+      },{
+        source: {
+          pointer: '/data/attributes/email'
+        },
+        detail: 'Email can\'t be blank'
       }]
     }, 422);
 
@@ -112,5 +121,6 @@ test('person validation errors are displayed', function(assert) {
 
   andThen(() => {
     assert.equal(page.form.nameError.text, 'Name can\'t be blank');
+    assert.equal(page.form.email.error.text, 'Email can\'t be blank');
   });
 });
