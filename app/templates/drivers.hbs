@@ -49,6 +49,18 @@
       <div class='layout layout-sm-column'>
         {{form.input class='name' label='Name' autofocus=true value=editingPerson.name onChange=(action (mut editingPerson.name)) errors=editingPerson.validationErrors.name isTouched=editingPerson.validationErrors.name.length}}
       </div>
+      <div class='layout layout-sm-column'>
+        {{form.input type='email' class='email' label='Email' autofocus=true value=editingPerson.email onChange=(action (mut editingPerson.email)) errors=editingPerson.validationErrors.email isTouched=editingPerson.validationErrors.email.length}}
+      </div>
+      <div class='layout layout-sm-column'>
+        {{form.input type='mobile' class='mobile' label='Mobile' autofocus=true value=editingPerson.mobile onChange=(action (mut editingPerson.mobile)) errors=editingPerson.validationErrors.mobile isTouched=editingPerson.validationErrors.mobile.length}}
+      </div>
+      <div class='layout layout-sm-column'>
+        {{form.input type='mobile' class='landline' label='Landline' autofocus=true value=editingPerson.landline onChange=(action (mut editingPerson.landline)) errors=editingPerson.validationErrors.landline isTouched=editingPerson.validationErrors.landline.length}}
+      </div>
+      <div class='layout layout-sm-column'>
+        {{form.input textarea=true class='notes' label='Notes' autofocus=true value=editingPerson.notes onChange=(action (mut editingPerson.notes)) errors=editingPerson.validationErrors.notes isTouched=editingPerson.validationErrors.notes.length}}
+      </div>
     {{/paper-form}}
   {{/paper-dialog-content}}
 
