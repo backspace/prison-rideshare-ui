@@ -2,7 +2,7 @@ const reasonToIcon = {
   'lockdown': 'lock',
   'visitor': 'perm identity',
   'no car': 'directions car',
-  'no driver': 'assignment ind',
+  'driver not found': 'assignment ind',
   'weather': 'cloud',
   'transfer': 'shuffle',
   'error': 'error',
