@@ -14,8 +14,8 @@
         {{/paper-button}}
       {{/if}}
     {{else}}
-      <span class='driver'>{{ride-person person=ride.driver onChange=(action 'setDriver')}}</span>
-      <span class='car-owner'>{{ride-person person=ride.carOwner onChange=(action 'setCarOwner')}}</span>
+      <span class='driver'>{{ride-person ride=ride property='driver' onChange=(action 'setDriver')}}</span>
+      <span class='car-owner'>{{ride-person ride=ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
       {{#if (or (not ride.children) rideToCombine)}}
         {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
           {{paper-icon 'merge type'}}

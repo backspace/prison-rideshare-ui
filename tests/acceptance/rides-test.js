@@ -259,6 +259,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.carOwnerId, sun.id);
   });
 
+  page.rides(0).carOwner.clear();
   page.rides(0).carOwner.click();
   selectChoose('.car-owner md-input-container', 'Lito');
 

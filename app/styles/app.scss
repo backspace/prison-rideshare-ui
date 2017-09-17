@@ -143,3 +143,36 @@ md-table-container.debts .person .name {
   position: absolute;
   right: -15px;
 }
+
+.md-contact-avatar.ride-person {
+  transform: scale(0.8);
+  margin-left: 5px;
+}
+
+.ride-person {
+  background-color: #e0e0e0;
+  color: #424242;
+  border-radius: 16px;
+  padding: 5px;
+
+  md-icon {
+    transform: translate(2px, -2px);
+    padding-right: 2px;
+  }
+
+  .remove-container {
+    button {
+      text-align: center;
+      min-width: 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      margin: 0;
+    }
+  }
+
+  &+.ride-person {
+    margin-left: 5px;
+  }
+}

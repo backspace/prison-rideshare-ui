@@ -46,7 +46,7 @@ export default create({
         title: attribute('title', 'button')
       },
 
-      name: text('.name'),
+      name: text('.name-and-contact .name'),
       date: text('.date'),
       institution: text('.institution'),
       address: text('.address'),
@@ -55,14 +55,16 @@ export default create({
 
       driver: {
         scope: '.driver',
-        text: text('.ember-power-select-selected-item'),
-        click: clickable()
+        text: text('.name'),
+        click: clickable(),
+        clear: clickable('.remove-container button')
       },
 
       carOwner: {
         scope: '.car-owner',
-        text: text('.ember-power-select-selected-item'),
-        click: clickable()
+        text: text('.name'),
+        click: clickable(),
+        clear: clickable('.remove-container button')
       },
 
       combineButton: {

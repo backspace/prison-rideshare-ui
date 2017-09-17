@@ -1,9 +1,26 @@
-{{#paper-select
-  selected=person
-  options=people
-  onChange=onChange
-  allowClear=true
-  matcher=(action 'match')
-  as |person|}}
-  {{person.name}}
-{{/paper-select}}
+{{#if person}}
+  <span class='ride-person'>
+    {{#if (eq property 'driver')}}
+      {{paper-icon 'person' size=14}}
+    {{else}}
+      {{paper-icon 'local gas station' size=14}}
+    {{/if}}
+    <span class='name'>{{person.name}}</span>
+    <span class='remove-container'>
+      <button onclick={{action 'clear'}} type='button'>
+        {{paper-icon icon='clear' size=14}}
+        <span class='md-visually-hidden'> Remove </span>
+      </button>
+    </span>
+  </span>
+{{else}}
+  {{#paper-select
+    selected=person
+    options=people
+    onChange=onChange
+    allowClear=true
+    matcher=(action 'match')
+    as |person|}}
+    {{person.name}}
+  {{/paper-select}}
+{{/if}}
