@@ -78,6 +78,12 @@ md-sidenav {
   md-input-container {
     margin: 18px 0 0;
   }
+
+  &.combined {
+    .date, .institution {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
 }
 
 .rides table {

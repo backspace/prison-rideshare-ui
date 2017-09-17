@@ -2,8 +2,8 @@ import Ember from 'ember';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
 export default Ember.Component.extend({
-  classAttribute: Ember.computed('ride.enabled', 'uncombinable', function() {
-    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''}`;
+  classAttribute: Ember.computed('ride.enabled', 'uncombinable', 'ride.isCombined', function() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''}`;
   }),
 
   tagName: '',
