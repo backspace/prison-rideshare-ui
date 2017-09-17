@@ -1,0 +1,9 @@
+{{#paper-select
+  selected=person
+  options=people
+  onChange=onChange
+  allowClear=true
+  matcher=(action 'match')
+  as |person|}}
+  {{person.name}}
+{{/paper-select}}

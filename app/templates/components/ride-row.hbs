@@ -14,24 +14,8 @@
         {{/paper-button}}
       {{/if}}
     {{else}}
-      <span class='driver'>{{#paper-select
-        selected=ride.driver
-        options=people
-        onChange=(action 'setDriver')
-        allowClear=true
-        matcher=(action 'match')
-        as |person|}}
-        {{person.name}}
-      {{/paper-select}}</span>
-      <span class='car-owner'>{{#paper-select
-        selected=ride.carOwner
-        options=people
-        onChange=(action 'setCarOwner')
-        allowClear=true
-        matcher=(action 'match')
-        as |person|}}
-        {{person.name}}
-      {{/paper-select}}</span>
+      <span class='driver'>{{ride-person person=ride.driver onChange=(action 'setDriver')}}</span>
+      <span class='car-owner'>{{ride-person person=ride.carOwner onChange=(action 'setCarOwner')}}</span>
       {{#if (or (not ride.children) rideToCombine)}}
         {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
           {{paper-icon 'merge type'}}
@@ -53,7 +37,7 @@
   {{/row.cell}}
 {{/body.row}}
 {{#if ride.requestNotes}}
-  {{#body.row class='notes' as |row|}}
+  {{#body.row class='{{classAttribute}} notes' as |row|}}
     {{row.cell}}
     {{#row.cell class='notes' colspan=6}}{{ride.requestNotes}}{{/row.cell}}
   {{/body.row}}
