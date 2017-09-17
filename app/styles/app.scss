@@ -59,8 +59,16 @@ md-sidenav {
 .rides table .ride {
   opacity: 0.5;
 
+  &+.notes {
+    opacity: 0.5;
+  }
+
   &.enabled {
     opacity: 1;
+
+    &+.notes {
+      opacity: 1;
+    }
   }
 
   &.uncombinable {
