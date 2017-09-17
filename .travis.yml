@@ -31,6 +31,7 @@ before_script:
   - sleep 3 # give xvfb some time to start
 
 script:
+  - ember build
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
