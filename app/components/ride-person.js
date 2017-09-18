@@ -10,6 +10,8 @@ export default Ember.Component.extend({
     return this.get('ride').get(this.get('property'));
   }),
 
+  showContact: false,
+
   actions: {
     match(option, searchTerm) {
       const name = Ember.get(option, 'name');
@@ -22,6 +24,10 @@ export default Ember.Component.extend({
       const ride = this.get('ride');
       ride.set(this.get('property'), null);
       return ride.save();
+    },
+
+    toggleContact() {
+      this.toggleProperty('showContact');
     }
   }
 });

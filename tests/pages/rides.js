@@ -57,7 +57,11 @@ export default create({
         scope: '.driver',
         text: text('.name'),
         click: clickable(),
-        clear: clickable('.remove-container button')
+        reveal: clickable('.name-container'),
+        clear: clickable('.remove-container button'),
+
+        email: text('.email'),
+        landline: text('.landline')
       },
 
       carOwner: {

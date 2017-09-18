@@ -172,4 +172,18 @@ md-table-container.debts .person .name {
   &+.ride-person {
     margin-left: 5px;
   }
+
+  .name-container {
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+
+    &:hover span {
+      text-decoration: underline;
+    }
+  }
 }
