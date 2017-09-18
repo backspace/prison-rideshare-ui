@@ -258,6 +258,7 @@ test('create and edit a ride', function(assert) {
   selectChoose('.driver md-input-container', 'Sun');
 
   andThen(function() {
+    console.log('before rides(0).driver.text', $('#ember-testing-container')[0].innerHTML);
     assert.equal(page.rides(0).driver.text, 'Sun');
     assert.equal(page.rides(0).carOwner.text, 'Sun', 'expected the car owner to be set automatically');
 
@@ -275,6 +276,8 @@ test('create and edit a ride', function(assert) {
   selectChoose('.car-owner md-input-container', 'Lito');
 
   andThen(function() {
+    console.log('before rides(0).carOwner.text');
+    console.log($('#ember-testing-container')[0].innerHTML);
     assert.equal(page.rides(0).carOwner.text, 'Lito');
 
     const serverRides = server.db.rides;
