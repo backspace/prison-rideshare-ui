@@ -272,7 +272,7 @@ test('create and edit a ride', function(assert) {
   });
 
   page.rides(0).carOwner.clear();
-  page.rides(0).carOwner.click();
+  // page.rides(0).carOwner.click();
   selectChoose('.car-owner md-input-container', 'Lito');
 
   andThen(function() {
