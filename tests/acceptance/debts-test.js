@@ -39,7 +39,8 @@ moduleForAcceptance('Acceptance | debts', {
       foodExpenses: 1919,
 
       carOwner: will,
-      carExpenses: 1919
+      carExpenses: 1919,
+      donation: true
     });
 
     server.create('reimbursement', {
@@ -103,6 +104,7 @@ test('debts are listed', function(assert) {
     assert.equal(will.carExpenses, '19.19');
     assert.equal(will.totalExpenses, '38.38');
     assert.equal(will.rides().count, '1');
+    assert.ok(will.rides(0).carExpenseIsDonation, 'expected the ride’s car expenses to be marked a donation');
   });
 });
 

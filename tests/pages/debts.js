@@ -2,6 +2,7 @@ import {
   clickable,
   collection,
   create,
+  isVisible,
   text,
   visitable
 } from 'ember-cli-page-object';
@@ -27,6 +28,7 @@ export default create({
           date: text('.date'),
           foodExpenses: text('.food-expenses'),
           carExpenses: text('.car-expenses'),
+          carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]')
         }
       }),
 

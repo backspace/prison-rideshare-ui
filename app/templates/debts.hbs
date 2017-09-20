@@ -32,6 +32,7 @@
           {{#row.cell class='car-expenses'}}
             {{#if (eq ride.carOwner.id debt.person.id)}}
               {{if ride.carExpensesDollars ride.carExpensesDollars}}
+              {{#if ride.donation}}{{paper-icon 'card giftcard'}}{{/if}}
             {{/if}}
           {{/row.cell}}
           {{row.cell}}
