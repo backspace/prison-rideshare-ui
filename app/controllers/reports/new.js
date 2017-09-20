@@ -19,12 +19,19 @@ export default Ember.Controller.extend({
 
       proxy.applyBufferedChanges();
       return proxy.get('content').save().then(() => {
-        this.get('paperToaster').show('Your report was saved', { duration: config.toastDuration });
+        this.get('paperToaster').show('Your report was saved', {
+          duration: config.toastDuration,
+          position: 'top right'
+        });
         this.set('editingRide', undefined);
         this.set('rideProxy.content', undefined);
         this.transitionToRoute('application');
+        window.scrollTo(0,0);
       }, () => {
-        this.get('paperToaster').show('There was an error saving your report!', { duration: config.toastDuration });
+        this.get('paperToaster').show('There was an error saving your report!', {
+          duration: config.toastDuration,
+          position: 'top right'
+        });
       });
     }
   }
