@@ -41,8 +41,8 @@
           {{#if (eq reimbursement.person.id debt.person.id)}}
             {{#body.row class='reimbursement' as |row|}}
               {{#row.cell}}{{/row.cell}}
-              {{#row.cell class='food-expenses'}}{{if reimbursement.foodExpensesDollars reimbursement.foodExpensesDollars}}{{/row.cell}}
-              {{#row.cell class='car-expenses'}}{{if reimbursement.carExpensesDollars reimbursement.carExpensesDollars}}{{/row.cell}}
+              {{#row.cell class='food-expenses'}}{{#if reimbursement.foodExpensesDollars}}-{{reimbursement.foodExpensesDollars}}{{/if}}{{/row.cell}}
+              {{#row.cell class='car-expenses'}}{{#if reimbursement.carExpensesDollars}}-{{reimbursement.carExpensesDollars}}{{/if}}{{/row.cell}}
               {{row.cell}}
               {{row.cell}}
             {{/body.row}}
