@@ -19,7 +19,8 @@
                    type='number'
                    label='Distance in kilometres'
                    value=rideProxy.distance
-                   required=true
+                   errors=rideProxy.validationErrors.distance
+                   isTouched=rideProxy.validationErrors.distance.length
                    onChange=(action (mut rideProxy.distance))}}
     </div>
     <div class='layout layout-sm-column'>
@@ -49,8 +50,7 @@
     <div class="layout-row">
       {{#paper-button class='submit'
                       raised=true primary=true
-                      onClick=(action 'submit')
-                      disabled=(or (not editingRide) form.isInvalid)}}Save{{/paper-button}}
+                      onClick=(action 'submit')}}Save{{/paper-button}}
                       {{! FIXME simplify if/when form yields radio-group?}}
     </div>
   {{/paper-form}}
