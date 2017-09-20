@@ -22,6 +22,11 @@
                    required=true
                    onChange=(action (mut rideProxy.distance))}}
     </div>
+    <div class='layout layout-sm-column'>
+      {{#paper-checkbox
+        value=rideProxy.donation
+        onChange=(action (mut rideProxy.donation))}}Donate your gas reimbursement{{/paper-checkbox}}
+    </div>
     <div class='layout-column'>
       {{form.input class='food-expenses'
                    type='number'

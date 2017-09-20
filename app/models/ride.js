@@ -66,6 +66,8 @@ export default DS.Model.extend({
   totalExpenses: sum('foodExpenses', 'carExpenses'),
   totalExpensesDollars: dollars('totalExpenses'),
 
+  donation: DS.attr('boolean'),
+
   reimbursementFoodExpenses: Ember.computed.mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: Ember.computed.sum('reimbursementFoodExpenses'),
   outstandingFoodExpenses: difference('foodExpenses', 'reimbursementFoodExpensesSum'),

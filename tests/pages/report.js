@@ -22,6 +22,9 @@ export default create({
   distance: { scope: '.distance input' },
   foodExpenses: { scope: '.food-expenses input' },
   notes: { scope: '.report-notes textarea' },
+  donation: {
+    scope: 'md-checkbox'
+  },
 
   submitButton: {
     scope: 'button.submit',
