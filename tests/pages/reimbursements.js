@@ -20,10 +20,18 @@ export default create({
       name: text('.name'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),
+      carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]'),
       totalExpenses: text('.total-expenses'),
 
-      process: clickable('.process'),
-      donate: clickable('.donate')
+      processButton: {
+        scope: '.process',
+        isPrimary: hasClass('md-primary')
+      },
+
+      donateButton: {
+        scope: '.donate',
+        isPrimary: hasClass('md-primary')
+      }
     }
   }),
 

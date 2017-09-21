@@ -1,6 +1,6 @@
 {{toolbar-header title='Reimbursements'}}
 
-{{#if personAndReimbursements}}
+{{#if peopleAndReimbursements}}
   {{#paper-data-table as |table|}}
     {{#table.head as |head|}}
       {{#head.column}}Person{{/head.column}}
@@ -10,21 +10,28 @@
       {{head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
-      {{#each personAndReimbursements as |personAndReimbursementsInstanceLol|}}
-        {{#body.row class='person' as |row|}}
-          {{#row.cell class='name'}}{{personAndReimbursementsInstanceLol.person.name}}{{/row.cell}}
-          {{#row.cell class='food-expenses'}}{{personAndReimbursementsInstanceLol.foodExpensesDollars}}{{/row.cell}}
-          {{#row.cell class='car-expenses'}}{{personAndReimbursementsInstanceLol.carExpensesDollars}}{{/row.cell}}
-          {{#row.cell class='total-expenses'}}{{personAndReimbursementsInstanceLol.totalExpensesDollars}}{{/row.cell}}
-          {{#row.cell}}
-            {{#paper-button class='process' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol)}}
-              Process
-            {{/paper-button}}
-            {{#paper-button class='donate' onClick=(action 'processReimbursements' personAndReimbursementsInstanceLol true)}}
-              Donate
-            {{/paper-button}}
-          {{/row.cell}}
-        {{/body.row}}
+      {{#each peopleAndReimbursements as |personAndReimbursements|}}
+        {{#each personAndReimbursements as |personAndCollection index|}}
+          {{#if personAndCollection.reimbursements}}
+            {{#body.row class='person' as |row|}}
+              {{#row.cell class='name'}}{{#if personAndCollection.showName}}{{personAndCollection.person.name}}{{/if}}{{/row.cell}}
+              {{#row.cell class='food-expenses'}}{{#unless personAndCollection.donations}}{{personAndCollection.foodExpensesDollars}}{{/unless}}{{/row.cell}}
+              {{#row.cell}}
+                <span class='car-expenses'>{{personAndCollection.carExpensesDollars}}</span>
+                {{#if personAndCollection.donations}}{{paper-icon 'card giftcard'}}{{/if}}
+              {{/row.cell}}
+              {{#row.cell class='total-expenses'}}{{personAndCollection.totalExpensesDollars}}{{/row.cell}}
+              {{#row.cell}}
+                {{#paper-button class='process' primary=(not personAndCollection.donations)onClick=(action 'processReimbursements' personAndCollection)}}
+                  Process
+                {{/paper-button}}
+                {{#paper-button class='donate' primary=personAndCollection.donations onClick=(action 'processReimbursements' personAndCollection true)}}
+                  Donate
+                {{/paper-button}}
+              {{/row.cell}}
+            {{/body.row}}
+          {{/if}}
+        {{/each}}
       {{/each}}
     {{/table.body}}
   {{/paper-data-table}}

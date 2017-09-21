@@ -21,6 +21,10 @@ moduleForAcceptance('Acceptance | reimbursements', {
     sun.createReimbursement({foodExpenses: 4400});
 
     kala.createReimbursement({carExpenses: 2200});
+    kala.createReimbursement({carExpenses: 100, donation: true});
+
+    will.createReimbursement({carExpenses: 111, donation: true});
+    will.createReimbursement({carExpenses: 222, donation: true});
 
     const reimbursedRide = server.create('ride', {
       institution: leavenworth,
@@ -55,19 +59,35 @@ test('list reimbursements and optionally show processed ones', function(assert) 
   andThen(() => {
     assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
 
-    assert.equal(reimbursementsPage.people().count, 2, 'expected two people with reimbursements');
+    assert.equal(reimbursementsPage.people().count, 4, 'expected three rows with reimbursements');
 
     const kala = reimbursementsPage.people(0);
     assert.equal(kala.name, 'Kala');
     assert.equal(kala.foodExpenses, '0', 'expected the processed reimbursement to be excluded');
     assert.equal(kala.carExpenses, '22');
     assert.equal(kala.totalExpenses, '22');
+    assert.ok(kala.processButton.isPrimary, 'expected the process button to be default for non-donations');
+    assert.notOk(kala.donateButton.isPrimary, 'expected the donate button to not be default for non-donations');
 
-    const sun = reimbursementsPage.people(1);
+    reimbursementsPage.people(1).as(kalaDonation => {
+      assert.equal(kalaDonation.name, '');
+      assert.equal(kalaDonation.foodExpenses, '');
+      assert.equal(kalaDonation.carExpenses, '1');
+      assert.ok(kalaDonation.carExpenseIsDonation, 'expected the donation to be thus marked');
+      assert.notOk(kalaDonation.processButton.isPrimary, 'expected the process button to not be default for donations');
+      assert.ok(kalaDonation.donateButton.isPrimary, 'expected the donate button to be default for donations');
+    });
+
+    const sun = reimbursementsPage.people(2);
     assert.equal(sun.name, 'Sun');
     assert.equal(sun.foodExpenses, '44');
     assert.equal(sun.carExpenses, '33');
     assert.equal(sun.totalExpenses, '77');
+
+    reimbursementsPage.people(3).as(willDonation => {
+      assert.equal(willDonation.name, 'Will');
+      assert.equal(willDonation.carExpenses, '3.33');
+    });
 
     assert.equal(reimbursementsPage.reimbursements().count, 0, 'expected no processed reimbursements to be shown');
   });
@@ -97,7 +117,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
 test('process reimbursements', function(assert) {
   reimbursementsPage.visit();
 
-  reimbursementsPage.people(1).process();
+  reimbursementsPage.people(2).processButton.click();
 
   andThen(() => {
     const [sun1, sun2,] = server.db.reimbursements;
@@ -106,7 +126,9 @@ test('process reimbursements', function(assert) {
     assert.ok(sun2.processed);
   });
 
-  reimbursementsPage.people(0).donate();
+  reimbursementsPage.people(0).donateButton.click();
+  reimbursementsPage.people(0).donateButton.click();
+  reimbursementsPage.people(0).donateButton.click();
 
   andThen(() => {
     const [, , k] = server.db.reimbursements;
