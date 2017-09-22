@@ -187,3 +187,13 @@ md-table-container.debts .person .name {
     }
   }
 }
+
+.name-and-copy {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    border: 0;
+  }
+}

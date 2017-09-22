@@ -14,7 +14,12 @@
         {{#each personAndReimbursements as |personAndCollection index|}}
           {{#if personAndCollection.reimbursements}}
             {{#body.row class='person' as |row|}}
-              {{#row.cell class='name'}}{{#if personAndCollection.showName}}{{personAndCollection.person.name}}{{/if}}{{/row.cell}}
+              {{#row.cell}}
+                <div class='name-and-copy'>
+                  <span class='name'>{{#if personAndCollection.showName}}{{personAndCollection.person.name}}{{/if}}</span>
+                  {{#copy-button clipboardText=personAndCollection.clipboardText}}{{paper-icon 'content copy' title=personAndCollection.copyIconTitle}}{{/copy-button}}
+                </div>
+              {{/row.cell}}
               {{#row.cell class='food-expenses'}}{{#unless personAndCollection.donations}}{{personAndCollection.foodExpensesDollars}}{{/unless}}{{/row.cell}}
               {{#row.cell}}
                 <span class='car-expenses'>{{personAndCollection.carExpensesDollars}}</span>
