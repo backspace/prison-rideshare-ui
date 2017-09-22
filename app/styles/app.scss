@@ -5,6 +5,8 @@ $primary: 'indigo';
 @import 'ember-paper';
 @import 'paper-data-table';
 
+@import 'loading';
+
 main {
   display: flex;
   flex-direction: column;
@@ -120,21 +122,10 @@ md-table-container.debts .person .name {
   color: grey;
 }
 
-@keyframes spin {
-  from {transform:rotate(0deg);}
-  to {transform:rotate(359deg);}
-}
-
 .ember-load-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 200%;
-
-  animation-name: spin;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
 .visitor-autocomplete-option {
