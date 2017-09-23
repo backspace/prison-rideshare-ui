@@ -62,8 +62,8 @@ export default Ember.Object.extend({
 
   reimbursementsWithFoodExpenses: Ember.computed.filterBy('reimbursements', 'foodExpenses'),
 
-  monthName: Ember.computed('reimbursements.firstObject.date', function() {
-    const date = this.get('reimbursements.firstObject.date');
+  monthName: Ember.computed('reimbursements.firstObject.ride.start', function() {
+    const date = this.get('reimbursements.firstObject.ride.start');
     return moment(date).format('MMMM');
   })
 });
