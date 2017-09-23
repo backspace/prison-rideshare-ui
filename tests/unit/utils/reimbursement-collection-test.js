@@ -17,7 +17,6 @@ const FakeReimbursement = Ember.Object.extend({
 });
 
 const foodReimbursement = FakeReimbursement.create({
-  date: reimbursementDate,
   foodExpenses: 4400
 });
 
@@ -26,12 +25,10 @@ const otherFoodReimbursement = FakeReimbursement.create({
 });
 
 const carReimbursement = FakeReimbursement.create({
-  date: reimbursementDate,
   carExpenses: 3300
 });
 
 const otherCarReimbursement = FakeReimbursement.create({
-  date: reimbursementDate,
   carExpenses: 2200
 });
 
