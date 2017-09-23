@@ -13,8 +13,8 @@ import {
 export default create({
   visit: visitable('/reimbursements'),
 
-  people: collection({
-    itemScope: 'tbody tr.person',
+  rows: collection({
+    itemScope: 'tbody tr',
 
     item: {
       name: text('.name'),
