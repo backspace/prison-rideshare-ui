@@ -21,6 +21,10 @@ const foodReimbursement = FakeReimbursement.create({
   foodExpenses: 4400
 });
 
+const otherFoodReimbursement = FakeReimbursement.create({
+  foodExpenses: 5500
+});
+
 const carReimbursement = FakeReimbursement.create({
   date: reimbursementDate,
   carExpenses: 3300
@@ -48,4 +52,9 @@ test('it generates a clipboard string for car expense donation', function(assert
 test('it generates a clipboard string for car and food expenses', function(assert) {
   const result = new ReimbursementCollection({person, reimbursements: [foodReimbursement, carReimbursement]});
   assert.equal(result.get('clipboardText'), `${dateString}\tAugust mileage + meal\tChelsea\t-$77\t\t\t`);
+});
+
+test('it generates a clipboard string for food expenses', function(assert) {
+  const result = new ReimbursementCollection({person, reimbursements: [foodReimbursement, otherFoodReimbursement]});
+  assert.equal(result.get('clipboardText'), `${dateString}\tAugust meal × 2\tChelsea\t-$99\t\t\t`);
 });
