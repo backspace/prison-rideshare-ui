@@ -95,7 +95,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
   reimbursementsPage.processedSwitch.click();
 
   andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements().count, 2, 'expected the processed reimbursement sto be shown');
+    assert.equal(reimbursementsPage.reimbursements().count, 2, 'expected the processed reimbursements to be shown');
 
     const foodProcessed = reimbursementsPage.reimbursements(0);
     assert.equal(foodProcessed.date, '2017-03-26');
