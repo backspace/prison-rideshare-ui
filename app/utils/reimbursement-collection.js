@@ -37,10 +37,7 @@ export default Ember.Object.extend({
     return `This will copy the following to the clipboard: ${this.get('clipboardText')}`;
   }),
 
-  clipboardDescriptionColumn: Ember.computed('foodExpensesSum', 'carExpensesSum', function() {
-    const lastMonthName = moment(today).subtract(1, 'months').format('MMMM');
-    const today = new Date();
-
+  clipboardDescriptionColumn: Ember.computed('monthName', 'foodExpensesSum', 'carExpensesSum', function() {
     const food = this.get('foodExpensesSum');
     const car = this.get('carExpensesSum');
 
@@ -54,7 +51,7 @@ export default Ember.Object.extend({
       description = this.get('clipboardDescriptionColumnMeal');
     }
 
-    return `${lastMonthName} ${description}`;
+    return `${this.get('monthName')} ${description}`;
   }),
 
   clipboardDescriptionColumnMeal: Ember.computed('reimbursementsWithFoodExpenses.length', function() {
@@ -63,5 +60,10 @@ export default Ember.Object.extend({
     return `meal${meals > 1 ? ` × ${meals}` : ''}`;
   }),
 
-  reimbursementsWithFoodExpenses: Ember.computed.filterBy('reimbursements', 'foodExpenses')
+  reimbursementsWithFoodExpenses: Ember.computed.filterBy('reimbursements', 'foodExpenses'),
+
+  monthName: Ember.computed('reimbursements.firstObject.date', function() {
+    const date = this.get('reimbursements.firstObject.date');
+    return moment(date).format('MMMM');
+  })
 });

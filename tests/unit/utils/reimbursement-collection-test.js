@@ -41,20 +41,20 @@ const person = Ember.Object.create({
 
 test('it generates a clipboard string for car expenses', function(assert) {
   const result = new ReimbursementCollection({person, reimbursements: [carReimbursement]});
-  assert.equal(result.get('clipboardText'), `${dateString}\tAugust mileage\tChelsea\t-$33\t\t\t`);
+  assert.equal(result.get('clipboardText'), `${dateString}\tSeptember mileage\tChelsea\t-$33\t\t\t`);
 });
 
 test('it generates a clipboard string for car expense donation', function(assert) {
   const result = new ReimbursementCollection({person, reimbursements: [carReimbursement, otherCarReimbursement], donations: true});
-  assert.equal(result.get('clipboardText'), `${dateString}\tAugust mileage\tChelsea\t-$55\t$55\t\t(donated)`);
+  assert.equal(result.get('clipboardText'), `${dateString}\tSeptember mileage\tChelsea\t-$55\t$55\t\t(donated)`);
 });
 
 test('it generates a clipboard string for car and food expenses', function(assert) {
   const result = new ReimbursementCollection({person, reimbursements: [foodReimbursement, carReimbursement]});
-  assert.equal(result.get('clipboardText'), `${dateString}\tAugust mileage + meal\tChelsea\t-$77\t\t\t`);
+  assert.equal(result.get('clipboardText'), `${dateString}\tSeptember mileage + meal\tChelsea\t-$77\t\t\t`);
 });
 
 test('it generates a clipboard string for food expenses', function(assert) {
   const result = new ReimbursementCollection({person, reimbursements: [foodReimbursement, otherFoodReimbursement]});
-  assert.equal(result.get('clipboardText'), `${dateString}\tAugust meal × 2\tChelsea\t-$99\t\t\t`);
+  assert.equal(result.get('clipboardText'), `${dateString}\tSeptember meal × 2\tChelsea\t-$99\t\t\t`);
 });
