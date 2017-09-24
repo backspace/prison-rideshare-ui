@@ -26,7 +26,7 @@
               {{#row.cell class='food-expenses'}}{{#unless reimbursementCollection.donations}}{{reimbursementCollection.foodExpensesDollars}}{{/unless}}{{/row.cell}}
               {{#row.cell}}
                 <span class='car-expenses'>{{reimbursementCollection.carExpensesDollars}}</span>
-                {{#if reimbursementCollection.donations}}{{paper-icon 'card giftcard'}}{{/if}}
+                {{#if reimbursementCollection.donations}}{{donation-icon}}{{/if}}
               {{/row.cell}}
               {{#row.cell class='total-expenses'}}{{reimbursementCollection.totalExpensesDollars}}{{/row.cell}}
               {{#row.cell}}
