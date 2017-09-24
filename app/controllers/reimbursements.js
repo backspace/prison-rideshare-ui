@@ -74,7 +74,7 @@ export default Ember.Controller.extend({
 
       monthReimbursementCollections.push(MonthReimbursementCollections.create({
         monthNumberString,
-        monthName: moment(new Date(monthNumberString)).format('MMMM'),
+        monthName: moment(new Date(monthNumberString)).format('MMMM YYYY'),
         reimbursementCollections: flattenedCollections
       }));
 

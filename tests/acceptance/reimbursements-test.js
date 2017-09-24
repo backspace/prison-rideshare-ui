@@ -69,7 +69,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
 
     assert.equal(reimbursementsPage.rows().count, 8, 'expected two month rows and six person reimbursement rows');
 
-    assert.equal(reimbursementsPage.rows(0).month, 'April');
+    assert.equal(reimbursementsPage.rows(0).month, 'April 2017');
 
     const kala = reimbursementsPage.rows(1);
     assert.equal(kala.name, 'Kala');
@@ -101,7 +101,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
 
     assert.equal(reimbursementsPage.reimbursements().count, 0, 'expected no processed reimbursements to be shown');
 
-    assert.equal(reimbursementsPage.rows(5).month, 'May');
+    assert.equal(reimbursementsPage.rows(5).month, 'May 2017');
     assert.equal(reimbursementsPage.rows(7).name, 'Sun');
     assert.equal(reimbursementsPage.rows(7).carExpenses, '99');
   });
