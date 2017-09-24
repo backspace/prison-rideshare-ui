@@ -20,11 +20,8 @@
         {{#each monthReimbursementCollection.reimbursementCollections as |reimbursementCollection|}}
           {{#if reimbursementCollection.reimbursements}}
             {{#body.row class='person' as |row|}}
-              {{#row.cell}}
-                <div class='name-and-copy'>
-                  <span class='name'>{{#if reimbursementCollection.showName}}{{reimbursementCollection.person.name}}{{/if}}</span>
-                  {{#copy-button clipboardText=reimbursementCollection.clipboardText}}{{paper-icon 'content copy' title=reimbursementCollection.copyIconTitle}}{{/copy-button}}
-                </div>
+              {{#row.cell class='name'}}
+                {{#if reimbursementCollection.showName}}{{reimbursementCollection.person.name}}{{/if}}
               {{/row.cell}}
               {{#row.cell class='food-expenses'}}{{#unless reimbursementCollection.donations}}{{reimbursementCollection.foodExpensesDollars}}{{/unless}}{{/row.cell}}
               {{#row.cell}}
@@ -33,6 +30,7 @@
               {{/row.cell}}
               {{#row.cell class='total-expenses'}}{{reimbursementCollection.totalExpensesDollars}}{{/row.cell}}
               {{#row.cell}}
+                {{#copy-button clipboardText=reimbursementCollection.clipboardText}}{{paper-icon 'content copy' title=reimbursementCollection.copyIconTitle}}{{/copy-button}}
                 {{#paper-button class='process' primary=(not reimbursementCollection.donations)onClick=(action 'processReimbursements' reimbursementCollection)}}
                   Process
                 {{/paper-button}}
