@@ -22,12 +22,12 @@ export default Ember.Controller.extend({
   processedReimbursementsSorting: ['insertedAt:desc'],
   processedReimbursements: Ember.computed.sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting'),
 
-  monthToReimbursementCollections: Ember.computed('filteredReimbursements.@each.person', function() {
+  monthReimbursementCollections: Ember.computed('filteredReimbursements.@each.person', function() {
     const reimbursements = this.get('filteredReimbursements');
 
     const monthToPersonIdToReimbursements = reimbursements.reduce((monthToPersonIdToReimbursements, reimbursement) => {
       // FIXME this assumes a ride is always preloaded and present
-      const month = moment(reimbursement.belongsTo('ride').value().get('start')).format('MMMM');
+      const month = moment(reimbursement.belongsTo('ride').value().get('start')).format('YYYY-MM');
 
       if (!monthToPersonIdToReimbursements[month]) {
         monthToPersonIdToReimbursements[month] = {};
@@ -56,8 +56,8 @@ export default Ember.Controller.extend({
       return monthToPersonIdToReimbursements;
     }, {});
 
-    const monthToReimbursementCollections = Object.keys(monthToPersonIdToReimbursements).reduce((monthToReimbursementCollections, month) => {
-      const personIdToReimbursements = monthToPersonIdToReimbursements[month];
+    const monthReimbursementCollections = Object.keys(monthToPersonIdToReimbursements).reduce((monthReimbursementCollections, monthNumberString) => {
+      const personIdToReimbursements = monthToPersonIdToReimbursements[monthNumberString];
       const collections = Object.keys(personIdToReimbursements).map(id => personIdToReimbursements[id]).sortBy('firstObject.person.name');
 
       collections.forEach(([nonDonations, donations]) => {
@@ -68,15 +68,20 @@ export default Ember.Controller.extend({
         }
       });
 
-      monthToReimbursementCollections[month] = collections;
-      return monthToReimbursementCollections;
-    }, {});
+      const flattenedCollections = collections.reduce((flattenedCollections, collectionPair) => {
+        return flattenedCollections.concat(collectionPair);
+      }, []);
 
-    return monthToReimbursementCollections;
-  }),
+      monthReimbursementCollections.push(MonthReimbursementCollections.create({
+        monthNumberString,
+        monthName: moment(new Date(monthNumberString)).format('MMMM'),
+        reimbursementCollections: flattenedCollections
+      }));
 
-  monthCount: Ember.computed('monthToReimbursementCollections', function() {
-    return Object.keys(this.get('monthToReimbursementCollections')).length;
+      return monthReimbursementCollections;
+    }, []);
+
+    return monthReimbursementCollections.sortBy('monthNumberString');
   }),
 
   actions: {
@@ -110,4 +115,17 @@ export default Ember.Controller.extend({
     //   this.set('editingReimbursement', undefined);
     // }
   }
+});
+
+const MonthReimbursementCollections = Ember.Object.extend({
+  reimbursementCollectionsWithReimbursements: Ember.computed.filterBy('reimbursementCollections', 'reimbursements.length'),
+  reimbursementCollectionsClipboardText: Ember.computed.mapBy('reimbursementCollectionsWithReimbursements', 'clipboardText'),
+
+  clipboardText: Ember.computed('reimbursementCollectionsClipboardText', function() {
+    return this.get('reimbursementCollectionsClipboardText').join('\n');
+  }),
+
+  copyIconTitle: Ember.computed('clipboardText', function() {
+    return `This will copy the following to the clipboard:\n${this.get('clipboardText')}`;
+  })
 });

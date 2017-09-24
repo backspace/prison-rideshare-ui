@@ -21,6 +21,9 @@ moduleForAcceptance('Acceptance | reimbursements', {
     const unprocessedRide = server.create('ride', {start: new Date(2017, 3, 22)});
 
     sun.createReimbursement({ride: unprocessedRideNextMonth, carExpenses: 9900});
+    sun.createReimbursement({ride: unprocessedRideNextMonth, foodExpenses: 100});
+    sun.createReimbursement({ride: unprocessedRideNextMonth, foodExpenses: 200});
+    kala.createReimbursement({ride: unprocessedRideNextMonth, carExpenses: 1100, donation: true});
 
     sun.createReimbursement({ride: unprocessedRide, carExpenses: 3300});
     sun.createReimbursement({ride: unprocessedRide, foodExpenses: 4400});
@@ -64,7 +67,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
   andThen(() => {
     assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
 
-    assert.equal(reimbursementsPage.rows().count, 7, 'expected two month rows and five person reimbursement rows');
+    assert.equal(reimbursementsPage.rows().count, 8, 'expected two month rows and six person reimbursement rows');
 
     assert.equal(reimbursementsPage.rows(0).month, 'April');
 
@@ -99,8 +102,8 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.equal(reimbursementsPage.reimbursements().count, 0, 'expected no processed reimbursements to be shown');
 
     assert.equal(reimbursementsPage.rows(5).month, 'May');
-    assert.equal(reimbursementsPage.rows(6).name, 'Sun');
-    assert.equal(reimbursementsPage.rows(6).carExpenses, '99');
+    assert.equal(reimbursementsPage.rows(7).name, 'Sun');
+    assert.equal(reimbursementsPage.rows(7).carExpenses, '99');
   });
 
   reimbursementsPage.processedSwitch.click();
@@ -131,7 +134,7 @@ test('process reimbursements', function(assert) {
   reimbursementsPage.rows(3).processButton.click();
 
   andThen(() => {
-    const [, sun1, sun2,] = server.db.reimbursements;
+    const [, , , , sun1, sun2,] = server.db.reimbursements;
 
     assert.ok(sun1.processed);
     assert.ok(sun2.processed);
@@ -141,9 +144,10 @@ test('process reimbursements', function(assert) {
   reimbursementsPage.rows(1).donateButton.click();
   reimbursementsPage.rows(1).donateButton.click();
   reimbursementsPage.rows(1).donateButton.click();
+  reimbursementsPage.rows(1).donateButton.click();
 
   andThen(() => {
-    const [, , , k] = server.db.reimbursements;
+    const [, , , , , , k] = server.db.reimbursements;
 
     assert.ok(k.processed, 'expected the reimbursement to have been marked as processed');
     assert.ok(k.donation, 'expected the reimbursement to have been marked as a donation');
@@ -157,7 +161,15 @@ test('rows can be copied for the ledger', function(assert) {
 
   andThen(() => {
     const clipboardText = reimbursementsPage.rows(2).copyButton.clipboardText;
-    assert.ok(clipboardText.endsWith('April mileage\tKala\t-$1\t$1\t\t(donated)'));
+    const expectedClipboardTextEnding = 'April mileage\tKala\t-$1\t$1\t\t(donated)';
+    assert.ok(clipboardText.includes(expectedClipboardTextEnding), `expected April clipboard text to include ${expectedClipboardTextEnding}, got ${clipboardText}`);
+
+    const mayClipboardText = reimbursementsPage.rows(5).copyButton.clipboardText;
+    const [kalaClipboardText, sunClipboardText] = mayClipboardText.split('\n');
+    const expectedKalaClipboardTextEnding = 'May mileage\tKala\t-$11\t$11\t\t(donated)';
+    const expectedSunClipboardTextEnding = 'May mileage + meal × 2\tSun\t-$102\t\t';
+    assert.ok(kalaClipboardText.includes(expectedKalaClipboardTextEnding), `expected Kala clipboard text to include ${expectedKalaClipboardTextEnding}, got ${kalaClipboardText}`);
+    assert.ok(sunClipboardText.includes(expectedSunClipboardTextEnding), `expected Sun clipboard text to include ${expectedSunClipboardTextEnding}, got ${sunClipboardText}`);
   });
 });
 

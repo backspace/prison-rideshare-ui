@@ -1,6 +1,6 @@
 {{toolbar-header title='Reimbursements'}}
 
-{{#if monthCount}}
+{{#if monthReimbursementCollections}}
   {{#paper-data-table class='reimbursements' as |table|}}
     {{#table.head as |head|}}
       {{#head.column}}Person{{/head.column}}
@@ -10,39 +10,40 @@
       {{head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
-      {{#each-in monthToReimbursementCollections as |month peopleAndReimbursements|}}
+      {{#each monthReimbursementCollections as |monthReimbursementCollection|}}
         {{#body.row as |row|}}
-          {{#row.cell class='month' colspan=5}}{{month}}{{/row.cell}}
+          {{#row.cell class='month' colspan=4}}{{monthReimbursementCollection.monthName}}{{/row.cell}}
+          {{#row.cell}}
+            {{#copy-button clipboardText=monthReimbursementCollection.clipboardText}}{{paper-icon 'content copy' title=monthReimbursementCollection.copyIconTitle}}{{/copy-button}}
+          {{/row.cell}}
         {{/body.row}}
-        {{#each peopleAndReimbursements as |personAndReimbursements|}}
-          {{#each personAndReimbursements as |personAndCollection index|}}
-            {{#if personAndCollection.reimbursements}}
-              {{#body.row class='person' as |row|}}
-                {{#row.cell}}
-                  <div class='name-and-copy'>
-                    <span class='name'>{{#if personAndCollection.showName}}{{personAndCollection.person.name}}{{/if}}</span>
-                    {{#copy-button clipboardText=personAndCollection.clipboardText}}{{paper-icon 'content copy' title=personAndCollection.copyIconTitle}}{{/copy-button}}
-                  </div>
-                {{/row.cell}}
-                {{#row.cell class='food-expenses'}}{{#unless personAndCollection.donations}}{{personAndCollection.foodExpensesDollars}}{{/unless}}{{/row.cell}}
-                {{#row.cell}}
-                  <span class='car-expenses'>{{personAndCollection.carExpensesDollars}}</span>
-                  {{#if personAndCollection.donations}}{{paper-icon 'card giftcard'}}{{/if}}
-                {{/row.cell}}
-                {{#row.cell class='total-expenses'}}{{personAndCollection.totalExpensesDollars}}{{/row.cell}}
-                {{#row.cell}}
-                  {{#paper-button class='process' primary=(not personAndCollection.donations)onClick=(action 'processReimbursements' personAndCollection)}}
-                    Process
-                  {{/paper-button}}
-                  {{#paper-button class='donate' primary=personAndCollection.donations onClick=(action 'processReimbursements' personAndCollection true)}}
-                    Donate
-                  {{/paper-button}}
-                {{/row.cell}}
-              {{/body.row}}
-            {{/if}}
-          {{/each}}
+        {{#each monthReimbursementCollection.reimbursementCollections as |reimbursementCollection|}}
+          {{#if reimbursementCollection.reimbursements}}
+            {{#body.row class='person' as |row|}}
+              {{#row.cell}}
+                <div class='name-and-copy'>
+                  <span class='name'>{{#if reimbursementCollection.showName}}{{reimbursementCollection.person.name}}{{/if}}</span>
+                  {{#copy-button clipboardText=reimbursementCollection.clipboardText}}{{paper-icon 'content copy' title=reimbursementCollection.copyIconTitle}}{{/copy-button}}
+                </div>
+              {{/row.cell}}
+              {{#row.cell class='food-expenses'}}{{#unless reimbursementCollection.donations}}{{reimbursementCollection.foodExpensesDollars}}{{/unless}}{{/row.cell}}
+              {{#row.cell}}
+                <span class='car-expenses'>{{reimbursementCollection.carExpensesDollars}}</span>
+                {{#if reimbursementCollection.donations}}{{paper-icon 'card giftcard'}}{{/if}}
+              {{/row.cell}}
+              {{#row.cell class='total-expenses'}}{{reimbursementCollection.totalExpensesDollars}}{{/row.cell}}
+              {{#row.cell}}
+                {{#paper-button class='process' primary=(not reimbursementCollection.donations)onClick=(action 'processReimbursements' reimbursementCollection)}}
+                  Process
+                {{/paper-button}}
+                {{#paper-button class='donate' primary=reimbursementCollection.donations onClick=(action 'processReimbursements' reimbursementCollection true)}}
+                  Donate
+                {{/paper-button}}
+              {{/row.cell}}
+            {{/body.row}}
+          {{/if}}
         {{/each}}
-      {{/each-in}}
+      {{/each}}
     {{/table.body}}
   {{/paper-data-table}}
 {{else}}

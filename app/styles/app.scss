@@ -183,13 +183,15 @@ md-table-container.debts .person .name {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
 
-  button {
+md-table-container.reimbursements {
+  .month {
+    font-weight: bold;
+  }
+
+  .copy-btn {
     border: 0;
     background: transparent;
   }
-}
-
-md-table-container.reimbursements .month {
-  font-weight: bold;
 }
