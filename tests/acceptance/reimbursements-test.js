@@ -152,6 +152,15 @@ test('process reimbursements', function(assert) {
   })
 });
 
+test('rows can be copied for the ledger', function(assert) {
+  reimbursementsPage.visit();
+
+  andThen(() => {
+    const clipboardText = reimbursementsPage.rows(2).copyButton.clipboardText;
+    assert.ok(clipboardText.endsWith('April mileage\tKala\t-$1\t$1\t\t(donated)'));
+  });
+});
+
 skip('create a reimbursement', function(assert) {
   peoplePage.visit();
   peoplePage.rows(0).reimburseButton.click();

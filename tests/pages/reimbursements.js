@@ -1,4 +1,5 @@
 import {
+  attribute,
   clickable,
   collection,
   create,
@@ -18,7 +19,7 @@ export default create({
 
     item: {
       month: text('.month'),
-  
+
       name: text('.name'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),
@@ -33,6 +34,11 @@ export default create({
       donateButton: {
         scope: '.donate',
         isPrimary: hasClass('md-primary')
+      },
+
+      copyButton: {
+        scope: '.copy-btn',
+        clipboardText: attribute('data-clipboard-text')
       }
     }
   }),
