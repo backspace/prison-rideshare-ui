@@ -17,6 +17,8 @@ export default create({
     itemScope: 'tbody tr',
 
     item: {
+      month: text('.month'),
+  
       name: text('.name'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),

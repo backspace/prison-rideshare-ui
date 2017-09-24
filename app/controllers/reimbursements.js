@@ -2,15 +2,19 @@ import Ember from 'ember';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
 // import BufferedProxy from 'ember-buffered-proxy/proxy';
 
+import moment from 'moment';
+
 export default Ember.Controller.extend({
   queryParams: {
     showProcessed: 'processed'
   },
 
   reimbursements: Ember.computed.alias('model'),
-  filteredReimbursements: Ember.computed('reimbursements.@each.processed', function() {
+  unsortedFilteredReimbursements: Ember.computed('reimbursements.@each.processed', function() {
     return this.get('reimbursements').rejectBy('processed');
   }),
+  filteredReimbursementsSorting: ['ride.start'],
+  filteredReimbursements: Ember.computed.sort('unsortedFilteredReimbursements', 'filteredReimbursementsSorting'),
 
   showProcessed: false,
 
@@ -18,15 +22,22 @@ export default Ember.Controller.extend({
   processedReimbursementsSorting: ['insertedAt:desc'],
   processedReimbursements: Ember.computed.sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting'),
 
-  peopleAndReimbursements: Ember.computed('filteredReimbursements.@each.person', function() {
+  monthToReimbursementCollections: Ember.computed('filteredReimbursements.@each.person', function() {
     const reimbursements = this.get('filteredReimbursements');
 
-    const personIdToReimbursements = reimbursements.reduce((personIdToReimbursements, reimbursement) => {
+    const monthToPersonIdToReimbursements = reimbursements.reduce((monthToPersonIdToReimbursements, reimbursement) => {
+      // FIXME this assumes a ride is always preloaded and present
+      const month = moment(reimbursement.belongsTo('ride').value().get('start')).format('MMMM');
+
+      if (!monthToPersonIdToReimbursements[month]) {
+        monthToPersonIdToReimbursements[month] = {};
+      }
+
       const person = reimbursement.get('person');
       const personId = person.get('id');
 
-      if (!personIdToReimbursements[personId]) {
-        personIdToReimbursements[personId] = [
+      if (!monthToPersonIdToReimbursements[month][personId]) {
+        monthToPersonIdToReimbursements[month][personId] = [
           ReimbursementCollection.create({donations: false, person, reimbursements: []}),
           ReimbursementCollection.create({donations: true, person, reimbursements: []})
         ];
@@ -35,27 +46,37 @@ export default Ember.Controller.extend({
       let collection;
 
       if (reimbursement.get('donation')) {
-        collection = personIdToReimbursements[personId].find(c => c.get('donations'));
+        collection = monthToPersonIdToReimbursements[month][personId].find(c => c.get('donations'));
       } else {
-        collection = personIdToReimbursements[personId].find(c => !c.get('donations'));
+        collection = monthToPersonIdToReimbursements[month][personId].find(c => !c.get('donations'));
       }
 
       collection.get('reimbursements').push(reimbursement);
 
-      return personIdToReimbursements;
+      return monthToPersonIdToReimbursements;
     }, {});
 
-    const collections = Object.keys(personIdToReimbursements).map(id => personIdToReimbursements[id]).sortBy('firstObject.person.name');
+    const monthToReimbursementCollections = Object.keys(monthToPersonIdToReimbursements).reduce((monthToReimbursementCollections, month) => {
+      const personIdToReimbursements = monthToPersonIdToReimbursements[month];
+      const collections = Object.keys(personIdToReimbursements).map(id => personIdToReimbursements[id]).sortBy('firstObject.person.name');
 
-    collections.forEach(([nonDonations, donations]) => {
-      if (nonDonations.reimbursements.get('length') === 0) {
-        donations.set('showName', true);
-      } else {
-        nonDonations.set('showName', true);
-      }
-    });
+      collections.forEach(([nonDonations, donations]) => {
+        if (nonDonations.reimbursements.get('length') === 0) {
+          donations.set('showName', true);
+        } else {
+          nonDonations.set('showName', true);
+        }
+      });
 
-    return collections;
+      monthToReimbursementCollections[month] = collections;
+      return monthToReimbursementCollections;
+    }, {});
+
+    return monthToReimbursementCollections;
+  }),
+
+  monthCount: Ember.computed('monthToReimbursementCollections', function() {
+    return Object.keys(this.get('monthToReimbursementCollections')).length;
   }),
 
   actions: {

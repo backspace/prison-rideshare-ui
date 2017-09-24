@@ -19,6 +19,7 @@ export default function() {
       return rides.all();
     }
   });
+  this.get('/rides/:id');
   this.post('/rides');
   this.patch('/rides/:id');
 

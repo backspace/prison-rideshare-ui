@@ -6,5 +6,10 @@ export default Ember.Route.extend(AuthenticatedRoute, {
     return this.store.findAll('reimbursement');
   },
 
+  afterModel(reimbursements) {
+    // TODO coalesceFindRequests?
+    return Ember.RSVP.all(reimbursements.mapBy('ride'));
+  },
+
   titleToken: 'Reimbursements'
 });
