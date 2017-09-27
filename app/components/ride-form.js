@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import chrono from 'npm:chrono-node';
 
+import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
 
 export default Ember.Component.extend({
@@ -24,8 +24,7 @@ export default Ember.Component.extend({
   actions: {
     timespanUpdated(value) {
       this.set('ride.timespan', value);
-
-      const [parsed] = chrono.parse(value, new Date(), {forwardDatesOnly: true});
+      const parsed = parseTimespan(value);
 
       if (parsed) {
         if (parsed.start) {
