@@ -87,7 +87,6 @@ test('submit a report for a ride', function(assert) {
   });
 });
 
-
 test('submitting a report clears the form', function(assert) {
   page.visit();
 
@@ -123,6 +122,17 @@ test('partially completing a report and changing the ride doesn’t erase the va
 
   andThen(() => {
     assert.equal(page.notes.value, longReport);
+  });
+});
+
+test('submitting a report without choosing a ride displays an error', function(assert) {
+  page.visit();
+  page.notes.fillIn('I cannot find my ride');
+  page.submitButton.click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Please choose a ride');
+    assert.equal(page.notes.value, 'I cannot find my ride');
   });
 });
 
