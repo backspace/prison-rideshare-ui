@@ -376,7 +376,7 @@ test('ride validation errors are displayed', function(assert) {
   });
 });
 
-test('rides can be combined and uncombined', function(assert) {
+test('rides can be combined and uncombined, cancelling a parent ride shows a warning', function(assert) {
   const today = new Date();
   const tomorrow = new Date(today.getTime() + 1000*60*60*24);
 
@@ -389,6 +389,12 @@ test('rides can be combined and uncombined', function(assert) {
 
   andThen(() => {
     assert.ok(page.rides(1).combineButton.isHidden, 'expected a ride that already has one combined with it to not a have a button to combine');
+  });
+
+  page.rides(1).cancellation.click();
+
+  andThen(() => {
+    assert.equal(page.cancellationForm.notice, 'Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.');
   });
 
   page.rides(0).combineButton.click();

@@ -167,6 +167,8 @@ export default create({
   cancellationForm: {
     scope: '.md-dialog-container',
 
+    notice: text('.md-toolbar-tools'),
+
     cancelled: {
       scope: 'md-checkbox',
       checked: hasClass('md-checked'),

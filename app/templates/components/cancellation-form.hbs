@@ -1,6 +1,13 @@
 {{#paper-dialog onClose=cancel clickOutsideToClose=true}}
 
   {{#paper-dialog-content}}
+    {{#if ride.children}}
+      {{#paper-toolbar}}
+        {{#paper-toolbar-tools}}
+          Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.
+        {{/paper-toolbar-tools}}
+      {{/paper-toolbar}}
+    {{/if}}
     <h2 class='md-title'>Cancel a ride</h2>
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout layout-sm-column'>
