@@ -37,6 +37,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     address: '91 Albert',
     contact: 'jorts@example.com',
     passengers: 3,
+    firstTime: true,
     institution: leavenworth,
 
     requestNotes: 'These are some request notes.',
@@ -76,6 +77,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
     assert.ok(ride.cancellation.showsLockdown, 'expected the cancelled ride to show lockdown for the reason');
     assert.equal(ride.name, 'Edward + 2');
+    assert.ok(ride.isFirstTimer, 'expected the rider to be marked a first-timer');
     assert.equal(ride.date, 'Mon Dec 26 8:30pm — 10:00');
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
@@ -110,6 +112,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
   andThen(() => {
     assert.ok(page.rides(0).enabled, 'expected the other ride to be enabled');
+    assert.notOk(page.rides(0).isFirstTimer, 'expected the other ride to not be a first-timer');
     assert.ok(page.rides(0).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
 
@@ -225,6 +228,7 @@ test('create and edit a ride', function(assert) {
   page.form.name.fillIn('Edward');
   page.form.address.fillIn('114 Spence');
   page.form.contact.fillIn('jants@example.com');
+  page.form.firstTime.click();
   page.form.passengers.fillIn(2);
 
 
@@ -249,6 +253,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(moment(lastRide.end).format('YYYY-MM-DD HH:mm'), '2016-12-26 11:30');
     assert.equal(lastRide.address, '114 Spence');
     assert.equal(lastRide.contact, 'jants@example.com');
+    assert.ok(lastRide.firstTime);
     assert.equal(lastRide.passengers, 2);
     assert.equal(lastRide.institutionId, rockwood.id);
     assert.equal(lastRide.requestNotes, undefined, 'expected the notes to have been unspecified');
@@ -299,6 +304,7 @@ test('create and edit a ride', function(assert) {
 
   page.form.name.fillIn('Edwina');
   page.form.notes.fillIn('Some request notes?');
+  page.form.firstTime.click();
 
   andThen(() => {
     assert.equal(page.rides(0).name, 'Edward + 1', 'expected the original model to not yet have changed');
@@ -316,6 +322,7 @@ test('create and edit a ride', function(assert) {
     const lastRide = serverRides[serverRides.length - 1];
     assert.equal(lastRide.name, 'Edwina');
     assert.equal(lastRide.requestNotes, 'Some request notes?');
+    assert.notOk(lastRide.firstTime);
   });
 });
 

@@ -2,7 +2,7 @@
   {{#row.cell class='date'}}{{ride.rideTimes}}{{/row.cell}}
   {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
   {{#row.cell class='name-and-contact'}}
-    <div class='name'>{{ride.namePlusPassengers}}</div>
+    <span class='name'>{{ride.namePlusPassengers}}</span>{{#if ride.firstTime}} {{paper-icon 'announcement' size=10 title='first time rider'}}{{/if}}
     <div class='contact'>{{ride.contact}}</div>
   {{/row.cell}}
   {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}

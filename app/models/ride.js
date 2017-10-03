@@ -24,6 +24,7 @@ export default DS.Model.extend({
   address: DS.attr(),
   contact: DS.attr(),
   passengers: DS.attr({defaultValue: 1}),
+  firstTime: DS.attr('boolean'),
 
   validationErrors: Ember.computed('errors.[]', function() {
     const attributes = Ember.get(this.constructor, 'attributes');

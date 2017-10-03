@@ -47,6 +47,7 @@ export default create({
       },
 
       name: text('.name-and-contact .name'),
+      isFirstTimer: isVisible('.name-and-contact md-icon[md-font-icon=announcement]'),
       date: text('.date'),
       institution: text('.institution'),
       address: text('.address'),
@@ -150,6 +151,12 @@ export default create({
 
     contact: {
       scope: '.contact input',
+    },
+
+    firstTime: {
+      scope: 'md-checkbox',
+      checked: hasClass('md-checked'),
+      click: clickable()
     },
 
     passengers: {
