@@ -1,7 +1,13 @@
 {{#paper-dialog onClose=cancel}}
 
   {{#paper-dialog-content}}
-    {{#if warning}}{{#paper-toolbar}}{{#paper-toolbar-tools}}{{warning}}{{/paper-toolbar-tools}}{{/paper-toolbar}}{{/if}}
+    {{#if warning}}
+      {{#paper-card as |card|}}
+        {{#card.content}}
+          {{warning}}
+        {{/card.content}}
+      {{/paper-card}}
+    {{/if}}
     <h2 class='md-title'>{{if ride.isNew 'Record' 'Edit'}} a ride request</h2>
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout-column'>

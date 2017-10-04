@@ -110,7 +110,7 @@ export default create({
   form: {
     scope: '.md-dialog-container',
 
-    notice: text('.md-toolbar-tools'),
+    notice: text('md-card-content'),
 
     timespan: {
       scope: '.timespan textarea'
@@ -174,7 +174,7 @@ export default create({
   cancellationForm: {
     scope: '.md-dialog-container',
 
-    notice: text('.md-toolbar-tools'),
+    notice: text('md-card-content'),
 
     cancelled: {
       scope: 'md-checkbox',
