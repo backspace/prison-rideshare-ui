@@ -25,6 +25,7 @@ module.exports = function(environment) {
 
     DS: {
      host: 'http://localhost:4000',
+     socketHost: 'ws://localhost:4000',
      namespace: ''
     },
 
@@ -51,6 +52,10 @@ module.exports = function(environment) {
 
     if (process.env.API_HOST) {
       ENV.DS.host = process.env.API_HOST;
+    }
+
+    if (process.env.SOCKET_HOST) {
+      ENV.DS.socketHost = process.env.SOCKET_HOST;
     }
   }
 
@@ -83,6 +88,10 @@ module.exports = function(environment) {
       ENV['ember-cli-mirage'] = {
         enabled: true
       };
+    }
+
+    if (process.env.SOCKET_HOST) {
+      ENV.DS.socketHost = process.env.SOCKET_HOST;
     }
   }
 

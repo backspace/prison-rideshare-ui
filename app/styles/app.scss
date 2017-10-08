@@ -82,6 +82,23 @@ md-sidenav {
       background-color: color($color-indigo, '400');
     }
   }
+
+  .users {
+    display: flex;
+    width: 100%;
+    padding-right: 16px;
+    justify-content: space-between;
+    align-items: center;
+    .count {
+      border-radius: 10px;
+      background: white;
+      color: color($color-indigo, '600');
+      font-size: 50%;
+      text-align: center;
+      width: 10px;
+      height: 10px;
+    }
+  }
 }
 
 .rides table .ride {

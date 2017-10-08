@@ -1,5 +1,5 @@
 {{ember-load-remover}}
-
+{{userSocket}}
 <div class='flashes'>
   {{#each flashMessages.queue as |flash|}}
     {{flash-message flash=flash}}
@@ -37,7 +37,10 @@
         {{#if session.isAuthenticated}}
           {{#if session.currentUser.admin}}
             {{#paper-item}}
-              {{#link-to 'users'}}<span>Users</span>{{/link-to}}
+              {{#link-to 'users'}}<span class='users'>
+                <span>Users</span>
+                {{#if userCount}}<span class='count'>{{userCount}}</span>{{/if}}
+              </span>{{/link-to}}
             {{/paper-item}}
             {{paper-divider}}
           {{/if}}

@@ -5,6 +5,7 @@ import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mi
 export default Ember.Route.extend(ApplicationRouteMixin, {
   session: Ember.inject.service(),
   account: Ember.inject.service(),
+  userSocket: Ember.inject.service(),
   flashMessages: Ember.inject.service(),
 
   beforeModel() {
@@ -17,6 +18,7 @@ export default Ember.Route.extend(ApplicationRouteMixin, {
 
   sessionAuthenticated() {
     this._super(...arguments);
+    this.get('userSocket').connect();
     this._loadCurrentUser();
   },
 
