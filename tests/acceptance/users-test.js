@@ -6,7 +6,7 @@ import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-sim
 import page from 'prison-rideshare-ui/tests/pages/users';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | reports', {
+moduleForAcceptance('Acceptance | users', {
   beforeEach() {
     server.create('user', {
       email: 'abc@def.com',
