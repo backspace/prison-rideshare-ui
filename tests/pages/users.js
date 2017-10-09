@@ -3,6 +3,7 @@ import {
   collection,
   create,
   hasClass,
+  isVisible,
   text,
   visitable
 } from 'ember-cli-page-object';
@@ -15,6 +16,7 @@ export default create({
 
     item: {
       email: text('.email'),
+      isPresent: isVisible('.present md-icon'),
       adminCheckbox: {
         scope: 'md-checkbox',
         checked: hasClass('md-checked'),
