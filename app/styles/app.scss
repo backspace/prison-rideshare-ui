@@ -30,6 +30,10 @@ main {
   flex-direction: column;
   flex-grow: 1;
   overflow-x: scroll;
+
+  md-content {
+    overflow-y: hidden;
+  }
 }
 
 .site-nav-container {
