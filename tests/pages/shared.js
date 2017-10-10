@@ -21,5 +21,9 @@ export default create({
 
   toast: {
     scope: '.md-toast-content span'
+  },
+
+  userCount: {
+    scope: '.users .count'
   }
 });
