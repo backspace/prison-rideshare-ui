@@ -14,8 +14,8 @@ export default Ember.Component.extend({
 
   actions: {
     match(option, searchTerm) {
-      const name = Ember.get(option, 'name');
-      const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
+      const name = Ember.getWithDefault(option, 'name', '');
+      const result = name.toLowerCase().startsWith(searchTerm.toLowerCase());
 
       return result ? 1 : -1;
     },
