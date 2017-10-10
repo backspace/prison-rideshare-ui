@@ -14,6 +14,7 @@ export default PhoenixSocket.extend({
     if (Ember.testing || !this.get('session.isAuthenticated')) {
       return;
     }
+
     const guardian_token = this.get('session.data.authenticated.access_token');
 
     this._super(`${config.DS.socketHost}/socket`, {
