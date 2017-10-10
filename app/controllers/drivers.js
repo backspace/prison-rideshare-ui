@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   actions: {
     // Parts of this will likely be useful in the reimbursements controller
     // addReimbursement(person) {

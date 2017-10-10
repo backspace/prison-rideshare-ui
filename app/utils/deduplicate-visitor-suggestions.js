@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
 
 const SUGGESTION_COUNT = 3;
 
@@ -17,7 +17,7 @@ export default function deduplicateVisitorSuggestions(rides) {
 }
 
 function ridesAreDissimilar(a, b) {
-  return Ember.get(a, 'name').toLowerCase() !== Ember.get(b, 'name').toLowerCase() ||
-    Ember.get(a, 'address').toLowerCase() !== Ember.get(b, 'address').toLowerCase() ||
-    Ember.get(a, 'contact').toLowerCase() !== Ember.get(b, 'contact').toLowerCase();
+  return get(a, 'name').toLowerCase() !== get(b, 'name').toLowerCase() ||
+    get(a, 'address').toLowerCase() !== get(b, 'address').toLowerCase() ||
+    get(a, 'contact').toLowerCase() !== get(b, 'contact').toLowerCase();
 }

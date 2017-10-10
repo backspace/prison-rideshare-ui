@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
 const reasons = Object.keys(reasonToIcon).sort();
 
-export default Ember.Component.extend({
+export default Component.extend({
   reasons,
 
   actions: {

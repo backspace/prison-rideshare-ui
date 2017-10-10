@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
@@ -14,8 +14,8 @@ export default DS.Model.extend({
   drivings: DS.hasMany('ride', {inverse: 'driver'}),
   carOwnings: DS.hasMany('ride', {inverse: 'carOwner'}),
 
-  validationErrors: Ember.computed('errors.[]', function() {
-    const attributes = Ember.get(this.constructor, 'attributes');
+  validationErrors: computed('errors.[]', function() {
+    const attributes = get(this.constructor, 'attributes');
 
     return attributes._keys.list.reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];

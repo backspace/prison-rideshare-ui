@@ -1,9 +1,10 @@
+import RSVP from 'rsvp';
+import Service, { inject as service } from '@ember/service';
+import { isEmpty } from '@ember/utils';
 import Ember from 'ember';
 
 import fetch from 'fetch';
 import config from '../config/environment';
-
-const { inject: { service }, RSVP, Service, isEmpty } = Ember;
 
 // This is mostly taken from the dummy Ember Simple Auth app
 

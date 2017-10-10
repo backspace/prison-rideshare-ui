@@ -11,6 +11,8 @@ cache:
 
 env:
   global:
+    # See https://git.io/vdao3 for details.
+    - JOBS=1
     - COVERAGE=true
     - MIRAGE_LOGGING=false
 
@@ -26,7 +28,7 @@ install:
   - npm install
 
 script:
-  - JOBS=2 npm test
+  - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
 deploy:

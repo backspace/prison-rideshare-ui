@@ -1,10 +1,13 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
-  sidebar: Ember.inject.service(),
-  sidebarOpen: Ember.computed.alias('sidebar.open'),
+export default Component.extend({
+  sidebar: service(),
+  sidebarOpen: alias('sidebar.open'),
 
-  chips: Ember.computed(function() {
+  chips: computed(function() {
     const hostname = window.location.hostname;
 
     if (hostname.indexOf('sandbox') > -1) {

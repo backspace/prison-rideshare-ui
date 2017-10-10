@@ -1,21 +1,22 @@
-import Ember from 'ember';
+import { computed, get } from '@ember/object';
+import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
-export default Ember.Component.extend({
-  classAttribute: Ember.computed('ride.enabled', 'uncombinable', 'ride.isCombined', function() {
+export default Component.extend({
+  classAttribute: computed('ride.enabled', 'uncombinable', 'ride.isCombined', function() {
     return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''}`;
   }),
 
   tagName: '',
 
-  cancellationIcon: Ember.computed('ride.cancellationReason', function() {
+  cancellationIcon: computed('ride.cancellationReason', function() {
     const reason = this.get('ride.cancellationReason');
     const icon = reasonToIcon[reason];
 
     return icon || 'help';
   }),
 
-  cancellationButtonLabel: Ember.computed('ride.enabled', 'ride.cancellationReason', function() {
+  cancellationButtonLabel: computed('ride.enabled', 'ride.cancellationReason', function() {
     if (this.get('ride.enabled')) {
       return 'Cancel ride';
     } else {
@@ -23,7 +24,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  combineButtonLabel: Ember.computed('ride.id', 'rideToCombine.id', function() {
+  combineButtonLabel: computed('ride.id', 'rideToCombine.id', function() {
     if (this.get('ride.id') == this.get('rideToCombine.id')) {
       return 'Cancel combining';
     } else {
@@ -31,7 +32,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  uncombinable: Ember.computed('rideToCombine.id', 'rideToCombine.start', 'ride.start', function() {
+  uncombinable: computed('rideToCombine.id', 'rideToCombine.start', 'ride.start', function() {
     const sixHours = 1000*60*60*6;
     const rideToCombineStart = this.get('rideToCombine.start');
 
@@ -66,7 +67,7 @@ export default Ember.Component.extend({
     },
 
     match(option, searchTerm) {
-      const name = Ember.get(option, 'name');
+      const name = get(option, 'name');
       const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
 
       return result ? 1 : -1;

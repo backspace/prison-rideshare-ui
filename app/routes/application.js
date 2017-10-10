@@ -1,12 +1,13 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
 import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
 
-export default Ember.Route.extend(ApplicationRouteMixin, {
-  session: Ember.inject.service(),
-  account: Ember.inject.service(),
-  userSocket: Ember.inject.service(),
-  flashMessages: Ember.inject.service(),
+export default Route.extend(ApplicationRouteMixin, {
+  session: service(),
+  account: service(),
+  userSocket: service(),
+  flashMessages: service(),
 
   beforeModel() {
     return this._loadCurrentUser();

@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { mapBy, gt, not } from '@ember/object/computed';
+import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
@@ -15,7 +16,7 @@ export default DS.Model.extend({
   combinedWith: DS.belongsTo('ride', {inverse: 'children'}),
   children: DS.hasMany('ride', {inverse: 'combinedWith'}),
 
-  isCombined: Ember.computed('combinedWith.id', function() {
+  isCombined: computed('combinedWith.id', function() {
     return this.belongsTo('combinedWith').id();
   }),
 
@@ -26,8 +27,8 @@ export default DS.Model.extend({
   passengers: DS.attr({defaultValue: 1}),
   firstTime: DS.attr('boolean'),
 
-  validationErrors: Ember.computed('errors.[]', function() {
-    const attributes = Ember.get(this.constructor, 'attributes');
+  validationErrors: computed('errors.[]', function() {
+    const attributes = get(this.constructor, 'attributes');
 
     return attributes._keys.list.reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];
@@ -39,7 +40,7 @@ export default DS.Model.extend({
   start: DS.attr('date'),
   end: DS.attr('date'),
 
-  rideTimes: Ember.computed('start', 'end', function () {
+  rideTimes: computed('start', 'end', function () {
     const start = this.get('start');
     const end = this.get('end');
 
@@ -69,17 +70,17 @@ export default DS.Model.extend({
 
   donation: DS.attr('boolean'),
 
-  reimbursementFoodExpenses: Ember.computed.mapBy('reimbursements', 'foodExpenses'),
-  reimbursementFoodExpensesSum: Ember.computed.sum('reimbursementFoodExpenses'),
+  reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
+  reimbursementFoodExpensesSum: sum('reimbursementFoodExpenses'),
   outstandingFoodExpenses: difference('foodExpenses', 'reimbursementFoodExpensesSum'),
 
-  reimbursementCarExpenses: Ember.computed.mapBy('reimbursements', 'carExpenses'),
-  reimbursementCarExpensesSum: Ember.computed.sum('reimbursementCarExpenses'),
+  reimbursementCarExpenses: mapBy('reimbursements', 'carExpenses'),
+  reimbursementCarExpensesSum: sum('reimbursementCarExpenses'),
   outstandingCarExpenses: difference('carExpenses', 'reimbursementCarExpensesSum'),
 
   outstandingTotalExpenses: sum('outstandingFoodExpenses', 'outstandingCarExpenses'),
 
-  namePlusPassengers: Ember.computed('name', 'passengers', function() {
+  namePlusPassengers: computed('name', 'passengers', function() {
     const name = this.get('name');
     const passengers = this.get('passengers');
 
@@ -90,10 +91,10 @@ export default DS.Model.extend({
     }
   }),
 
-  complete: Ember.computed.gt('distance', 0),
-  notComplete: Ember.computed.not('complete'),
+  complete: gt('distance', 0),
+  notComplete: not('complete'),
 
-  cancelled: Ember.computed('enabled', {
+  cancelled: computed('enabled', {
     get() {
       return !this.get('enabled');
     },

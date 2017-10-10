@@ -1,12 +1,15 @@
-import Ember from 'ember';
+import { computed, getWithDefault } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
-export default Ember.Component.extend({
+export default Component.extend({
   tagName: '',
 
-  peopleService: Ember.inject.service('people'),
-  people: Ember.computed.alias('peopleService.all'),
+  peopleService: service('people'),
+  people: alias('peopleService.all'),
 
-  person: Ember.computed('ride', 'property', 'ride.carOwner.id', 'ride.driver.id', function() {
+  person: computed('ride', 'property', 'ride.carOwner.id', 'ride.driver.id', function() {
     return this.get('ride').get(this.get('property'));
   }),
 
@@ -14,7 +17,7 @@ export default Ember.Component.extend({
 
   actions: {
     match(option, searchTerm) {
-      const name = Ember.getWithDefault(option, 'name', '');
+      const name = getWithDefault(option, 'name', '');
       const result = name.toLowerCase().startsWith(searchTerm.toLowerCase());
 
       return result ? 1 : -1;

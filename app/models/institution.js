@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
@@ -8,8 +8,8 @@ export default DS.Model.extend({
 
   rateDollars: dollars('rate'),
 
-  validationErrors: Ember.computed('errors.[]', function() {
-    const attributes = Ember.get(this.constructor, 'attributes');
+  validationErrors: computed('errors.[]', function() {
+    const attributes = get(this.constructor, 'attributes');
 
     return attributes._keys.list.reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];

@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 import config from 'prison-rideshare-ui/config/environment';
 
-export default Ember.Controller.extend({
-  paperToaster: Ember.inject.service(),
+export default Controller.extend({
+  paperToaster: service(),
 
   editingRide: undefined,
   rideProxy: BufferedProxy.create(),

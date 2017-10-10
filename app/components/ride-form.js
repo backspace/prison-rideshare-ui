@@ -1,14 +1,17 @@
-import Ember from 'ember';
+import { computed, get } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
 
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
 
-export default Ember.Component.extend({
-  institutionsService: Ember.inject.service('institutions'),
-  institutions: Ember.computed.alias('institutionsService.all'),
-  store: Ember.inject.service('store'),
+export default Component.extend({
+  institutionsService: service('institutions'),
+  institutions: alias('institutionsService.all'),
+  store: service('store'),
 
-  warning: Ember.computed('ride.cancellationReason', 'ride.complete', function() {
+  warning: computed('ride.cancellationReason', 'ride.complete', function() {
     const reason = this.get('ride.cancellationReason');
     const complete = this.get('ride.complete');
 
@@ -52,7 +55,7 @@ export default Ember.Component.extend({
     },
 
     matchInstitution(option, searchTerm) {
-      const name = Ember.get(option, 'name');
+      const name = get(option, 'name');
       const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
 
       return result ? 1 : -1;

@@ -1,9 +1,10 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Service, { inject as service } from '@ember/service';
 
-export default Ember.Service.extend({
-  store: Ember.inject.service(),
+export default Service.extend({
+  store: service(),
 
-  all: Ember.computed(function() {
+  all: computed(function() {
     return this.get('store').findAll('institution').then(institutions => institutions.sortBy('name'));
   })
 });

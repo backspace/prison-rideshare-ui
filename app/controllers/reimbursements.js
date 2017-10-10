@@ -1,28 +1,30 @@
-import Ember from 'ember';
+import EmberObject, { computed } from '@ember/object';
+import { alias, sort, filterBy, mapBy } from '@ember/object/computed';
+import Controller from '@ember/controller';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
 // import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 import moment from 'moment';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: {
     showProcessed: 'processed'
   },
 
-  reimbursements: Ember.computed.alias('model'),
-  unsortedFilteredReimbursements: Ember.computed('reimbursements.@each.processed', function() {
+  reimbursements: alias('model'),
+  unsortedFilteredReimbursements: computed('reimbursements.@each.processed', function() {
     return this.get('reimbursements').rejectBy('processed');
   }),
   filteredReimbursementsSorting: ['ride.start'],
-  filteredReimbursements: Ember.computed.sort('unsortedFilteredReimbursements', 'filteredReimbursementsSorting'),
+  filteredReimbursements: sort('unsortedFilteredReimbursements', 'filteredReimbursementsSorting'),
 
   showProcessed: false,
 
-  unsortedProcessedReimbursements: Ember.computed.filterBy('reimbursements', 'processed'),
+  unsortedProcessedReimbursements: filterBy('reimbursements', 'processed'),
   processedReimbursementsSorting: ['insertedAt:desc'],
-  processedReimbursements: Ember.computed.sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting'),
+  processedReimbursements: sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting'),
 
-  monthReimbursementCollections: Ember.computed('filteredReimbursements.@each.person', function() {
+  monthReimbursementCollections: computed('filteredReimbursements.@each.person', function() {
     const reimbursements = this.get('filteredReimbursements');
 
     const monthToPersonIdToReimbursements = reimbursements.reduce((monthToPersonIdToReimbursements, reimbursement) => {
@@ -117,15 +119,15 @@ export default Ember.Controller.extend({
   }
 });
 
-const MonthReimbursementCollections = Ember.Object.extend({
-  reimbursementCollectionsWithReimbursements: Ember.computed.filterBy('reimbursementCollections', 'reimbursements.length'),
-  reimbursementCollectionsClipboardText: Ember.computed.mapBy('reimbursementCollectionsWithReimbursements', 'clipboardText'),
+const MonthReimbursementCollections = EmberObject.extend({
+  reimbursementCollectionsWithReimbursements: filterBy('reimbursementCollections', 'reimbursements.length'),
+  reimbursementCollectionsClipboardText: mapBy('reimbursementCollectionsWithReimbursements', 'clipboardText'),
 
-  clipboardText: Ember.computed('reimbursementCollectionsClipboardText', function() {
+  clipboardText: computed('reimbursementCollectionsClipboardText', function() {
     return this.get('reimbursementCollectionsClipboardText').join('\n');
   }),
 
-  copyIconTitle: Ember.computed('clipboardText', function() {
+  copyIconTitle: computed('clipboardText', function() {
     return `This will copy the following to the clipboard:\n${this.get('clipboardText')}`;
   })
 });

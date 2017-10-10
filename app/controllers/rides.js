@@ -1,7 +1,10 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
+import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-export default Ember.Controller.extend({
+export default Controller.extend({
   queryParams: {
     showCompleted: 'completed',
     showCancelled: 'cancelled',
@@ -10,8 +13,8 @@ export default Ember.Controller.extend({
     sortDir: 'dir',
   },
 
-  peopleService: Ember.inject.service('people'),
-  people: Ember.computed.alias('peopleService.all'),
+  peopleService: service('people'),
+  people: alias('peopleService.all'),
 
   editingRide: undefined,
   editingCancellation: undefined,
@@ -22,7 +25,7 @@ export default Ember.Controller.extend({
   sortProp: 'start',
   sortDir: 'asc',
 
-  filteredRides: Ember.computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
+  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
 
     let rides = this.get('model').rejectBy('isCombined');

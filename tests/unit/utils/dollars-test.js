@@ -1,8 +1,8 @@
+import EmberObject from '@ember/object';
 import { test, module } from 'ember-qunit';
-import Ember from 'ember';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
-const ClassWithDollars = Ember.Object.extend({
+const ClassWithDollars = EmberObject.extend({
   cents: undefined,
   dollars: dollars('cents')
 });

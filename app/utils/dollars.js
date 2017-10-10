@@ -1,7 +1,7 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
 
 export default function(property) {
-  return Ember.computed(property, {
+  return computed(property, {
     get() {
       return this.get(property)/100;
     },

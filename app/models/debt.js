@@ -1,4 +1,5 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import { sort, mapBy } from '@ember/object/computed';
 import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
@@ -10,21 +11,21 @@ export default DS.Model.extend({
 
   rides: DS.hasMany(),
 
-  descendingRides: Ember.computed.sort('rides', 'descendingRideSort'),
+  descendingRides: sort('rides', 'descendingRideSort'),
   descendingRideSort: ['start:desc'],
 
-  ridesWithFoodExpenses: Ember.computed('rides.@each.driver', 'person', function() {
+  ridesWithFoodExpenses: computed('rides.@each.driver', 'person', function() {
     return this.get('rides').filterBy('driver.id', this.get('person.id'));
   }),
-  rideFoodExpenses: Ember.computed.mapBy('ridesWithFoodExpenses', 'outstandingFoodExpenses'),
-  foodExpenses: Ember.computed.sum('rideFoodExpenses'),
+  rideFoodExpenses: mapBy('ridesWithFoodExpenses', 'outstandingFoodExpenses'),
+  foodExpenses: sum('rideFoodExpenses'),
   foodExpensesDollars: dollars('foodExpenses'),
 
-  ridesWithCarExpenses: Ember.computed('rides.@each.carOwner', 'person', function() {
+  ridesWithCarExpenses: computed('rides.@each.carOwner', 'person', function() {
     return this.get('rides').filterBy('carOwner.id', this.get('person.id'));
   }),
-  rideCarExpenses: Ember.computed.mapBy('ridesWithCarExpenses', 'outstandingCarExpenses'),
-  carExpenses: Ember.computed.sum('rideCarExpenses'),
+  rideCarExpenses: mapBy('ridesWithCarExpenses', 'outstandingCarExpenses'),
+  carExpenses: sum('rideCarExpenses'),
   carExpensesDollars: dollars('carExpenses'),
 
   totalExpenses: sum('foodExpenses', 'carExpenses'),

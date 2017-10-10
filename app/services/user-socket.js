@@ -1,12 +1,14 @@
+import { A } from '@ember/array';
+import { inject as service } from '@ember/service';
 import PhoenixSocket from 'phoenix/services/phoenix-socket';
 import Ember from 'ember';
 import config from '../config/environment';
 
 export default PhoenixSocket.extend({
-  session: Ember.inject.service('session'),
+  session: service('session'),
 
   init() {
-    this.set('present', Ember.A());
+    this.set('present', A());
     this.connect();
   },
 

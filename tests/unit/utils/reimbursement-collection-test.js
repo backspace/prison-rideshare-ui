@@ -1,17 +1,17 @@
+import EmberObject from '@ember/object';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
-import { module, test } from 'qunit';
 
-import Ember from 'ember';
+import { module, test } from 'qunit';
 
 module('Unit | Utility | reimbursement collection');
 
 const reimbursementDate = new Date('2017-10-23');
-const ride = Ember.Object.create({start: reimbursementDate});
+const ride = EmberObject.create({start: reimbursementDate});
 
 const today = new Date();
 const dateString = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
 
-const FakeReimbursement = Ember.Object.extend({
+const FakeReimbursement = EmberObject.extend({
   ride,
   date: reimbursementDate,
   carExpenses: 0,
@@ -34,7 +34,7 @@ const otherCarReimbursement = FakeReimbursement.create({
   carExpenses: 2200
 });
 
-const person = Ember.Object.create({
+const person = EmberObject.create({
   name: 'Chelsea'
 });
 

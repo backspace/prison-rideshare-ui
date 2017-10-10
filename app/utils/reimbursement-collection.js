@@ -1,23 +1,24 @@
-import Ember from 'ember';
+import { mapBy, filterBy } from '@ember/object/computed';
+import EmberObject, { computed } from '@ember/object';
 
 import sum from 'ember-cpm/macros/sum';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import moment from 'moment';
 
-export default Ember.Object.extend({
-  foodExpenses: Ember.computed.mapBy('reimbursements', 'foodExpenses'),
-  foodExpensesSum: Ember.computed.sum('foodExpenses'),
+export default EmberObject.extend({
+  foodExpenses: mapBy('reimbursements', 'foodExpenses'),
+  foodExpensesSum: sum('foodExpenses'),
   foodExpensesDollars: dollars('foodExpensesSum'),
 
-  carExpenses: Ember.computed.mapBy('reimbursements', 'carExpenses'),
-  carExpensesSum: Ember.computed.sum('carExpenses'),
+  carExpenses: mapBy('reimbursements', 'carExpenses'),
+  carExpensesSum: sum('carExpenses'),
   carExpensesDollars: dollars('carExpensesSum'),
 
   totalExpenses: sum('foodExpensesSum', 'carExpensesSum'),
   totalExpensesDollars: dollars('totalExpenses'),
 
-  clipboardText: Ember.computed('person.name', 'totalExpensesDollars', function() {
+  clipboardText: computed('person.name', 'totalExpensesDollars', function() {
     const name = this.get('person.name');
     const total = this.get('totalExpensesDollars');
 
@@ -33,11 +34,11 @@ export default Ember.Object.extend({
       `${this.get('donations') ? '(donated)' : ''}`;
   }),
 
-  copyIconTitle: Ember.computed('clipboardText', function() {
+  copyIconTitle: computed('clipboardText', function() {
     return `This will copy the following to the clipboard: ${this.get('clipboardText')}`;
   }),
 
-  clipboardDescriptionColumn: Ember.computed('monthName', 'foodExpensesSum', 'carExpensesSum', function() {
+  clipboardDescriptionColumn: computed('monthName', 'foodExpensesSum', 'carExpensesSum', function() {
     const food = this.get('foodExpensesSum');
     const car = this.get('carExpensesSum');
 
@@ -54,15 +55,15 @@ export default Ember.Object.extend({
     return `${this.get('monthName')} ${description}`;
   }),
 
-  clipboardDescriptionColumnMeal: Ember.computed('reimbursementsWithFoodExpenses.length', function() {
+  clipboardDescriptionColumnMeal: computed('reimbursementsWithFoodExpenses.length', function() {
     const meals = this.get('reimbursementsWithFoodExpenses.length');
 
     return `meal${meals > 1 ? ` × ${meals}` : ''}`;
   }),
 
-  reimbursementsWithFoodExpenses: Ember.computed.filterBy('reimbursements', 'foodExpenses'),
+  reimbursementsWithFoodExpenses: filterBy('reimbursements', 'foodExpenses'),
 
-  monthName: Ember.computed('reimbursements.firstObject.ride.start', function() {
+  monthName: computed('reimbursements.firstObject.ride.start', function() {
     const date = this.get('reimbursements.firstObject.ride.start');
     return moment(date).format('MMMM');
   })

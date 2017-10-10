@@ -1,9 +1,8 @@
+import { run } from '@ember/runloop';
 import { module } from 'qunit';
-import Ember from 'ember';
+import { resolve } from 'rsvp';
 import startApp from '../helpers/start-app';
 import destroyApp from '../helpers/destroy-app';
-
-const { RSVP: { resolve } } = Ember;
 
 export default function(name, options = {}) {
   module(name, {
@@ -21,7 +20,7 @@ export default function(name, options = {}) {
       const toaster = this.application.__container__.lookup('service:paper-toaster');
       const activeToast = toaster.get('activeToast');
       const cancelToastPromise = activeToast ?
-        resolve(Ember.run(() => toaster.cancelToast(activeToast))) :
+        resolve(run(() => toaster.cancelToast(activeToast))) :
         resolve(true);
 
       return cancelToastPromise.then(() => resolve(afterEach)).then(() => destroyApp(this.application));

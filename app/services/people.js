@@ -1,14 +1,15 @@
-import Ember from 'ember';
+import { computed } from '@ember/object';
+import Service, { inject as service } from '@ember/service';
 import DS from 'ember-data';
 
-export default Ember.Service.extend({
-  store: Ember.inject.service(),
+export default Service.extend({
+  store: service(),
 
-  findAll: Ember.computed(function() {
+  findAll: computed(function() {
     return this.get('store').findAll('person');
   }),
 
-  all: Ember.computed('findAll.@each.name', function() {
+  all: computed('findAll.@each.name', function() {
     return DS.PromiseArray.create({
       promise: this.get('findAll').then(people => people.sortBy('name'))
     });
