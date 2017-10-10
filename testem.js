@@ -6,6 +6,11 @@ module.exports = {
     'Firefox'
   ],
   launch_in_dev: [
-    'Chrome'
-  ]
+    'Firefox'
+  ],
+  browser_args: {
+    Firefox: [
+      '--headless'
+    ]
+  }
 };
