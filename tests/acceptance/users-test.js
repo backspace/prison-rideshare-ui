@@ -99,5 +99,18 @@ test('shows who is present', function(assert) {
   andThen(() => {
     assert.ok(shared.userCount.isHidden, 'expected no user count to show when only one person is connected');
     assert.notOk(page.users(1).isPresent, 'expected the non-admin to be not marked as present');
+
+    const rejoinPresenceDiffMessage = {joins: {}, leaves: {}};
+    rejoinPresenceDiffMessage.joins[`User:${this.admin.id}`] = {};
+    userSocket._onPresenceDiff(rejoinPresenceDiffMessage);
+  });
+
+  andThen(() => {
+    assert.equal(shared.userCount.text, '2', 'expected the count to include duplicates');
+    assert.equal(page.users(0).presenceCount, '2', 'expected the admin to be twice present');
+
+    const rejoinPresenceDiffMessage = {joins: {}, leaves: {}};
+    rejoinPresenceDiffMessage.joins[`User:${this.admin.id}`] = {};
+    userSocket._onPresenceDiff(rejoinPresenceDiffMessage);
   });
 });

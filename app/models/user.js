@@ -10,7 +10,12 @@ export default DS.Model.extend({
 
   admin: DS.attr('boolean'),
 
-  isPresent: Ember.computed('userSocket.present.length', function() {
-    return this.get('userSocket.present').includes(this.get('id'));
+  isPresent: Ember.computed('presenceCount', function() {
+    return this.get('presenceCount') > 0;
+  }),
+
+  presenceCount: Ember.computed('userSocket.present.length', function() {
+    const myId = this.get('id');
+    return this.get('userSocket.present').filter(id => myId === id).length;
   })
 });
