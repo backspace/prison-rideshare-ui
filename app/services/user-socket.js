@@ -18,7 +18,7 @@ export default PhoenixSocket.extend({
     const guardian_token = this.get('session.data.authenticated.access_token');
 
     this._super(`${config.DS.socketHost}/socket`, {
-      params: {guardian_token, email: this.get('session.currentUser.email')}
+      params: {guardian_token}
     });
 
     // TODO is this a sensible channel name?
