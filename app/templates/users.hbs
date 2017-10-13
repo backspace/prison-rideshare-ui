@@ -13,7 +13,6 @@
         {{#row.cell class='present'}}
           {{#if user.isPresent}}
             {{paper-icon 'done'}}
-            {{#if (gt user.presenceCount 1)}}× <span class='count'>{{user.presenceCount}}</span>{{/if}}
           {{/if}}
         {{/row.cell}}
         {{#row.cell}}
