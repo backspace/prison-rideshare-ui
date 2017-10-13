@@ -87,11 +87,11 @@ test('debts are listed', function(assert) {
     assert.equal(sun.rides().count, '2');
 
     const recentSunRide = sun.rides(0);
-    assert.equal(recentSunRide.date, 'Mon Dec 26 10:15am — 12:00');
+    assert.equal(recentSunRide.date, 'Mon Dec 26 2016 10:15am — 12:00');
     assert.equal(recentSunRide.foodExpenses, '10');
 
     const sunRide = sun.rides(1);
-    assert.equal(sunRide.date, 'Sun Dec 25 10:15am — 12:00');
+    assert.equal(sunRide.date, 'Sun Dec 25 2016 10:15am — 12:00');
     assert.equal(sunRide.foodExpenses, '154');
     assert.equal(sunRide.carExpenses, '');
 

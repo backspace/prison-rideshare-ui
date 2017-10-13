@@ -44,7 +44,15 @@ export default DS.Model.extend({
     const start = this.get('start');
     const end = this.get('end');
 
-    return `${moment(start).format('ddd MMM D h:mma')} — ${moment(end).format('h:mm')}`;
+    let formatString;
+
+    if (start && new Date().getFullYear() == start.getFullYear()) {
+      formatString = 'ddd MMM D h:mma'
+    } else {
+      formatString = 'ddd MMM D YYYY h:mma';
+    }
+
+    return `${moment(start).format(formatString)} — ${moment(end).format('h:mm')}`;
   }),
 
   driver: DS.belongsTo('person'),

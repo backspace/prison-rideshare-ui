@@ -78,7 +78,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.ok(ride.cancellation.showsLockdown, 'expected the cancelled ride to show lockdown for the reason');
     assert.equal(ride.name, 'Edward + 2');
     assert.ok(ride.isFirstTimer, 'expected the rider to be marked a first-timer');
-    assert.equal(ride.date, 'Mon Dec 26 8:30pm — 10:00');
+    assert.equal(ride.date, 'Mon Dec 26 2016 8:30pm — 10:00');
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
@@ -241,7 +241,7 @@ test('create and edit a ride', function(assert) {
     const ride = page.rides(0);
     assert.equal(ride.name, 'Edward + 1');
 
-    assert.equal(ride.date, 'Mon Dec 26 9:00am — 11:30');
+    assert.equal(ride.date, 'Mon Dec 26 2016 9:00am — 11:30');
 
     assert.equal(ride.institution, 'Rockwood');
 
@@ -395,6 +395,7 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
   page.visit();
 
   andThen(() => {
+    assert.notOk(page.rides(1).date.includes(today.getFullYear()), 'expected the year to be hidden when the date is in the current year');
     assert.ok(page.rides(1).combineButton.isHidden, 'expected a ride that already has one combined with it to not a have a button to combine');
   });
 
