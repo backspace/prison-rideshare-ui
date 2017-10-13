@@ -107,9 +107,5 @@ test('shows who is present', function(assert) {
 
   andThen(() => {
     assert.ok(shared.userCount.isHidden, 'expected the count to not include duplicates');
-
-    const rejoinPresenceDiffMessage = {joins: {}, leaves: {}};
-    rejoinPresenceDiffMessage.joins[`User:${this.admin.id}`] = {};
-    userSocket._onPresenceDiff(rejoinPresenceDiffMessage);
   });
 });
