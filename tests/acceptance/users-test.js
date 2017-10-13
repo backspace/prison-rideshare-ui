@@ -106,8 +106,7 @@ test('shows who is present', function(assert) {
   });
 
   andThen(() => {
-    assert.equal(shared.userCount.text, '2', 'expected the count to include duplicates');
-    assert.equal(page.users(0).presenceCount, '2', 'expected the admin to be twice present');
+    assert.ok(shared.userCount.isHidden, 'expected the count to not include duplicates');
 
     const rejoinPresenceDiffMessage = {joins: {}, leaves: {}};
     rejoinPresenceDiffMessage.joins[`User:${this.admin.id}`] = {};

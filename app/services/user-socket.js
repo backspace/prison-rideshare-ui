@@ -40,7 +40,11 @@ export default PhoenixSocket.extend({
 
     const present = this.get('present');
 
-    joinIds.forEach(joinId => present.pushObject(joinId));
+    joinIds.forEach(joinId => {
+      if (!present.includes(joinId)) {
+        present.pushObject(joinId);
+      }
+    });
     leaveIds.forEach(leaveId => present.removeObject(leaveId));
   },
 
