@@ -81,7 +81,7 @@ test('submit a report for a ride', function(assert) {
     assert.equal(changedRide.reportNotes, 'These r the notes');
     assert.equal(changedRide.donation, true);
 
-    assert.equal(currentURL(), '/rides');
+    assert.equal(currentURL(), '/reports/new');
 
     assert.equal(shared.toast.text, 'Your report was saved');
   });

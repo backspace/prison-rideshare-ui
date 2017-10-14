@@ -8,12 +8,6 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 moduleForAcceptance('Acceptance | authentication', {
 });
 
-test('authenticated users are redirected to the rides list', function(assert) {
-  authenticateSession(this.application);
-  visit('/');
-  andThen(() => assert.equal(currentURL(), '/rides'));
-});
-
 test('authenticated users are redirected to the report form after logging out', function(assert) {
   authenticateSession(this.application);
   visit('/rides');

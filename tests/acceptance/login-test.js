@@ -8,14 +8,23 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | login', {
   beforeEach() {
-    server.post('/token', schema => {
+    server.post('/token', (schema, {requestBody}) => {
       authenticateSession(this.application, {access_token: 'abcdef'});
 
-      // FIXME yeah…
-      schema.create('user', {
-        email: 'jorts@jants.ca',
-        password: 'aaaaaaaaa'
-      });
+      // FIXME yeah… weird to create the user here!
+
+      if (requestBody.includes('jorts')) {
+        schema.create('user', {
+          email: 'jorts@jants.ca',
+          password: 'aaaaaaaaa',
+          admin: true
+        });
+      } else if (requestBody.includes('jj')) {
+        schema.create('user', {
+          email: 'jj@jj.ca',
+          password: 'aaaaaaaaa'
+        });
+      }
 
       return {
         access_token: 'abcdef'
@@ -24,7 +33,7 @@ moduleForAcceptance('Acceptance | login', {
   }
 });
 
-test('successful login forwards to the rides list', function(assert) {
+test('successful admin login forwards to the rides list', function(assert) {
   page.visit();
 
   andThen(() => assert.equal(shared.title, 'Log in · Prison Rideshare'));
@@ -37,6 +46,18 @@ test('successful login forwards to the rides list', function(assert) {
   andThen(() => {
     assert.equal(currentURL(), '/rides');
     assert.equal(shared.session.text, 'Log out jorts@jants.ca');
+  });
+});
+
+test('successful non-admin login forwards to the report route', function(assert) {
+  page.visit();
+
+  page.fillEmail('jj@jj.ca');
+  page.fillPassword('aaaaaaaaa');
+  page.submit();
+
+  andThen(() => {
+    assert.equal(currentURL(), '/reports/new');
   });
 });
 
