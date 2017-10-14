@@ -13,7 +13,7 @@
     {{/paper-switch}}
 </div>
 
-{{#paper-content class='layout-column flex'}}
+{{#paper-content class='layout-column flex no-overflow-scroll'}}
   {{#paper-data-table sortProp=sortProp sortDir=sortDir class='rides' as |table|}}
     {{#table.head as |head|}}
       {{#head.column sortProp='start' class='date'}}Date{{/head.column}}

@@ -31,7 +31,7 @@ main {
   flex-grow: 1;
   overflow-x: scroll;
 
-  md-content {
+  md-content.no-overflow-scroll {
     overflow-y: hidden;
   }
 }
