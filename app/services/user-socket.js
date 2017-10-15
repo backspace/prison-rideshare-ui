@@ -31,21 +31,30 @@ export default PhoenixSocket.extend({
   },
 
   _onPresenceState(users) {
-    Object.keys(users).map(stringWithPrefix => this._parseUserString(stringWithPrefix)).forEach(id => this.get('present').pushObject(id));
+    this._processJoins(Object.keys(users));
   },
 
   _onPresenceDiff({leaves, joins}) {
-    const joinIds = Object.keys(joins).map(stringWithPrefix => this._parseUserString(stringWithPrefix));
-    const leaveIds = Object.keys(leaves).map(stringWithPrefix => this._parseUserString(stringWithPrefix));
+    this._processJoins(Object.keys(joins));
+    this._processLeaves(Object.keys(leaves));
+  },
 
+  _processJoins(keys) {
     const present = this.get('present');
+    keys
+      .map(stringWithPrefix => this._parseUserString(stringWithPrefix))
+      .forEach(joinId => {
+        if (!present.includes(joinId)) {
+          present.pushObject(joinId);
+        }
+      });
+  },
 
-    joinIds.forEach(joinId => {
-      if (!present.includes(joinId)) {
-        present.pushObject(joinId);
-      }
-    });
-    leaveIds.forEach(leaveId => present.removeObject(leaveId));
+  _processLeaves(keys) {
+    const present = this.get('present');
+    keys
+      .map(stringWithPrefix => this._parseUserString(stringWithPrefix))
+      .forEach(leaveId => present.removeObject(leaveId));
   },
 
   _parseUserString(stringWithPrefix) {
