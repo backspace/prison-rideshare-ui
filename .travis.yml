@@ -36,4 +36,4 @@ deploy:
   script: .travis/deploy-sandbox.sh
   on:
     repo: backspace/prison-rideshare-ui
-    branch: dokku
+    branch: primary
