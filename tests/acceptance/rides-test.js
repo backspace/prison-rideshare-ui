@@ -50,7 +50,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     name: 'Chelsea',
     start: new Date(2016, 11, 25, 10, 15),
     end: new Date(2016, 11, 25, 12, 0),
-    passengers: 1
+    passengers: 1,
+    contact: '5145551212'
   });
 
   chelseaRide.createChild({
@@ -115,6 +116,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.notOk(page.rides(0).isFirstTimer, 'expected the other ride to not be a first-timer');
     assert.ok(page.rides(0).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
+    assert.equal(page.rides(0).contactPhoneHref, 'tel:5145551212');
 
     assert.ok(page.rides(1).name, 'Visitor', 'expected the combined ride to be beneath its parent');
     assert.ok(page.rides(1).isCombined, 'expected the combined ride to show it is combined');

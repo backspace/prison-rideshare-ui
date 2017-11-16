@@ -52,6 +52,7 @@ export default create({
       institution: text('.institution'),
       address: text('.address'),
       contact: text('.contact'),
+      contactPhoneHref: attribute('href', '.contact a'),
       passengers: text('.passengers'),
 
       driver: {
