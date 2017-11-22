@@ -1,0 +1,9 @@
+{{toolbar-header title='Calendar?'}}
+
+{{#power-calendar as |calendar|}}
+  {{calendar.nav}}
+
+  {{#calendar.days as |day|}}
+    X{{day.number}}
+  {{/calendar.days}}
+{{/power-calendar}}

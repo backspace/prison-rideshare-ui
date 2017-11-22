@@ -23,6 +23,8 @@ Router.map(function() {
     this.route('new');
   });
 
+  this.route('calendar');
+
   this.route('users');
 
   this.route('login');
