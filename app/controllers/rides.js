@@ -21,12 +21,13 @@ export default Controller.extend({
 
   showCompleted: false,
   showCancelled: false,
+  showCalendar: false,
 
   sortProp: 'start',
   sortDir: 'asc',
 
-  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
-    const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
+  filteredRides: computed('showCompleted', 'showCancelled', 'calendarRange', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
+    const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled'), range = this.get('calendarRange');
 
     let rides = this.get('model').rejectBy('isCombined');
 
@@ -36,6 +37,11 @@ export default Controller.extend({
 
     if (!showCancelled) {
       rides = rides.filterBy('enabled');
+    }
+
+    if (range) {
+      const start = range.start, end = range.end;
+      rides = rides.filter(ride => ride.get('start') > start && ride.get('end') < end);
     }
 
     return rides;
@@ -111,6 +117,10 @@ export default Controller.extend({
     uncombineRide(ride) {
       ride.set('combinedWith', null);
       ride.save();
+    },
+
+    toggleCalendar() {
+      this.toggleProperty('showCalendar');
     }
   }
 });

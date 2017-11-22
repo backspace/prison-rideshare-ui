@@ -2,6 +2,7 @@ import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+// import { calendarCenter, calendarSelect } from 'ember-power-calendar/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -162,6 +163,15 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.ok(page.rides(0).cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.notOk(page.rides(0).cancellation.showsVisitor, 'expected the ride to not show the visitor as a reason');
     assert.notOk(page.rides(0).cancellation.showsLockdown, 'expected the ride not show lockdown as a reason');
+  });
+
+  page.head.dateRangeButton.click();
+  calendarCenter('.calendar-window', new Date(2016, 11, 25));
+  calendarSelect('.calendar-window', new Date(2016, 11, 25));
+  calendarSelect('.calendar-window', new Date(2016, 11, 26));
+
+  andThen(function() {
+    assert.equal(page.rides().count, 2, 'expected something');
   });
 });
 

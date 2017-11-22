@@ -4,6 +4,8 @@ module.exports = {
   },
   globals: {
     selectChoose: true,
-    server: true
+    server: true,
+    calendarCenter: true,
+    calendarSelect: true
   }
 };

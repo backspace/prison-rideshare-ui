@@ -15,6 +15,10 @@ export default create({
   newRide: clickable('button.new'),
 
   head: {
+    dateRangeButton: {
+      scope: 'md-icon[md-font-icon="date range"]'
+    },
+
     cancelledSwitch: {
       scope: '.paper-switch.cancelled',
       enabled: hasClass('md-checked'),

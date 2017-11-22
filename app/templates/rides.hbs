@@ -5,6 +5,23 @@
 {{/toolbar-header}}
 
 <div class='switch-container layout-row layout-align-start-center'>
+    {{#paper-button raised=true iconButton=true aria-label='Narrow range of rides' onClick=(action 'toggleCalendar')}}
+      {{paper-icon 'date range'}}
+    {{/paper-button}}
+    {{#if showCalendar}}
+      {{#power-calendar-range
+        class='calendar-window'
+        center=calendarCentre
+        selected=calendarRange
+        onSelect=(action (mut calendarRange) value='moment')
+        onCenterChange=(action (mut calendarCentre) value='date') as |calendar|}}
+        {{calendar.nav}}
+
+        {{#calendar.days as |day|}}
+          {{day.number}}
+        {{/calendar.days}}
+      {{/power-calendar-range}}
+    {{/if}}
     {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
       Show reported-upon rides
     {{/paper-switch}}
