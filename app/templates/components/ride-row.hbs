@@ -3,7 +3,7 @@
   {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
   {{#row.cell class='name-and-contact'}}
     <span class='name'>{{ride.namePlusPassengers}}</span>{{#if ride.firstTime}} {{paper-icon 'announcement' size=10 title='first time rider'}}{{/if}}
-    <div class='contact'>{{linked-contact contact=ride.contact}}</div>
+    <div class='medium-and-contact'>{{#if mediumIcon}}{{paper-icon mediumIcon size=10 title=mediumIconTitle}} {{/if}}<span class='contact'>{{linked-contact contact=ride.contact}}</span></div>
   {{/row.cell}}
   {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
   {{#row.cell class='driver-and-car-owner'}}

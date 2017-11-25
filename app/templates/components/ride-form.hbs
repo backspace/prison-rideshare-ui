@@ -37,6 +37,21 @@
           {{/paper-select}}
         </div>
       </div>
+      <div class='layout-row layout-xs-column medium-row'>
+        {{#paper-radio-group
+          groupValue=(readonly ride.medium)
+          onChange=(action (mut ride.medium)) as |group|}}
+          <div class='flex'>
+            {{#group.radio value='txt' class='txt'}}{{paper-icon 'textsms'}}{{/group.radio}}
+          </div>
+          <div class='flex'>
+            {{#group.radio value='email' class='email'}}{{paper-icon 'email'}}{{/group.radio}}
+          </div>
+          <div class='flex'>
+            {{#group.radio value='phone' class='phone'}}{{paper-icon 'phone'}}{{/group.radio}}
+          </div>
+        {{/paper-radio-group}}
+      </div>
 
       <h3 class='md-title'>Visitor details</h3>
 

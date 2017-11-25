@@ -20,6 +20,8 @@ export default DS.Model.extend({
     return this.belongsTo('combinedWith').id();
   }),
 
+  medium: DS.attr(),
+
   name: DS.attr(),
   institution: DS.belongsTo(),
   address: DS.attr(),

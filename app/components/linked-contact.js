@@ -4,6 +4,8 @@ import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 
 export default Component.extend({
+  tagName: 'span',
+
   linkedContact: computed('contact', function() {
     const phonePattern = /(\([0-9]{3}\)\s?|[0-9]{3}-?\s?)[0-9]{3}-?\s?[0-9]{4}/g;
     const contact = this.get('contact');

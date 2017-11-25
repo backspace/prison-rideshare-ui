@@ -55,6 +55,13 @@ export default create({
       contactPhoneHref: attribute('href', '.contact a'),
       passengers: text('.passengers'),
 
+      medium: {
+        scope: '.medium-and-contact',
+        isTxt: isVisible('md-icon[md-font-icon=textsms]'),
+        isEmail: isVisible('md-icon[md-font-icon=email]'),
+        isPhone: isVisible('md-icon[md-font-icon=phone]')
+      },
+
       driver: {
         scope: '.driver',
         text: text('.name'),
@@ -123,6 +130,13 @@ export default create({
 
     end: {
       scope: '.end input'
+    },
+
+    medium: {
+      scope: '.medium-row',
+      txt: { scope: '.txt' },
+      email: { scope: '.email' },
+      phone: { scope: '.phone' }
     },
 
     name: {

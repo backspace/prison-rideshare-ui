@@ -38,6 +38,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     contact: 'jorts@example.com',
     passengers: 3,
     firstTime: true,
+    medium: 'txt',
     institution: leavenworth,
 
     requestNotes: 'These are some request notes.',
@@ -83,6 +84,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
+    assert.ok(ride.medium.isTxt, 'expected the request to have been received via txt');
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
@@ -227,6 +229,7 @@ test('create and edit a ride', function(assert) {
 
   page.form.timespan.fillIn('Dec 26 2016 from 9 to 11:30');
 
+  page.form.medium.phone.click();
   page.form.name.fillIn('Edward');
   page.form.address.fillIn('114 Spence');
   page.form.contact.fillIn('jants@example.com');
@@ -243,6 +246,7 @@ test('create and edit a ride', function(assert) {
     const ride = page.rides(0);
     assert.equal(ride.name, 'Edward + 1');
 
+    assert.ok(ride.medium.isPhone, 'expected the ride request to have been received via phone');
     assert.equal(ride.date, 'Mon Dec 26 2016 9:00am — 11:30');
 
     assert.equal(ride.institution, 'Rockwood');
@@ -250,6 +254,7 @@ test('create and edit a ride', function(assert) {
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
 
+    assert.equal(lastRide.medium, 'phone');
     assert.equal(lastRide.name, 'Edward');
     assert.equal(moment(lastRide.start).format('YYYY-MM-DD HH:mm'), '2016-12-26 09:00');
     assert.equal(moment(lastRide.end).format('YYYY-MM-DD HH:mm'), '2016-12-26 11:30');
@@ -304,6 +309,7 @@ test('create and edit a ride', function(assert) {
 
   page.rides(0).edit();
 
+  page.form.medium.email.click();
   page.form.name.fillIn('Edwina');
   page.form.notes.fillIn('Some request notes?');
   page.form.firstTime.click();
@@ -317,6 +323,7 @@ test('create and edit a ride', function(assert) {
   andThen(function() {
     assert.equal(page.rides(0).name, 'Edwina + 1');
 
+    assert.ok(page.rides(0).medium.isEmail, 'expected the medium to now be email');
     assert.equal(page.notes().count, 1, 'expected the notes for the new ride to show');
     assert.equal(page.notes(0).text, 'Some request notes?');
 
@@ -325,6 +332,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.name, 'Edwina');
     assert.equal(lastRide.requestNotes, 'Some request notes?');
     assert.notOk(lastRide.firstTime);
+    assert.equal(lastRide.medium, 'email');
   });
 });
 

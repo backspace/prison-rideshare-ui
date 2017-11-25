@@ -2,6 +2,12 @@ import { computed, get } from '@ember/object';
 import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
+const mediumIcon = {
+  txt: 'textsms',
+  email: 'email',
+  phone: 'phone'
+};
+
 export default Component.extend({
   classAttribute: computed('ride.enabled', 'uncombinable', 'ride.isCombined', function() {
     return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''}`;
@@ -42,6 +48,14 @@ export default Component.extend({
       return Math.abs(new Date(rideToCombineStart).getTime() - new Date(this.get('ride.start')).getTime()) > sixHours;
     }
 
+  }),
+
+  mediumIcon: computed('ride.medium', function() {
+    return mediumIcon[this.get('ride.medium')];
+  }),
+
+  mediumIconTitle: computed('ride.medium', function() {
+    return `ride was requested via ${this.get('ride.medium')}`;
   }),
 
   actions: {

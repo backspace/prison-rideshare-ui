@@ -149,6 +149,12 @@ md-sidenav {
   }
 }
 
+.medium-row md-radio-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 md-table-container.debts .person .name {
   font-weight: bold;
 }
