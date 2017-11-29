@@ -5,25 +5,11 @@ import moment from 'moment';
 
 module('Unit | Utility | parse timespan', {
   beforeEach() {
-    // Date.parse('2017-09-27 00:30:00 CDT')
     const afterMidnight = new Date(1506490200000);
     window.chronokinesis.travel(afterMidnight);
-    // this.OriginalDate = window.Date;
-    // debugger;
-    // const FakeDate = fakeDate({
-    //   timezoneOffset: -5*60,
-    //   referenceTime: 1506490200000
-    // });
-    //
-    // window.Date = FakeDate;
-    // MockDate.set(1506490200000, -5*60);
-    // debugger;
   },
 
   afterEach() {
-    // timekeeper.reset();
-    // window.Date = this.OriginalDate;
-    // MockDate.reset();
     window.chronokinesis.reset();
   }
 });
