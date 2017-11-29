@@ -227,7 +227,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(page.form.passengers.value, '1', 'the form should default to one passenger');
   });
 
-  page.form.timespan.fillIn('Dec 26 2016 from 9 to 11:30');
+  page.form.timespan.fillIn('Dec 26 2016 from 9am to 11:30');
 
   page.form.medium.phone.click();
   page.form.name.fillIn('Edward');
