@@ -108,6 +108,17 @@ md-sidenav {
 .rides table .ride {
   opacity: 0.5;
 
+  .date-cell {
+    .paper-icon {
+      visibility: hidden;
+      cursor: pointer;
+    }
+
+    &:hover .paper-icon {
+      visibility: visible;
+    }
+  }
+
   &+.notes {
     opacity: 0.5;
   }

@@ -41,6 +41,7 @@ export default DS.Model.extend({
 
   start: DS.attr('date'),
   end: DS.attr('date'),
+  insertedAt: DS.attr('date'),
 
   rideTimes: computed('start', 'end', function () {
     const start = this.get('start');

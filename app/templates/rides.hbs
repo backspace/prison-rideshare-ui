@@ -16,6 +16,9 @@
 {{#paper-content class='layout-column flex no-overflow-scroll'}}
   {{#paper-data-table sortProp=sortProp sortDir=sortDir class='rides' as |table|}}
     {{#table.head as |head|}}
+      {{#if showCreation}}
+        {{#head.column}}Created{{/head.column}}
+      {{/if}}
       {{#head.column sortProp='start' class='date'}}Date{{/head.column}}
       {{#head.column}}Institution{{/head.column}}
       {{#head.column}}Visitor{{/head.column}}
@@ -25,9 +28,9 @@
     {{/table.head}}
     {{#table.body as |body|}}
       {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
-        {{ride-row body=body ride=ride editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+        {{ride-row body=body ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{#each ride.children as |child|}}
-          {{ride-row body=body ride=child combined=true editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+          {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{/each}}
       {{/each}}
     {{/table.body}}

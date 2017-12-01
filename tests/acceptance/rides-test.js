@@ -44,7 +44,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     requestNotes: 'These are some request notes.',
 
     driver: sun,
-    carOwner: lito
+    carOwner: lito,
+
+    insertedAt: new Date(2016, 11, 20, 20, 15)
   });
 
   const chelseaRide = server.create('ride', {
@@ -85,6 +87,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
     assert.ok(ride.medium.isTxt, 'expected the request to have been received via txt');
+    assert.ok(ride.creationDate.isHidden, 'expected the creation date to be hidden by default');
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
@@ -92,6 +95,18 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(page.notes().count, 1, 'expected the notes to be visible');
     assert.equal(page.notes(0).text, 'These are some request notes.');
   });
+
+  page.rides(2).clickDate();
+
+  andThen(() => {
+    assert.equal(page.rides(2).creationDate.text, 'Tue Dec 20 2016 8:15pm');
+  });
+
+  page.rides(2).clickDate();
+
+  andThen(() => {
+    assert.ok(page.rides(2).creationDate.isHidden, 'expected the creation date to be hidden again');
+  })
 
   page.rides(2).driver.reveal();
 

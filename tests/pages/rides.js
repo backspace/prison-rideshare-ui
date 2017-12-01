@@ -49,6 +49,7 @@ export default create({
       name: text('.name-and-contact .name'),
       isFirstTimer: isVisible('.name-and-contact md-icon[md-font-icon=announcement]'),
       date: text('.date'),
+      clickDate: clickable('.date-cell'),
       institution: text('.institution'),
       address: text('.address'),
       contact: text('.contact'),
@@ -88,7 +89,11 @@ export default create({
 
       isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="call split"]'),
 
-      edit: clickable('button.edit')
+      edit: clickable('button.edit'),
+
+      creationDate: {
+        scope: '.creation'
+      }
     },
 
     head: {
