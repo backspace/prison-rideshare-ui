@@ -466,3 +466,58 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
     assert.equal(page.rides(0).name, 'A', 'expected the formerly-combined ride to have returned');
   });
 });
+
+test('rides can be filtered by various characteristics', function(assert) {
+  const stonyMountain = server.create('institution', {
+    name: 'Stony Mountain'
+  });
+
+  const burnham = server.create('person', {
+    name: 'Michael Burnham',
+    email: 'burnham@discovery',
+    landline: '111'
+  });
+
+  const lorca = server.create('person', {
+    name: 'Gabriel Lorca',
+    email: 'lorca@discovery'
+  });
+
+  server.create('ride', {
+    enabled: false,
+    name: 'Philippa Georgiou',
+    address: '91 Albert',
+    contact: 'jorts@example.com',
+    institution: stonyMountain,
+
+    requestNotes: 'These are some request notes.',
+
+    driver: burnham,
+    carOwner: lorca
+  });
+
+  server.create('ride', {
+    name: 'Chelsea',
+    start: new Date(2016, 11, 25, 10, 15),
+    end: new Date(2016, 11, 25, 12, 0),
+    passengers: 1,
+    contact: '5145551212'
+  });
+
+  server.create('ride', {
+    name: 'NEVERMATCH'
+  });
+
+  page.visit();
+
+  andThen(() => {
+    assert.equal(page.rides().count, 2, 'expected two rides to show by default');
+  });
+
+  page.head.search.fillIn('chel');
+
+  andThen(() => {
+    assert.equal(page.rides().count, 1, 'expected one ride to be showing after filtering');
+    assert.equal(page.rides(0).name, 'Chelsea', 'expected the ride to be the Chelsea one');
+  });
+});

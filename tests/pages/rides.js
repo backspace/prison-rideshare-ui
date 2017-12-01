@@ -25,6 +25,10 @@ export default create({
       scope: '.paper-switch.completed',
       enabled: hasClass('md-checked'),
       click: clickable('.md-thumb')
+    },
+
+    search: {
+      scope: 'input[type=search]'
     }
   },
 

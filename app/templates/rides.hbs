@@ -5,6 +5,7 @@
 {{/toolbar-header}}
 
 <div class='switch-container layout-row layout-align-start-center'>
+    {{paper-input type='search' value=search onChange=(action (mut search))}}
     {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
       Reported-on
     {{/paper-switch}}
