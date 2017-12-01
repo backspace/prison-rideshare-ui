@@ -13,7 +13,7 @@
       onChange=(action (mut search)) as |input|}}
       {{#if input.hasValue}}
         {{#paper-button icon=true aria-label='Clear search' title='Clear search' onClick=(action 'clearSearch')}}
-          {{paper-icon 'clear'}}
+          {{paper-icon 'clear' size=14}}
         {{/paper-button}}
       {{/if}}
     {{/paper-input}}
