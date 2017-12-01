@@ -530,4 +530,10 @@ test('rides can be filtered by various characteristics', function(assert) {
     assert.equal(page.head.search.value, '', 'expected the search field to now be empty');
     assert.ok(page.head.search.clear.isHidden, 'expected the empty search field to have no clear button');
   });
+
+  page.head.search.fillIn('HEL');
+
+  andThen(() => {
+    assert.equal(page.rides(0).name, 'Chelsea', 'expected the search to be case-insensitive');
+  });
 });
