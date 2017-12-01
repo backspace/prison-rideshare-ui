@@ -7,6 +7,7 @@ import {
   hasClass,
   isVisible,
   text,
+  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -28,7 +29,14 @@ export default create({
     },
 
     search: {
-      scope: 'input[type=search]'
+      scope: 'md-input-container.search',
+
+      fillIn: fillable('input'),
+      value: value('input'),
+
+      clear: {
+        scope: 'button'
+      }
     }
   },
 

@@ -5,7 +5,18 @@
 {{/toolbar-header}}
 
 <div class='switch-container layout-row layout-align-start-center'>
-    {{paper-input type='search' icon='search' value=search onChange=(action (mut search))}}
+    {{#paper-input
+      class='search'
+      type='search'
+      icon='search'
+      value=search
+      onChange=(action (mut search)) as |input|}}
+      {{#if input.hasValue}}
+        {{#paper-button icon=true aria-label='Clear search' title='Clear search' onClick=(action 'clearSearch')}}
+          {{paper-icon 'clear'}}
+        {{/paper-button}}
+      {{/if}}
+    {{/paper-input}}
     {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
       Reported-on
     {{/paper-switch}}

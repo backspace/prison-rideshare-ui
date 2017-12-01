@@ -512,6 +512,7 @@ test('rides can be filtered by various characteristics', function(assert) {
 
   andThen(() => {
     assert.equal(page.rides().count, 2, 'expected two rides to show by default');
+    assert.ok(page.head.search.clear.isHidden, 'expected the empty search field to have no clear button');
   });
 
   page.head.search.fillIn('chel');
@@ -519,5 +520,14 @@ test('rides can be filtered by various characteristics', function(assert) {
   andThen(() => {
     assert.equal(page.rides().count, 1, 'expected one ride to be showing after filtering');
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the ride to be the Chelsea one');
+    assert.ok(page.head.search.clear.isVisible, 'expected the clear button to show when the field has content');
+  });
+
+  page.head.search.clear.click();
+
+  andThen(() => {
+    assert.equal(page.rides().count, 2, 'expected the ride list to be returned to its default state');
+    assert.equal(page.head.search.value, '', 'expected the search field to now be empty');
+    assert.ok(page.head.search.clear.isHidden, 'expected the empty search field to have no clear button');
   });
 });

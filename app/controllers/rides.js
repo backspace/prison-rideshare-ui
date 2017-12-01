@@ -124,6 +124,10 @@ export default Controller.extend({
     uncombineRide(ride) {
       ride.set('combinedWith', null);
       ride.save();
+    },
+
+    clearSearch() {
+      this.set('search', undefined);
     }
   }
 });
