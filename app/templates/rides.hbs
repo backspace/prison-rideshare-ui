@@ -44,6 +44,12 @@
         {{#each ride.children as |child|}}
           {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{/each}}
+      {{else}}
+        {{#body.row class='no-matches' as |row|}}
+          {{#row.cell colspan=6}}
+            No rides matched your criteria. 😭
+          {{/row.cell}}
+        {{/body.row}}
       {{/each}}
     {{/table.body}}
   {{/paper-data-table}}

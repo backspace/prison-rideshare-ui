@@ -536,4 +536,10 @@ test('rides can be filtered by various characteristics', function(assert) {
   andThen(() => {
     assert.equal(page.rides(0).name, 'Chelsea', 'expected the search to be case-insensitive');
   });
+
+  page.head.search.fillIn('non-matching search');
+
+  andThen(() => {
+    assert.ok(page.noMatchesRow.isVisible, 'expected the no matches row to show with non-matching search');
+  });
 });

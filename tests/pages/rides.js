@@ -114,6 +114,10 @@ export default create({
     }
   }),
 
+  noMatchesRow: {
+    scope: 'tr.no-matches'
+  },
+
   notes: collection({
     itemScope: 'tr.notes',
 
