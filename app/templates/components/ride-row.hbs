@@ -1,5 +1,15 @@
 {{#body.row class=classAttribute as |row|}}
-  {{#row.cell class='date'}}{{ride.rideTimes}}{{/row.cell}}
+  {{#if showCreation}}
+    {{#row.cell class='creation'}}{{creation}}{{/row.cell}}
+  {{/if}}
+  {{#row.cell class='date-cell' onClick=(action 'toggleCreation')}}
+    <span class='date'>{{ride.rideTimes}}</span>
+    {{#if showCreation}}
+      {{paper-icon 'alarm off' size=14}}
+    {{else}}
+      {{paper-icon 'add alarm' size=14}}
+    {{/if}}
+  {{/row.cell}}
   {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
   {{#row.cell class='name-and-contact'}}
     <span class='name'>{{ride.namePlusPassengers}}</span>{{#if ride.firstTime}} {{paper-icon 'announcement' size=10 title='first time rider'}}{{/if}}

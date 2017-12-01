@@ -25,6 +25,8 @@ export default Controller.extend({
   sortProp: 'start',
   sortDir: 'asc',
 
+  showCreation: false,
+
   filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
 

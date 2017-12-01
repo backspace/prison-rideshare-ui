@@ -1,6 +1,7 @@
 import { computed, get } from '@ember/object';
 import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+import moment from 'moment';
 
 const mediumIcon = {
   txt: 'textsms',
@@ -14,6 +15,12 @@ export default Component.extend({
   }),
 
   tagName: '',
+
+  creation: computed('ride.insertedAt', function () {
+    const insertedAt = this.get('ride.insertedAt');
+
+    return moment(insertedAt).format('ddd MMM D YYYY h:mma');
+  }),
 
   cancellationIcon: computed('ride.cancellationReason', function() {
     const reason = this.get('ride.cancellationReason');
@@ -85,6 +92,10 @@ export default Component.extend({
       const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
 
       return result ? 1 : -1;
+    },
+
+    toggleCreation() {
+      this.toggleProperty('showCreation');
     }
   }
 });
