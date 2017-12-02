@@ -38,3 +38,10 @@ test('it allows the end meridiem to be overridden', function(assert) {
 test('it assumes PM if unspecified', function(assert) {
   assertParsing(assert, 'september 27 2017 from 630 to 9', '2017-09-27 18:30', '2017-09-27 21:00');
 });
+
+test('it assumes PM if unspecified even for start alone', function(assert) {
+  const parsed = parseTimespan('september 27 2017 from 630');
+
+  assert.equal(moment(parsed.start.date()).format(formatString), '2017-09-27 18:30');
+  assert.notOk(parsed.end);
+});

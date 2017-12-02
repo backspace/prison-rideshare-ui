@@ -18,12 +18,14 @@ assumeEndDay.refine = function(text, results) {
 const assumePM = new chrono.Refiner();
 assumePM.refine = function(text, results) {
   results.forEach(({start, end}) => {
-    if (start && end && !start.isCertain('meridiem')) {
+    if (start && !start.isCertain('meridiem')) {
       start.assign('meridiem', 1);
       start.assign('hour', start.get('hour') + 12);
 
-      end.assign('meridiam', 1);
-      end.assign('hour', end.get('hour') + 12);
+      if (end) {
+        end.assign('meridiam', 1);
+        end.assign('hour', end.get('hour') + 12);
+      }
     }
   });
 
