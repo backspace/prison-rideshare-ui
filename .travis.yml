@@ -27,6 +27,9 @@ install:
   - npm install
 
 script:
+  - echo "hello"
+
+exscript:
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
@@ -36,3 +39,6 @@ deploy:
   on:
     repo: backspace/prison-rideshare-ui
     branch: primary
+
+after_success:
+  - "test $TRAVIS_PULL_REQUEST && test $TRAVIS_PULL_REQUEST != 'false' && $TRAVIS_SECURE_ENV_VARS == 'true' && .travis/deploy-pull-request.sh"

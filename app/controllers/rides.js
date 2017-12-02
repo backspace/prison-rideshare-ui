@@ -11,6 +11,10 @@ export default Controller.extend({
 
     sortProp: 'sort',
     sortDir: 'dir',
+
+    search: {
+      replace: true
+    }
   },
 
   peopleService: service('people'),
@@ -27,8 +31,9 @@ export default Controller.extend({
 
   showCreation: false,
 
-  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', function() {
+  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', 'search', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
+    const search = this.get('search');
 
     let rides = this.get('model').rejectBy('isCombined');
 
@@ -38,6 +43,12 @@ export default Controller.extend({
 
     if (!showCancelled) {
       rides = rides.filterBy('enabled');
+    }
+
+    if (search) {
+      rides = rides.filter(ride => {
+        return (ride.get('name') || '').toLowerCase().includes(search.toLowerCase());
+      });
     }
 
     return rides;
@@ -113,6 +124,10 @@ export default Controller.extend({
     uncombineRide(ride) {
       ride.set('combinedWith', null);
       ride.save();
+    },
+
+    clearSearch() {
+      this.set('search', undefined);
     }
   }
 });
