@@ -23,7 +23,6 @@ module.exports = function(deployTarget) {
     'ssh-tunnel': {
       username: 'ubuntu',
       host: 'corepoint.chromatin.ca',
-      // FIXME this won’t work locally
       privateKeyPath: '.travis/deploy-lightning.key',
       dstPort: 6699
     }
