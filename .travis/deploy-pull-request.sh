@@ -1,3 +1,5 @@
+./.travis/prepare-ssh-key.sh
+
 export CLEANED_BRANCH_SUBDOMAIN=`echo $TRAVIS_PULL_REQUEST_BRANCH | tr '.' '-' | tr '[:upper:]' '[:lower:]'`
 
 export API_HOST=https://prison-rideshare-api.corepoint.chromatin.ca/
