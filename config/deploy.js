@@ -23,7 +23,8 @@ module.exports = function(deployTarget) {
     'ssh-tunnel': {
       username: 'ubuntu',
       host: 'corepoint.chromatin.ca',
-      privateKeyPath: '~/.ssh/corepoint',
+      // FIXME this won’t work locally
+      privateKeyPath: '.travis/deploy.key',
       dstPort: 6699
     }
   };
