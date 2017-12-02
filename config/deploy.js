@@ -10,7 +10,7 @@ module.exports = function(deployTarget) {
     },
     redis: {
       allowOverwrite: true,
-      keyPrefix: `prison-rideshare-ui-${deployTarget}:index`,
+      keyPrefix: process.env.CLEANED_BRANCH_SUBDOMAIN,
       host: 'localhost',
       password: process.env.REDIS_PASSWORD
     },
