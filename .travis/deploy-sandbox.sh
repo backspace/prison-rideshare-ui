@@ -1,4 +1,4 @@
-./.travis/prepare-ssh-key.sh
+KEY_FILENAME=deploy.key ./.travis/prepare-ssh-key.sh
 
 git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-sandbox
 git config --global push.default simple

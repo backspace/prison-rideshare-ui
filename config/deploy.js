@@ -24,7 +24,7 @@ module.exports = function(deployTarget) {
       username: 'ubuntu',
       host: 'corepoint.chromatin.ca',
       // FIXME this won’t work locally
-      privateKeyPath: '.travis/deploy.key',
+      privateKeyPath: '.travis/deploy-lightning.key',
       dstPort: 6699
     }
   };
