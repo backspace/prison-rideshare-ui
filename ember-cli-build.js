@@ -4,7 +4,12 @@
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
+  const s3Bucket = require('./config/deploy')(process.env.DEPLOY_TARGET).s3.bucket;
+
   let app = new EmberApp(defaults, {
+    fingerprint: {
+      prepend: `//${s3Bucket}.s3.amazonaws.com/`
+    },
     sourcemaps: {
       enabled: true
     }
