@@ -1,5 +1,5 @@
-KEY_FILENAME=deploy.key ./.travis/prepare-ssh-key.sh
+./.travis/prepare-ssh-key.sh
 
-git remote add deploy dokku@corepoint.chromatin.ca:prison-rideshare-sandbox
-git config --global push.default simple
-git push deploy primary
+export API_HOST=https://prison-rideshare-api-sandbox.corepoint.chromatin.ca/
+export SOCKET_HOST=wss://prison-rideshare-api-sandbox.corepoint.chromatin.ca
+ember deploy sandbox --activate
