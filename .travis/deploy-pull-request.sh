@@ -1,5 +1,4 @@
-KEY_FILENAME=deploy-lightning.key ./.travis/prepare-ssh-key.sh
-KEY_FILENAME=deploy.key ./.travis/prepare-ssh-key.sh
+./.travis/prepare-ssh-key.sh
 
 export CLEANED_BRANCH_SUBDOMAIN=`echo $TRAVIS_PULL_REQUEST_BRANCH | tr '.' '-' | tr '[:upper:]' '[:lower:]'`
 
