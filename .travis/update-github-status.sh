@@ -7,6 +7,7 @@ echo deployment url: $FULL_URL
 
 if [[ $DEPLOYMENT_EXIT_CODE -eq 0 ]]
 then
+  # FIXME these don’t work, nor should they really be here
   ssh -t dokku@corepoint.chromatin.ca -- run rideshare-lightning dokku domains:add rideshare-lightning $HOST
   ssh -t dokku@corepoint.chromatin.ca -- run rideshare-lightning dokku letsencrypt rideshare-lightning
 
