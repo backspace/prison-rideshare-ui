@@ -27,9 +27,6 @@ install:
   - npm install
 
 script:
-  - echo "hello"
-
-exscript:
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
