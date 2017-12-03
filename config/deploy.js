@@ -1,6 +1,8 @@
 var VALID_DEPLOY_TARGETS = [
   'production',
   'sandbox',
+  'pull-request-production',
+  'pull-request-sandbox'
 ];
 
 module.exports = function(deployTarget) {
@@ -10,12 +12,11 @@ module.exports = function(deployTarget) {
     },
     redis: {
       allowOverwrite: true,
-      keyPrefix: process.env.CLEANED_BRANCH_SUBDOMAIN,
       host: 'localhost',
       password: process.env.REDIS_PASSWORD
     },
     s3: {
-      bucket: `rideshare-lightning-${deployTarget}`,
+      bucket: `prison-rideshare-${deployTarget}`,
       region: 'us-east-1',
       accessKeyId: process.env.AWS_KEY,
       secretAccessKey: process.env.AWS_SECRET
@@ -29,6 +30,12 @@ module.exports = function(deployTarget) {
   };
   if (VALID_DEPLOY_TARGETS.indexOf(deployTarget) === -1) {
     throw new Error('Invalid deployTarget ' + deployTarget);
+  }
+
+  if (deployTarget === 'production' || deployTarget === 'sandbox') {
+    ENV.redis.keyPrefix = deployTarget;
+  } else {
+    ENV.redis.keyPrefix = process.env.CLEANED_BRANCH_SUBDOMAIN;
   }
 
   return ENV;
