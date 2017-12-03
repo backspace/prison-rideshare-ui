@@ -6,13 +6,12 @@ moduleForModel('ride', 'Unit | Model | ride', {
 });
 
 test('it determines whether it matches a search query', function(assert) {
-  let rockwood, headingley;
+  let rockwood;
   let chelsea, edward;
 
   let rockwoodRide;
 
   run(() => {
-    headingley = this.store().createRecord('institution', { name: 'Headingley' });
     rockwood = this.store().createRecord('institution', { name: 'Rockwood' });
 
     chelsea = this.store().createRecord('person', { name: 'Chelsea Manning' });
