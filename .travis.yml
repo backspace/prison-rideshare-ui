@@ -35,7 +35,8 @@ deploy:
   script: .travis/deploy-sandbox.sh
   on:
     repo: backspace/prison-rideshare-ui
-    branch: primary
+    # FIXME
+    branch: lightning
 
 after_success:
   - "test $TRAVIS_PULL_REQUEST && test $TRAVIS_PULL_REQUEST != 'false' && $TRAVIS_SECURE_ENV_VARS == 'true' && .travis/deploy-pull-request.sh"
