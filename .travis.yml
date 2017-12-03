@@ -26,11 +26,7 @@ before_install:
 install:
   - npm install
 
-# FIXME
 script:
-  - echo hello
-
-xscript:
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
