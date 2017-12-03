@@ -87,6 +87,24 @@ test('submit a report for a ride', function(assert) {
   });
 });
 
+test('a fallback shows when no rides need a report', function(assert) {
+  authenticateSession(this.application);
+
+  page.visit();
+
+  page.distance.fillIn(75);
+  page.rides(1).choose();
+  page.submitButton.click();
+
+  page.distance.fillIn(75);
+  page.rides(0).choose();
+  page.submitButton.click();
+
+  andThen(function() {
+    assert.ok(page.noRides.isVisible, 'expected there to be no rides to report on');
+  });
+});
+
 test('submitting a report clears the form', function(assert) {
   page.visit();
 

@@ -19,6 +19,8 @@ export default create({
     }
   }),
 
+  noRides: { scope: '.no-rides' },
+
   distance: { scope: '.distance input' },
   foodExpenses: { scope: '.food-expenses input' },
   notes: { scope: '.report-notes textarea' },
