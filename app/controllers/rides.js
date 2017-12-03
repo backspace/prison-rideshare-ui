@@ -46,9 +46,7 @@ export default Controller.extend({
     }
 
     if (search) {
-      rides = rides.filter(ride => {
-        return (ride.get('name') || '').toLowerCase().includes(search.toLowerCase());
-      });
+      rides = rides.filter(ride => ride.matches(search));
     }
 
     return rides;
