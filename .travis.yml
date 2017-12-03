@@ -37,6 +37,7 @@ xscript:
 deploy:
   provider: script
   script: .travis/deploy-sandbox.sh
+  skip_cleanup: true
   on:
     repo: backspace/prison-rideshare-ui
     # FIXME
