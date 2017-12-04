@@ -48,7 +48,7 @@
       {{else}}
         {{#body.row class='no-matches' as |row|}}
           {{#row.cell colspan=6}}
-            No rides matched your criteria. 😭
+            No rides matched your criteria. 😭 <!-- FIXME WTF! Without this, the institutions select in the dialogue has no options? {{filteredRides.length}} -->
           {{/row.cell}}
         {{/body.row}}
       {{/each}}
