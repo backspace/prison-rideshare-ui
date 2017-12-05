@@ -26,13 +26,19 @@ export default Controller.extend({
 
   monthReimbursementCollections: computed('filteredReimbursements.@each.person', function() {
     const reimbursements = this.get('filteredReimbursements');
+    const monthNumberStringToMonthName = {};
 
     const monthToPersonIdToReimbursements = reimbursements.reduce((monthToPersonIdToReimbursements, reimbursement) => {
       // FIXME this assumes a ride is always preloaded and present
-      const month = moment(reimbursement.belongsTo('ride').value().get('start')).format('YYYY-MM');
+      const start = reimbursement.belongsTo('ride').value().get('start');
+      const month = moment(start).format('YYYY-MM');
 
       if (!monthToPersonIdToReimbursements[month]) {
         monthToPersonIdToReimbursements[month] = {};
+      }
+
+      if (!monthNumberStringToMonthName[month]) {
+        monthNumberStringToMonthName[month] = moment(start).format('MMMM YYYY');
       }
 
       const person = reimbursement.get('person');
@@ -76,7 +82,7 @@ export default Controller.extend({
 
       monthReimbursementCollections.push(MonthReimbursementCollections.create({
         monthNumberString,
-        monthName: moment(new Date(monthNumberString)).format('MMMM YYYY'),
+        monthName: monthNumberStringToMonthName[monthNumberString],
         reimbursementCollections: flattenedCollections
       }));
 
