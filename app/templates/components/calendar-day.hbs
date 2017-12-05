@@ -1,0 +1,7 @@
+{{day.number}}
+
+{{#each daySlots as |slot|}}
+  <div class='slot'>
+    <span class='hours'>{{moment-format slot.start 'hA'}}–{{moment-format slot.end 'hA'}}</span>: <span class='count'>{{slot.count}}</span>
+  </div>
+{{/each}}

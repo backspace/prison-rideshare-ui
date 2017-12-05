@@ -44,4 +44,6 @@ export default function() {
   this.get('/users/current', ({ users }) => {
     return users.first();
   });
+
+  this.get('/slots');
 }

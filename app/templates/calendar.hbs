@@ -1,0 +1,7 @@
+{{#power-calendar as |calendar|}}
+  {{calendar.nav}}
+
+  {{#calendar.days showDaysAround=false as |day|}}
+    {{calendar-day day=day slots=slots}}
+  {{/calendar.days}}
+{{/power-calendar}}
