@@ -466,3 +466,80 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
     assert.equal(page.rides(0).name, 'A', 'expected the formerly-combined ride to have returned');
   });
 });
+
+test('rides can be filtered by various characteristics', function(assert) {
+  const stonyMountain = server.create('institution', {
+    name: 'Stony Mountain'
+  });
+
+  const burnham = server.create('person', {
+    name: 'Michael Burnham',
+    email: 'burnham@discovery',
+    landline: '111'
+  });
+
+  const lorca = server.create('person', {
+    name: 'Gabriel Lorca',
+    email: 'lorca@discovery'
+  });
+
+  server.create('ride', {
+    enabled: false,
+    name: 'Philippa Georgiou',
+    address: '91 Albert',
+    contact: 'jorts@example.com',
+    institution: stonyMountain,
+
+    requestNotes: 'These are some request notes.',
+
+    driver: burnham,
+    carOwner: lorca
+  });
+
+  server.create('ride', {
+    name: 'Chelsea',
+    start: new Date(2016, 11, 25, 10, 15),
+    end: new Date(2016, 11, 25, 12, 0),
+    passengers: 1,
+    contact: '5145551212'
+  });
+
+  server.create('ride', {
+    name: 'NEVERMATCH'
+  });
+
+  page.visit();
+
+  andThen(() => {
+    assert.equal(page.rides().count, 2, 'expected two rides to show by default');
+    assert.ok(page.head.search.clear.isHidden, 'expected the empty search field to have no clear button');
+  });
+
+  page.head.search.fillIn('chel');
+
+  andThen(() => {
+    assert.equal(page.rides().count, 1, 'expected one ride to be showing after filtering');
+    assert.equal(page.rides(0).name, 'Chelsea', 'expected the ride to be the Chelsea one');
+    assert.ok(page.head.search.clear.isVisible, 'expected the clear button to show when the field has content');
+  });
+
+  page.head.search.clear.click();
+
+  andThen(() => {
+    assert.equal(page.rides().count, 2, 'expected the ride list to be returned to its default state');
+    assert.equal(page.head.search.value, '', 'expected the search field to now be empty');
+    assert.ok(page.head.search.clear.isHidden, 'expected the empty search field to have no clear button');
+  });
+
+  page.head.search.fillIn('HEL');
+
+  andThen(() => {
+    assert.equal(page.rides(0).name, 'Chelsea', 'expected the search to be case-insensitive');
+  });
+
+  page.head.search.fillIn('non-matching search');
+
+  andThen(() => {
+    assert.ok(page.noMatchesRow.isVisible, 'expected the no matches row to show with non-matching search');
+  });
+});

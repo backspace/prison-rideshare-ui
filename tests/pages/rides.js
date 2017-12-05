@@ -7,6 +7,7 @@ import {
   hasClass,
   isVisible,
   text,
+  value,
   visitable
 } from 'ember-cli-page-object';
 
@@ -25,6 +26,17 @@ export default create({
       scope: '.paper-switch.completed',
       enabled: hasClass('md-checked'),
       click: clickable('.md-thumb')
+    },
+
+    search: {
+      scope: 'md-input-container.search',
+
+      fillIn: fillable('input'),
+      value: value('input'),
+
+      clear: {
+        scope: 'button'
+      }
     }
   },
 
@@ -101,6 +113,10 @@ export default create({
       clickDate: clickable('.date')
     }
   }),
+
+  noMatchesRow: {
+    scope: 'tr.no-matches'
+  },
 
   notes: collection({
     itemScope: 'tr.notes',

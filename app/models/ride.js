@@ -114,5 +114,16 @@ export default DS.Model.extend({
       this.set('enabled', !value);
       return value;
     }
-  })
+  }),
+
+  matchString: computed('institution.name', 'driver.name', 'carOwner.name', 'name', 'address', function() {
+    return `${this.getWithDefault('institution.name', '')} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault('carOwner.name', '')} ${this.getWithDefault('name', '')} ${this.getWithDefault('address')}`.toLowerCase();
+  }),
+
+  matches(casedQuery) {
+    const query = casedQuery.toLowerCase();
+    const matchString = this.get('matchString');
+
+    return (query.match(/\S+/g) || []).every(queryTerm => matchString.includes(queryTerm));
+  }
 });

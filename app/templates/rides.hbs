@@ -5,6 +5,19 @@
 {{/toolbar-header}}
 
 <div class='switch-container layout-row layout-align-start-center'>
+    {{#paper-input
+      class='search'
+      type='search'
+      icon='search'
+      placeholder='Institution, driver, visitor, address'
+      value=search
+      onChange=(action (mut search)) as |input|}}
+      {{#if input.hasValue}}
+        {{#paper-button icon=true aria-label='Clear search' title='Clear search' onClick=(action 'clearSearch')}}
+          {{paper-icon 'clear' size=14}}
+        {{/paper-button}}
+      {{/if}}
+    {{/paper-input}}
     {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
       Reported-on
     {{/paper-switch}}
@@ -32,6 +45,12 @@
         {{#each ride.children as |child|}}
           {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{/each}}
+      {{else}}
+        {{#body.row class='no-matches' as |row|}}
+          {{#row.cell colspan=6}}
+            No rides matched your criteria. 😭 <!-- FIXME WTF! Without this, the institutions select in the dialogue has no options? {{filteredRides.length}} -->
+          {{/row.cell}}
+        {{/body.row}}
       {{/each}}
     {{/table.body}}
   {{/paper-data-table}}
