@@ -2,7 +2,7 @@
 
   {{#paper-dialog-content}}
     {{#if warning}}
-      {{#paper-card as |card|}}
+      {{#paper-card class='warning' as |card|}}
         {{#card.content}}
           {{warning}}
         {{/card.content}}
@@ -102,6 +102,18 @@
             onChange=(action (mut ride.firstTime))}}First time?{{/paper-checkbox}}
         </div>
       </div>
+      {{#if ride.firstTime}}
+        {{#paper-card class='first-time-points' as |card|}}
+          {{#card.content}}
+            Some notes for first-time riders:
+            <ul>
+              <li>the drivers and coordinators are all volunteering</li>
+              <li>we don’t screen drivers, but please let us know if you have any concerns</li>
+              <li>it’s more likely you’ll get a ride if you request early; you can even do it before you have a visit scheduled</li>
+            </ul>
+          {{/card.content}}
+        {{/paper-card}}
+      {{/if}}
 
       <div class='layout layout-sm-column'>
         {{form.input class='request-notes'

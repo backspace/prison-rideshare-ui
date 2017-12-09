@@ -240,6 +240,8 @@ test('create and edit a ride', function(assert) {
     assert.equal(page.notes().count, 0, 'there should be no notes when there are no rides');
 
     assert.equal(page.form.passengers.value, '1', 'the form should default to one passenger');
+
+    assert.ok(page.form.firstTimePoints.isHidden, 'expected the first time tips to not be visible by default');
   });
 
   page.form.timespan.fillIn('Dec 26 2016 from 9am to 11:30');
@@ -251,6 +253,9 @@ test('create and edit a ride', function(assert) {
   page.form.firstTime.click();
   page.form.passengers.fillIn(2);
 
+  andThen(() => {
+    assert.ok(page.form.firstTimePoints.isVisible, 'expected the first time tips to show after the checkbox is set');
+  });
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');
