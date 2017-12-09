@@ -16,12 +16,7 @@
         {{/form.input}}
       </div>
       <div class='layout-row layout-xs-column'>
-        <div class='flex'>
-          {{form.input class='start' label='Start' value=ride.start disabled=true onChange=null}}
-        </div>
-        <div class='flex'>
-          {{form.input class='end' label='End' value=ride.end disabled=true onChange=null}}
-        </div>
+        {{form.input class='timespan-result flex-100' label='Ride times' value=rideTimes disabled=true onChange=null}}
       </div>
       <div class='layout-row layout-xs-column'>
         <div class='flex'>

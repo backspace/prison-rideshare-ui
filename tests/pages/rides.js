@@ -145,12 +145,8 @@ export default create({
       scope: '.timespan textarea'
     },
 
-    start: {
-      scope: '.start input'
-    },
-
-    end: {
-      scope: '.end input'
+    timespanResult: {
+      scope: '.timespan-result input'
     },
 
     medium: {
