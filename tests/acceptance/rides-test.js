@@ -122,8 +122,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(() => {
     assert.equal(page.form.notice, 'You are editing a cancelled ride!');
 
-    assert.ok(page.form.start.value.startsWith('Mon Dec 26 2016 20:30:00'), `expected the start time ${page.form.start.value} to start with 'Mon Dec 26 2016 20:30:00'`);
-    assert.ok(page.form.end.value.startsWith('Mon Dec 26 2016 22:00:00'), `expected the end time ${page.form.end.value} to end with 'Mon Dec 26 2016 22:00:00'`);
+    assert.equal(page.form.timespanResult.value, 'Mon Dec 26 2016 8:30pm — 10:00');
   });
 
   page.form.cancel();
@@ -240,6 +239,8 @@ test('create and edit a ride', function(assert) {
     assert.equal(page.notes().count, 0, 'there should be no notes when there are no rides');
 
     assert.equal(page.form.passengers.value, '1', 'the form should default to one passenger');
+
+    assert.ok(page.form.firstTimePoints.isHidden, 'expected the first time tips to not be visible by default');
   });
 
   page.form.timespan.fillIn('Dec 26 2016 from 9am to 11:30');
@@ -251,6 +252,9 @@ test('create and edit a ride', function(assert) {
   page.form.firstTime.click();
   page.form.passengers.fillIn(2);
 
+  andThen(() => {
+    assert.ok(page.form.firstTimePoints.isVisible, 'expected the first time tips to show after the checkbox is set');
+  });
 
   // FIXME not really here, but keyboard input for this is broken, and hovering
   selectChoose('md-input-container.institution', 'Rockwood');

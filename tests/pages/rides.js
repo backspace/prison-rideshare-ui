@@ -139,18 +139,14 @@ export default create({
   form: {
     scope: '.md-dialog-container',
 
-    notice: text('md-card-content'),
+    notice: text('.warning'),
 
     timespan: {
       scope: '.timespan textarea'
     },
 
-    start: {
-      scope: '.start input'
-    },
-
-    end: {
-      scope: '.end input'
+    timespanResult: {
+      scope: '.timespan-result input'
     },
 
     medium: {
@@ -193,6 +189,10 @@ export default create({
       scope: 'md-checkbox',
       checked: hasClass('md-checked'),
       click: clickable()
+    },
+
+    firstTimePoints: {
+      scope: '.first-time-points'
     },
 
     passengers: {
