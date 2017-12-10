@@ -1,6 +1,7 @@
 import {
   collection,
   create,
+  hasClass,
   text,
   visitable
 } from 'ember-cli-page-object';
@@ -19,7 +20,9 @@ export default create({
 
         item: {
           hours: text('.hours'),
-          count: text('.count')
+          count: text('.count'),
+
+          isCommittedTo: hasClass('is-committed-to')
         }
       })
     }

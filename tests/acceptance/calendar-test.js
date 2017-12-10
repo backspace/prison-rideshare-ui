@@ -5,7 +5,7 @@ import page from 'prison-rideshare-ui/tests/pages/calendar';
 
 moduleForAcceptance('Acceptance | calendar', {
   beforeEach() {
-    server.create('slot', {
+    const committedSlot = server.create('slot', {
       start: new Date(2017, 11, 4, 17),
       end: new Date(2017, 11, 4, 20),
       count: 2
@@ -22,10 +22,14 @@ moduleForAcceptance('Acceptance | calendar', {
       end: new Date(2017, 11, 10, 17),
       count: 3
     });
+
+    committedSlot.createCommitment({
+
+    });
   }
 });
 
-test('visiting /calendar', function(assert) {
+test('calendar shows existing commitments', function(assert) {
   page.visit();
 
   andThen(function() {
@@ -34,6 +38,7 @@ test('visiting /calendar', function(assert) {
       d4.slots(0).as(s1 => {
         assert.equal(s1.hours, '5PM–8PM');
         assert.equal(s1.count, '2');
+        assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
       })
     });
 
@@ -42,6 +47,7 @@ test('visiting /calendar', function(assert) {
       d10.slots(0).as(s1 => {
         assert.equal(s1.hours, '11AM–5PM');
         assert.equal(s1.count, '3');
+        assert.notOk(s1.isCommittedTo, 'expected the slot to not be committed-to');
       });
       d10.slots(1).as(s2 => {
         assert.equal(s2.hours, '5PM–9PM');
