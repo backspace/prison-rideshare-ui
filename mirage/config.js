@@ -46,4 +46,5 @@ export default function() {
   });
 
   this.get('/slots');
+  this.delete('/commitments/:id');
 }

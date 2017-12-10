@@ -1,7 +1,5 @@
 {{day.number}}
 
 {{#each daySlots as |slot|}}
-  <div class='slot {{if slot.commitments 'is-committed-to'}}'>
-    <span class='hours'>{{moment-format slot.start 'hA'}}–{{moment-format slot.end 'hA'}}</span>: <span class='count'>{{slot.count}}</span>
-  </div>
+  {{calendar-slot slot=slot}}
 {{/each}}

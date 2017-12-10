@@ -29,7 +29,7 @@ moduleForAcceptance('Acceptance | calendar', {
   }
 });
 
-test('calendar shows existing commitments', function(assert) {
+test('calendar shows existing commitments and lets them be changed', function(assert) {
   page.visit();
 
   andThen(function() {
@@ -54,5 +54,12 @@ test('calendar shows existing commitments', function(assert) {
         assert.equal(s2.count, '2');
       });
     });
+  });
+
+  page.days(3).slots(0).click();
+
+  andThen(() => {
+    assert.notOk(page.days(3).slots(0).isCommittedTo, 'expected the slot to not longer be committed-to');
+    assert.equal(server.db.commitments.length, 0, 'expected the commitment to have been deleted on the server');
   });
 });
