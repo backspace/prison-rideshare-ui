@@ -11,7 +11,7 @@ moduleForAcceptance('Acceptance | calendar', {
       count: 2
     });
 
-    server.create('slot', {
+    this.toCommitSlot = server.create('slot', {
       start: new Date(2017, 11, 10, 17),
       end: new Date(2017, 11, 10, 21),
       count: 2
@@ -61,5 +61,14 @@ test('calendar shows existing commitments and lets them be changed', function(as
   andThen(() => {
     assert.notOk(page.days(3).slots(0).isCommittedTo, 'expected the slot to not longer be committed-to');
     assert.equal(server.db.commitments.length, 0, 'expected the commitment to have been deleted on the server');
+  });
+
+  page.days(9).slots(1).click();
+
+  andThen(() => {
+    assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
+
+    const [commitment] = server.db.commitments;
+    assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
   });
 });
