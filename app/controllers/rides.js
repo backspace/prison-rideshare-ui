@@ -31,7 +31,7 @@ export default Controller.extend({
 
   showCreation: false,
 
-  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', 'search', function() {
+  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', 'search', 'sortDir', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
     const search = this.get('search');
 
@@ -47,6 +47,27 @@ export default Controller.extend({
 
     if (search) {
       rides = rides.filter(ride => ride.matches(search));
+    }
+
+    rides.setEach('isDivider', false);
+
+    const sorted = rides.sortBy('start');
+    const sortDir = this.get('sortDir');
+    const now = new Date();
+
+    if (sortDir === 'asc') {
+      const firstAfterNow = sorted.find(ride => ride.get('start') > now);
+
+      if (firstAfterNow) {
+        firstAfterNow.set('isDivider', true);
+      }
+    } else {
+      const reversed = sorted.reverse();
+      const firstBeforeNow = reversed.find(ride => ride.get('start') < now);
+
+      if (firstBeforeNow) {
+        firstBeforeNow.set('isDivider', true);
+      }
     }
 
     return rides;

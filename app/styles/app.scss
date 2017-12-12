@@ -148,6 +148,10 @@ md-sidenav {
       border-top: 0;
     }
   }
+
+  &.divider td {
+    border-top: 2px solid black;
+  }
 }
 
 .search {

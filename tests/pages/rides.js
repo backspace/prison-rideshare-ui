@@ -47,6 +47,8 @@ export default create({
       enabled: hasClass('enabled'),
       isUncombinable: hasClass('uncombinable'),
 
+      isDivider: hasClass('divider'),
+
       cancellation: {
         scope: '.cancellation',
         click: clickable('button'),
