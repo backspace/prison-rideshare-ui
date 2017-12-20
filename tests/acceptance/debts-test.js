@@ -61,11 +61,13 @@ moduleForAcceptance('Acceptance | debts', {
     });
     // FIXME is this a Mirage bug? This was formerly within the creation but the mock server was returning *both* rides.
     firstDebt.rides = [sunRide, secondSunRide];
+    firstDebt.save();
 
     const secondDebt = server.create('debt', {
       person: will
     });
     secondDebt.rides = [willRide];
+    secondDebt.save();
 
     authenticateSession(this.application);
   }
