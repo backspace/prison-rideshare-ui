@@ -547,3 +547,38 @@ test('rides can be filtered by various characteristics', function(assert) {
     assert.ok(page.noMatchesRow.isVisible, 'expected the no matches row to show with non-matching search');
   });
 });
+
+test('a divider highlights past from present/future rides', function(assert) {
+  const week = 7*24*60*60*1000;
+  const nowMilliseconds = new Date().getTime();
+  const twoWeeksAgo = new Date(nowMilliseconds - week*2);
+  const lastWeek = new Date(nowMilliseconds - week);
+  const nextWeek = new Date(nowMilliseconds + week);
+
+  server.create('ride', {
+    start: twoWeeksAgo,
+    end: twoWeeksAgo
+  });
+
+  server.create('ride', {
+    start: lastWeek,
+    end: lastWeek
+  });
+
+  server.create('ride', {
+    start: nextWeek,
+    end: nextWeek
+  });
+
+  page.visit();
+
+  andThen(() => {
+    assert.ok(page.rides(2).isDivider, 'expected the first future ride to have a divider above it');
+  });
+
+  page.rides().head.clickDate();
+
+  andThen(() => {
+    assert.ok(page.rides(1).isDivider, 'expected the first past ride to have a divider above it');
+  });
+});

@@ -10,8 +10,8 @@ const mediumIcon = {
 };
 
 export default Component.extend({
-  classAttribute: computed('ride.enabled', 'uncombinable', 'ride.isCombined', function() {
-    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''}`;
+  classAttribute: computed('ride.enabled', 'uncombinable', 'ride.isCombined', 'ride.isDivider', function() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''}`;
   }),
 
   tagName: '',
