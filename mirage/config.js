@@ -1,4 +1,5 @@
 import config from 'prison-rideshare-ui/config/environment';
+import Mirage from 'ember-cli-mirage';
 
 export default function() {
   this.passthrough('/write-coverage');
@@ -46,6 +47,15 @@ export default function() {
   });
 
   this.get('/slots');
-  this.post('/commitments');
+
+  this.post('/commitments', (db, request) => {
+    console.log('request?', request);
+    if (request.requestHeaders.Authorization === 'Person Bearer XXX') {
+      return db.commitments;
+    } else {
+      return new Mirage.Response(401, {}, {});
+    }
+  });
+
   this.delete('/commitments/:id');
 }
