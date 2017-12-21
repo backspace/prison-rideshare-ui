@@ -1,6 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
+import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+
 import page from 'prison-rideshare-ui/tests/pages/calendar';
 
 moduleForAcceptance('Acceptance | calendar', {
@@ -26,6 +28,9 @@ moduleForAcceptance('Acceptance | calendar', {
     committedSlot.createCommitment({
 
     });
+
+    // FIXME without this, the Person Bearer isn’t sent by the authoriser… ya
+    authenticateSession(this.application);
   }
 });
 

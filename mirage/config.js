@@ -48,10 +48,10 @@ export default function() {
 
   this.get('/slots');
 
-  this.post('/commitments', (db, request) => {
-    console.log('request?', request);
+  this.post('/commitments', function({ commitments }, request) {
     if (request.requestHeaders.Authorization === 'Person Bearer XXX') {
-      return db.commitments;
+      const attrs = this.normalizedRequestAttrs();
+      return commitments.create(attrs);
     } else {
       return new Mirage.Response(401, {}, {});
     }
