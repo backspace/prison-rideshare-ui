@@ -26,6 +26,11 @@ moduleForAcceptance('Acceptance | calendar', {
     committedSlot.createCommitment({
 
     });
+
+    server.create('person', {
+      magicToken: 'MAGIC??TOKEN',
+      accessToken: 'XXX'
+    });
   }
 });
 

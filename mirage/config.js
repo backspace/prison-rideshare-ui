@@ -59,12 +59,13 @@ export default function() {
 
   this.delete('/commitments/:id');
 
-  this.post('/people/token', function(db, { requestBody }) {
+  this.post('/people/token', function({ people }, { requestBody }) {
     const bodyParams = parseQueryString(requestBody);
+    const person = people.findBy({magicToken: bodyParams.token});
 
-    if (bodyParams.grant_type === 'magic' && bodyParams.token === 'MAGIC??TOKEN') {
+    if (bodyParams.grant_type === 'magic' && person) {
       return {
-        access_token: 'XXX'
+        access_token: person.accessToken
       };
     } else {
       return new Mirage.Response(401, {}, {});
