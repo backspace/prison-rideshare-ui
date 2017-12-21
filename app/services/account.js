@@ -18,7 +18,7 @@ export default Service.extend({
 
       if (!isEmpty(token)) {
         fetch(`${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace.length > 0 ? `${config.DS.namespace}/` : ''}users/current`, {
-          type: 'GET',
+          method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`
           }

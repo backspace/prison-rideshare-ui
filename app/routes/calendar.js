@@ -1,15 +1,29 @@
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import RSVP from 'rsvp';
+import { isEmpty } from '@ember/utils';
+import Ember from 'ember';
+import fetch from 'fetch';
+import config from '../config/environment';
 
 export default Route.extend({
-  session: service(),
-
   // FIXME is it possible to get the token from elsewhere than the transition object?
   model(params, { queryParams }) {
-    return this.get('session').authenticate(
-      'authenticator:commitment',
-      queryParams.token
-    ).catch(error => {
+    return new RSVP.Promise((resolve, reject) => {
+      const token = queryParams.token;
+      const personTokenEndpoint = `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/people/token`;
+
+      if (!isEmpty(token)) {
+        fetch(personTokenEndpoint, {
+          method: 'POST',
+          body: `grant_type=magic&token=${token}`
+        }).then(raw => raw.json(), reject).then(data => {
+          localStorage.setItem('person-token', data.access_token);
+          resolve();
+        }).catch(reject);
+      } else {
+        resolve();
+      }
+    }).catch(error => {
       this.set('error', error);
     }).then(() => {
       return this.store.findAll('slot').catch(() => [
