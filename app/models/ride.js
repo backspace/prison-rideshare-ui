@@ -3,8 +3,7 @@ import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
-
-import moment from 'moment';
+import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 
 import sum from 'ember-cpm/macros/sum';
 import difference from 'ember-cpm/macros/difference';
@@ -47,15 +46,7 @@ export default DS.Model.extend({
     const start = this.get('start');
     const end = this.get('end');
 
-    let formatString;
-
-    if (start && new Date().getFullYear() == start.getFullYear()) {
-      formatString = 'ddd MMM D h:mma'
-    } else {
-      formatString = 'ddd MMM D YYYY h:mma';
-    }
-
-    return `${moment(start).format(formatString)} — ${moment(end).format('h:mm')}`;
+    return formatTimespan(start, end);
   }),
 
   driver: DS.belongsTo('person'),

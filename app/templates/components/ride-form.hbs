@@ -1,4 +1,4 @@
-{{#paper-dialog onClose=cancel}}
+{{#paper-dialog onClose=cancel fullscreen=true}}
 
   {{#paper-dialog-content}}
     {{#if warning}}
@@ -12,7 +12,7 @@
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout-column'>
         {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated') as |textHelper|}}
-          <div class="hint">Start and end of visit; “friday from 2 to 4pm” or “jul 23 to 27”</div>
+          <div class="hint">“friday from 2 to 4” or “tomorrow 11am to noon”</div>
         {{/form.input}}
       </div>
       <div class='layout-row layout-xs-column'>
