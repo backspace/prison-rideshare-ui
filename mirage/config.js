@@ -58,4 +58,32 @@ export default function() {
   });
 
   this.delete('/commitments/:id');
+
+  this.post('/people/token', function(db, { requestBody }) {
+    const bodyParams = parseQueryString(requestBody);
+
+    if (bodyParams.grant_type === 'magic' && bodyParams.token === 'MAGICTOKEN') {
+      return {
+        access_token: 'XXX'
+      };
+    } else {
+      return new Mirage.Response(401, {}, {});
+    }
+  });
+}
+
+// Taken from https://gist.github.com/Manc/9409355
+
+function parseQueryString(query) {
+  var obj = {},
+    qPos = query.indexOf("?"),
+    tokens = query.substr(qPos + 1).split('&'),
+    i = tokens.length - 1;
+  if (qPos !== -1 || query.indexOf("=") !== -1) {
+    for (; i >= 0; i--) {
+      var s = tokens[i].split('=');
+      obj[unescape(s[0])] = s.hasOwnProperty(1) ? unescape(s[1]) : null;
+    }
+  }
+  return obj;
 }

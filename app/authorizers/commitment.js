@@ -3,7 +3,8 @@ import { isEmpty } from '@ember/utils';
 
 export default OAuth2Bearer.extend({
   authorize(data, block) {
-    const accessToken = 'XXX';
+    // FIXME what if the access token is for the application authenticator???
+    const accessToken = data['access_token'];
 
     if (!isEmpty(accessToken)) {
       block('Authorization', `Person Bearer ${accessToken}`);
