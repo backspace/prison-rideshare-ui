@@ -62,7 +62,7 @@ export default function() {
   this.post('/people/token', function(db, { requestBody }) {
     const bodyParams = parseQueryString(requestBody);
 
-    if (bodyParams.grant_type === 'magic' && bodyParams.token === 'MAGICTOKEN') {
+    if (bodyParams.grant_type === 'magic' && bodyParams.token === 'MAGIC??TOKEN') {
       return {
         access_token: 'XXX'
       };

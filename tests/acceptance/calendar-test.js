@@ -30,7 +30,7 @@ moduleForAcceptance('Acceptance | calendar', {
 });
 
 test('calendar shows existing commitments and lets them be changed', function(assert) {
-  page.visit({ token: 'MAGICTOKEN' });
+  page.visit({ token: 'MAGIC??TOKEN' });
 
   andThen(function() {
     page.days(3).as(d4 => {

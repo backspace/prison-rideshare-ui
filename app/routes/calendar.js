@@ -15,7 +15,10 @@ export default Route.extend({
       if (!isEmpty(token)) {
         fetch(personTokenEndpoint, {
           method: 'POST',
-          body: `grant_type=magic&token=${token}`
+          body: `grant_type=magic&token=${encodeURIComponent(token)}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
         }).then(raw => raw.json(), reject).then(data => {
           localStorage.setItem('person-token', data.access_token);
           resolve();
