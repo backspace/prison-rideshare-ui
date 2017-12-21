@@ -3,7 +3,7 @@ import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 
-import moment from 'moment';
+import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
@@ -28,19 +28,10 @@ export default Component.extend({
 
   rideTimes: computed('ride.start', 'ride.end', function() {
     if (this.get('ride.start') && this.get('ride.end')) {
-      // FIXME this is from the ride model
       const start = this.get('ride.start');
       const end = this.get('ride.end');
 
-      let formatString;
-
-      if (start && new Date().getFullYear() == start.getFullYear()) {
-        formatString = 'ddd MMM D h:mma'
-      } else {
-        formatString = 'ddd MMM D YYYY h:mma';
-      }
-
-      return `${moment(start).format(formatString)} — ${moment(end).format('h:mm')}`;
+      return formatTimespan(start, end);
     } else {
       return undefined;
     }
