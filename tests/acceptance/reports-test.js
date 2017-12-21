@@ -61,8 +61,8 @@ test('submit a report for a ride', function(assert) {
 
     assert.equal(page.rides().count, 2, 'expected two rides to choose from');
 
-    assert.equal(page.rides(0).label, 'francine: Sun, Dec 25 at 10:15am to Remand Centre');
-    assert.equal(page.rides(1).label, 'Tue, Dec 27 at 5:00pm to Fort Leavenworth');
+    assert.equal(page.rides(0).label, 'francine: Sun, Dec 25 at 10:15a to Remand Centre');
+    assert.equal(page.rides(1).label, 'Tue, Dec 27 at 5:00p to Fort Leavenworth');
   });
 
   page.distance.fillIn(75);

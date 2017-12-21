@@ -82,7 +82,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.ok(ride.cancellation.showsLockdown, 'expected the cancelled ride to show lockdown for the reason');
     assert.equal(ride.name, 'Edward + 2');
     assert.ok(ride.isFirstTimer, 'expected the rider to be marked a first-timer');
-    assert.equal(ride.date, 'Mon Dec 26 2016 8:30pm — 10:00');
+    assert.equal(ride.date, 'Mon Dec 26 2016 8:30p — 10');
     assert.equal(ride.institution, 'Fort Leavenworth');
     assert.equal(ride.address, '91 Albert');
     assert.equal(ride.contact, 'jorts@example.com');
@@ -99,7 +99,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   page.rides(2).clickDate();
 
   andThen(() => {
-    assert.equal(page.rides(2).creationDate.text, 'Tue Dec 20 2016 8:15pm');
+    assert.equal(page.rides(2).creationDate.text, 'Tue Dec 20 2016 8:15p');
   });
 
   page.rides(2).clickDate();
@@ -122,7 +122,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(() => {
     assert.equal(page.form.notice, 'You are editing a cancelled ride!');
 
-    assert.equal(page.form.timespanResult.value, 'Mon Dec 26 2016 8:30pm — 10:00');
+    assert.equal(page.form.timespanResult.value, 'Mon Dec 26 2016 8:30p — 10:00');
   });
 
   page.form.cancel();
@@ -243,7 +243,7 @@ test('create and edit a ride', function(assert) {
     assert.ok(page.form.firstTimePoints.isHidden, 'expected the first time tips to not be visible by default');
   });
 
-  page.form.timespan.fillIn('Dec 26 2016 from 9am to 11:30');
+  page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
 
   page.form.medium.phone.click();
   page.form.name.fillIn('Edward');
@@ -266,7 +266,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(ride.name, 'Edward + 1');
 
     assert.ok(ride.medium.isPhone, 'expected the ride request to have been received via phone');
-    assert.equal(ride.date, 'Mon Dec 26 2016 9:00am — 11:30');
+    assert.equal(ride.date, 'Mon Dec 26 2016 9a — 11:30');
 
     assert.equal(ride.institution, 'Rockwood');
 
