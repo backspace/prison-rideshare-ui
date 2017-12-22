@@ -9,6 +9,7 @@ import {
 export default create({
   visit: visitable('/calendar'),
 
+  personSession: text('.person-session'),
   month: text('something'),
 
   days: collection({

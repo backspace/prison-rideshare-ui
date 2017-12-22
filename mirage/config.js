@@ -71,6 +71,13 @@ export default function() {
       return new Mirage.Response(401, {}, {});
     }
   });
+
+  this.get('/people/me', function({ people }, { queryParams }) {
+    const accessToken = queryParams.token;
+    const person = people.findBy({accessToken});
+
+    return person;
+  });
 }
 
 // Taken from https://gist.github.com/Manc/9409355
