@@ -3,6 +3,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import Mirage from 'ember-cli-mirage';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';
+import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | calendar', {
   beforeEach() {
@@ -78,6 +79,27 @@ test('calendar shows existing commitments and lets them be changed', function(as
 
     const [commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
+  });
+});
+
+test('a failure to delete a commitment keeps it displayed and shows an error', function(assert) {
+  server.delete('/commitments/:id', function() {
+    return new Mirage.Response(401, {}, {
+      errors: [{
+        status: 401,
+        title: 'Unauthorized'
+      }]
+    });
+  });
+
+  page.visit({ token: 'MAGIC??TOKEN' });
+
+  page.days(3).slots(0).click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Couldn’t save your change');
+    assert.ok(page.days(3).slots(0).isCommittedTo, 'expected the slot to still be committed-to');
+    assert.equal(server.db.commitments.length, 1, 'expected the commitment to still be on the server');
   });
 });
 
