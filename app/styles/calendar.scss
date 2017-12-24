@@ -3,3 +3,7 @@
     background: blue;
   }
 }
+
+.ember-power-calendar {
+  @include ember-power-calendar(100px);
+}
