@@ -28,6 +28,7 @@ export default Route.extend({
 
       throw new Error('We were unable to log you in with that token.');
     }).then(({ access_token }) => {
+      localStorage.setItem('person-token', access_token);
       return this.store.queryRecord('person', { me: true, token: access_token })
     }).catch(() => {
       throw new Error('We were unable to log you in with that token.');
