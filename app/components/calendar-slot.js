@@ -24,7 +24,15 @@ export default Component.extend({
         });
       });
     } else {
-      this.get('store').createRecord('commitment', { slot: this.get('slot') }).save();
+      const newRecord = this.get('store').createRecord('commitment', { slot: this.get('slot') });
+
+      newRecord.save().catch(() => {
+        this.get('paperToaster').show('Couldn’t save your change', {
+          duration: config.toastDuration,
+          position: 'top right'
+        });
+        newRecord.destroyRecord();
+      });
     }
   }
 });

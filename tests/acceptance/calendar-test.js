@@ -103,6 +103,27 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
   });
 });
 
+test('a failure to create a commitment makes it not display and shows an error', function(assert) {
+  server.post('/commitments', function() {
+    return new Mirage.Response(401, {}, {
+      errors: [{
+        status: 401,
+        title: 'Unauthorized'
+      }]
+    });
+  });
+
+  page.visit({ token: 'MAGIC??TOKEN' });
+
+  page.days(9).slots(1).click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Couldn’t save your change');
+    assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
+    assert.equal(server.db.commitments.length, 1, 'expected the commitments to be unchanged on the server');
+  });
+})
+
 test('visiting with an unknown magic token shows an error', function(assert) {
   page.visit({ token: 'JORTLEBY' });
 
