@@ -11,6 +11,10 @@ export default Route.extend({
     const token = queryParams.token;
     const personTokenEndpoint = `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/people/token`;
 
+    if (isEmpty(token)) {
+      throw new Error('We were unable to log you in without a token.');
+    }
+
     return fetch(personTokenEndpoint, {
       method: 'POST',
       body: `grant_type=magic&token=${encodeURIComponent(token)}`,

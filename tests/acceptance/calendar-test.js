@@ -87,3 +87,11 @@ test('visiting with an unknown magic token shows an error', function(assert) {
     assert.equal(page.error, 'We were unable to log you in with that token.');
   });
 });
+
+test('visiting with no token shows an error', function(assert) {
+  page.visit();
+
+  andThen(function() {
+    assert.equal(page.error, 'We were unable to log you in without a token.');
+  });
+})
