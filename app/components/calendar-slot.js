@@ -24,7 +24,10 @@ export default Component.extend({
         });
       });
     } else {
-      const newRecord = this.get('store').createRecord('commitment', { slot: this.get('slot') });
+      const newRecord = this.get('store').createRecord('commitment', {
+        slot: this.get('slot'),
+        person: this.get('person')
+      });
 
       newRecord.save().catch(() => {
         this.get('paperToaster').show('Couldn’t save your change', {
