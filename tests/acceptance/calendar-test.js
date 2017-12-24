@@ -1,5 +1,6 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import Mirage from 'ember-cli-mirage';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';
 
@@ -95,3 +96,20 @@ test('visiting with no token shows an error', function(assert) {
     assert.equal(page.error, 'We were unable to log you in without a token.');
   });
 })
+
+test('visiting with a magic token that doesn’t resolve to a person shows an error', function(assert) {
+  server.get('/people/me', function() {
+    return new Mirage.Response(401, {}, {
+      errors: [{
+        status: 401,
+        title: 'Unauthorized'
+      }]
+    });
+  });
+
+  page.visit({ token: 'MAGIC??TOKEN' });
+
+  andThen(function() {
+    assert.equal(page.error, 'We were unable to log you in with that token.');
+  });
+});
