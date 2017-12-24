@@ -8,26 +8,23 @@ import config from '../config/environment';
 export default Route.extend({
   // FIXME is it possible to get the token from elsewhere than the transition object?
   model(params, { queryParams }) {
-    return new RSVP.Promise((resolve, reject) => {
-      const token = queryParams.token;
-      const personTokenEndpoint = `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/people/token`;
+    const token = queryParams.token;
+    const personTokenEndpoint = `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/people/token`;
 
-      if (!isEmpty(token)) {
-        fetch(personTokenEndpoint, {
-          method: 'POST',
-          body: `grant_type=magic&token=${encodeURIComponent(token)}`,
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        }).then(raw => raw.json(), reject).then(data => {
-          localStorage.setItem('person-token', data.access_token);
-          resolve();
-        }).catch(reject);
-      } else {
-        resolve();
+    return fetch(personTokenEndpoint, {
+      method: 'POST',
+      body: `grant_type=magic&token=${encodeURIComponent(token)}`,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
-    }).catch(error => {
-      this.set('error', error);
+    }).then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+
+      throw new Error('We were unable to log you in with that token.');
+    }).then(data => {
+      localStorage.setItem('person-token', data.access_token);
     }).then(() => {
       return RSVP.hash({
         slots: this.store.findAll('slot').catch(() => [

@@ -68,7 +68,12 @@ export default function() {
         access_token: person.accessToken
       };
     } else {
-      return new Mirage.Response(401, {}, {});
+      return new Mirage.Response(401, {}, {
+        errors: [{
+          status: 401,
+          title: 'Unauthorized'
+        }]
+      });
     }
   });
 

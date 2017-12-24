@@ -27,5 +27,7 @@ export default create({
         }
       })
     }
-  })
+  }),
+
+  error: text('.error')
 });

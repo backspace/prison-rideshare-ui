@@ -79,3 +79,11 @@ test('calendar shows existing commitments and lets them be changed', function(as
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
   });
 });
+
+test('visiting with an unknown magic token shows an error', function(assert) {
+  page.visit({ token: 'JORTLEBY' });
+
+  andThen(function() {
+    assert.equal(page.error, 'We were unable to log you in with that token.');
+  });
+});
