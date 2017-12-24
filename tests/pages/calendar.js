@@ -21,7 +21,6 @@ export default create({
 
         item: {
           hours: text('.hours'),
-          count: text('.count'),
 
           isCommittedTo: hasClass('is-committed-to')
         }

@@ -46,7 +46,6 @@ test('calendar shows existing commitments and lets them be changed', function(as
       assert.equal(d4.slots().count, 1, 'expected one slot on Monday');
       d4.slots(0).as(s1 => {
         assert.equal(s1.hours, '5P–8P');
-        assert.equal(s1.count, '2');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
       })
     });
@@ -55,12 +54,10 @@ test('calendar shows existing commitments and lets them be changed', function(as
       assert.equal(d10.slots().count, 2, 'expected two slots on Sunday');
       d10.slots(0).as(s1 => {
         assert.equal(s1.hours, '11A–5P');
-        assert.equal(s1.count, '3');
         assert.notOk(s1.isCommittedTo, 'expected the slot to not be committed-to');
       });
       d10.slots(1).as(s2 => {
         assert.equal(s2.hours, '5P–9P');
-        assert.equal(s2.count, '2');
       });
     });
   });
