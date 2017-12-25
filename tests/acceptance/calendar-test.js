@@ -7,6 +7,11 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | calendar', {
   beforeEach() {
+    const person = server.create('person', {
+      email: 'jorts@jants.ca',
+      magicToken: 'MAGIC??TOKEN',
+      accessToken: 'XXX'
+    });
     const committedSlot = server.create('slot', {
       start: new Date(2017, 11, 4, 17),
       end: new Date(2017, 11, 4, 20),
@@ -22,18 +27,10 @@ moduleForAcceptance('Acceptance | calendar', {
     server.create('slot', {
       start: new Date(2017, 11, 10, 11),
       end: new Date(2017, 11, 10, 17),
-      count: 3
+      count: 0
     });
 
-    committedSlot.createCommitment({
-
-    });
-
-    server.create('person', {
-      email: 'jorts@jants.ca',
-      magicToken: 'MAGIC??TOKEN',
-      accessToken: 'XXX'
-    });
+    committedSlot.createCommitment({ person });
   }
 });
 
@@ -47,6 +44,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
       d4.slots(0).as(s1 => {
         assert.equal(s1.hours, '5P–8P');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
+        assert.notOk(s1.isFull, 'expected the slot to not be full');
       })
     });
 
@@ -76,6 +74,27 @@ test('calendar shows existing commitments and lets them be changed', function(as
 
     const [commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
+  });
+});
+
+test('full slots show as full and can’t be committed to', function(assert) {
+  server.post('/commitments', function() {
+    assert.ok(false, 'expected no commitment to be created for a full slot');
+  });
+
+  this.toCommitSlot.createCommitment();
+  this.toCommitSlot.createCommitment();
+
+  page.visit({ token: 'MAGIC??TOKEN' });
+
+  andThen(() => {
+    assert.ok(page.days(9).slots(1).isFull, 'expected the full slot to show as full');
+  });
+
+  page.days(9).slots(1).click();
+
+  andThen(() => {
+    assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
   });
 });
 

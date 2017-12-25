@@ -7,12 +7,10 @@ export default Component.extend({
   paperToaster: service(),
   store: service(),
 
-  isCommittedTo: computed('slot.commitments.length', function() {
-    if (this.get('slot.commitments.length')) {
-      return true;
-    } else {
-      return false;
-    }
+  isCommittedTo: computed('slot.commitments.length', 'person', function() {
+    const personId = this.get('person.id');
+
+    return this.get('slot.commitments').map(slot => slot.belongsTo('person').id()).includes(personId);
   }),
 
   click() {
@@ -23,7 +21,7 @@ export default Component.extend({
           position: 'top right'
         });
       });
-    } else {
+    } else if (this.get('slot.isNotFull')) {
       const newRecord = this.get('store').createRecord('commitment', {
         slot: this.get('slot'),
         person: this.get('person')

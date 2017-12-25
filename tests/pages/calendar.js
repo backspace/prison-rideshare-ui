@@ -22,7 +22,8 @@ export default create({
         item: {
           hours: text('.hours'),
 
-          isCommittedTo: hasClass('is-committed-to')
+          isCommittedTo: hasClass('is-committed-to'),
+          isFull: hasClass('is-full')
         }
       })
     }
