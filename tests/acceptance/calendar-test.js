@@ -12,6 +12,7 @@ moduleForAcceptance('Acceptance | calendar', {
       magicToken: 'MAGIC??TOKEN',
       accessToken: 'XXX'
     });
+
     const committedSlot = server.create('slot', {
       start: new Date(2017, 11, 4, 17),
       end: new Date(2017, 11, 4, 20),
