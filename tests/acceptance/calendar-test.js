@@ -16,7 +16,7 @@ moduleForAcceptance('Acceptance | calendar', {
     const committedSlot = server.create('slot', {
       start: new Date(2017, 11, 4, 17),
       end: new Date(2017, 11, 4, 20),
-      count: 2
+      count: 3
     });
 
     this.toCommitSlot = server.create('slot', {
@@ -31,6 +31,7 @@ moduleForAcceptance('Acceptance | calendar', {
       count: 0
     });
 
+    committedSlot.createCommitment();
     committedSlot.createCommitment({ person });
   }
 });
@@ -65,7 +66,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
 
   andThen(() => {
     assert.notOk(page.days(3).slots(0).isCommittedTo, 'expected the slot to not longer be committed-to');
-    assert.equal(server.db.commitments.length, 0, 'expected the commitment to have been deleted on the server');
+    assert.equal(server.db.commitments.length, 1, 'expected the commitment to have been deleted on the server');
   });
 
   page.days(9).slots(1).click();
@@ -73,7 +74,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
   andThen(() => {
     assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
 
-    const [commitment] = server.db.commitments;
+    const [, commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
   });
 });
@@ -116,7 +117,7 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
     assert.ok(page.days(3).slots(0).isCommittedTo, 'expected the slot to still be committed-to');
-    assert.equal(server.db.commitments.length, 1, 'expected the commitment to still be on the server');
+    assert.equal(server.db.commitments.length, 2, 'expected the commitment to still be on the server');
   });
 });
 
@@ -137,7 +138,7 @@ test('a failure to create a commitment makes it not display and shows an error',
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
     assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
-    assert.equal(server.db.commitments.length, 1, 'expected the commitments to be unchanged on the server');
+    assert.equal(server.db.commitments.length, 2, 'expected the commitments to be unchanged on the server');
   });
 })
 
