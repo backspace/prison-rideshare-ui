@@ -7,7 +7,7 @@ import config from '../config/environment';
 
 export default Route.extend({
   // FIXME is it possible to get the token from elsewhere than the transition object?
-  model(params, { queryParams }) {
+  model({ month }, { queryParams }) {
     const token = queryParams.token;
     const personTokenEndpoint = `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/people/token`;
 
@@ -39,7 +39,8 @@ export default Route.extend({
           this.store.createRecord('slot', {start: new Date(2017, 11, 3, 11), end: new Date(2017, 11, 3, 17), count: 3}),
           this.store.createRecord('slot', {start: new Date(2017, 11, 8, 17), count: 4})
         ]),
-        person
+        person,
+        month
       });
     });
   }

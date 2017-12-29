@@ -28,7 +28,7 @@ Router.map(function() {
   this.route('login');
   this.route('register');
 
-  this.route('calendar');
+  this.route('calendar', { path: '/calendar/:month' });
 });
 
 export default Router;

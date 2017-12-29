@@ -37,7 +37,7 @@ moduleForAcceptance('Acceptance | calendar', {
 });
 
 test('calendar shows existing commitments and lets them be changed', function(assert) {
-  page.visit({ token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
     assert.equal(page.personSession, 'You are logged in as jorts@jants.ca');
@@ -89,7 +89,7 @@ test('full slots show as full and can’t be committed to', function(assert) {
   this.toCommitSlot.createCommitment();
   this.toCommitSlot.createCommitment();
 
-  page.visit({ token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
     assert.ok(page.days(9).slots(1).isFull, 'expected the full slot to show as full');
@@ -112,7 +112,7 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
     });
   });
 
-  page.visit({ token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   page.days(3).slots(0).click();
 
@@ -133,7 +133,7 @@ test('a failure to create a commitment makes it not display and shows an error',
     });
   });
 
-  page.visit({ token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   page.days(9).slots(1).click();
 
@@ -145,7 +145,7 @@ test('a failure to create a commitment makes it not display and shows an error',
 })
 
 test('visiting with an unknown magic token shows an error', function(assert) {
-  page.visit({ token: 'JORTLEBY' });
+  page.visit({ month: '2017-12', token: 'JORTLEBY' });
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in with that token.');
@@ -153,7 +153,7 @@ test('visiting with an unknown magic token shows an error', function(assert) {
 });
 
 test('visiting with no token shows an error', function(assert) {
-  page.visit();
+  page.visit({ month: '2017-12' });
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in without a token.');
@@ -170,9 +170,17 @@ test('visiting with a magic token that doesn’t resolve to a person shows an er
     });
   });
 
-  page.visit({ token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in with that token.');
+  });
+});
+
+test('the path controls the month', function(assert) {
+  page.visit({ month: '2018-01', token: 'MAGIC??TOKEN' });
+
+  andThen(function() {
+    assert.equal(page.month, 'January 2018');
   });
 });

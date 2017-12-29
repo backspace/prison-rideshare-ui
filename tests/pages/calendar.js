@@ -7,7 +7,7 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  visit: visitable('/calendar'),
+  visit: visitable('/calendar/:month'),
 
   personSession: text('.person-session'),
   month: text('.ember-power-calendar-nav-title'),
