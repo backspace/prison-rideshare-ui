@@ -10,7 +10,7 @@ export default create({
   visit: visitable('/calendar'),
 
   personSession: text('.person-session'),
-  month: text('something'),
+  month: text('.ember-power-calendar-nav-title'),
 
   days: collection({
     itemScope: '.ember-power-calendar-day',

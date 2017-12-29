@@ -41,6 +41,8 @@ test('calendar shows existing commitments and lets them be changed', function(as
 
   andThen(function() {
     assert.equal(page.personSession, 'You are logged in as jorts@jants.ca');
+    assert.equal(page.month, 'December 2017');
+
     page.days(3).as(d4 => {
       assert.equal(d4.slots().count, 1, 'expected one slot on Monday');
       d4.slots(0).as(s1 => {
