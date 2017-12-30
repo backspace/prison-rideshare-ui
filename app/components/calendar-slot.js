@@ -16,27 +16,29 @@ export default Component.extend({
     return this.get('slot.commitments').find(slot => slot.belongsTo('person').id() == personId);
   }),
 
-  click() {
-    if (this.get('isCommittedTo')) {
-      this.get('commitment').destroyRecord().catch(() => {
-        this.get('paperToaster').show('Couldn’t save your change', {
-          duration: config.toastDuration,
-          position: 'top right'
+  actions: {
+    toggle() {
+      if (this.get('isCommittedTo')) {
+        this.get('commitment').destroyRecord().catch(() => {
+          this.get('paperToaster').show('Couldn’t save your change', {
+            duration: config.toastDuration,
+            position: 'top right'
+          });
         });
-      });
-    } else if (this.get('slot.isNotFull')) {
-      const newRecord = this.get('store').createRecord('commitment', {
-        slot: this.get('slot'),
-        person: this.get('person')
-      });
+      } else if (this.get('slot.isNotFull')) {
+        const newRecord = this.get('store').createRecord('commitment', {
+          slot: this.get('slot'),
+          person: this.get('person')
+        });
 
-      newRecord.save().catch(() => {
-        this.get('paperToaster').show('Couldn’t save your change', {
-          duration: config.toastDuration,
-          position: 'top right'
+        newRecord.save().catch(() => {
+          this.get('paperToaster').show('Couldn’t save your change', {
+            duration: config.toastDuration,
+            position: 'top right'
+          });
+          newRecord.destroyRecord();
         });
-        newRecord.destroyRecord();
-      });
+      }
     }
   }
 });

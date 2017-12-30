@@ -1,3 +1,5 @@
-<div class='slot {{if isCommittedTo 'is-committed-to'}} {{if slot.isNotFull '' 'is-full'}}'>
-  <span class='hours'>{{moment-format slot.start 'hA'}}–{{moment-format slot.end 'hA'}}</span>
+<div class='slot'>
+  {{#paper-checkbox value=isCommittedTo disabled=(not slot.isNotFull) onChange=(action 'toggle')}}
+    <span class='hours'>{{moment-format slot.start 'hA'}}–{{moment-format slot.end 'hA'}}</span>
+  {{/paper-checkbox}}
 </div>

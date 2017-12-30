@@ -1,13 +1,3 @@
-.slot {
-  &.is-committed-to {
-    background: blue;
-  }
-
-  &.is-full {
-    opacity: 0.5;
-  }
-}
-
 .ember-power-calendar {
   @include ember-power-calendar(100px);
 }
