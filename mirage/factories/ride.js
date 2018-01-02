@@ -7,5 +7,5 @@ export default Factory.extend({
   passengers() { return faker.random.arrayElement([1,1,1,1,1,2,3]); },
 
   start(i) { return new Date(2016, 11, 26, 20, 30 + i); },
-  end: new Date(2016, 11, 26, 22, 0)
+  end() { return new Date(2016, 11, 26, 22, 0) }
 });

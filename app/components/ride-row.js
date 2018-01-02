@@ -10,7 +10,7 @@ const mediumIcon = {
 };
 
 export default Component.extend({
-  classAttribute: computed('ride.enabled', 'uncombinable', 'ride.isCombined', 'ride.isDivider', function() {
+  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', function() {
     return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''}`;
   }),
 
@@ -29,7 +29,7 @@ export default Component.extend({
     return icon || 'help';
   }),
 
-  cancellationButtonLabel: computed('ride.enabled', 'ride.cancellationReason', function() {
+  cancellationButtonLabel: computed('ride.{enabled,cancellationReason}', function() {
     if (this.get('ride.enabled')) {
       return 'Cancel ride';
     } else {
@@ -45,7 +45,7 @@ export default Component.extend({
     }
   }),
 
-  uncombinable: computed('rideToCombine.id', 'rideToCombine.start', 'ride.start', function() {
+  uncombinable: computed('rideToCombine.{id,start}', 'ride.start', function() {
     const sixHours = 1000*60*60*6;
     const rideToCombineStart = this.get('rideToCombine.start');
 

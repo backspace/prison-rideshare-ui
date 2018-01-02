@@ -12,6 +12,7 @@ export default DS.Model.extend({
   rides: DS.hasMany(),
 
   descendingRides: sort('rides', 'descendingRideSort'),
+  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   descendingRideSort: ['start:desc'],
 
   ridesWithFoodExpenses: computed('rides.@each.driver', 'person', function() {

@@ -9,7 +9,7 @@ export default Component.extend({
   peopleService: service('people'),
   people: alias('peopleService.all'),
 
-  person: computed('ride', 'property', 'ride.carOwner.id', 'ride.driver.id', function() {
+  person: computed('ride', 'property', 'ride.{carOwner.id,driver.id}', function() {
     return this.get('ride').get(this.get('property'));
   }),
 

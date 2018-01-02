@@ -13,7 +13,7 @@ export default Component.extend({
   institutions: alias('institutionsService.all'),
   store: service('store'),
 
-  warning: computed('ride.cancellationReason', 'ride.complete', function() {
+  warning: computed('ride.{cancellationReason,complete}', function() {
     const reason = this.get('ride.cancellationReason');
     const complete = this.get('ride.complete');
 
@@ -26,7 +26,7 @@ export default Component.extend({
     }
   }),
 
-  rideTimes: computed('ride.start', 'ride.end', function() {
+  rideTimes: computed('ride.{start,end}', function() {
     if (this.get('ride.start') && this.get('ride.end')) {
       const start = this.get('ride.start');
       const end = this.get('ride.end');
