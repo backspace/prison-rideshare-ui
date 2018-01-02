@@ -8,9 +8,18 @@ export default Route.extend(ApplicationRouteMixin, {
   account: service(),
   userSocket: service(),
   flashMessages: service(),
+  poll: service(),
 
   beforeModel() {
     return this._loadCurrentUser();
+  },
+
+  afterModel() {
+    this._super(...arguments);
+    this.get('poll').start({
+      idle_timeout: 10000,
+      interval: 10000
+    });
   },
 
   title(tokens) {
