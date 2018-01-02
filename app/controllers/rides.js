@@ -31,7 +31,7 @@ export default Controller.extend({
 
   showCreation: false,
 
-  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.complete', 'model.@each.enabled', 'model.@each.isCombined', 'search', 'sortDir', function() {
+  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.{complete,enabled,isCombined}', 'search', 'sortDir', function() {
     const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
     const search = this.get('search');
 

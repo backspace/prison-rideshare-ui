@@ -27,6 +27,7 @@ install:
   - npm install
 
 script:
+  - npm run lint:js
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js --verbose
 
