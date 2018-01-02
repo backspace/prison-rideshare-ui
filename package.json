@@ -12,6 +12,7 @@
   "repository": "",
   "scripts": {
     "build": "ember build",
+    "lint:js": "eslint ./*.js app config lib server tests",
     "start": "ember serve",
     "test": "ember test"
   },
@@ -22,7 +23,7 @@
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.1.14",
     "ember-buffered-proxy": "0.6.0",
-    "ember-cli": "~2.17.1",
+    "ember-cli": "~2.18.0",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^6.7.1",
     "ember-cli-clipboard": "^0.8.1",
@@ -51,7 +52,7 @@
     "ember-composable-helpers": "dockyard/ember-composable-helpers#master",
     "ember-cpm": "cibernox/ember-cpm#master",
     "ember-css-transitions": "^0.1.10",
-    "ember-data": "~2.17.0",
+    "ember-data": "~2.18.0",
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "^3.2.7",
     "ember-load": "0.0.12",
@@ -61,8 +62,9 @@
     "ember-phoenix": "^0.1.6",
     "ember-resolver": "^4.0.0",
     "ember-simple-auth": "1.2.0",
-    "ember-source": "~2.17.0",
+    "ember-source": "~2.18.0",
     "ember-truth-helpers": "1.3.0",
+    "eslint-plugin-ember": "^5.0.0",
     "loader.js": "^4.2.3",
     "paper-data-table": "0.1.4"
   },
