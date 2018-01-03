@@ -195,6 +195,7 @@ test('an admin can see the commitments with person names', function(assert) {
 
   andThen(() => {
     assert.equal(page.days(3).slots(0).count.text, 2, 'expected two people to show for the slot');
+    assert.ok(page.days(3).slots(0).checkbox.isHidden, 'expected the checkbox to not display');
     assert.equal(page.people().count, 0, 'expected no people details to show initially');
   });
 

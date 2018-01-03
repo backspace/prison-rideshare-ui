@@ -33,6 +33,7 @@ export default create({
 
         item: {
           click: clickable('md-checkbox'),
+          checkbox: { scope: 'md-checkbox' },
           hours: text('.hours'),
 
           count: {
