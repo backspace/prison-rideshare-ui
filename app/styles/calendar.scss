@@ -1,3 +1,18 @@
 .ember-power-calendar {
   @include ember-power-calendar(100px);
+
+  .count {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+
+    font-size: 75%;
+    text-align: center;
+
+    border-radius: 5rem;
+    background-color: $dark-contrast-color;
+    color: white;
+
+    cursor: pointer;
+  }
 }
