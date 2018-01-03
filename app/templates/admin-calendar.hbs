@@ -1,5 +1,11 @@
-{{#power-calendar center=month daysComponent='calendar-days' as |calendar|}}
-  {{calendar.nav}}
+{{#power-calendar center=month daysComponent='calendar-days' onCenterChange=(action (mut month) value="date") as |calendar|}}
+  <nav class="ember-power-calendar-nav">
+    <button type="button" class="ember-power-calendar-nav-control previous-month" onclick={{action calendar.actions.moveCenter -1 'month'}}>‹</button>
+    <div class="ember-power-calendar-nav-title">
+      {{moment-format calendar.center 'MMMM YYYY'}}
+    </div>
+    <button class="ember-power-calendar-nav-control next-month" onclick={{action calendar.actions.moveCenter 1 'month'}}>›</button>
+  </nav>
 
   {{#calendar.days showDaysAround=false as |day|}}
     {{calendar-day day=day slots=slots count=true setViewingSlot=(action 'setViewingSlot')}}

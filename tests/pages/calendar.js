@@ -16,6 +16,14 @@ export default create({
   personSession: text('.person-session'),
   month: text('.ember-power-calendar-nav-title'),
 
+  nextMonth: {
+    scope: '.ember-power-calendar-nav-control.next-month'
+  },
+
+  previousMonth: {
+    scope: '.ember-power-calendar-nav-control.previous-month'
+  },
+
   days: collection({
     itemScope: '.ember-power-calendar-day',
 

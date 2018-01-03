@@ -211,4 +211,16 @@ test('an admin can see the commitments with person names', function(assert) {
   andThen(() => {
     assert.equal(page.people(1).email, 'jorts@jants.ca', 'expected the contact information to be revealed');
   });
+
+  page.nextMonth.click();
+
+  andThen(() => {
+    assert.equal(page.month, 'January 2018');
+  });
+
+  page.previousMonth.click();
+
+  andThen(() => {
+    assert.equal(page.month, 'December 2017');
+  });
 });
