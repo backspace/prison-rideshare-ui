@@ -51,11 +51,13 @@ export default Route.extend({
   afterModel() {
     const url = this.store.adapterFor('application').buildURL('slot');
 
-    this.get('poll').setup({
-      name: 'slotsPoll',
-      resource_name: 'slots',
-      url
-    });
+    if (!Ember.testing) {
+      this.get('poll').setup({
+        name: 'slotsPoll',
+        resource_name: 'slots',
+        url
+      });
+    }
   },
 
   actions: {
