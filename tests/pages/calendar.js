@@ -45,7 +45,7 @@ export default create({
     itemScope: '.person-badge',
 
     item: {
-      text: text('.name'),
+      name: text('.name'),
       reveal: clickable('.name-container'),
 
       email: text('.email')

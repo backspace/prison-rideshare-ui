@@ -9,6 +9,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 moduleForAcceptance('Acceptance | calendar', {
   beforeEach() {
     const person = server.create('person', {
+      name: 'Jortle Tortle',
       email: 'jorts@jants.ca',
       magicToken: 'MAGIC??TOKEN',
       accessToken: 'XXX'
