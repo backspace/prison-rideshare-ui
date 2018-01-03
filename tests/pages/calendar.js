@@ -50,6 +50,8 @@ export default create({
     }
   }),
 
+  viewingSlot: text('.viewing-slot .hours'),
+
   people: collection({
     itemScope: '.person-badge',
 

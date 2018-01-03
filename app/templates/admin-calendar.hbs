@@ -13,9 +13,10 @@
 {{/power-calendar}}
 
 {{#if viewingSlot.commitments}}
-  <ul>
+<div class='viewing-slot'>
+  <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, hA'}}–{{moment-format viewingSlot.end 'hA'}}</h3>
   {{#each viewingSlot.commitments as |commitment|}}
     <li>{{person-badge person=commitment.person}}</li>
   {{/each}}
-  </ul>
+</div>
 {{/if}}

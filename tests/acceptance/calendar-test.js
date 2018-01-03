@@ -202,6 +202,7 @@ test('an admin can see the commitments with person names', function(assert) {
   page.days(3).slots(0).count.click();
 
   andThen(() => {
+    assert.equal(page.viewingSlot, 'Monday, December 4, 5P–8P');
     assert.equal(page.people().count, 2, 'expected two people details to show for the slot');
     assert.equal(page.people(0).name, 'Other Slot Person');
     assert.equal(page.people(1).name, 'Jortle Tortle');
