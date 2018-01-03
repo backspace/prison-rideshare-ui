@@ -29,6 +29,7 @@ export default function() {
   this.patch('/institutions/:id');
 
   this.get('/people');
+  this.get('/people/:id');
   this.post('/people');
   this.patch('/people/:id');
 

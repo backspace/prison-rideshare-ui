@@ -1,6 +1,7 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 import Mirage from 'ember-cli-mirage';
+import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -31,7 +32,7 @@ moduleForAcceptance('Acceptance | calendar', {
       count: 0
     });
 
-    committedSlot.createCommitment();
+    committedSlot.createCommitment({ person: server.create('person', { name: 'Other Slot Person '})});
     committedSlot.createCommitment({ person });
   }
 });
@@ -49,6 +50,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
         assert.equal(s1.hours, '5P–8P');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
         assert.notOk(s1.isFull, 'expected the slot to not be full');
+        assert.notOk(s1.count.isVisible, 'expected the slot count not to show for a non-admin');
       })
     });
 
@@ -182,5 +184,30 @@ test('the path controls the month', function(assert) {
 
   andThen(function() {
     assert.equal(page.month, 'January 2018');
+  });
+});
+
+test('an admin can see the commitments with person names', function(assert) {
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2017-12' });
+
+  andThen(() => {
+    assert.equal(page.days(3).slots(0).count.text, 2, 'expected two people to show for the slot');
+    assert.equal(page.people().count, 0, 'expected no people details to show initially');
+  });
+
+  page.days(3).slots(0).count.click();
+
+  andThen(() => {
+    assert.equal(page.people().count, 2, 'expected two people details to show for the slot');
+    assert.equal(page.people(0).name, 'Other Slot Person');
+    assert.equal(page.people(1).name, 'Jortle Tortle');
+  });
+
+  page.people(1).reveal();
+
+  andThen(() => {
+    assert.equal(page.people(1).email, 'jorts@jants.ca', 'expected the contact information to be revealed');
   });
 });

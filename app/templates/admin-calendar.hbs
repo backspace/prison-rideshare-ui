@@ -1,0 +1,15 @@
+{{#power-calendar center=month daysComponent='calendar-days' as |calendar|}}
+  {{calendar.nav}}
+
+  {{#calendar.days showDaysAround=false as |day|}}
+    {{calendar-day day=day slots=slots count=true setViewingSlot=(action 'setViewingSlot')}}
+  {{/calendar.days}}
+{{/power-calendar}}
+
+{{#if viewingSlot.commitments}}
+  <ul>
+  {{#each viewingSlot.commitments as |commitment|}}
+    <li>{{person-badge person=commitment.person}}</li>
+  {{/each}}
+  </ul>
+{{/if}}

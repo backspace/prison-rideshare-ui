@@ -2,4 +2,7 @@
   {{#paper-checkbox value=isCommittedTo disabled=(not slot.isNotFull) onChange=(action 'toggle')}}
     <span class='hours'>{{moment-format slot.start 'hA'}}–{{moment-format slot.end 'hA'}}</span>
   {{/paper-checkbox}}
+  {{#if count}}
+    <span class='count' onClick={{action setViewingSlot slot}}>{{slot.commitments.length}}</span>
+  {{/if}}
 </div>
