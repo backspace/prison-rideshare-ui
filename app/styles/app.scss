@@ -4,8 +4,11 @@ $primary: 'indigo';
 
 @import 'ember-paper';
 @import 'paper-data-table';
+@import 'ember-power-calendar';
 
 @import 'loading';
+
+@import 'calendar';
 
 body {
   max-width: 100%;
@@ -220,7 +223,7 @@ md-table-container.debts .person .name {
   }
 }
 
-.ride-person {
+.person-badge {
   display: inline-block;
   background-color: #e0e0e0;
   color: #424242;

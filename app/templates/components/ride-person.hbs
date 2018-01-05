@@ -1,32 +1,6 @@
 {{#if person}}
   <span class='ride-person'>
-    <div class='name-container' onclick={{action 'toggleContact'}}>
-      {{#if (eq property 'driver')}}
-        {{paper-icon 'person' size=14 title='driver'}}
-      {{else}}
-        {{paper-icon 'local gas station' size=14 title='car owner'}}
-      {{/if}}
-      <span class='name'>{{person.name}}</span>
-      <span class='remove-container'>
-        <button onclick={{action 'clear'}} type='button'>
-          {{paper-icon icon='clear' size=14 title='remove'}}
-          <span class='md-visually-hidden'> Remove </span>
-        </button>
-      </span>
-    </div>
-    {{#if showContact}}
-      <div class='contact-container'>
-        {{#if person.email}}
-          <a href='mailto:{{person.email}}'>{{paper-icon 'email' size=14 title='email address'}} <span class='email'>{{person.email}}</span></a>
-        {{/if}}
-        {{#if person.mobile}}
-          <a href='tel:{{person.mobile}}'>{{paper-icon 'smartphone' size=14 title='mobile phone number'}} <span class='mobile'>{{person.mobile}}</span></a>
-        {{/if}}
-        {{#if person.landline}}
-          <a href='tel:{{person.landline}}'>{{paper-icon 'phone' size=14 title='landline number'}} <span class='landline'>{{person.landline}}</span></a>
-        {{/if}}
-      </div>
-    {{/if}}
+    {{person-badge person=person property=property clear=(action 'clear')}}
   </span>
 {{else}}
   {{#paper-select

@@ -27,10 +27,6 @@ export default Component.extend({
       const ride = this.get('ride');
       ride.set(this.get('property'), null);
       return ride.save();
-    },
-
-    toggleContact() {
-      this.toggleProperty('showContact');
     }
   }
 });

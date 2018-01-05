@@ -4,8 +4,10 @@ import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
 import registerPowerSelectHelpers from 'ember-power-select/test-support/helpers';
+import registerPowerCalendarHelpers from '../../tests/helpers/ember-power-calendar';
 
 registerPowerSelectHelpers();
+registerPowerCalendarHelpers();
 
 export default function startApp(attrs) {
   let attributes = merge({}, config.APP);

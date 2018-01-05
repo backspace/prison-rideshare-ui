@@ -15,5 +15,14 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
       default:
         return this._super(...arguments);
     }
+  },
+
+  urlForQueryRecord(query) {
+    if (query.me) {
+      delete query.me;
+      return `${this._super(...arguments)}/me`;
+    }
+
+    return this._super(...arguments);
   }
 });
