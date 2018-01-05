@@ -9,7 +9,7 @@
     </nav>
 
     {{#calendar.days showDaysAround=false as |day|}}
-      {{calendar-day day=day slots=slots count=true setViewingSlot=(action 'setViewingSlot')}}
+      {{calendar-day day=day slots=slots count=true setViewingSlot=(action (mut viewingSlot))}}
     {{/calendar.days}}
   {{/power-calendar}}
 
