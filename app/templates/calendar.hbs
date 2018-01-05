@@ -1,6 +1,10 @@
-<div class='person-session'>You are logged in as {{person.email}}</div>
-
 {{#power-calendar center=month daysComponent='calendar-days' as |calendar|}}
+  {{#paper-card as |card|}}
+    {{#card.content}}
+      <div class='person-session'>You are logged in as {{person.email}}</div>
+    {{/card.content}}
+  {{/paper-card}}
+
   {{calendar.nav}}
 
   {{#calendar.days showDaysAround=false as |day|}}
