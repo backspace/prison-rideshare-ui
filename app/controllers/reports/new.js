@@ -1,10 +1,9 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
-import config from 'prison-rideshare-ui/config/environment';
 
 export default Controller.extend({
-  paperToaster: service(),
+  toasts: service(),
 
   editingRide: undefined,
   rideProxy: BufferedProxy.create(),
@@ -21,25 +20,16 @@ export default Controller.extend({
 
         proxy.applyBufferedChanges();
         return proxy.get('content').save().then(() => {
-          this.get('paperToaster').show('Your report was saved', {
-            duration: config.toastDuration,
-            position: 'top right'
-          });
+          this.get('toasts').show('Your report was saved');
           this.set('editingRide', undefined);
           this.set('rideProxy.content', undefined);
           this.transitionToRoute('application');
           window.scrollTo(0,0);
         }, () => {
-          this.get('paperToaster').show('There was an error saving your report!', {
-            duration: config.toastDuration,
-            position: 'top right'
-          });
+          this.get('toasts').show('There was an error saving your report!');
         });
       } else {
-        this.get('paperToaster').show('Please choose a ride', {
-          duration: config.toastDuration,
-          position: 'top right'
-        });
+        this.get('toasts').show('Please choose a ride');
       }
     }
   }

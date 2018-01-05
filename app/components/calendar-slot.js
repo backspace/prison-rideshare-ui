@@ -2,10 +2,9 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
-import config from 'prison-rideshare-ui/config/environment';
 
 export default Component.extend({
-  paperToaster: service(),
+  toasts: service(),
   store: service(),
 
   isCommittedTo: reads('commitment'),
@@ -20,10 +19,7 @@ export default Component.extend({
     toggle() {
       if (this.get('isCommittedTo')) {
         this.get('commitment').destroyRecord().catch(() => {
-          this.get('paperToaster').show('Couldn’t save your change', {
-            duration: config.toastDuration,
-            position: 'top right'
-          });
+          this.get('toasts').show('Couldn’t save your change');
         });
       } else if (this.get('slot.isNotFull')) {
         const newRecord = this.get('store').createRecord('commitment', {
@@ -32,10 +28,7 @@ export default Component.extend({
         });
 
         newRecord.save().catch(() => {
-          this.get('paperToaster').show('Couldn’t save your change', {
-            duration: config.toastDuration,
-            position: 'top right'
-          });
+          this.get('toasts').show('Couldn’t save your change');
           newRecord.destroyRecord();
         });
       }
