@@ -21,7 +21,8 @@ moduleForAcceptance('Acceptance | reports', {
       start: new Date(2016, 11, 27, 17, 0),
       end: new Date(2016, 11, 27, 19, 0),
       passengers: 1,
-      institution: leavenworth
+      institution: leavenworth,
+      donatable: false
     });
 
     server.create('ride', {
@@ -30,7 +31,8 @@ moduleForAcceptance('Acceptance | reports', {
       end: new Date(2016, 11, 25, 12, 0),
       passengers: 1,
       institution: remand,
-      initials: 'francine'
+      initials: 'francine',
+      donatable: true
     });
 
     server.create('ride', { enabled: false });
@@ -151,6 +153,15 @@ test('submitting a report without choosing a ride displays an error', function(a
   andThen(() => {
     assert.equal(shared.toast.text, 'Please choose a ride');
     assert.equal(page.notes.value, 'I cannot find my ride');
+  });
+});
+
+test('a ride that is not donatable doesn’t show the donation checkbox', function(assert) {
+  page.visit();
+  page.rides(1).choose();
+
+  andThen(() => {
+    assert.ok(page.donation.isHidden, 'expected the donation checkbox to be hidden when a ride is not donatable');
   });
 });
 

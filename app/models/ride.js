@@ -71,6 +71,7 @@ export default DS.Model.extend({
   totalExpensesDollars: dollars('totalExpenses'),
 
   donation: DS.attr('boolean'),
+  donatable: DS.attr('boolean'),
 
   reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: sum('reimbursementFoodExpenses'),
