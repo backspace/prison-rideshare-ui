@@ -44,15 +44,15 @@
         </div>
         <div class='layout layout-sm-column text-radio email'>
           {{form.input type='email' label='Email' value=editingPerson.email onChange=(action (mut editingPerson.email)) errors=editingPerson.validationErrors.email isTouched=editingPerson.validationErrors.email.length}}
-          {{#group.radio value='email'}}♥{{/group.radio}}
+          {{#group.radio value='email'}}{{paper-icon 'favorite'}}{{/group.radio}}
         </div>
         <div class='layout layout-sm-column text-radio mobile'>
           {{form.input type='mobile' label='Mobile' value=editingPerson.mobile onChange=(action (mut editingPerson.mobile)) errors=editingPerson.validationErrors.mobile isTouched=editingPerson.validationErrors.mobile.length}}
-          {{#group.radio value='mobile'}}♥{{/group.radio}}
+          {{#group.radio value='mobile'}}{{paper-icon 'favorite'}}{{/group.radio}}
         </div>
         <div class='layout layout-sm-column text-radio landline'>
           {{form.input type='mobile' label='Landline' value=editingPerson.landline onChange=(action (mut editingPerson.landline)) errors=editingPerson.validationErrors.landline isTouched=editingPerson.validationErrors.landline.length}}
-          {{#group.radio value='landline'}}♥{{/group.radio}}
+          {{#group.radio value='landline'}}{{paper-icon 'favorite'}}{{/group.radio}}
         </div>
         <div class='layout layout-sm-column'>
           {{form.input textarea=true class='notes' label='Notes' value=editingPerson.notes onChange=(action (mut editingPerson.notes)) errors=editingPerson.validationErrors.notes isTouched=editingPerson.validationErrors.notes.length}}
