@@ -4,6 +4,7 @@ import {
   collection,
   create,
   fillable,
+  hasClass,
   text,
   visitable
 } from 'ember-cli-page-object';
@@ -20,17 +21,20 @@ export default create({
 
       email: {
         scope: '.email',
-        href: attribute('href', 'a')
+        href: attribute('href', 'a'),
+        isPreferred: hasClass('is-preferred'),
       },
 
       landline: {
         scope: '.landline',
-        href: attribute('href', 'a')
+        href: attribute('href', 'a'),
+        isPreferred: hasClass('is-preferred'),
       },
 
       mobile: {
         scope: '.mobile',
-        href: attribute('href', 'a')
+        href: attribute('href', 'a'),
+        isPreferred: hasClass('is-preferred'),
       },
 
       notes: {
@@ -57,6 +61,9 @@ export default create({
       field: {
         scope: 'input'
       },
+      desiredMedium: {
+        scope: 'md-radio-button'
+      },
       error: {
         scope: '.paper-input-error'
       }
@@ -66,6 +73,9 @@ export default create({
       scope: '.mobile',
       field: {
         scope: 'input'
+      },
+      desiredMedium: {
+        scope: 'md-radio-button'
       },
       error: {
         scope: '.paper-input-error'

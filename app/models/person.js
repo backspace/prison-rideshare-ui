@@ -7,7 +7,9 @@ export default DS.Model.extend({
   email: DS.attr('string'),
   mobile: DS.attr('string'),
   landline: DS.attr('string'),
-  notes: DS.attr('string'),
+  medium: DS.attr('string'),
+
+  notes: DS.attr('string'),  
 
   reimbursements: DS.hasMany(),
 

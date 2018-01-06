@@ -9,8 +9,8 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | people', {
   beforeEach() {
-    server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?'});
-    server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111'});
+    server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?', medium: 'email'});
+    server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111', medium: 'mobile'});
     server.create('person', {name: 'Will'});
 
     server.create('ride');
@@ -27,10 +27,13 @@ test('people are listed', function(assert) {
       assert.equal(sun.name, 'Sun');
       assert.equal(sun.email.text, 'sun@sense8');
       assert.equal(sun.email.href, 'mailto:sun@sense8');
+      assert.ok(sun.email.isPreferred, 'expected Sun to prefer email');
       assert.equal(sun.landline.text, '111');
       assert.equal(sun.landline.href, 'tel:111');
       assert.equal(sun.notes.text, 'notes?');
     });
+
+    assert.ok(page.people(0).mobile.isPreferred, 'expected Kala to prefer mobile');
   });
 });
 
@@ -54,8 +57,13 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
 
   page.people(2).edit();
   page.form.nameField.fill('William');
+
   page.form.email.field.fillIn('will@sense8');
+  page.form.email.desiredMedium.click();
+
   page.form.mobile.field.fillIn('111');
+  page.form.mobile.desiredMedium.click();
+
   page.form.notes.field.fillIn('notes.');
   page.form.submit();
 
@@ -67,6 +75,7 @@ test('people can be edited, cancelled edits are discarded', function(assert) {
 
     assert.equal(will.name, 'William');
     assert.equal(will.email, 'will@sense8');
+    assert.equal(will.medium, 'mobile');
   });
 });
 

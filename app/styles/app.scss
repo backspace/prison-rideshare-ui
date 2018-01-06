@@ -266,9 +266,19 @@ md-table-container.debts .person .name {
   }
 }
 
+.person {
+  .is-preferred {
+    font-weight: bold;
+  }
+}
+
 .name-and-copy {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.text-radio {
   align-items: center;
 }
 
