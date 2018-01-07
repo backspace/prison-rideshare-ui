@@ -15,15 +15,13 @@ export default Controller.extend({
   unsortedFilteredReimbursements: computed('reimbursements.@each.processed', function() {
     return this.get('reimbursements').rejectBy('processed');
   }),
-  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  filteredReimbursementsSorting: ['ride.start'],
+  filteredReimbursementsSorting: Object.freeze(['ride.start']),
   filteredReimbursements: sort('unsortedFilteredReimbursements', 'filteredReimbursementsSorting'),
 
   showProcessed: false,
 
   unsortedProcessedReimbursements: filterBy('reimbursements', 'processed'),
-  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  processedReimbursementsSorting: ['insertedAt:desc'],
+  processedReimbursementsSorting: Object.freeze(['insertedAt:desc']),
   processedReimbursements: sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting'),
 
   monthReimbursementCollections: computed('filteredReimbursements.@each.person', function() {

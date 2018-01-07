@@ -1,6 +1,5 @@
 import { JSONAPISerializer } from 'ember-cli-mirage';
 
 export default JSONAPISerializer.extend({
-  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
-  include: ['drivings', 'carOwnings', 'reimbursements']
+  include: Object.freeze(['drivings', 'carOwnings', 'reimbursements'])
 });
