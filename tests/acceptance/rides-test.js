@@ -181,7 +181,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   });
 });
 
-test('completed rides can be shown', function(assert) {
+test('completed rides can be shown and cleared', function(assert) {
   server.create('ride');
   server.create('ride');
   server.create('ride', {
@@ -212,6 +212,32 @@ test('completed rides can be shown', function(assert) {
   page.rides(2).edit();
   andThen(() => assert.equal(page.form.notice, 'You are editing a ride that has already had its report completed!'));
   page.form.cancel();
+
+  page.reports(0).clear();
+
+  andThen(() => {
+    assert.ok(page.reports(0).clearConfirm.isVisible, 'expected the confirmation button to be visible');
+    assert.ok(page.reports(0).clearCancel.isVisible, 'expected the cancellation button to be visible');
+  });
+
+  page.reports(0).clearCancel.click();
+
+  andThen(() => {
+    assert.ok(page.reports(0).clearConfirm.isHidden, 'expected the confirmation button to be hidden again');
+  });
+
+  page.reports(0).clear();
+  page.reports(0).clearConfirm.click();
+
+  andThen(() => {
+    assert.equal(page.reports().count, 0, 'expected the report to be gone');
+
+    const [, , ride] = server.db.rides;
+
+    assert.notOk(ride.foodExpenses, 'expected the food expenses to have been cleared on the server');
+    assert.notOk(ride.reportNotes, 'expected the report notes to have been cleared on the server');
+    assert.notOk(ride.distance, 'expected the distance to have been cleared on the server');
+  });
 });
 
 test('create and edit a ride', function(assert) {

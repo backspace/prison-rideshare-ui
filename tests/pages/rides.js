@@ -134,7 +134,11 @@ export default create({
     item: {
       distance: text('.distance'),
       foodExpenses: text('.food-expenses'),
-      notes: text('.notes')
+      notes: text('.notes'),
+
+      clear: clickable('button'),
+      clearConfirm: { scope: '.clear-confirm' },
+      clearCancel: { scope: '.clear-cancel' }
     }
   }),
 

@@ -16,6 +16,8 @@ export default Component.extend({
 
   tagName: '',
 
+  clearing: false,
+
   creation: computed('ride.insertedAt', function () {
     const insertedAt = this.get('ride.insertedAt');
 
@@ -96,6 +98,20 @@ export default Component.extend({
 
     toggleCreation() {
       this.toggleProperty('showCreation');
+    },
+
+    proposeClear() {
+      this.set('clearing', true)
+    },
+
+    clearReport() {
+      this.set('ride.donation', null);
+      this.set('ride.distance', null);
+      this.set('ride.reportNotes', null);
+      this.set('ride.foodExpenses', null);
+      this.set('ride.carExpenses', null);
+
+      this.get('ride').save();
     }
   }
 });
