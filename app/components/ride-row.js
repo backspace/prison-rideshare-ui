@@ -108,8 +108,8 @@ export default Component.extend({
       this.set('ride.donation', null);
       this.set('ride.distance', null);
       this.set('ride.reportNotes', null);
-      this.set('ride.foodExpenses', null);
-      this.set('ride.carExpenses', null);
+      this.set('ride.foodExpenses', 0);
+      this.set('ride.carExpenses', 0);
 
       this.get('ride').save();
     }
