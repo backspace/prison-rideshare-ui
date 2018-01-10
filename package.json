@@ -50,7 +50,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
-    "ember-composable-helpers": "dockyard/ember-composable-helpers#master",
+    "ember-composable-helpers": "^2.1.0",
     "ember-cpm": "cibernox/ember-cpm#master",
     "ember-css-transitions": "^0.1.10",
     "ember-data": "~2.18.0",
