@@ -13,10 +13,24 @@ export default create({
   visit: visitable('/drivers'),
   newPerson: clickable('button.new'),
 
+  head: {
+    inactiveSwitch: {
+      scope: '.paper-switch.inactive',
+      enabled: hasClass('md-checked'),
+      click: clickable('.md-thumb')
+    }
+  },
+
   people: collection({
     itemScope: 'tbody tr.person',
 
     item: {
+      activeSwitch: {
+        scope: '.paper-switch',
+        enabled: hasClass('md-checked'),
+        click: clickable('.md-thumb')
+      },
+
       name: text('.name'),
 
       email: {

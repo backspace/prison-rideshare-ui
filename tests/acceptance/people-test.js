@@ -11,7 +11,7 @@ moduleForAcceptance('Acceptance | people', {
   beforeEach() {
     server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?', medium: 'email'});
     server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111', medium: 'mobile'});
-    server.create('person', {name: 'Will'});
+    server.create('person', {name: 'Will', active: false});
 
     server.create('ride');
 
@@ -19,10 +19,12 @@ moduleForAcceptance('Acceptance | people', {
   }
 });
 
-test('people are listed', function(assert) {
+test('people are listed, with inactive people hidden by default', function(assert) {
   page.visit();
 
   andThen(() => {
+    assert.equal(page.people().count, 2, 'expected the inactive person to be hidden');
+
     page.people(1).as(sun => {
       assert.equal(sun.name, 'Sun');
       assert.equal(sun.email.text, 'sun@sense8');
@@ -35,10 +37,18 @@ test('people are listed', function(assert) {
 
     assert.ok(page.people(0).mobile.isPreferred, 'expected Kala to prefer mobile');
   });
+
+  page.head.inactiveSwitch.click();
+
+  andThen(() => {
+    assert.equal(page.people().count, 3, 'expected the inactive person to be shown after the switch is flipped');
+  });
 });
 
 test('people can be edited, cancelled edits are discarded', function(assert) {
   page.visit();
+
+  page.head.inactiveSwitch.click();
 
   page.people(2).edit();
   page.form.nameField.fill('Billiam');
@@ -87,13 +97,13 @@ test('a person can be created and chosen for a ride', function(assert) {
 
   page.newPerson();
 
-  andThen(() => assert.equal(page.people().count, '3', 'expected the new person to not yet be listed'));
+  andThen(() => assert.equal(page.people().count, '2', 'expected the new person to not yet be listed'));
 
   page.form.nameField.fill('Capheus');
   page.form.submit();
 
   andThen(() => {
-    assert.equal(page.people().count, '4', 'expected the new person to have been added to the list');
+    assert.equal(page.people().count, '3', 'expected the new person to have been added to the list');
     assert.equal(page.people(0).name, 'Capheus');
 
     const [,,,capheus] = server.db.people;
@@ -106,6 +116,37 @@ test('a person can be created and chosen for a ride', function(assert) {
 
   andThen(() => {
     assert.equal(ridesPage.rides(0).driver.text, 'Capheus');
+  });
+});
+
+test('people can be made inactive and active', function(assert) {
+  page.visit();
+
+  page.people(1).activeSwitch.click();
+
+  andThen(() => {
+    assert.equal(page.people().count, 1, 'expected the person made inactive to have disappeared');
+
+    const [sun] = server.db.people;
+    assert.notOk(sun.active, 'expected Sun to have been made inactive on the server');
+  });
+
+  page.head.inactiveSwitch.click();
+  page.people(1).activeSwitch.click();
+
+  andThen(() => {
+    const [sun] = server.db.people;
+    assert.ok(sun.active, 'expected Sun to have been made active on the server');
+
+    server.patch('/people/:id', {}, 422);
+  });
+
+  // FIXME test that inactive people aren’t shown in the ride-person popup
+
+  page.people(1).activeSwitch.click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'There was an error saving the active status of Sun');
   });
 });
 

@@ -1,4 +1,7 @@
 {{#body.row class='person' as |row|}}
+  {{#row.cell}}
+    {{paper-switch value=person.active onChange=(action 'toggleActiveness')}}
+  {{/row.cell}}
   {{#row.cell class='name'}}{{person.name}}{{/row.cell}}
   {{#row.cell class=emailClass}}<a href='mailto:{{person.email}}'>{{person.email}}</a>{{/row.cell}}
   {{#row.cell class=mobileClass}}{{#if person.mobile}}<a href='tel:{{person.mobile}}'>{{person.mobile}}</a>{{/if}}{{/row.cell}}

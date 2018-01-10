@@ -4,8 +4,15 @@
   {{/paper-button}}
 {{/toolbar-header}}
 
+<div class='switch-container layout-row layout-align-start-center'>
+  {{#paper-switch class='inactive' value=showInactive onChange=(action (mut showInactive))}}
+    Inactive
+  {{/paper-switch}}
+</div>
+
 {{#paper-data-table sortProp='name' sortDir='asc' as |table|}}
   {{#table.head as |head|}}
+    {{#head.column}}Active{{/head.column}}
     {{#head.column sortProp='name' class='name'}}Name{{/head.column}}
     {{#head.column class='email'}}Email{{/head.column}}
     {{#head.column class='mobile'}}Mobile{{/head.column}}
@@ -15,9 +22,11 @@
   {{/table.head}}
   {{#table.body as |body|}}
     {{#each (sort-by table.sortDesc model) as |person|}}
-      {{#unless person.isNew}}
-        {{person-row body=body person=person editPerson=(action 'editPerson')}}
-      {{/unless}}
+      {{#if (or person.active showInactive)}}
+        {{#unless person.isNew}}
+          {{person-row body=body person=person editPerson=(action 'editPerson')}}
+        {{/unless}}
+      {{/if}}
     {{/each}}
   {{/table.body}}
 {{/paper-data-table}}

@@ -2,6 +2,8 @@ import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default Controller.extend({
+  showInactive: false,
+
   actions: {
     // Parts of this will likely be useful in the reimbursements controller
     // addReimbursement(person) {
