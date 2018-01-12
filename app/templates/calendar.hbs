@@ -1,7 +1,22 @@
 {{#power-calendar center=month daysComponent='calendar-days' as |calendar|}}
-  {{#paper-card as |card|}}
+  {{#paper-card class='person-card' as |card|}}
     {{#card.content}}
-      <div class='person-session'>You are logged in as {{person.email}}</div>
+      <header>
+        <div class='person-session'>You are logged in as {{person.email}}</div>
+        {{paper-button class='toggle' label='toggle' onClick=(action (mut showPerson) (not showPerson))}}
+      </header>
+      {{#if showPerson}}
+        {{#paper-form onSubmit=save as |form|}}
+          <div class='layout-row layout-xs-column'>
+            <div class='flex'>
+              {{form.input class='name' label='Name' value=person.name onChange=(action (mut person.name)) errors=person.validationErrors.name isTouched=person.validationErrors.name.length}}
+            </div>
+          </div>
+          <div class='layout-row'>
+            {{#paper-button class='submit' primary=true mini=true fab=false onClick='savePerson'}}Save{{/paper-button}}
+          </div>
+        {{/paper-form}}
+      {{/if}}
     {{/card.content}}
   {{/paper-card}}
 

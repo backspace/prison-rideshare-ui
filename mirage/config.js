@@ -33,6 +33,18 @@ export default function() {
   this.post('/people');
   this.patch('/people/:id');
 
+  this.patch('/people/me', function({ people }, request) {
+    if (request.requestHeaders.Authorization.startsWith('Person Bearer')) {
+      const [, , accessToken] = request.requestHeaders.Authorization.split(' ');
+      const person = people.findBy({accessToken});
+
+      if (person) {
+        return person.update(this.normalizedRequestAttrs());
+      }
+    }
+    return new Mirage.Response(401, {}, {});
+  });
+
   this.get('/debts');
   this.delete('/debts/:id');
 

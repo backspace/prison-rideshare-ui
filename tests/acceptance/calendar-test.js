@@ -180,6 +180,30 @@ test('visiting with a magic token that doesn’t resolve to a person shows an er
   });
 });
 
+test('the person can edit their details', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  andThen(() => {
+    assert.ok(page.person.name.isHidden, 'expected the name field to be hidden by default');
+  });
+
+  page.person.toggle.click();
+
+  andThen(() => {
+    assert.ok(page.person.name.isVisible, 'expected the name field to have become visible');
+    assert.equal(page.person.name.value, 'Jortle Tortle');
+  });
+
+  page.person.name.fillIn('Jortleby');
+  page.person.submit();
+
+  andThen(() => {
+    const [person] = server.db.people;
+
+    assert.equal(person.name, 'Jortleby', 'expected the name to have changed on the server');
+  });
+});
+
 test('the path controls the month', function(assert) {
   page.visit({ month: '2018-01', token: 'MAGIC??TOKEN' });
 

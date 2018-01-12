@@ -14,6 +14,21 @@ export default create({
   adminVisit: visitable('/admin-calendar/:month'),
 
   personSession: text('.person-session'),
+
+  person: {
+    scope: '.person-card',
+
+    toggle: {
+      scope: '.toggle'
+    },
+
+    name: {
+      scope: '.name input'
+    },
+
+    submit: clickable('button.submit'),
+  },
+
   month: text('.ember-power-calendar-nav-title'),
 
   nextMonth: {
