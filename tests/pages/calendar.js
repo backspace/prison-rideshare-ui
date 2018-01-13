@@ -23,7 +23,13 @@ export default create({
     },
 
     name: {
-      scope: '.name input'
+      scope: '.name',
+      field: {
+        scope: 'input'
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
     },
 
     activeSwitch: {

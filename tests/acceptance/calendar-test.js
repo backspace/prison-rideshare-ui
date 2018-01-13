@@ -194,7 +194,7 @@ test('the person can edit their details', function(assert) {
 
   andThen(() => {
     assert.ok(page.person.name.isVisible, 'expected the name field to have become visible');
-    assert.equal(page.person.name.value, 'Jortle Tortle');
+    assert.equal(page.person.name.field.value, 'Jortle Tortle');
 
     assert.ok(page.person.activeSwitch.enabled, 'expected the active switch to be on');
 
@@ -206,7 +206,7 @@ test('the person can edit their details', function(assert) {
     assert.notOk(page.person.submitButton.isHighlighted, 'expected the submit button to not be highlighted before anything has changed');
   });
 
-  page.person.name.fillIn('Jortleby');
+  page.person.name.field.fillIn('Jortleby');
   page.person.activeSwitch.click();
   page.person.mobile.field.fillIn('1234');
   page.person.email.desiredMedium.click();
@@ -230,6 +230,20 @@ test('the person can edit their details', function(assert) {
   });
 });
 
+test('shows detail validation errors', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  page.person.toggle.click();
+  page.person.name.field.fillIn('');
+  page.person.submitButton.click();
+
+  andThen(() => {
+    // FIXME validation-specific error text?
+    assert.equal(shared.toast.text, 'Couldn’t save your details');
+    assert.equal(page.person.name.error.text, 'Name can\'t be blank');
+  });
+});
+
 test('handles an error saving details', function(assert) {
   page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
@@ -243,7 +257,7 @@ test('handles an error saving details', function(assert) {
   });
 
   page.person.toggle.click();
-  page.person.name.fillIn('Jartleby');
+  page.person.name.field.fillIn('Jartleby');
   page.person.submitButton.click();
 
   andThen(() => {
