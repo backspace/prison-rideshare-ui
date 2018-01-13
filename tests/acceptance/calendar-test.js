@@ -202,13 +202,20 @@ test('the person can edit their details', function(assert) {
     assert.equal(page.person.email.field.value, 'jorts@jants.ca');
 
     assert.ok(page.person.mobile.desiredMedium, 'expected mobile to be the desired medium');
+
+    assert.notOk(page.person.submitButton.isHighlighted, 'expected the submit button to not be highlighted before anything has changed');
   });
 
   page.person.name.fillIn('Jortleby');
   page.person.activeSwitch.click();
   page.person.mobile.field.fillIn('1234');
   page.person.email.desiredMedium.click();
-  page.person.submit();
+
+  andThen(() => {
+    assert.ok(page.person.submitButton.isHighlighted, 'expected the submit button to be highlighted when the record is dirty');
+  });
+
+  page.person.submitButton.click();
 
   andThen(() => {
     const [person] = server.db.people;
@@ -237,7 +244,7 @@ test('handles an error saving details', function(assert) {
 
   page.person.toggle.click();
   page.person.name.fillIn('Jartleby');
-  page.person.submit();
+  page.person.submitButton.click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your details');

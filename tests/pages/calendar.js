@@ -64,7 +64,10 @@ export default create({
       }
     },
 
-    submit: clickable('button.submit'),
+    submitButton: {
+      scope: 'button.submit',
+      isHighlighted: hasClass('md-primary')
+    },
   },
 
   month: text('.ember-power-calendar-nav-title'),
