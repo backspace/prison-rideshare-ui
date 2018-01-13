@@ -218,6 +218,28 @@ test('the person can edit their details', function(assert) {
   });
 });
 
+test('handles an error saving details', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  server.patch('/people/me', function() {
+    return new Mirage.Response(401, {}, {
+      errors: [{
+        status: 401,
+        title: 'Unauthorized'
+      }]
+    });
+  });
+
+  page.person.toggle.click();
+  page.person.name.fillIn('Jartleby');
+  page.person.submit();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Couldn’t save your details');
+    assert.ok(page.person.name.isVisible, 'expected the form to still be visible');
+  });
+});
+
 test('the path controls the month', function(assert) {
   page.visit({ month: '2018-01', token: 'MAGIC??TOKEN' });
 

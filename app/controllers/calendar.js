@@ -15,6 +15,8 @@ export default Controller.extend({
       this.get('person').save().then(() => {
         this.get('toasts').show('Saved your details');
         this.set('showPerson', false);
+      }).catch(() => {
+        this.get('toasts').show('Couldn’t save your details');
       })
     }
   }
