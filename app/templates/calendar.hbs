@@ -3,7 +3,11 @@
     {{#card.content}}
       <header>
         <div class='person-session'>You are logged in as {{person.email}}</div>
-        {{paper-button class='toggle' label='toggle' onClick=(action (mut showPerson) (not showPerson))}}
+        {{#if showPerson}}
+          {{#paper-button class='submit' primary=person.hasDirtyAttributes onClick='savePerson'}}Save details{{/paper-button}}
+        {{else}}
+          {{paper-button class='toggle' label='Edit details' onClick=(action (mut showPerson) (not showPerson))}}
+        {{/if}}
       </header>
       {{#if showPerson}}
         {{#paper-form onSubmit=save as |form|}}
@@ -27,9 +31,6 @@
             <div class='layout layout-sm-column text-radio landline'>
               {{form.input type='mobile' label='Landline' value=person.landline onChange=(action (mut person.landline)) errors=person.validationErrors.landline isTouched=person.validationErrors.landline.length}}
               {{#group.radio value='landline'}}{{paper-icon 'favorite'}}{{/group.radio}}
-            </div>
-            <div class='layout-row'>
-              {{#paper-button class='submit' primary=person.hasDirtyAttributes onClick='savePerson'}}Save{{/paper-button}}
             </div>
           {{/paper-radio-group}}
         {{/paper-form}}
