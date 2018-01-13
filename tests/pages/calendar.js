@@ -26,6 +26,12 @@ export default create({
       scope: '.name input'
     },
 
+    activeSwitch: {
+      scope: '.paper-switch',
+      enabled: hasClass('md-checked'),
+      click: clickable('.md-thumb')
+    },
+
     email: {
       scope: '.email',
       field: {

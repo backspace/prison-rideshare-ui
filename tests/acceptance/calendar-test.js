@@ -13,6 +13,7 @@ moduleForAcceptance('Acceptance | calendar', {
       email: 'jorts@jants.ca',
       mobile: '5551313',
       medium: 'mobile',
+      active: true,
       magicToken: 'MAGIC??TOKEN',
       accessToken: 'XXX'
     });
@@ -195,6 +196,8 @@ test('the person can edit their details', function(assert) {
     assert.ok(page.person.name.isVisible, 'expected the name field to have become visible');
     assert.equal(page.person.name.value, 'Jortle Tortle');
 
+    assert.ok(page.person.activeSwitch.enabled, 'expected the active switch to be on');
+
     assert.ok(page.person.email.field.isDisabled, 'expected the email field to be disabled');
     assert.equal(page.person.email.field.value, 'jorts@jants.ca');
 
@@ -202,6 +205,7 @@ test('the person can edit their details', function(assert) {
   });
 
   page.person.name.fillIn('Jortleby');
+  page.person.activeSwitch.click();
   page.person.mobile.field.fillIn('1234');
   page.person.email.desiredMedium.click();
   page.person.submit();
@@ -210,6 +214,7 @@ test('the person can edit their details', function(assert) {
     const [person] = server.db.people;
 
     assert.equal(person.name, 'Jortleby', 'expected the name to have changed on the server');
+    assert.notOk(person.active, 'expected the person to be inactive on the server');
     assert.equal(person.mobile, '1234', 'expected the mobile number to have changed on the server');
     assert.equal(person.medium, 'email', 'expected the medium to have changed on the server');
 
