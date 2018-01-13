@@ -26,6 +26,38 @@ export default create({
       scope: '.name input'
     },
 
+    email: {
+      scope: '.email',
+      field: {
+        scope: 'input',
+        disabledAttribute: attribute('disabled'),
+        isDisabled: getter(function() {
+          return this.disabledAttribute === 'disabled';
+        })
+      },
+      desiredMedium: {
+        scope: 'md-radio-button',
+        isChecked: hasClass('md-checked')
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    mobile: {
+      scope: '.mobile',
+      field: {
+        scope: 'input'
+      },
+      desiredMedium: {
+        scope: 'md-radio-button',
+        isChecked: hasClass('md-checked')
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
     submit: clickable('button.submit'),
   },
 
