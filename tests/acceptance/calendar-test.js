@@ -212,6 +212,9 @@ test('the person can edit their details', function(assert) {
     assert.equal(person.name, 'Jortleby', 'expected the name to have changed on the server');
     assert.equal(person.mobile, '1234', 'expected the mobile number to have changed on the server');
     assert.equal(person.medium, 'email', 'expected the medium to have changed on the server');
+
+    assert.equal(shared.toast.text, 'Saved your details');
+    assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
   });
 });
 
