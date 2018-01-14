@@ -14,23 +14,31 @@
           {{#paper-radio-group
             groupValue=(readonly person.medium)
             onChange=(action (mut person.medium)) as |group|}}
-            <div class='layout-row layout-xs-column'>
-              {{form.input class='name' label='Name' value=person.name onChange=(action (mut person.name)) errors=person.validationErrors.name isTouched=person.validationErrors.name.length}}
+            <div class='layout-row'>
+              <div class='layout-column flex-50'>
+                {{form.input class='name' label='Name' value=person.name onChange=(action (mut person.name)) errors=person.validationErrors.name isTouched=person.validationErrors.name.length}}
+              </div>
+              <div class='layout-column flex-50'>
+                {{#paper-switch value=person.active onChange=(action (mut person.active) (not person.active))}}Available for rides{{/paper-switch}}
+              </div>
             </div>
-            <div class='layout-row layout-xs-column'>
-              {{#paper-switch value=person.active onChange=(action (mut person.active) (not person.active))}}Active{{/paper-switch}}
-            </div>
-            <div class='layout layout-sm-column text-radio email'>
-              {{form.input type='email' label='Email' disabled=true value=person.email onChange=(action (mut person.email)) errors=person.validationErrors.email isTouched=person.validationErrors.email.length}}
-              {{#group.radio value='email'}}{{paper-icon 'favorite'}}{{/group.radio}}
-            </div>
-            <div class='layout layout-sm-column text-radio mobile'>
-              {{form.input type='mobile' label='Mobile' value=person.mobile onChange=(action (mut person.mobile)) errors=person.validationErrors.mobile isTouched=person.validationErrors.mobile.length}}
-              {{#group.radio value='mobile'}}{{paper-icon 'favorite'}}{{/group.radio}}
-            </div>
-            <div class='layout layout-sm-column text-radio landline'>
-              {{form.input type='mobile' label='Landline' value=person.landline onChange=(action (mut person.landline)) errors=person.validationErrors.landline isTouched=person.validationErrors.landline.length}}
-              {{#group.radio value='landline'}}{{paper-icon 'favorite'}}{{/group.radio}}
+            <div class='layout-row'>
+              <div class='layout-column flex-50'>
+                <div class='layout-row text-radio mobile'>
+                  {{form.input type='mobile' label='Mobile' value=person.mobile onChange=(action (mut person.mobile)) errors=person.validationErrors.mobile isTouched=person.validationErrors.mobile.length}}
+                  {{#group.radio value='mobile'}}preferred{{/group.radio}}
+                </div>
+                <div class='layout-row text-radio landline'>
+                  {{form.input type='mobile' label='Landline' value=person.landline onChange=(action (mut person.landline)) errors=person.validationErrors.landline isTouched=person.validationErrors.landline.length}}
+                  {{#group.radio value='landline'}}preferred{{/group.radio}}
+                </div>
+              </div>
+              <div class='layout-column email flex-50'>
+                <div class='layout-row text-radio'>
+                  {{form.input type='email' label='Email' disabled=true value=person.email onChange=(action (mut person.email)) errors=person.validationErrors.email isTouched=person.validationErrors.email.length}}
+                  {{#group.radio value='email'}}preferred{{/group.radio}}
+                </div>
+              </div>
             </div>
           {{/paper-radio-group}}
         {{/paper-form}}
