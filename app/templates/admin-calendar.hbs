@@ -13,24 +13,25 @@
     {{/calendar.days}}
   {{/power-calendar}}
 
-  {{#if viewingSlot.commitments}}
-  <div class='viewing-slot'>
-    <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format viewingSlot.end 'h:mma'}}</h3>
-    {{#each viewingSlot.commitments as |commitment|}}
-      {{person-badge person=commitment.person}}
-    {{/each}}
-  </div>
-  {{/if}}
+  <section>
+    {{#if viewingSlot.commitments}}
+    <div class='viewing-slot'>
+      <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format viewingSlot.end 'h:mma'}}</h3>
+      {{#each viewingSlot.commitments as |commitment|}}
+        {{person-badge person=commitment.person}}
+      {{/each}}
+    </div>
+    {{/if}}
+    <h2>Temporary email interface</h2>
+    {{#paper-chips
+      removeItem=(action 'removePerson')
+      addItem=(action 'addPerson')
+      placeholder='Add a person to email'
+      content=people
+      options=remainingPeople
+      searchField='name' as |person|}}
+      {{person.name}}
+    {{/paper-chips}}
+    {{#paper-button onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
+  </section>
 </div>
-
-<h2>Temporary email interface</h2>
-{{#paper-chips
-  removeItem=(action 'removePerson')
-  addItem=(action 'addPerson')
-  placeholder='Add a person to email'
-  content=people
-  options=remainingPeople
-  searchField='name' as |person|}}
-  {{person.name}}
-{{/paper-chips}}
-{{#paper-button onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
