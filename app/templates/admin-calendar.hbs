@@ -22,3 +22,15 @@
   </div>
   {{/if}}
 </div>
+
+<h2>Temporary email interface</h2>
+{{#paper-chips
+  removeItem=(action 'removePerson')
+  addItem=(action 'addPerson')
+  placeholder='Add a person to email'
+  content=people
+  options=remainingPeople
+  searchField='name' as |person|}}
+  {{person.name}}
+{{/paper-chips}}
+{{#paper-button onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
