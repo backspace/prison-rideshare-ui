@@ -15,7 +15,7 @@ function isAnteMeridiem(time) {
   return time.getHours() < 12;
 }
 
-export default function formatTimespan(start, end) {
+export default function formatTimespan(start, end, date = true) {
   let startDate, startTime, endTime;
 
   if (start && new Date().getFullYear() == start.getFullYear()) {
@@ -40,5 +40,5 @@ export default function formatTimespan(start, end) {
     endTime += 'a';
   }
 
-  return `${moment(start).format(startDate)} ${moment(start).format(startTime)} — ${moment(end).format(endTime)}`;
+  return `${date ? `${moment(start).format(startDate)} ` : ''}${moment(start).format(startTime)} — ${moment(end).format(endTime)}`;
 }

@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 
 export default Component.extend({
   toasts: service(),
@@ -13,6 +14,10 @@ export default Component.extend({
     const personId = this.get('person.id');
 
     return this.get('slot.commitments').find(slot => slot.belongsTo('person').id() == personId);
+  }),
+
+  timespan: computed('slot.{start,end}', function() {
+    return formatBriefTimespan(this.get('slot.start'), this.get('slot.end'), false);
   }),
 
   actions: {

@@ -15,7 +15,7 @@
 
   {{#if viewingSlot.commitments}}
   <div class='viewing-slot'>
-    <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, hA'}}–{{moment-format viewingSlot.end 'hA'}}</h3>
+    <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format viewingSlot.end 'h:mma'}}</h3>
     {{#each viewingSlot.commitments as |commitment|}}
       {{person-badge person=commitment.person}}
     {{/each}}

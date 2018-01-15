@@ -19,7 +19,7 @@ moduleForAcceptance('Acceptance | calendar', {
     });
 
     const committedSlot = server.create('slot', {
-      start: new Date(2017, 11, 4, 17),
+      start: new Date(2017, 11, 4, 17, 30),
       end: new Date(2017, 11, 4, 20),
       count: 3
     });
@@ -51,7 +51,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
     page.days(3).as(d4 => {
       assert.equal(d4.slots().count, 1, 'expected one slot on Monday');
       d4.slots(0).as(s1 => {
-        assert.equal(s1.hours, '5P–8P');
+        assert.equal(s1.hours, '5:30p—8');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
         assert.notOk(s1.isFull, 'expected the slot to not be full');
         assert.notOk(s1.count.isVisible, 'expected the slot count not to show for a non-admin');
@@ -61,11 +61,11 @@ test('calendar shows existing commitments and lets them be changed', function(as
     page.days(9).as(d10 => {
       assert.equal(d10.slots().count, 2, 'expected two slots on Sunday');
       d10.slots(0).as(s1 => {
-        assert.equal(s1.hours, '11A–5P');
+        assert.equal(s1.hours, '11a—5p');
         assert.notOk(s1.isCommittedTo, 'expected the slot to not be committed-to');
       });
       d10.slots(1).as(s2 => {
-        assert.equal(s2.hours, '5P–9P');
+        assert.equal(s2.hours, '5p—9');
       });
     });
   });
@@ -288,7 +288,7 @@ test('an admin can see the commitments with person names', function(assert) {
   page.days(3).slots(0).count.click();
 
   andThen(() => {
-    assert.equal(page.viewingSlot, 'Monday, December 4, 5P–8P');
+    assert.equal(page.viewingSlot, 'Monday, December 4, 5:30p–8:00p');
     assert.equal(page.people().count, 2, 'expected two people details to show for the slot');
     assert.equal(page.people(0).name, 'Other Slot Person');
     assert.equal(page.people(1).name, 'Jortle Tortle');
