@@ -20,3 +20,13 @@
 .admin-calendar {
   display: flex;
 }
+
+.person-card header {
+  display: flex;
+  justify-content: space-between;
+
+  .person-session {
+    display: flex;
+    align-self: center;
+  }
+}

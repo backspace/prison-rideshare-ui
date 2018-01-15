@@ -1,5 +1,6 @@
 import config from 'prison-rideshare-ui/config/environment';
 import Mirage from 'ember-cli-mirage';
+import { isEmpty } from '@ember/utils';
 
 export default function() {
   this.passthrough('/write-coverage');
@@ -32,6 +33,31 @@ export default function() {
   this.get('/people/:id');
   this.post('/people');
   this.patch('/people/:id');
+
+  this.patch('/people/me', function({ people }, request) {
+    if (request.requestHeaders.Authorization.startsWith('Person Bearer')) {
+      const [, , accessToken] = request.requestHeaders.Authorization.split(' ');
+      const person = people.findBy({accessToken});
+
+      if (person) {
+        const attrs = this.normalizedRequestAttrs();
+
+        if (isEmpty(attrs.name)) {
+          return new Mirage.Response(422, {}, {
+            errors: [{
+              'source': {
+                'pointer': '/data/attributes/name'
+              },
+              'detail': 'Name can\'t be blank'
+            }]
+          });
+        } else {
+          return person.update(this.normalizedRequestAttrs());
+        }
+      }
+    }
+    return new Mirage.Response(401, {}, {});
+  });
 
   this.get('/debts');
   this.delete('/debts/:id');

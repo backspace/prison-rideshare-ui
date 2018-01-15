@@ -14,6 +14,68 @@ export default create({
   adminVisit: visitable('/admin-calendar/:month'),
 
   personSession: text('.person-session'),
+
+  person: {
+    scope: '.person-card',
+
+    toggle: {
+      scope: '.toggle'
+    },
+
+    name: {
+      scope: '.name',
+      field: {
+        scope: 'input'
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    activeSwitch: {
+      scope: '.paper-switch',
+      enabled: hasClass('md-checked'),
+      click: clickable('.md-thumb')
+    },
+
+    email: {
+      scope: '.email',
+      field: {
+        scope: 'input',
+        disabledAttribute: attribute('disabled'),
+        isDisabled: getter(function() {
+          return this.disabledAttribute === 'disabled';
+        })
+      },
+      desiredMedium: {
+        scope: 'md-radio-button',
+        isChecked: hasClass('md-checked')
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    mobile: {
+      scope: '.mobile',
+      field: {
+        scope: 'input'
+      },
+      desiredMedium: {
+        scope: 'md-radio-button',
+        isChecked: hasClass('md-checked')
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    submitButton: {
+      scope: 'button.submit',
+      isHighlighted: hasClass('md-primary')
+    },
+  },
+
   month: text('.ember-power-calendar-nav-title'),
 
   nextMonth: {

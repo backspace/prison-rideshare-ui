@@ -11,6 +11,9 @@ moduleForAcceptance('Acceptance | calendar', {
     const person = server.create('person', {
       name: 'Jortle Tortle',
       email: 'jorts@jants.ca',
+      mobile: '5551313',
+      medium: 'mobile',
+      active: true,
       magicToken: 'MAGIC??TOKEN',
       accessToken: 'XXX'
     });
@@ -177,6 +180,89 @@ test('visiting with a magic token that doesn’t resolve to a person shows an er
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in with that token.');
+  });
+});
+
+test('the person can edit their details', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  andThen(() => {
+    assert.ok(page.person.name.isHidden, 'expected the name field to be hidden by default');
+  });
+
+  page.person.toggle.click();
+
+  andThen(() => {
+    assert.ok(page.person.name.isVisible, 'expected the name field to have become visible');
+    assert.equal(page.person.name.field.value, 'Jortle Tortle');
+
+    assert.ok(page.person.activeSwitch.enabled, 'expected the active switch to be on');
+
+    assert.ok(page.person.email.field.isDisabled, 'expected the email field to be disabled');
+    assert.equal(page.person.email.field.value, 'jorts@jants.ca');
+
+    assert.ok(page.person.mobile.desiredMedium, 'expected mobile to be the desired medium');
+
+    assert.notOk(page.person.submitButton.isHighlighted, 'expected the submit button to not be highlighted before anything has changed');
+  });
+
+  page.person.name.field.fillIn('Jortleby');
+  page.person.activeSwitch.click();
+  page.person.mobile.field.fillIn('1234');
+  page.person.email.desiredMedium.click();
+
+  andThen(() => {
+    assert.ok(page.person.submitButton.isHighlighted, 'expected the submit button to be highlighted when the record is dirty');
+  });
+
+  page.person.submitButton.click();
+
+  andThen(() => {
+    const [person] = server.db.people;
+
+    assert.equal(person.name, 'Jortleby', 'expected the name to have changed on the server');
+    assert.notOk(person.active, 'expected the person to be inactive on the server');
+    assert.equal(person.mobile, '1234', 'expected the mobile number to have changed on the server');
+    assert.equal(person.medium, 'email', 'expected the medium to have changed on the server');
+
+    assert.equal(shared.toast.text, 'Saved your details');
+    assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
+  });
+});
+
+test('shows detail validation errors', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  page.person.toggle.click();
+  page.person.name.field.fillIn('');
+  page.person.submitButton.click();
+
+  andThen(() => {
+    // FIXME validation-specific error text?
+    assert.equal(shared.toast.text, 'Couldn’t save your details');
+    assert.equal(page.person.name.error.text, 'Name can\'t be blank');
+  });
+});
+
+test('handles an error saving details', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  server.patch('/people/me', function() {
+    return new Mirage.Response(401, {}, {
+      errors: [{
+        status: 401,
+        title: 'Unauthorized'
+      }]
+    });
+  });
+
+  page.person.toggle.click();
+  page.person.name.field.fillIn('Jartleby');
+  page.person.submitButton.click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Couldn’t save your details');
+    assert.ok(page.person.name.isVisible, 'expected the form to still be visible');
   });
 });
 
