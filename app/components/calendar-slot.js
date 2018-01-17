@@ -20,6 +20,15 @@ export default Component.extend({
     return formatBriefTimespan(this.get('slot.start'), this.get('slot.end'), false);
   }),
 
+  capacity: computed('slot.{count,commitments.length}', function() {
+    const dividend = this.get('slot.commitments.length');
+
+    const count = this.get('slot.count');
+    const divisor = count === 0 ? '∞' : count;
+
+    return `${dividend}/${divisor}`;
+  }),
+
   actions: {
     toggle() {
       if (this.get('isCommittedTo')) {

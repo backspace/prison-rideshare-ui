@@ -3,12 +3,11 @@
 
   .count {
     display: inline-block;
-    width: 1rem;
-    height: 1rem;
 
-    font-size: 75%;
+    font-size: 60%;
     text-align: center;
 
+    padding: 3px;
     border-radius: 5rem;
     background-color: $dark-contrast-color;
     color: white;
