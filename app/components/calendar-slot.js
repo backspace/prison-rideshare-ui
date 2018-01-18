@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
@@ -32,8 +32,9 @@ export default Component.extend({
   actions: {
     toggle() {
       if (this.get('isCommittedTo')) {
-        this.get('commitment').destroyRecord().catch(() => {
-          this.get('toasts').show('Couldn’t save your change');
+        this.get('commitment').destroyRecord().catch(error => {
+          const errorDetail = get(error, 'errors.firstObject.detail');
+          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
         });
       } else if (this.get('slot.isNotFull')) {
         const newRecord = this.get('store').createRecord('commitment', {
@@ -41,8 +42,9 @@ export default Component.extend({
           person: this.get('person')
         });
 
-        newRecord.save().catch(() => {
-          this.get('toasts').show('Couldn’t save your change');
+        newRecord.save().catch(error => {
+          const errorDetail = get(error, 'errors.firstObject.detail');
+          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
           newRecord.destroyRecord();
         });
       }

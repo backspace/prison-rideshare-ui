@@ -150,6 +150,26 @@ test('a failure to create a commitment makes it not display and shows an error',
   });
 })
 
+test('a failure to create a commitment with a particular error shows the error', function(assert) {
+  server.post('/commitments', function() {
+    return new Mirage.Response(422, {}, {
+      errors: [{
+        status: 422,
+        title: 'Unauthorized',
+        detail: 'Fail!'
+      }]
+    });
+  });
+
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  page.days(9).slots(1).click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Fail!');
+  });
+});
+
 test('visiting with an unknown magic token shows an error', function(assert) {
   page.visit({ month: '2017-12', token: 'JORTLEBY' });
 
