@@ -11,6 +11,11 @@ export default Controller.extend({
   person: alias('model.person'),
 
   actions: {
+    cancel() {
+      this.set('showPerson', false);
+      this.get('person').rollbackAttributes();
+    },
+
     savePerson() {
       this.get('person').save().then(() => {
         this.get('toasts').show('Saved your details');

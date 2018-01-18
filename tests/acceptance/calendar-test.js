@@ -227,6 +227,19 @@ test('the person can edit their details', function(assert) {
     assert.notOk(page.person.submitButton.isHighlighted, 'expected the submit button to not be highlighted before anything has changed');
   });
 
+  page.person.name.field.fillIn('Jartle');
+  page.person.cancelButton.click();
+
+  andThen(() => {
+    assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
+  });
+
+  page.person.toggle.click();
+
+  andThen(() => {
+    assert.equal(page.person.name.field.value, 'Jortle Tortle', 'expected the change to have been reverted');
+  });
+
   page.person.name.field.fillIn('Jortleby');
   page.person.activeSwitch.click();
   page.person.mobile.field.fillIn('1234');

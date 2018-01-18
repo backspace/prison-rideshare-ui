@@ -70,6 +70,10 @@ export default create({
       }
     },
 
+    cancelButton: {
+      scope: 'button.cancel'
+    },
+
     submitButton: {
       scope: 'button.submit',
       isHighlighted: hasClass('md-primary')

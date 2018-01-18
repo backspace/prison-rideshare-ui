@@ -4,7 +4,10 @@
       <header>
         <div class='person-session'>You are logged in as {{person.email}}</div>
         {{#if showPerson}}
-          {{#paper-button class='submit' primary=person.hasDirtyAttributes raised=person.hasDirtyAttributes onClick='savePerson'}}Save details{{/paper-button}}
+          <div>
+            {{#paper-button class='cancel' onClick='cancel'}}Cancel{{/paper-button}}
+            {{#paper-button class='submit' primary=person.hasDirtyAttributes raised=person.hasDirtyAttributes onClick='savePerson'}}Save{{/paper-button}}
+          </div>
         {{else}}
           {{paper-button class='toggle' label='Edit details' onClick=(action (mut showPerson) (not showPerson))}}
         {{/if}}
