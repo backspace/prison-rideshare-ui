@@ -3,6 +3,7 @@ import { computed, get } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
+import moment from 'moment';
 
 export default Component.extend({
   toasts: service(),
@@ -42,7 +43,9 @@ export default Component.extend({
           person: this.get('person')
         });
 
-        newRecord.save().catch(error => {
+        newRecord.save().then(() => {
+          this.get('toasts').show(`Thanks for agreeing to drive on ${moment(this.get('slot.start')).format('MMMM D')}!`);
+        }).catch(error => {
           const errorDetail = get(error, 'errors.firstObject.detail');
           this.get('toasts').show(errorDetail || 'Couldn’t save your change');
           newRecord.destroyRecord();

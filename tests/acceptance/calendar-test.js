@@ -80,6 +80,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
   page.days(9).slots(1).click();
 
   andThen(() => {
+    assert.equal(shared.toast.text, 'Thanks for agreeing to drive on December 10!');
     assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
 
     const [, commitment] = server.db.commitments;
