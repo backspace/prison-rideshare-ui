@@ -30,6 +30,8 @@ Router.map(function() {
 
   this.route('admin-calendar', { path: '/admin-calendar/:month' });
   this.route('calendar', { path: '/calendar/:month' });
+
+  this.route('statistics');
 });
 
 export default Router;

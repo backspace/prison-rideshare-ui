@@ -36,7 +36,11 @@ module.exports = function(environment) {
     sentry: {},
 
     mirageLogging: process.env.MIRAGE_LOGGING === 'false' ? false : true,
-    toastDuration: 3000
+    toastDuration: 3000,
+
+    moment: {
+      includeTimezone: '2010-2020'
+    }
   };
 
   if (environment === 'development') {
