@@ -43,6 +43,19 @@
                 </div>
               </div>
             </div>
+            <div class='layout-row'>
+              <div class='layout-column flex-100'>
+                {{#form.input class='self-notes'
+                             textarea=true
+                             label='Notes'
+                             value=person.selfNotes
+                             onChange=(action (mut person.selfNotes)) as |textHelper|}}
+                  {{#unless textHelper.hasValue}}
+                    <div class='hint'>Vehicle capacity, institutions you don’t want to drive to, etc</div>
+                  {{/unless}}
+                {{/form.input}}
+              </div>
+            </div>
           {{/paper-radio-group}}
         {{/paper-form}}
       {{/if}}

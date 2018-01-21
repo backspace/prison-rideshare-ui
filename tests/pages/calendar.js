@@ -70,6 +70,13 @@ export default create({
       }
     },
 
+    selfNotes: {
+      scope: '.self-notes',
+      field: {
+        scope: 'textarea'
+      }
+    },
+
     cancelButton: {
       scope: 'button.cancel'
     },

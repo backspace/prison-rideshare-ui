@@ -12,6 +12,7 @@ export default DS.Model.extend({
   active: DS.attr('boolean', { defaultValue: true }),
 
   notes: DS.attr('string'),
+  selfNotes: DS.attr('string'),
 
   reimbursements: DS.hasMany(),
 

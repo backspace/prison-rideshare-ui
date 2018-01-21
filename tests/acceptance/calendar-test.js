@@ -16,7 +16,8 @@ moduleForAcceptance('Acceptance | calendar', {
       active: true,
       magicToken: 'MAGIC??TOKEN',
       accessToken: 'XXX',
-      calendarSecret: 'SECRET++'
+      calendarSecret: 'SECRET++',
+      selfNotes: 'My self notes'
     });
     this.person = person;
 
@@ -226,6 +227,8 @@ test('the person can edit their details', function(assert) {
 
     assert.ok(page.person.mobile.desiredMedium, 'expected mobile to be the desired medium');
 
+    assert.equal(page.person.selfNotes.field.value, 'My self notes');
+
     assert.notOk(page.person.submitButton.isHighlighted, 'expected the submit button to not be highlighted before anything has changed');
   });
 
@@ -246,6 +249,7 @@ test('the person can edit their details', function(assert) {
   page.person.activeSwitch.click();
   page.person.mobile.field.fillIn('1234');
   page.person.email.desiredMedium.click();
+  page.person.selfNotes.field.fillIn('Updated self notes');
 
   andThen(() => {
     assert.ok(page.person.submitButton.isHighlighted, 'expected the submit button to be highlighted when the record is dirty');
@@ -260,6 +264,7 @@ test('the person can edit their details', function(assert) {
     assert.notOk(person.active, 'expected the person to be inactive on the server');
     assert.equal(person.mobile, '1234', 'expected the mobile number to have changed on the server');
     assert.equal(person.medium, 'email', 'expected the medium to have changed on the server');
+    assert.equal(person.selfNotes, 'Updated self notes', 'expected the self notes to have changed on the server');
 
     assert.equal(shared.toast.text, 'Saved your details');
     assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
