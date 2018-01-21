@@ -27,6 +27,7 @@ export default create({
       field: {
         scope: 'input'
       },
+      isError: hasClass('md-input-invalid'),
       error: {
         scope: '.paper-input-error'
       }

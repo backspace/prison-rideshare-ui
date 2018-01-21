@@ -269,6 +269,12 @@ test('the person can edit their details', function(assert) {
     assert.equal(shared.toast.text, 'Saved your details');
     assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
   });
+
+  page.person.toggle.click();
+
+  andThen(() => {
+    assert.notOk(page.person.name.isError, 'expected the name field to not show as being invalid');
+  });
 });
 
 test('the person can get a link to subscribe to their calendar', function(assert) {
@@ -303,6 +309,7 @@ test('shows detail validation errors', function(assert) {
     // FIXME validation-specific error text?
     assert.equal(shared.toast.text, 'Couldn’t save your details');
     assert.equal(page.person.name.error.text, 'Name can\'t be blank');
+    assert.ok(page.person.name.isError, 'expected the name field to show as being invalid');
   });
 });
 
