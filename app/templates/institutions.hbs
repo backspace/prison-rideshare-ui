@@ -35,10 +35,10 @@
     <h2 class='md-title'>{{if editingInstitution.isNew 'New' 'Edit'}} institution</h2>
     {{#paper-form onSubmit=saveInstitution as |form|}}
       <div class='layout layout-sm-column'>
-        {{form.input class='name' label='Name' autofocus=true value=editingInstitution.name onChange=(action (mut editingInstitution.name)) errors=editingInstitution.validationErrors.name isTouched=editingInstitution.validationErrors.name.length}}
+        {{form.input class='name' label='Name' autofocus=true value=editingInstitution.name onChange=(action (mut editingInstitution.name)) errors=editingInstitution.validationErrors.name isTouched=(readonly editingInstitution.validationErrors.name.length)}}
       </div>
       <div class='layout layout-sm-column'>
-        {{form.input class='rate' label='Rate' value=editingInstitution.rateDollars onChange=(action (mut editingInstitution.rateDollars)) errors=editingInstitution.validationErrors.rate isTouched=editingInstitution.validationErrors.rate.length}}
+        {{form.input class='rate' label='Rate' value=editingInstitution.rateDollars onChange=(action (mut editingInstitution.rateDollars)) errors=editingInstitution.validationErrors.rate isTouched=(readonly editingInstitution.validationErrors.rate.length)}}
       </div>
     {{/paper-form}}
   {{/paper-dialog-content}}

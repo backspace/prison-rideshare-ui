@@ -22,7 +22,7 @@
                        label='Distance in kilometres'
                        value=rideProxy.distance
                        errors=rideProxy.validationErrors.distance
-                       isTouched=rideProxy.validationErrors.distance.length
+                       isTouched=(readonly rideProxy.validationErrors.distance.length)
                        onChange=(action (mut rideProxy.distance))}}
         </div>
         {{#if rideProxy.donatable}}
