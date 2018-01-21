@@ -22,7 +22,8 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   const sun = server.create('person', {
     name: 'Sun',
     email: 'sun@sense8',
-    landline: '111'
+    landline: '111',
+    selfNotes: 'Some important notes'
   });
 
   const lito = server.create('person', {
@@ -114,6 +115,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     page.rides(2).as(ride => {
       assert.equal(ride.driver.email, 'sun@sense8');
       assert.equal(ride.driver.landline, '111');
+      assert.equal(ride.driver.selfNotes, 'Some important notes');
     });
   });
 

@@ -85,7 +85,9 @@ export default create({
         clear: clickable('.remove-container button'),
 
         email: text('.email'),
-        landline: text('.landline')
+        landline: text('.landline'),
+
+        selfNotes: text('.self-notes')
       },
 
       carOwner: {

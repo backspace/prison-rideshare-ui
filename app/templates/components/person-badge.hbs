@@ -25,5 +25,8 @@
     {{#if person.landline}}
       <a href='tel:{{person.landline}}'>{{paper-icon 'phone' size=14 title='landline number'}} <span class='landline'>{{person.landline}}</span></a>
     {{/if}}
+    {{#if person.selfNotes}}
+      {{paper-icon 'notes' size=14 title='notes about self'}} <span class='self-notes'>{{person.selfNotes}}</span>
+    {{/if}}
   </div>
 {{/if}}
