@@ -18,6 +18,8 @@ export default DS.Model.extend({
   drivings: DS.hasMany('ride', {inverse: 'driver'}),
   carOwnings: DS.hasMany('ride', {inverse: 'carOwner'}),
 
+  calendarSecret: DS.attr('string'),
+
   validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
 

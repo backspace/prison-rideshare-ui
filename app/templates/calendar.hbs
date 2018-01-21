@@ -49,6 +49,25 @@
     {{/card.content}}
   {{/paper-card}}
 
+  {{#paper-card class='subscription-card' as |card|}}
+    {{#card.content}}
+      <header>
+        <div>Subscribe to a calendar that tracks your slot commitments and rides</div>
+        {{#paper-button class='toggle' onClick=(action (mut showSubscription) (not showSubscription))}}
+          {{#if showSubscription}}
+            Hide information
+          {{else}}
+            More information
+          {{/if}}
+        {{/paper-button}}
+      </header>
+      {{#if showSubscription}}
+        <p>Please be careful with this link, as it shows contact information for riders. If it’s ever exposed, let us know and we can change the secret token.
+        <a href={{subscriptionUrl}}>Subscribe</a></p>
+      {{/if}}
+    {{/card.content}}
+  {{/paper-card}}
+
   {{calendar.nav}}
 
   {{#calendar.days showDaysAround=false as |day|}}

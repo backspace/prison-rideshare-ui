@@ -80,6 +80,19 @@ export default create({
     },
   },
 
+  subscription: {
+    scope: '.subscription-card',
+
+    toggle: {
+      scope: '.toggle'
+    },
+
+    link: {
+      scope: 'a',
+      href: attribute('href')
+    },
+  },
+
   month: text('.ember-power-calendar-nav-title'),
 
   nextMonth: {

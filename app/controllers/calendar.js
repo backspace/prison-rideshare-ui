@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 
@@ -9,6 +10,15 @@ export default Controller.extend({
   month: alias('model.month'),
   slots: alias('model.slots'),
   person: alias('model.person'),
+
+  subscriptionUrl: computed('person.{id,calendarSecret}', function() {
+    const person = this.get('person');
+
+    const base = person.store.adapterFor('person').buildURL('person', person.id);
+    const webcalBase = base.replace('https', 'webcal').replace('http', 'webcal');
+
+    return `${webcalBase}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
+  }),
 
   actions: {
     cancel() {
