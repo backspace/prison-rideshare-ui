@@ -39,7 +39,7 @@ module.exports = function(environment) {
     toastDuration: 3000,
 
     moment: {
-      includeTimezone: '2010-2020'
+      includeTimezone: 'subset'
     }
   };
 
