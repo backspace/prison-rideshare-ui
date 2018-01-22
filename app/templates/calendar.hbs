@@ -50,10 +50,8 @@
                              textarea=true
                              label='Notes'
                              value=person.selfNotes
-                             onChange=(action (mut person.selfNotes)) as |textHelper|}}
-                  {{#unless textHelper.hasValue}}
-                    <div class='hint'>Vehicle capacity, institutions you don’t want to drive to, etc</div>
-                  {{/unless}}
+                             onChange=(action (mut person.selfNotes))}}
+                  <div class='hint'>Vehicle capacity, institutions you don’t want to drive to, etc</div>
                 {{/form.input}}
               </div>
             </div>
