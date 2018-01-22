@@ -48,7 +48,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
   page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
-    assert.equal(page.personSession, 'You are logged in as jorts@jants.ca');
+    assert.equal(page.personSession, 'Logged in as jorts@jants.ca');
     assert.equal(page.month, 'December 2017');
 
     page.days(3).as(d4 => {
