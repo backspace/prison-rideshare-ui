@@ -33,7 +33,9 @@ export default Component.extend({
   actions: {
     toggle() {
       if (this.get('isCommittedTo')) {
-        this.get('commitment').destroyRecord().catch(error => {
+        this.get('commitment').destroyRecord().then(() => {
+          this.get('toasts').show(`Cancelled your agreement to drive on ${moment(this.get('slot.start')).format('MMMM D')}`);
+        }).catch(error => {
           const errorDetail = get(error, 'errors.firstObject.detail');
           this.get('toasts').show(errorDetail || 'Couldn’t save your change');
         });

@@ -76,17 +76,23 @@ test('calendar shows existing commitments and lets them be changed', function(as
   page.days(3).slots(0).click();
 
   andThen(() => {
+    assert.equal(shared.toast.text, 'Cancelled your agreement to drive on December 4');
     assert.notOk(page.days(3).slots(0).isCommittedTo, 'expected the slot to not longer be committed-to');
     assert.equal(server.db.commitments.length, 1, 'expected the commitment to have been deleted on the server');
   });
+});
 
+test('slots can be committed to', function(assert) {
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  // FIXME this is only a separate test because toasts linger forever in the test environment
   page.days(9).slots(1).click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Thanks for agreeing to drive on December 10!');
     assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
 
-    const [, commitment] = server.db.commitments;
+    const [, , commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
   });
 });
