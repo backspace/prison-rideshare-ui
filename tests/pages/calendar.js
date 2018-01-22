@@ -96,7 +96,7 @@ export default create({
     },
 
     link: {
-      scope: 'a',
+      scope: 'a:first',
       href: attribute('href')
     },
   },

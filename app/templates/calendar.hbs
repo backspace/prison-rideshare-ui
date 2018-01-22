@@ -75,8 +75,8 @@
         {{/paper-button}}
       </header>
       {{#if showSubscription}}
-        <p>Please be careful with this link, as it shows contact information for riders. If it’s ever exposed, let us know and we can change the secret token.
-        <a href={{subscriptionUrl}}>Subscribe</a></p>
+        <p>Please be careful with these links, as they show contact information for riders. If they’re ever exposed, let us know and we can change the secret token.</p>
+        <p>On iOS, you can tap <a href={{webcalSubscriptionUrl}}>here</a> to subscribe; on Android, you must copy <a href={{httpSubscriptionUrl}}>this URL</a> to paste into a calendar subscription field.</p>
       {{/if}}
     {{/card.content}}
   {{/paper-card}}

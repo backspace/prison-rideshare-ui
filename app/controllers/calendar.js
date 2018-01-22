@@ -11,13 +11,16 @@ export default Controller.extend({
   slots: alias('model.slots'),
   person: alias('model.person'),
 
-  subscriptionUrl: computed('person.{id,calendarSecret}', function() {
+  httpSubscriptionUrl: computed('person.{id,calendarSecret}', function() {
     const person = this.get('person');
 
     const base = person.store.adapterFor('person').buildURL('person', person.id);
-    const webcalBase = base.replace('https', 'webcal').replace('http', 'webcal');
 
-    return `${webcalBase}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
+    return `${base}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
+  }),
+
+  webcalSubscriptionUrl: computed('httpSubscriptionUrl', function() {
+    return this.get('httpSubscriptionUrl').replace('https', 'webcal').replace('http', 'webcal')
   }),
 
   actions: {
