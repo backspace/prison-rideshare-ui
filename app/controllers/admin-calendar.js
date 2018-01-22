@@ -32,6 +32,10 @@ export default CalendarController.extend({
       this.get('people').pushObject(person);
     },
 
+    addAllActive() {
+      this.get('people').addObjects(this.get('activePeople'));
+    },
+
     removePerson(person) {
       this.get('people').removeObject(person);
     },

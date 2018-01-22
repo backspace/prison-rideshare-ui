@@ -23,6 +23,7 @@
     </div>
     {{/if}}
     <h2>Temporary email interface</h2>
+    {{paper-button label='Add all active people' onClick=(action 'addAllActive')}}
     {{#paper-chips
       removeItem=(action 'removePerson')
       addItem=(action 'addPerson')
