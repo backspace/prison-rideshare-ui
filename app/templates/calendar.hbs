@@ -38,6 +38,7 @@
               </div>
               <div class='layout-column email flex-50'>
                 <div class='layout-row text-radio'>
+                  {{#paper-tooltip}}Email us if you need to change this{{/paper-tooltip}}
                   {{form.input type='email' label='Email' disabled=true value=person.email onChange=(action (mut person.email)) errors=person.validationErrors.email isTouched=(readonly person.validationErrors.email.length)}}
                   {{#group.radio value='email'}}preferred{{/group.radio}}
                 </div>
