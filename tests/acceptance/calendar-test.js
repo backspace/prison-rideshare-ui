@@ -287,20 +287,7 @@ test('the person can get a link to subscribe to their calendar', function(assert
   page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.subscription.link.isHidden, 'expected the subscription information to be hidden by default');
-  });
-
-  page.subscription.toggle.click();
-
-  andThen(() => {
-    assert.ok(page.subscription.link.isVisible, 'expected the subscription information to be revealed');
     assert.ok(page.subscription.link.href.endsWith(`/people/${this.person.id}/calendar?secret=SECRET%2B%2B`), 'expected the calendar URL to have the encoded secret');
-  });
-
-  page.subscription.toggle.click();
-
-  andThen(() => {
-    assert.ok(page.subscription.link.isHidden, 'expected the subscription information to be hidden again');
   });
 });
 

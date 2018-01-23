@@ -89,11 +89,7 @@ export default create({
   },
 
   subscription: {
-    scope: '.subscription-card',
-
-    toggle: {
-      scope: '.toggle'
-    },
+    scope: '.subscription',
 
     link: {
       scope: 'a:first',

@@ -61,27 +61,14 @@
     {{/card.content}}
   {{/paper-card}}
 
-  {{#paper-card class='subscription-card' as |card|}}
+  {{#paper-card as |card|}}
     {{#card.content}}
-      <header>
-        <div>Subscribe to a calendar that tracks your slot commitments and rides</div>
-        {{#paper-button class='toggle' onClick=(action (mut showSubscription) (not showSubscription))}}
-          {{#if showSubscription}}
-            Hide information
-          {{else}}
-            More information
-          {{/if}}
-        {{/paper-button}}
-      </header>
-      {{#if showSubscription}}
-        <p>Please be careful with these links, as they show contact information for riders. If they’re ever exposed, let us know and we can change the secret token.</p>
-        <p>On iOS, you can tap <a href={{webcalSubscriptionUrl}}>here</a> to subscribe; on Android, you must copy <a href={{httpSubscriptionUrl}}>this URL</a> to paste into a calendar subscription field.</p>
-      {{/if}}
+      <p>Let us know in advance when you can take ride requests to visit their loved ones. Click a time slot below to commit. If you can’t commit anymore, click the slot again.</p>
+      <p>Change your communication details with the form you can reveal above.</p>
+
+      <p class='subscription'>You can subscribe to a live-updating calendar that shows what times you’ve committed to as well as rides assigned to you. On Apple platforms, you can tap <a href={{webcalSubscriptionUrl}}>here</a> to subscribe; on other platforms, you’ll have to copy <a href={{httpSubscriptionUrl}}>this URL</a> to paste into a calendar subscription field. Please be careful with these links, as they show contact information for riders. If they’re ever exposed, let us know and we can change the secret token.</p>
     {{/card.content}}
   {{/paper-card}}
-
-  <p>Let us know in advance when you can take ride requests to visit their loved ones. Click a time slot below to commit. If you can’t commit anymore, click the slot again.</p>
-  <p>Change your communication details with the form you can reveal above.</p>
 
   {{calendar.nav}}
 
