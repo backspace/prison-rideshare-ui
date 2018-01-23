@@ -1,6 +1,6 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { get } from '@ember/object';
+import { getWithDefault } from '@ember/object';
 
 export default Controller.extend({
   session: service(),
@@ -18,7 +18,7 @@ export default Controller.extend({
           user.get('password')
         );
       }).catch(error => {
-        const errorText = get(error, 'errors.firstObject.detail', 'There was an error registering you');
+        const errorText = getWithDefault(error, 'errors.firstObject.detail', 'There was an error registering you');
         this.set('error', errorText);
       });
     }
