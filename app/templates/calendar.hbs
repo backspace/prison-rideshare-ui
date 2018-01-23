@@ -21,7 +21,7 @@
             onChange=(action (mut person.medium)) as |group|}}
             <div class='layout-row'>
               <div class='layout-column flex-50'>
-                {{form.input class='name' label='Name' value=person.name onChange=(action (mut person.name)) errors=person.validationErrors.name isTouched=(readonly person.validationErrors.name.length)}}
+                {{form.input class='name' label='Name' autofocus=true value=person.name onChange=(action (mut person.name)) errors=person.validationErrors.name isTouched=(readonly person.validationErrors.name.length)}}
               </div>
               <div class='layout-column flex-50'>
                 {{#paper-switch value=person.active onChange=(action (mut person.active) (not person.active))}}Available for rides{{/paper-switch}}
