@@ -1,5 +1,6 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import Mirage from 'ember-cli-mirage';
 
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
@@ -46,5 +47,31 @@ test('registrations are sent to the server, currently with no followup', functio
     assert.equal(user.password, 'aaaaaaaaa');
 
     assert.equal(shared.session.text, 'Log out jorts@jants.ca');
+  });
+});
+
+test('a failed registration shows an unprocessed error', function(assert) {
+  server.post('/register', () => {
+    return new Mirage.Response(422, {}, {
+      errors: [{
+        'source': {
+          'pointer': '/data/attributes/password-confirmation'
+        },
+        'detail': 'Password confirmation did not match'
+      }]
+    });
+  });
+
+  page.visit();
+
+  page.fillEmail('jorts@jants.ca');
+  page.fillPassword('aaaaaaaaa');
+  page.fillPasswordConfirmation('aaaaaaaaa');
+
+  page.submit();
+
+  andThen(() => {
+    assert.equal(currentURL(), '/register');
+    assert.equal(page.error, 'Password confirmation did not match');
   });
 });
