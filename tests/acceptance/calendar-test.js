@@ -22,34 +22,40 @@ moduleForAcceptance('Acceptance | calendar', {
     this.person = person;
 
     const committedSlot = server.create('slot', {
-      start: new Date(2017, 11, 4, 17, 30),
-      end: new Date(2017, 11, 4, 20),
+      start: new Date(2117, 11, 4, 17, 30),
+      end: new Date(2117, 11, 4, 20),
       count: 3
     });
 
     this.toCommitSlot = server.create('slot', {
-      start: new Date(2017, 11, 10, 17),
-      end: new Date(2017, 11, 10, 21),
+      start: new Date(2117, 11, 10, 17),
+      end: new Date(2117, 11, 10, 21),
       count: 2
     });
+
+    server.create('slot', {
+      start: new Date(2117, 11, 10, 11),
+      end: new Date(2117, 11, 10, 17),
+      count: 0
+    });
+
+    committedSlot.createCommitment({ person: server.create('person', { name: 'Other Slot Person '})});
+    committedSlot.createCommitment({ person });
 
     server.create('slot', {
       start: new Date(2017, 11, 10, 11),
       end: new Date(2017, 11, 10, 17),
       count: 0
     });
-
-    committedSlot.createCommitment({ person: server.create('person', { name: 'Other Slot Person '})});
-    committedSlot.createCommitment({ person });
   }
 });
 
 test('calendar shows existing commitments and lets them be changed', function(assert) {
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
     assert.equal(page.personSession, 'Logged in as jorts@jants.ca');
-    assert.equal(page.month, 'December 2017');
+    assert.equal(page.month, 'December 2117');
 
     page.days(3).as(d4 => {
       assert.equal(d4.slots().count, 1, 'expected one slot on Monday');
@@ -83,7 +89,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
 });
 
 test('slots can be committed to', function(assert) {
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   // FIXME this is only a separate test because toasts linger forever in the test environment
   page.days(9).slots(1).click();
@@ -105,7 +111,7 @@ test('full slots show as full and can’t be committed to', function(assert) {
   this.toCommitSlot.createCommitment();
   this.toCommitSlot.createCommitment();
 
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
     assert.ok(page.days(9).slots(1).isFull, 'expected the full slot to show as full');
@@ -115,6 +121,24 @@ test('full slots show as full and can’t be committed to', function(assert) {
 
   andThen(() => {
     assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
+  });
+});
+
+test('past slots can’t be committed to', function(assert) {
+  server.post('/commitments', function() {
+    assert.ok(false, 'expected no commitment to be created for a past slot');
+  });
+
+  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+
+  andThen(() => {
+    assert.ok(page.days(9).slots(0).isFull, 'expected the full slot to show as full');
+  });
+
+  page.days(9).slots(0).click();
+
+  andThen(() => {
+    assert.notOk(page.days(9).slots(0).isCommittedTo, 'expected the slot to not be committed-to');
   });
 });
 
@@ -128,7 +152,7 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
     });
   });
 
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   page.days(3).slots(0).click();
 
@@ -149,7 +173,7 @@ test('a failure to create a commitment makes it not display and shows an error',
     });
   });
 
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   page.days(9).slots(1).click();
 
@@ -171,7 +195,7 @@ test('a failure to create a commitment with a particular error shows the error',
     });
   });
 
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   page.days(9).slots(1).click();
 
@@ -181,7 +205,7 @@ test('a failure to create a commitment with a particular error shows the error',
 });
 
 test('visiting with an unknown magic token shows an error', function(assert) {
-  page.visit({ month: '2017-12', token: 'JORTLEBY' });
+  page.visit({ month: '2117-12', token: 'JORTLEBY' });
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in with that token.');
@@ -189,7 +213,7 @@ test('visiting with an unknown magic token shows an error', function(assert) {
 });
 
 test('visiting with no token shows an error', function(assert) {
-  page.visit({ month: '2017-12' });
+  page.visit({ month: '2117-12' });
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in without a token.');
@@ -206,7 +230,7 @@ test('visiting with a magic token that doesn’t resolve to a person shows an er
     });
   });
 
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in with that token.');
@@ -214,7 +238,7 @@ test('visiting with a magic token that doesn’t resolve to a person shows an er
 });
 
 test('the person can edit their details', function(assert) {
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
     assert.ok(page.person.name.isHidden, 'expected the name field to be hidden by default');
@@ -284,7 +308,7 @@ test('the person can edit their details', function(assert) {
 });
 
 test('the person can get a link to subscribe to their calendar', function(assert) {
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
     assert.ok(page.subscription.link.href.endsWith(`/people/${this.person.id}/calendar?secret=SECRET%2B%2B`), 'expected the calendar URL to have the encoded secret');
@@ -292,7 +316,7 @@ test('the person can get a link to subscribe to their calendar', function(assert
 });
 
 test('shows detail validation errors', function(assert) {
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   page.person.toggle.click();
   page.person.name.field.fillIn('');
@@ -307,7 +331,7 @@ test('shows detail validation errors', function(assert) {
 });
 
 test('handles an error saving details', function(assert) {
-  page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   server.patch('/people/me', function() {
     return new Mirage.Response(401, {}, {
@@ -329,17 +353,17 @@ test('handles an error saving details', function(assert) {
 });
 
 test('the path controls the month', function(assert) {
-  page.visit({ month: '2018-01', token: 'MAGIC??TOKEN' });
+  page.visit({ month: '2118-01', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
-    assert.equal(page.month, 'January 2018');
+    assert.equal(page.month, 'January 2118');
   });
 });
 
 test('an admin can see the commitments with person names', function(assert) {
   server.create('user', { admin: true });
   authenticateSession(this.application, { access_token: 'abcdef' });
-  page.adminVisit({ month: '2017-12' });
+  page.adminVisit({ month: '2117-12' });
 
   andThen(() => {
     assert.equal(page.days(3).slots(0).count.text, '2/3', 'expected two people to show for the slot out of a maximum of three');
@@ -352,7 +376,7 @@ test('an admin can see the commitments with person names', function(assert) {
   page.days(3).slots(0).count.click();
 
   andThen(() => {
-    assert.equal(page.viewingSlot, 'Monday, December 4, 5:30p–8:00p');
+    assert.equal(page.viewingSlot, 'Saturday, December 4, 5:30p–8:00p');
     assert.equal(page.people().count, 2, 'expected two people details to show for the slot');
     assert.equal(page.people(0).name, 'Other Slot Person');
     assert.equal(page.people(1).name, 'Jortle Tortle');
@@ -367,12 +391,12 @@ test('an admin can see the commitments with person names', function(assert) {
   page.nextMonth.click();
 
   andThen(() => {
-    assert.equal(page.month, 'January 2018');
+    assert.equal(page.month, 'January 2118');
   });
 
   page.previousMonth.click();
 
   andThen(() => {
-    assert.equal(page.month, 'December 2017');
+    assert.equal(page.month, 'December 2117');
   });
 });

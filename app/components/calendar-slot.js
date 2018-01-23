@@ -21,6 +21,13 @@ export default Component.extend({
     return formatBriefTimespan(this.get('slot.start'), this.get('slot.end'), false);
   }),
 
+  disabled: computed('slot.{isNotFull,start}', function() {
+    const isNotFull = this.get('slot.isNotFull');
+    const start = this.get('slot.start');
+
+    return !isNotFull || start < new Date();
+  }),
+
   capacity: computed('slot.{count,commitments.length}', function() {
     const dividend = this.get('slot.commitments.length');
 
