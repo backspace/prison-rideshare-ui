@@ -5,6 +5,8 @@ import { inject as service } from '@ember/service';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment';
 
+import { task } from 'ember-concurrency';
+
 export default Component.extend({
   toasts: service(),
   store: service(),
@@ -21,11 +23,14 @@ export default Component.extend({
     return formatBriefTimespan(this.get('slot.start'), this.get('slot.end'), false);
   }),
 
-  disabled: computed('slot.{isNotFull,start}', function() {
+  disabled: computed('slot.{isNotFull,start}', 'toggle.isRunning', function() {
     const isNotFull = this.get('slot.isNotFull');
     const start = this.get('slot.start');
+    const toggleIsRunning = this.get('toggle.isRunning');
 
-    if (start < new Date()) {
+    if (toggleIsRunning) {
+      return true;
+    } else if (start < new Date()) {
       return true;
     } else if (!isNotFull) {
       return !this.get('isCommittedTo')
@@ -43,29 +48,31 @@ export default Component.extend({
     return `${dividend}/${divisor}`;
   }),
 
-  actions: {
-    toggle() {
-      if (this.get('isCommittedTo')) {
-        this.get('commitment').destroyRecord().then(() => {
-          this.get('toasts').show(`Cancelled your agreement to drive on ${moment(this.get('slot.start')).format('MMMM D')}`);
-        }).catch(error => {
-          const errorDetail = get(error, 'errors.firstObject.detail');
-          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
-        });
-      } else if (this.get('slot.isNotFull')) {
-        const newRecord = this.get('store').createRecord('commitment', {
-          slot: this.get('slot'),
-          person: this.get('person')
-        });
+  toggle: task(function * () {
+    if (this.get('isCommittedTo')) {
+      try {
+        yield this.get('commitment').destroyRecord();
 
-        newRecord.save().then(() => {
-          this.get('toasts').show(`Thanks for agreeing to drive on ${moment(this.get('slot.start')).format('MMMM D')}!`);
-        }).catch(error => {
-          const errorDetail = get(error, 'errors.firstObject.detail');
-          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
-          newRecord.destroyRecord();
-        });
+        this.get('toasts').show(`Cancelled your agreement to drive on ${moment(this.get('slot.start')).format('MMMM D')}`);
+      } catch (error) {
+        const errorDetail = get(error, 'errors.firstObject.detail');
+        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+      }
+    } else if (this.get('slot.isNotFull')) {
+      const newRecord = this.get('store').createRecord('commitment', {
+        slot: this.get('slot'),
+        person: this.get('person')
+      });
+
+      try {
+        yield newRecord.save();
+
+        this.get('toasts').show(`Thanks for agreeing to drive on ${moment(this.get('slot.start')).format('MMMM D')}!`);
+      } catch (error) {
+        const errorDetail = get(error, 'errors.firstObject.detail');
+        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+        newRecord.destroyRecord();
       }
     }
-  }
+  }).drop()
 });
