@@ -47,6 +47,14 @@ moduleForAcceptance('Acceptance | calendar', {
       end: new Date(2017, 11, 10, 17),
       count: 0
     });
+
+    const pastCommittedSlot = server.create('slot', {
+      start: new Date(2017, 11, 11, 11),
+      end: new Date(2017, 11, 11, 17),
+      count: 0
+    });
+
+    pastCommittedSlot.createCommitment({ person });
   }
 });
 
@@ -62,7 +70,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
       d4.slots(0).as(s1 => {
         assert.equal(s1.hours, '5:30p—8');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
-        assert.notOk(s1.isFull, 'expected the slot to not be full');
+        assert.notOk(s1.isDisabled, 'expected the slot to not be full');
         assert.notOk(s1.count.isVisible, 'expected the slot count not to show for a non-admin');
       })
     });
@@ -84,7 +92,7 @@ test('calendar shows existing commitments and lets them be changed', function(as
   andThen(() => {
     assert.equal(shared.toast.text, 'Cancelled your agreement to drive on December 4');
     assert.notOk(page.days(3).slots(0).isCommittedTo, 'expected the slot to not longer be committed-to');
-    assert.equal(server.db.commitments.length, 1, 'expected the commitment to have been deleted on the server');
+    assert.equal(server.db.commitments.length, 2, 'expected the commitment to have been deleted on the server');
   });
 });
 
@@ -98,7 +106,7 @@ test('slots can be committed to', function(assert) {
     assert.equal(shared.toast.text, 'Thanks for agreeing to drive on December 10!');
     assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
 
-    const [, , commitment] = server.db.commitments;
+    const [, , , commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
   });
 });
@@ -114,7 +122,7 @@ test('full slots show as full and can’t be committed to', function(assert) {
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.days(9).slots(1).isFull, 'expected the full slot to show as full');
+    assert.ok(page.days(9).slots(1).isDisabled, 'expected the full slot to be disabled');
   });
 
   page.days(9).slots(1).click();
@@ -132,7 +140,9 @@ test('past slots can’t be committed to', function(assert) {
   page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.days(9).slots(0).isFull, 'expected the full slot to show as full');
+    assert.ok(page.days(9).slots(0).isDisabled, 'expected the past slot to be disabled');
+    assert.ok(page.days(10).slots(0).isCommittedTo, 'expected the past committed slot to show as committed-to');
+    assert.ok(page.days(10).slots(0).isDisabled, 'expected the past committed slot to be disabled');
   });
 
   page.days(9).slots(0).click();
@@ -159,7 +169,7 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
     assert.ok(page.days(3).slots(0).isCommittedTo, 'expected the slot to still be committed-to');
-    assert.equal(server.db.commitments.length, 2, 'expected the commitment to still be on the server');
+    assert.equal(server.db.commitments.length, 3, 'expected the commitment to still be on the server');
   });
 });
 
@@ -180,7 +190,7 @@ test('a failure to create a commitment makes it not display and shows an error',
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
     assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
-    assert.equal(server.db.commitments.length, 2, 'expected the commitments to be unchanged on the server');
+    assert.equal(server.db.commitments.length, 3, 'expected the commitments to be unchanged on the server');
   });
 })
 

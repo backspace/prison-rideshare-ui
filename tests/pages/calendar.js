@@ -125,7 +125,7 @@ export default create({
 
           isCommittedTo: hasClass('md-checked', 'md-checkbox'),
           disabledAttribute: attribute('disabled', 'md-checkbox'),
-          isFull: getter(function() {
+          isDisabled: getter(function() {
             return this.disabledAttribute === 'disabled';
           })
         }

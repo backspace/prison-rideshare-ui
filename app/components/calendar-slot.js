@@ -25,7 +25,13 @@ export default Component.extend({
     const isNotFull = this.get('slot.isNotFull');
     const start = this.get('slot.start');
 
-    return !isNotFull || start < new Date();
+    if (start < new Date()) {
+      return true;
+    } else if (!isNotFull) {
+      return !this.get('isCommittedTo')
+    } else {
+      return false;
+    }
   }),
 
   capacity: computed('slot.{count,commitments.length}', function() {
