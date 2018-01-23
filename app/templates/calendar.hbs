@@ -5,8 +5,10 @@
         <div class='person-session'>Logged in as {{person.email}}</div>
         {{#if showPerson}}
           <div>
-            {{#paper-button class='cancel' onClick='cancel'}}Cancel{{/paper-button}}
-            {{#paper-button class='submit' primary=person.hasDirtyAttributes raised=person.hasDirtyAttributes onClick='savePerson'}}Save{{/paper-button}}
+            {{#paper-button class='cancel' onClick='cancel' disabled=savePerson.isRunning}}Cancel{{/paper-button}}
+            {{#paper-button class='submit' primary=person.hasDirtyAttributes raised=person.hasDirtyAttributes onClick=(perform savePerson) disabled=savePerson.isRunning}}
+              {{if savePerson.isRunning '…' 'Save'}}
+            {{/paper-button}}
           </div>
         {{else}}
           {{paper-button class='toggle' label='Edit communication details' onClick=(action (mut showPerson) (not showPerson))}}

@@ -4,6 +4,8 @@ import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 
+import { task } from 'ember-concurrency';
+
 export default Controller.extend({
   toasts: service(),
 
@@ -23,19 +25,21 @@ export default Controller.extend({
     return this.get('httpSubscriptionUrl').replace('https', 'webcal').replace('http', 'webcal')
   }),
 
+  savePerson: task(function * () {
+    try {
+      yield this.get('person').save();
+
+      this.get('toasts').show('Saved your details');
+      this.set('showPerson', false);
+    } catch (e) {
+      this.get('toasts').show('Couldn’t save your details');
+    }
+  }).drop(),
+
   actions: {
     cancel() {
       this.set('showPerson', false);
       this.get('person').rollbackAttributes();
-    },
-
-    savePerson() {
-      this.get('person').save().then(() => {
-        this.get('toasts').show('Saved your details');
-        this.set('showPerson', false);
-      }).catch(() => {
-        this.get('toasts').show('Couldn’t save your details');
-      })
     }
   }
 });
