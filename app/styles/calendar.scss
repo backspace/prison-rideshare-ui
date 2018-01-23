@@ -1,5 +1,5 @@
 .ember-power-calendar {
-  @include ember-power-calendar(100px);
+  @include ember-power-calendar(85px, 85px, 140px);
 
   .count {
     display: inline-block;
@@ -13,6 +13,18 @@
     color: white;
 
     cursor: pointer;
+  }
+
+  .slot {
+    transform: scale(0.7);
+  }
+
+  .ember-power-calendar-weekdays, .ember-power-calendar-weekday {
+    height: auto;
+  }
+
+  .ember-power-calendar-day {
+    text-align: center;
   }
 }
 
