@@ -377,10 +377,13 @@ test('an admin can see the commitments with person names', function(assert) {
 
   andThen(() => {
     assert.equal(page.days(3).slots(0).count.text, '2/3', 'expected two people to show for the slot out of a maximum of three');
+    assert.ok(page.days(3).slots(0).count.isCommittedTo, 'expected the two person-slot to show as committed to');
     assert.ok(page.days(3).slots(0).checkbox.isHidden, 'expected the checkbox to not display');
+
     assert.equal(page.people().count, 0, 'expected no people details to show initially');
 
     assert.equal(page.days(9).slots(0).count.text, '0/∞', 'expected the slot capacity to show as ∞');
+    assert.notOk(page.days(9).slots(0).count.isCommittedTo, 'expected the empty slot to not show as committed to');
   });
 
   page.days(3).slots(0).count.click();

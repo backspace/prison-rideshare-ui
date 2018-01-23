@@ -1,7 +1,7 @@
 <div class='slot'>
   {{#if count}}
     <span class='hours'>{{timespan}}</span>
-    <span class='count' onClick={{action setViewingSlot slot}}>{{capacity}}</span>
+    <span class='count {{if (gt slot.commitments.length 0) 'committed-to'}}' onClick={{action setViewingSlot slot}}>{{capacity}}</span>
   {{else}}
     {{#paper-checkbox value=isCommittedTo disabled=disabled onChange=(action 'toggle')}}
       <span class='hours'>{{timespan}}</span>

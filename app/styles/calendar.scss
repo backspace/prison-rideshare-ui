@@ -13,6 +13,10 @@
     color: white;
 
     cursor: pointer;
+
+    &.committed-to {
+      background-color: color($primary);
+    }
   }
 
   .slot {

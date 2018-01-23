@@ -120,7 +120,8 @@ export default create({
           hours: text('.hours'),
 
           count: {
-            scope: '.count'
+            scope: '.count',
+            isCommittedTo: hasClass('committed-to'),
           },
 
           isCommittedTo: hasClass('md-checked', 'md-checkbox'),
