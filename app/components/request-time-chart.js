@@ -49,7 +49,7 @@ export default Component.extend({
       text: 'Request start times per day'
     },
     xAxis: {
-      categories: new Array(24).map((empty, index) => index)
+      categories: Array(24).fill().map((empty, index) => index)
     },
     yAxis: {
       categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
@@ -74,7 +74,7 @@ export default Component.extend({
         let x = this.series.xAxis.categories[this.point.x];
         let y = this.series.yAxis.categories[this.point.y];
         let { value } = this.point;
-        return `<b>${x}</b> sold <br><b>${value}</b> items on <br><b>${y}</b>`;
+        return `<strong>${value}</strong> requests starting at <strong>${x}h</strong> on <strong>${y}</strong>`;
       }
     }
   }),
