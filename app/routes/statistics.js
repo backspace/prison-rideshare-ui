@@ -6,5 +6,9 @@ export default Route.extend(AuthenticatedRoute, {
     return this.get('store').findAll('ride');
   },
 
+  afterModel() {
+    return this.get('store').findAll('reimbursement');
+  },
+
   titleToken: 'Statistics'
 });
