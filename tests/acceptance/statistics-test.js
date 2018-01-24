@@ -41,4 +41,18 @@ test('shows ride start times per day, with a default range of the past year', fu
   andThen(() => {
     assert.equal(page.times.days(2).hours(10).text, '2');
   });
+
+  page.pastTwoWeeks.click();
+
+  andThen(() => {
+    assert.equal(page.start.value, '2018-01-10', 'expected the start date to be two weeks ago');
+    assert.equal(page.end.value, '2018-01-24', 'expected the end date to be today');
+  });
+
+  page.pastYear.click();
+
+  andThen(() => {
+    assert.equal(page.start.value, '2017-01-24', 'expected the start date to be a year ago');
+    assert.equal(page.end.value, '2018-01-24', 'expected the end date to be today');
+  });
 });

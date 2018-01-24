@@ -15,6 +15,9 @@
       label='End'
       value=end
       onChange=(action (mut end))}}
+
+    {{paper-button class='past-year' label='Past year' onClick=(action 'setPastYear')}}
+    {{paper-button class='past-two-weeks' label='Past two weeks' onClick=(action 'setPastTwoWeeks')}}
   </div>
 
   <h3>Request start times by day</h3>

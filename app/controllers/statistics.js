@@ -5,9 +5,7 @@ import moment from 'moment';
 export default Controller.extend({
   init() {
     this._super(...arguments);
-
-    this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
-    this.set('end', moment().format('YYYY-MM-DD'));
+    this.send('setPastYear');
   },
 
   days: computed('model.@each.start', 'start', 'end', function() {
@@ -35,5 +33,17 @@ export default Controller.extend({
 
       return days;
     }, new Array(7));
-  })
+  }),
+
+  actions: {
+    setPastYear() {
+      this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
+      this.set('end', moment().format('YYYY-MM-DD'));
+    },
+
+    setPastTwoWeeks() {
+      this.set('start', moment().subtract(2, 'w').format('YYYY-MM-DD'));
+      this.set('end', moment().format('YYYY-MM-DD'));
+    }
+  }
 });
