@@ -61,12 +61,25 @@ export default Component.extend({
       plotOptions: {
         series: {
           stacking: 'normal'
+        },
+        bar: {
+          dataLabels: {
+            enabled: true,
+            filter: {
+              property: 'y',
+              operator: '>',
+              value: 5
+            }
+          }
         }
       },
       xAxis: {
         categories: ['Not cancelled', 'Cancelled']
       },
       yAxis: {
+        stackLabels: {
+          enabled: true
+        }
       },
     };
   }),
