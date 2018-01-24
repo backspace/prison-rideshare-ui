@@ -28,12 +28,14 @@
       <th>23</th>
     </tr>
   </thead>
-  {{#each days as |day|}}
-    <tr>
-      <td>{{day.name}}</td>
-      {{#each day.hours as |hour|}}
-        <td>{{hour}}</td>
-      {{/each}}
-    </tr>
-  {{/each}}
+  <tbody>
+    {{#each days as |day|}}
+      <tr>
+        <td>{{day.name}}</td>
+        {{#each day.hours as |hour|}}
+          <td class='hour'>{{hour}}</td>
+        {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
 </table>
