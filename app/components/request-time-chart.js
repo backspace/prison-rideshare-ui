@@ -46,7 +46,7 @@ export default Component.extend({
       plotBorderWidth: 1
     },
     title: {
-      text: 'Request start times per day'
+      text: 'Request start times by day'
     },
     xAxis: {
       categories: Array(24).fill().map((empty, index) => index)
