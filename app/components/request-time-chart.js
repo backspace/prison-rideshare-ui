@@ -8,7 +8,7 @@ export default Component.extend({
       const start = ride.get('start');
       const startInTimeZone = moment.tz(start, 'America/Winnipeg');
       // const day = (startInTimeZone.day() - 1) % 7;
-      const day = startInTimeZone.day() || 6;
+      const day = startInTimeZone.day() ? startInTimeZone.day() - 1 : 6;
 
       if (!days[day]) {
         days[day] = {hours: new Array(24), name: startInTimeZone.format('ddd'), day};
