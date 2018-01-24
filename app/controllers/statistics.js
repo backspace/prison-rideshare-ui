@@ -18,7 +18,7 @@ export default Controller.extend({
   }),
 
   days: computed('rides.@each.start', function() {
-    this.get('rides').reduce((days, ride) => {
+    return this.get('rides').reduce((days, ride) => {
       const start = ride.get('start');
       const startInTimeZone = moment.tz(start, 'America/Winnipeg');
       const day = startInTimeZone.day();
