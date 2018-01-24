@@ -3,11 +3,19 @@ import { computed } from '@ember/object';
 import moment from 'moment';
 
 export default Controller.extend({
-  days: computed('model.@each.start', function() {
-    const yearAgoMoment = moment().subtract(1, 'y');
+  init() {
+    this._super(...arguments);
+
+    this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
+    this.set('end', moment().format('YYYY-MM-DD'));
+  },
+
+  days: computed('model.@each.start', 'start', 'end', function() {
+    const rangeStart = moment(this.get('start'));
+    const rangeEnd = moment(this.get('end'));
 
     return this.get('model').filter(ride => {
-      return yearAgoMoment.isBefore(ride.get('start'));
+      return rangeStart.isBefore(ride.get('start')) && rangeEnd.isAfter(ride.get('start'));
     }).reduce((days, ride) => {
       const start = ride.get('start');
       const startInTimeZone = moment.tz(start, 'America/Winnipeg');

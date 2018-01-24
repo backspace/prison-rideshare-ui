@@ -1,3 +1,19 @@
+<div class='layout-row'>
+  {{paper-input
+    class='start'
+    type='date'
+    label='Start'
+    value=start
+    onChange=(action (mut start))}}
+
+  {{paper-input
+    class='end'
+    type='date'
+    label='End'
+    value=end
+    onChange=(action (mut end))}}
+</div>
+
 <table>
   <thead>
     <tr>

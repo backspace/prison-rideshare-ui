@@ -7,6 +7,9 @@ import {
 export default create({
   visit: visitable('/statistics'),
 
+  start: { scope: '.start input' },
+  end: { scope: '.end input' },
+
   times: {
     scope: 'table',
 
