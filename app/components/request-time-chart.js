@@ -74,7 +74,7 @@ export default Component.extend({
         let x = this.series.xAxis.categories[this.point.x];
         let y = this.series.yAxis.categories[this.point.y];
         let { value } = this.point;
-        return `<strong>${value}</strong> requests starting at <strong>${x}h</strong> on <strong>${y}</strong>`;
+        return `<strong>${value}</strong> request${value > 1 ? 's' : ''} starting at <strong>${x}h</strong> on <strong>${y}</strong>`;
       }
     }
   }),
