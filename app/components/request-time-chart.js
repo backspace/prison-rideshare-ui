@@ -53,7 +53,8 @@ export default Component.extend({
     },
     yAxis: {
       categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      title: null
+      title: null,
+      reversed: true
     },
     colorAxis: {
       min: 0,
