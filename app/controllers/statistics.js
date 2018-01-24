@@ -8,13 +8,17 @@ export default Controller.extend({
     this.send('setPastYear');
   },
 
-  days: computed('model.@each.start', 'start', 'end', function() {
+  rides: computed('model.@each.start', 'start', 'end', function() {
     const rangeStart = moment(this.get('start'));
     const rangeEnd = moment(this.get('end'));
 
     return this.get('model').filter(ride => {
       return rangeStart.isBefore(ride.get('start')) && rangeEnd.isAfter(ride.get('start'));
-    }).reduce((days, ride) => {
+    });
+  }),
+
+  days: computed('rides.@each.start', function() {
+    this.get('rides').reduce((days, ride) => {
       const start = ride.get('start');
       const startInTimeZone = moment.tz(start, 'America/Winnipeg');
       const day = startInTimeZone.day();

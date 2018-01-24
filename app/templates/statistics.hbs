@@ -20,6 +20,8 @@
     {{paper-button class='past-two-weeks' label='Past two weeks' onClick=(action 'setPastTwoWeeks')}}
   </div>
 
+  {{request-time-chart rides=rides}}
+
   <h3>Request start times by day</h3>
 
   <table>
