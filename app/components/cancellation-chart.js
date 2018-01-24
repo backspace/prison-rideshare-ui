@@ -18,7 +18,11 @@ export default Component.extend({
           key = 'other';
         }
       } else {
-        key = 'not cancelled';
+        if (ride.get('complete')) {
+          key = 'report complete';
+        } else {
+          key = 'report incomplete';
+        }
       }
 
       if (!reasonToCount[key]) {
@@ -33,7 +37,7 @@ export default Component.extend({
   data: computed('reasonToCount', function() {
     const reasonToCount = this.get('reasonToCount');
     return Object.keys(reasonToCount).map(key => {
-        if (key === 'not cancelled') {
+        if (key === 'report complete' || key === 'report incomplete') {
           return {
             name: key,
             data: [reasonToCount[key], 0]
