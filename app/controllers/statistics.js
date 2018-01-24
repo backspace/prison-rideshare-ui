@@ -48,6 +48,11 @@ export default Controller.extend({
     setPastTwoWeeks() {
       this.set('start', moment().subtract(2, 'w').format('YYYY-MM-DD'));
       this.set('end', moment().format('YYYY-MM-DD'));
+    },
+
+    setThisYear() {
+      this.set('start', moment().startOf('year').format('YYYY-MM-DD'));
+      this.set('end', moment().format('YYYY-MM-DD'));
     }
   }
 });
