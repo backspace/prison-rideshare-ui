@@ -56,7 +56,7 @@ export default Component.extend({
         type: 'bar',
       },
       title: {
-        text: 'Cancellations'
+        text: 'Cancellation rate and reasons'
       },
       plotOptions: {
         series: {
