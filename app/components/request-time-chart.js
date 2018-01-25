@@ -89,7 +89,7 @@ export default Component.extend({
         let x = this.series.xAxis.categories[this.point.x];
         let y = this.series.yAxis.categories[this.point.y];
         let { value } = this.point;
-        return `<strong>${value}</strong> request${value > 1 ? 's' : ''} during <strong>${x}h</strong> on <strong>${y}s</strong>`;
+        return `<strong>${value}</strong> visit${value > 1 ? 's' : ''} within <strong>${x}h</strong> on <strong>${y}s</strong>`;
       }
     }
   }),
