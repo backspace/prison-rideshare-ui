@@ -11,6 +11,7 @@ moduleForAcceptance('Acceptance | statistics', {
     authenticateSession(this.application);
 
     // FIXME this will stop working a year after this date…
+    // or not… what form, if any, should tests have?
     server.create('ride', {
       start: new Date(2017, 11, 25, 17, 0),
       end: new Date(2017, 11, 25, 19, 0)
