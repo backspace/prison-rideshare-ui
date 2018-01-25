@@ -82,10 +82,10 @@ export default Component.extend({
     ];
   }),
 
-  options: computed('timeGroups', 'timeGroupKeys.length', function() {
+  options: computed('timeGroups', 'timeGroupKeys.length', 'grouping', function() {
     return {
       title: {
-        text: 'Period-grouped requests and reimbursements'
+        text: `Ride distances and expenses, grouped into ${this.get('grouping')}`
       },
       plotOptions: {
         column: {
