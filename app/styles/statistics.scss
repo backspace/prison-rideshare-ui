@@ -18,3 +18,7 @@
     display: flex;
   }
 }
+
+.request-time-chart svg rect {
+  stroke-width: 0;
+}

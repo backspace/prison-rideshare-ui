@@ -3,6 +3,8 @@ import { computed } from '@ember/object';
 import moment from 'moment';
 
 export default Component.extend({
+  classNames: ['request-time-chart'],
+
   data: computed('rides.@each.start', function() {
     const data = this.get('rides').reduce((days, ride) => {
       const start = ride.get('start'), end  = ride.get('end');
@@ -60,12 +62,18 @@ export default Component.extend({
     yAxis: {
       categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       title: null,
-      reversed: true
+      reversed: true,
+      gridLineWidth: 0
     },
+    // FIXME this was in the theme but caused all legends to have a gradient?
     colorAxis: {
-      min: 0,
-      minColor: '#ffffff',
-      maxColor: '#3f51b5'
+      maxColor: '#60042E',
+      minColor: '#ffffff'
+    },
+    plotOptions: {
+      heatmap: {
+        borderWidth: 0
+      }
     },
     legend: {
       align: 'right',
