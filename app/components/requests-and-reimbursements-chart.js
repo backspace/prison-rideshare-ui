@@ -43,14 +43,14 @@ export default Component.extend({
       data: this.get('timeGroupKeys').map(timeGroupKey => {
         return timeGroups[timeGroupKey].filterBy('cancelled').length;
       }),
-      stack: 'Cancelled'
+      stack: 'Requests'
     }, {
       name: 'Not cancelled',
       type: 'column',
       data: this.get('timeGroupKeys').map(timeGroupKey => {
         return timeGroups[timeGroupKey].rejectBy('cancelled').length;
       }),
-      stack: 'Not cancelled'
+      stack: 'Requests'
     }, {
       name: 'Distance',
       type: 'spline',
@@ -87,14 +87,18 @@ export default Component.extend({
       title: {
         text: 'Period-grouped requests and reimbursements'
       },
+      plotOptions: {
+        column: {
+          stacking: 'normal'
+        }
+      },
       xAxis: [{
         categories: this.get('timeGroupKeys')
       }],
       yAxis:[{
         title: {
           text: 'Requests'
-        },
-        categxxories: ['Not cancelled', 'Cancelled']
+        }
       }, {
         title: {
           text: 'Distance'
