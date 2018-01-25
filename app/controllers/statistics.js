@@ -17,28 +17,6 @@ export default Controller.extend({
     });
   }),
 
-  days: computed('rides.@each.start', function() {
-    return this.get('rides').reduce((days, ride) => {
-      const start = ride.get('start');
-      const startInTimeZone = moment.tz(start, 'America/Winnipeg');
-      const day = startInTimeZone.day();
-
-      if (!days[day]) {
-        days[day] = {hours: new Array(24), name: startInTimeZone.format('ddd')};
-      }
-
-      const hour = startInTimeZone.hour();
-
-      if (!days[day].hours[hour]) {
-        days[day].hours[hour] = 0;
-      }
-
-      days[day].hours[hour] += 1;
-
-      return days;
-    }, new Array(7));
-  }),
-
   actions: {
     setPastYear() {
       this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
