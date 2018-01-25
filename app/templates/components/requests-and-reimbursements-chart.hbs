@@ -1,4 +1,10 @@
-{{paper-button label='Weeks' primary=(eq grouping 'weeks') onClick=(action (mut grouping) 'weeks')}}
-{{paper-button label='Months' primary=(eq grouping 'months') onClick=(action (mut grouping) 'months')}}
+{{high-charts content=data chartOptions=options theme=theme callback=(action 'afterRenderCallback')}}
 
-{{high-charts content=data chartOptions=options theme=theme}}
+{{#if rendered}}
+  {{#ember-wormhole to='grouping-weeks'}}
+    {{paper-button label='Weeks' primary=(eq grouping 'weeks') onClick=(action (mut grouping) 'weeks')}}
+  {{/ember-wormhole}}
+  {{#ember-wormhole to='grouping-months'}}
+    {{paper-button label='Months' primary=(eq grouping 'months') onClick=(action (mut grouping) 'months')}}
+  {{/ember-wormhole}}
+{{/if}}

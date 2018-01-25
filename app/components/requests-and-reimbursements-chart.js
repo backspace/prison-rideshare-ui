@@ -5,6 +5,7 @@ import moment from 'moment';
 
 export default Component.extend({
   grouping: 'months',
+  rendered: false,
 
   timeGroups: computed('rides.@each.start', 'grouping', function() {
     return this.get('rides').reduce((timeGroups, ride) => {
@@ -85,7 +86,8 @@ export default Component.extend({
   options: computed('timeGroups', 'timeGroupKeys.length', 'grouping', function() {
     return {
       title: {
-        text: `Ride distances and expenses, grouped into ${this.get('grouping')}`
+        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'></span>`,
+        useHTML: true
       },
       plotOptions: {
         column: {
@@ -118,4 +120,10 @@ export default Component.extend({
       }]
     };
   }),
+
+  actions: {
+    afterRenderCallback() {
+      this.set('rendered', true);
+    }
+  }
 });
