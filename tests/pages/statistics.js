@@ -10,6 +10,9 @@ export default create({
   start: { scope: '.start input' },
   end: { scope: '.end input' },
 
+  pastYear: { scope: '.past-year'},
+  pastTwoWeeks: { scope: '.past-two-weeks' },
+
   times: {
     scope: 'table',
 

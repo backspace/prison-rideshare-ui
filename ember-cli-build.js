@@ -17,6 +17,10 @@ module.exports = function(defaults) {
     fingerprint,
     sourcemaps: {
       enabled: true
+    },
+    emberHighCharts: {
+      includeHighCharts: true,
+      includeModules: ['heatmap']
     }
   });
 
