@@ -38,11 +38,19 @@ export default Component.extend({
     const timeGroups = this.get('timeGroups');
 
     return [{
-      name: 'Requests',
+      name: 'Cancelled',
       type: 'column',
       data: this.get('timeGroupKeys').map(timeGroupKey => {
-        return timeGroups[timeGroupKey].length;
-      })
+        return timeGroups[timeGroupKey].filterBy('cancelled').length;
+      }),
+      stack: 'Cancelled'
+    }, {
+      name: 'Not cancelled',
+      type: 'column',
+      data: this.get('timeGroupKeys').map(timeGroupKey => {
+        return timeGroups[timeGroupKey].rejectBy('cancelled').length;
+      }),
+      stack: 'Not cancelled'
     }, {
       name: 'Distance',
       type: 'spline',
@@ -85,7 +93,8 @@ export default Component.extend({
       yAxis:[{
         title: {
           text: 'Requests'
-        }
+        },
+        categxxories: ['Not cancelled', 'Cancelled']
       }, {
         title: {
           text: 'Distance'
