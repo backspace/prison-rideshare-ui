@@ -1,23 +1,29 @@
 {{#paper-content class='layout-column flex'}}
-  <div class='layout-row'>
-    {{paper-input
-      class='start'
-      type='date'
-      label='Start'
-      value=start
-      onChange=(action (mut start))}}
+  {{#paper-card class='statistics-card' as |card|}}
+    {{#card.content}}
+      <div class='inputs'>
+        {{paper-input
+          class='start'
+          type='date'
+          label='Chart data begins'
+          value=start
+          onChange=(action (mut start))}}
 
-    {{paper-input
-      class='end'
-      type='date'
-      label='End'
-      value=end
-      onChange=(action (mut end))}}
+        {{paper-input
+          class='end'
+          type='date'
+          label='Chart data ends'
+          value=end
+          onChange=(action (mut end))}}
+      </div>
 
-    {{paper-button class='past-year' label='Past year' onClick=(action 'setPastYear')}}
-    {{paper-button class='past-two-weeks' label='Past two weeks' onClick=(action 'setPastTwoWeeks')}}
-    {{paper-button class='this-year' label='This year' onClick=(action 'setThisYear')}}
-  </div>
+      <div class='buttons'>
+        {{paper-button class='past-year' label='Past year' onClick=(action 'setPastYear')}}
+        {{paper-button class='past-two-weeks' label='Past two weeks' onClick=(action 'setPastTwoWeeks')}}
+        {{paper-button class='this-year' label='This year' onClick=(action 'setThisYear')}}
+      </div>
+    {{/card.content}}
+  {{/paper-card}}
 
   {{requests-and-reimbursements-chart rides=rides}}
 

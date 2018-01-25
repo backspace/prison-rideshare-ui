@@ -1,0 +1,20 @@
+.statistics-card {
+  md-card-content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .inputs {
+    .md-errors-spacer {
+      display: none;
+    }
+
+    md-input-container {
+      margin-bottom: 0;
+    }
+  }
+
+  .buttons {
+    display: flex;
+  }
+}
