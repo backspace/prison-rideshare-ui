@@ -86,7 +86,7 @@ export default Component.extend({
   options: computed('timeGroups', 'timeGroupKeys.length', 'grouping', function() {
     return {
       title: {
-        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'></span>`,
+        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
         useHTML: true
       },
       plotOptions: {
