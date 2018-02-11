@@ -6,6 +6,7 @@ import { A } from '@ember/array';
 import fetch from 'fetch';
 import moment from 'moment';
 import { computed } from '@ember/object';
+import RSVP from 'rsvp';
 
 export default CalendarController.extend({
   peopleService: service('people'),
@@ -54,6 +55,36 @@ export default CalendarController.extend({
           this.get('toasts').show(`Sent to ${person.get('name')}`);
           this.get('people').removeObject(person);
         });
+      });
+    },
+
+    fetchLinks() {
+      const token = this.get('session.data.authenticated.access_token');
+
+      const personLinkRequests = this.get('people').reduce((hash, person) => {
+        const url = `${person.store.adapterFor('person').buildURL('person', person.id)}/calendar-link/${this.get('monthString')}`;
+
+        hash[person.get('email')] = fetch(url, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        return hash;
+      }, {});
+
+      RSVP.hash(personLinkRequests).then(linkFetches => {
+        return RSVP.hash(Object.keys(linkFetches).reduce((hash, email) => {
+          hash[email] = linkFetches[email].text();
+          return hash;
+        }, {}));
+      }).then(links => {
+        this.set('links', links);
+        this.set('linksError', undefined);
+      }).catch(e => {
+        this.set('links', undefined);
+        this.set('linksError', e);
       });
     }
   }

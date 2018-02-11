@@ -34,5 +34,16 @@
       {{person.name}}
     {{/paper-chips}}
     {{#paper-button primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
+    {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
+    {{#if links}}
+      <ul>
+        {{#each-in links as |email link|}}
+          <li>{{email}}: <a href={{link}}>link</a></li>
+        {{/each-in}}
+      </ul>
+    {{/if}}
+    {{#if linksError}}
+      There was an error loading calendar links: {{linksError}}
+    {{/if}}
   </section>
 </div>
