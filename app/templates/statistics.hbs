@@ -31,5 +31,7 @@
 
   {{cancellation-chart rides=rides theme=theme}}
 
-  {{#copy-button clipboardText=clipboardText}}{{paper-icon 'content copy' title=copyIconTitle}} Copy for report{{/copy-button}}
+  <div>
+    {{#copy-button clipboardText=clipboardText title=copyButtonTitle}}{{paper-icon 'content copy'}} Copy for report{{/copy-button}}
+  </div>
 {{/paper-content}}

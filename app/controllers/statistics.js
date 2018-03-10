@@ -53,7 +53,7 @@ export default Controller.extend({
     }).join('\n');
   }),
 
-  copyIconTitle: computed('clipboardText', function() {
+  copyButtonTitle: computed('clipboardText', function() {
     return `This will copy the following to the clipboard:\n${this.get('clipboardText')}`;
   }),
 
