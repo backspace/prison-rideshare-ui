@@ -6,8 +6,12 @@ import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 const reasons = Object.keys(reasonToIcon);
 
 export default Component.extend({
-  reasonToCount: computed('rides.@each.cancellationReason', function() {
+  reasonToCount: computed('rides.@each.cancellationReason', 'grouping', function() {
+    const grouping = this.get('grouping');
+
     return this.get('rides').reduce((reasonToCount, ride) => {
+      const rideAddition = grouping === 'rides' ? 1 : ride.get('passengers');
+
       let key;
 
       if (ride.get('cancelled')) {
@@ -29,7 +33,7 @@ export default Component.extend({
         reasonToCount[key] = 0;
       }
 
-      reasonToCount[key]++;
+      reasonToCount[key] += rideAddition;
 
       return reasonToCount;
     }, {})

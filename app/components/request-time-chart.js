@@ -5,12 +5,16 @@ import moment from 'moment';
 export default Component.extend({
   classNames: ['request-time-chart'],
 
-  data: computed('rides.@each.start', function() {
+  data: computed('rides.@each.start', 'grouping', function() {
+    const grouping = this.get('grouping');
+
     const data = this.get('rides').reduce((days, ride) => {
       const start = ride.get('start'), end  = ride.get('end');
       const startInTimeZone = moment.tz(start, 'America/Winnipeg');
       // const day = (startInTimeZone.day() - 1) % 7;
       const day = startInTimeZone.day() ? startInTimeZone.day() - 1 : 6;
+
+      const rideAddition = grouping === 'rides' ? 1 : ride.get('passengers');
 
       if (!days[day]) {
         days[day] = {hours: new Array(24), name: startInTimeZone.format('ddd'), day};
@@ -25,7 +29,7 @@ export default Component.extend({
           days[day].hours[hour] = 0;
         }
 
-        days[day].hours[hour] += 1;
+        days[day].hours[hour] += rideAddition;
 
         currentHour = currentHour.add(1, 'hour');
       }

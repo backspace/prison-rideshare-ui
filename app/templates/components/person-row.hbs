@@ -6,6 +6,7 @@
   {{#row.cell class=emailClass}}<a href='mailto:{{person.email}}'>{{person.email}}</a>{{/row.cell}}
   {{#row.cell class=mobileClass}}{{#if person.mobile}}<a href='tel:{{person.mobile}}'>{{person.mobile}}</a>{{/if}}{{/row.cell}}
   {{#row.cell class=landlineClass}}{{#if person.landline}}<a href='tel:{{person.landline}}'>{{person.landline}}</a>{{/if}}{{/row.cell}}
+  {{#row.cell class='last-ride'}}{{#if person.lastRide}}{{moment-format person.lastRide.start 'MMMM D, YYYY'}}{{/if}}{{/row.cell}}
   {{#row.cell class='notes'}}{{person.notes}}{{/row.cell}}
   {{#row.cell}}
     {{#paper-button iconButton=true aria-label='Edit person' title='Edit person' class='edit' onClick=(action editPerson person)}}

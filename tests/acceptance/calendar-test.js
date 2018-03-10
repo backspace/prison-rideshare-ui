@@ -366,7 +366,7 @@ test('the path controls the month', function(assert) {
   page.visit({ month: '2118-01', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
-    assert.equal(page.month, 'January 2118');
+    assert.equal(page.month, 'January 2118: 0 commitments');
   });
 });
 
@@ -404,12 +404,14 @@ test('an admin can see the commitments with person names', function(assert) {
   page.nextMonth.click();
 
   andThen(() => {
-    assert.equal(page.month, 'January 2118');
+    assert.equal(page.month, 'January 2118: 0 commitments');
+    assert.ok(currentURL().endsWith('2118-01'), 'expected the path to have changed with the new month');
   });
 
   page.previousMonth.click();
 
   andThen(() => {
-    assert.equal(page.month, 'December 2117');
+    assert.equal(page.month, 'December 2117: 2 commitments');
+    assert.ok(currentURL().endsWith('2117-12'), 'expected the path to have returned to the original month');
   });
 });

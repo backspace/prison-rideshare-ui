@@ -19,6 +19,10 @@ export default DS.Model.extend({
   drivings: DS.hasMany('ride', {inverse: 'driver'}),
   carOwnings: DS.hasMany('ride', {inverse: 'carOwner'}),
 
+  lastRide: computed('drivings.@each.start', function() {
+    return this.get('drivings').sortBy('start').get('lastObject');
+  }),
+
   calendarSecret: DS.attr('string'),
 
   validationErrors: computed('errors.[]', function() {

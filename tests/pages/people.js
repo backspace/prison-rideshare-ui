@@ -51,6 +51,10 @@ export default create({
         isPreferred: hasClass('is-preferred'),
       },
 
+      lastRide: {
+        scope: '.last-ride'
+      },
+
       notes: {
         scope: '.notes'
       },

@@ -22,6 +22,10 @@ const theme = {
 
 
 export default Controller.extend({
+  queryParams: ['start', 'end', 'grouping'],
+
+  grouping: 'rides',
+
   init() {
     this._super(...arguments);
     this.send('setPastYear');

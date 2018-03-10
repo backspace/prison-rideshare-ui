@@ -1,5 +1,5 @@
 import CalendarController from './calendar';
-import { alias } from '@ember/object/computed';
+import { alias, mapBy, sum } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import { setDiff } from '@ember/object/computed';
 import { A } from '@ember/array';
@@ -8,17 +8,31 @@ import moment from 'moment';
 import { computed } from '@ember/object';
 import RSVP from 'rsvp';
 
+const format = 'YYYY-MM';
+
 export default CalendarController.extend({
   peopleService: service('people'),
   activePeople: alias('peopleService.active'),
+
+  slotCommitments: mapBy('model.slots', 'commitments'),
+  slotCommitmentLengths: mapBy('slotCommitments', 'length'),
+  commitmentCount: sum('slotCommitmentLengths'),
 
   router: service(),
   session: service(),
   store: service(),
   toasts: service(),
 
+  previousMonth: computed('month', function() {
+    return moment(this.get('month')).add(-1, 'M').format(format);
+  }),
+
+  nextMonth: computed('month', function() {
+    return moment(this.get('month')).add(1, 'M').format(format);
+  }),
+
   monthString: computed('month', function() {
-    return moment(this.get('month')).format('YYYY-MM');
+    return moment(this.get('month')).format(format);
   }),
 
   init() {
