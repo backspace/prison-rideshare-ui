@@ -81,6 +81,10 @@ export default DS.Model.extend({
   reimbursementCarExpensesSum: sum('reimbursementCarExpenses'),
   outstandingCarExpenses: difference('carExpenses', 'reimbursementCarExpensesSum'),
 
+  reimbursementExpensesSum: computed('reimbursementFoodExpensesSum.[]', 'reimbursementCarExpensesSum.[]', function() {
+    return this.get('reimbursementFoodExpensesSum') + this.get('reimbursementCarExpensesSum');
+  }),
+
   outstandingTotalExpenses: sum('outstandingFoodExpenses', 'outstandingCarExpenses'),
 
   namePlusPassengers: computed('name', 'passengers', function() {

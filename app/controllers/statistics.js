@@ -42,14 +42,14 @@ export default Controller.extend({
 
   clipboardText: computed('rides.length', function() {
     return 'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement\n' +
-      this.get('rides').rejectBy('cancelled').filterBy('complete').sortBy('start').map(ride => {
+      this.get('rides').rejectBy('cancelled').filterBy('reimbursementExpensesSum').filterBy('complete').sortBy('start').map(ride => {
       return `${moment(ride.get('start')).format('YYYY-MM-DD')}\t` +
         `${ride.get('institution.name')}\t` +
         `${anonymiseAddress(ride.get('address'))}\t` +
         `${ride.get('passengers')}\t` +
         `${ride.get('distance')}\t` +
         `${ride.get('foodExpensesDollars') || ''}\t` +
-        `${(ride.get('reimbursementFoodExpensesSum') + ride.get('reimbursementCarExpensesSum'))/100}\t`
+        `${ride.get('reimbursementExpensesSum')/100}\t`
     }).join('\n');
   }),
 
