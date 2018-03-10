@@ -14,14 +14,23 @@
   {{/power-calendar}}
 
   <section>
-    {{#if viewingSlot.commitments}}
     <div class='viewing-slot'>
       <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format viewingSlot.end 'h:mma'}}</h3>
-      {{#each viewingSlot.commitments as |commitment|}}
-        {{person-badge person=commitment.person}}
-      {{/each}}
+      {{#paper-chips
+        removeItem=(action 'deleteCommitment')
+        addItem=(action 'createCommitment')
+        placeholder='Commit someone to this slot'
+        content=viewingSlot.commitments
+        options=uncommittedPeople
+        class='commitments'
+        searchField='name' as |person_or_commitment|}}
+        {{#if person_or_commitment.name}}
+          {{person-badge person=person_or_commitment}}
+        {{else}}
+          {{person-badge person=person_or_commitment.person}}
+        {{/if}}
+      {{/paper-chips}}
     </div>
-    {{/if}}
     <h2>Temporary email interface</h2>
     {{paper-button label='Add all active people' raised=true onClick=(action 'addAllActive')}}
     {{#paper-chips

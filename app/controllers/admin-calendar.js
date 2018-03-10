@@ -42,6 +42,9 @@ export default CalendarController.extend({
 
   remainingPeople: setDiff('activePeople', 'people'),
 
+  viewingSlotPeople: mapBy('viewingSlot.commitments', 'person'),
+  uncommittedPeople: setDiff('activePeople', 'viewingSlotPeople'),
+
   actions: {
     addPerson(person) {
       this.get('people').pushObject(person);
@@ -53,6 +56,25 @@ export default CalendarController.extend({
 
     removePerson(person) {
       this.get('people').removeObject(person);
+    },
+
+    createCommitment(person) {
+      const slot = this.get('viewingSlot');
+      const commitment = this.store.createRecord('commitment', {slot: this.get('viewingSlot'), person: person});
+
+      commitment.save().then(() => {
+        this.get('toasts').show(`Committed ${person.get('name')} to drive on ${moment(slot.get('start')).format('MMMM D')}`);
+      }).catch(() => {
+        // FIXME
+      });
+    },
+
+    deleteCommitment(commitment) {
+      commitment.destroyRecord().then(() => {
+        this.get('toasts').show(`Deleted ${commitment.get('person.name')}’s commitment on ${moment(commitment.get('slot.start')).format('MMMM D')}`);
+      }).catch(() => {
+        // FIXME
+      })
     },
 
     email() {
