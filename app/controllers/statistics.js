@@ -41,7 +41,7 @@ export default Controller.extend({
   }),
 
   clipboardText: computed('rides.length', function() {
-    return 'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement' +
+    return 'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement\n' +
       this.get('rides').rejectBy('cancelled').filterBy('complete').sortBy('start').map(ride => {
       return `${moment(ride.get('start')).format('YYYY-MM-DD')}\t` +
         `${ride.get('institution.name')}\t` +
