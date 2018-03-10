@@ -22,6 +22,8 @@ const theme = {
 
 
 export default Controller.extend({
+  queryParams: ['start', 'end', 'grouping'],
+
   grouping: 'rides',
 
   init() {
