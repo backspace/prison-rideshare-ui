@@ -405,11 +405,13 @@ test('an admin can see the commitments with person names', function(assert) {
 
   andThen(() => {
     assert.equal(page.month, 'January 2118');
+    assert.ok(currentURL().endsWith('2118-01'), 'expected the path to have changed with the new month');
   });
 
   page.previousMonth.click();
 
   andThen(() => {
     assert.equal(page.month, 'December 2117');
+    assert.ok(currentURL().endsWith('2117-12'), 'expected the path to have returned to the original month');
   });
 });

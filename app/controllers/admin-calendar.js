@@ -8,6 +8,8 @@ import moment from 'moment';
 import { computed } from '@ember/object';
 import RSVP from 'rsvp';
 
+const format = 'YYYY-MM';
+
 export default CalendarController.extend({
   peopleService: service('people'),
   activePeople: alias('peopleService.active'),
@@ -17,8 +19,16 @@ export default CalendarController.extend({
   store: service(),
   toasts: service(),
 
+  previousMonth: computed('month', function() {
+    return moment(this.get('month')).add(-1, 'M').format(format);
+  }),
+
+  nextMonth: computed('month', function() {
+    return moment(this.get('month')).add(1, 'M').format(format);
+  }),
+
   monthString: computed('month', function() {
-    return moment(this.get('month')).format('YYYY-MM');
+    return moment(this.get('month')).format(format);
   }),
 
   init() {
