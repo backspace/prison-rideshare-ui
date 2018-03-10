@@ -9,7 +9,13 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | people', {
   beforeEach() {
-    server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?', medium: 'email'});
+    const sun = server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?', medium: 'email'});
+
+    server.create('ride', {
+      start: new Date(2017, 2, 22),
+      driver: sun
+    });
+
     server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111', medium: 'mobile'});
     server.create('person', {name: 'Will', active: false});
 
@@ -32,10 +38,12 @@ test('people are listed, with inactive people hidden by default', function(asser
       assert.ok(sun.email.isPreferred, 'expected Sun to prefer email');
       assert.equal(sun.landline.text, '111');
       assert.equal(sun.landline.href, 'tel:111');
+      assert.equal(sun.lastRide.text, 'March 22, 2017');
       assert.equal(sun.notes.text, 'notes?');
     });
 
     assert.ok(page.people(0).mobile.isPreferred, 'expected Kala to prefer mobile');
+    assert.equal(page.people(0).lastRide.text, '', 'expected someone with no rides to have a blank last ride');
   });
 
   page.head.inactiveSwitch.click();
