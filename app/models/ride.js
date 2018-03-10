@@ -8,6 +8,8 @@ import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 import sum from 'ember-cpm/macros/sum';
 import difference from 'ember-cpm/macros/difference';
 
+import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
+
 export default DS.Model.extend({
   enabled: DS.attr('boolean', {defaultValue: true}),
   cancellationReason: DS.attr(),
@@ -110,6 +112,14 @@ export default DS.Model.extend({
       this.set('enabled', !value);
       return value;
     }
+  }),
+
+  allAnonymisedAddresses: computed('address', 'children.@each.address', function() {
+    return [this.get('address')].concat(this.get('children').mapBy('address')).map(address => anonymiseAddress(address)).join(', ');
+  }),
+
+  allPassengers: computed('passengers', 'children.@each.passengers', function() {
+    return this.get('children').mapBy('passengers').reduce((sum, count) => count + sum, this.get('passengers'));
   }),
 
   matchString: computed('institution.name', 'driver.name', 'carOwner.name', 'name', 'address', function() {
