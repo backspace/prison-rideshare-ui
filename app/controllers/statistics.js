@@ -2,6 +2,8 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import moment from 'moment';
 
+import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
+
 // Sunset theme adapted from here: https://github.com/highcharts/highcharts/blob/master/js/themes/sunset.js
 const theme = {
 	colors: ['#FDD089', '#FF7F79', '#A0446E', '#251535'],
@@ -42,7 +44,7 @@ export default Controller.extend({
     return this.get('rides').rejectBy('cancelled').filterBy('complete').map(ride => {
       return `${moment(ride.get('start')).format('YYYY-MM-DD')}\t` +
         `${ride.get('institution.name')}\t` +
-        `${ride.get('address')}\t` +
+        `${anonymiseAddress(ride.get('address'))}\t` +
         `${ride.get('passengers')}\t` +
         `${ride.get('distance')}\t` +
         `${ride.get('foodExpensesDollars') || ''}\t` +
