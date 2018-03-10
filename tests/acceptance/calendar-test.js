@@ -366,7 +366,7 @@ test('the path controls the month', function(assert) {
   page.visit({ month: '2118-01', token: 'MAGIC??TOKEN' });
 
   andThen(function() {
-    assert.equal(page.month, 'January 2118: 0 commitments');
+    assert.equal(page.month, 'January 2118');
   });
 });
 
