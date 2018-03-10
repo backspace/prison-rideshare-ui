@@ -5,6 +5,6 @@ export default function anonymiseAddress(address) {
     .replace(/^(\d+)/, (number) => `${Math.floor(parseInt(number)/100)*100} block`)
     .replace(/ \(.*\)$/, '')
     .replace(/ #\w*$/, '')
-    .replace(/ (unit|suite) .*$/i, '')
+    .replace(/ (unit|suite|apt) .*$/i, '')
     .replace(/ building .*$/i, '')
 }
