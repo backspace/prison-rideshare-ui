@@ -14,6 +14,7 @@
   {{/power-calendar}}
 
   <section>
+    {{#if viewingSlot}}
     <div class='viewing-slot'>
       <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format viewingSlot.end 'h:mma'}}</h3>
       {{#paper-chips
@@ -31,6 +32,7 @@
         {{/if}}
       {{/paper-chips}}
     </div>
+    {{/if}}
     <h2>Temporary email interface</h2>
     {{paper-button label='Add all active people' raised=true onClick=(action 'addAllActive')}}
     {{#paper-chips
