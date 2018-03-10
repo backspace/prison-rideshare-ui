@@ -3,7 +3,7 @@
     <nav class="ember-power-calendar-nav">
       {{link-to '‹' 'admin-calendar' previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
       <div class="ember-power-calendar-nav-title">
-        {{moment-format calendar.center 'MMMM YYYY'}}
+        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize commitmentCount 'commitment'}}
       </div>
       {{link-to '›' 'admin-calendar' nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}
     </nav>
