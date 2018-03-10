@@ -22,6 +22,8 @@ const theme = {
 
 
 export default Controller.extend({
+  grouping: 'rides',
+
   init() {
     this._super(...arguments);
     this.send('setPastYear');

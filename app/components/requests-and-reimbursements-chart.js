@@ -3,6 +3,16 @@ import { computed } from '@ember/object';
 
 import moment from 'moment';
 
+function countRidesOrVisitors(rides, grouping) {
+  if (grouping === 'rides') {
+    return rides.length;
+  } else if (grouping === 'passengers') {
+    return rides.mapBy('passengers').reduce((sum, passengers) => {
+      return sum + passengers;
+    }, 0);
+  }
+}
+
 export default Component.extend({
   grouping: 'months',
   rendered: false,
@@ -35,21 +45,22 @@ export default Component.extend({
     }
   },
 
-  data: computed('timeGroups', function() {
+  data: computed('timeGroups', 'grouping', function() {
     const timeGroups = this.get('timeGroups');
+    const grouping = this.get('grouping');
 
     return [{
       name: 'Cancelled',
       type: 'column',
       data: this.get('timeGroupKeys').map(timeGroupKey => {
-        return timeGroups[timeGroupKey].filterBy('cancelled').length;
+        return countRidesOrVisitors(timeGroups[timeGroupKey].filterBy('cancelled'), grouping);
       }),
       stack: 'Requests'
     }, {
       name: 'Not cancelled',
       type: 'column',
       data: this.get('timeGroupKeys').map(timeGroupKey => {
-        return timeGroups[timeGroupKey].rejectBy('cancelled').length;
+        return countRidesOrVisitors(timeGroups[timeGroupKey].rejectBy('cancelled'), grouping);
       }),
       stack: 'Requests'
     }, {

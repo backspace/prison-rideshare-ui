@@ -22,12 +22,26 @@
         {{paper-button class='past-two-weeks' label='Past two weeks' onClick=(action 'setPastTwoWeeks')}}
         {{paper-button class='this-year' label='This year' onClick=(action 'setThisYear')}}
       </div>
+
+      <div class='radios'>
+        Count
+        {{#paper-radio-group
+          groupValue=(readonly grouping)
+          onChange=(action (mut grouping)) as |group|}}
+          <div class='flex'>
+            {{#group.radio value='rides'}}rides{{/group.radio}}
+          </div>
+          <div class='flex'>
+            {{#group.radio value='passengers'}}passengers{{/group.radio}}
+          </div>
+        {{/paper-radio-group}}
+      </div>
     {{/card.content}}
   {{/paper-card}}
 
-  {{requests-and-reimbursements-chart rides=rides theme=theme}}
+  {{requests-and-reimbursements-chart rides=rides theme=theme grouping=grouping}}
 
-  {{request-time-chart rides=rides theme=theme}}
+  {{request-time-chart rides=rides theme=theme grouping=grouping}}
 
-  {{cancellation-chart rides=rides theme=theme}}
+  {{cancellation-chart rides=rides theme=theme grouping=grouping}}
 {{/paper-content}}
