@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
+import moment from 'moment';
 
 export default Route.extend({
   model({ month }) {
