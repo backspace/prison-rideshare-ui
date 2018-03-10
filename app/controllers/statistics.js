@@ -38,6 +38,22 @@ export default Controller.extend({
     });
   }),
 
+  clipboardText: computed('rides.length', function() {
+    return this.get('rides').rejectBy('cancelled').filterBy('complete').map(ride => {
+      return `${moment(ride.get('start')).format('YYYY-MM-DD')}\t` +
+        `${ride.get('institution.name')}\t` +
+        `${ride.get('address')}\t` +
+        `${ride.get('passengers')}\t` +
+        `${ride.get('distance')}\t` +
+        `${ride.get('foodExpensesDollars') || ''}\t` +
+        `${(ride.get('reimbursementFoodExpensesSum') + ride.get('reimbursementCarExpensesSum'))/100}\t`
+    }).join('\n');
+  }),
+
+  copyIconTitle: computed('clipboardText', function() {
+    return `This will copy the following to the clipboard:\n${this.get('clipboardText')}`;
+  }),
+
   actions: {
     setPastYear() {
       this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
