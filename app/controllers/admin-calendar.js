@@ -67,17 +67,19 @@ export default CalendarController.extend({
 
       commitment.save().then(() => {
         this.get('toasts').show(`Committed ${person.get('name')} to drive on ${moment(slot.get('start')).format('MMMM D')}`);
-      }).catch(() => {
-        // FIXME
+      }).catch(error => {
+        const errorDetail = get(error, 'errors.firstObject.detail');
+        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
       });
     },
 
     deleteCommitment(commitment) {
       commitment.destroyRecord().then(() => {
         this.get('toasts').show(`Deleted ${commitment.get('person.name')}’s commitment on ${moment(commitment.get('slot.start')).format('MMMM D')}`);
-      }).catch(() => {
-        // FIXME
-      })
+      }).catch(error => {
+        const errorDetail = get(error, 'errors.firstObject.detail');
+        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+      });
     },
 
     email() {

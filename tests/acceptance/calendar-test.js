@@ -463,6 +463,31 @@ test('an admin can create commitments', function(assert) {
   });
 });
 
+test('an error when an admin tries to create a commitment is displayed', function(assert) {
+  server.post('/commitments', function() {
+    return new Mirage.Response(422, {}, {
+      errors: [{
+        status: 422,
+        title: 'Unauthorized',
+        detail: 'Fail!'
+      }]
+    });
+  });
+
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.days(9).slots(1).count.click();
+  page.peopleSearch.fillIn('also');
+  page.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
+  });
+});
+
 test('an admin can delete commitments', function(assert) {
   server.create('user', { admin: true });
   authenticateSession(this.application, { access_token: 'abcdef' });
@@ -474,5 +499,29 @@ test('an admin can delete commitments', function(assert) {
   andThen(() => {
     assert.equal(shared.toast.text, 'Deleted Other Slot Person’s commitment on December 4');
     assert.equal(server.db.commitments.length, 2, 'expected there to be two commitments left on the server');
+  });
+});
+
+test('an error when an admin tries to delete a commitment is displayed', function(assert) {
+  server.delete('/commitments/:id', function() {
+    return new Mirage.Response(422, {}, {
+      errors: [{
+        status: 422,
+        title: 'Unauthorized',
+        detail: 'Fail!'
+      }]
+    });
+  });
+
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.days(3).slots(0).count.click();
+  page.people(0).remove();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
   });
 });
