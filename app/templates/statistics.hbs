@@ -44,4 +44,8 @@
   {{request-time-chart rides=rides theme=theme grouping=grouping}}
 
   {{cancellation-chart rides=rides theme=theme grouping=grouping}}
+
+  <div>
+    {{#copy-button clipboardText=clipboardText title=copyButtonTitle}}{{paper-icon 'content copy'}} Copy for report{{/copy-button}}
+  </div>
 {{/paper-content}}

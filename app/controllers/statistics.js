@@ -42,6 +42,23 @@ export default Controller.extend({
     });
   }),
 
+  clipboardText: computed('rides.length', function() {
+    return 'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement\n' +
+      this.get('rides').rejectBy('cancelled').filterBy('reimbursementExpensesSum').filterBy('complete').sortBy('start').map(ride => {
+      return `${moment(ride.get('start')).format('YYYY-MM-DD')}\t` +
+        `${ride.get('institution.name')}\t` +
+        `${ride.get('allAnonymisedAddresses')}\t` +
+        `${ride.get('allPassengers')}\t` +
+        `${ride.get('distance')}\t` +
+        `${ride.get('foodExpensesDollars') || ''}\t` +
+        `${ride.get('reimbursementExpensesSum')/100}\t`
+    }).join('\n');
+  }),
+
+  copyButtonTitle: computed('clipboardText', function() {
+    return `This will copy the following to the clipboard:\n${this.get('clipboardText')}`;
+  }),
+
   actions: {
     setPastYear() {
       this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
