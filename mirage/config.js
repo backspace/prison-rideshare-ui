@@ -76,15 +76,21 @@ export default function() {
   this.get('/slots');
 
   this.post('/commitments', function({ commitments, people }, request) {
-    if (request.requestHeaders.Authorization.startsWith('Person Bearer')) {
-      const [, , accessToken] = request.requestHeaders.Authorization.split(' ');
+    const authorizationHeader = request.requestHeaders.Authorization;
+
+    if (authorizationHeader.startsWith('Person Bearer')) {
+      const [, , accessToken] = authorizationHeader.split(' ');
       const person = people.findBy({accessToken});
       const attrs = this.normalizedRequestAttrs();
 
       if (person && attrs.personId === person.id) {
         return commitments.create(attrs);
       }
+    } else if (authorizationHeader.startsWith('Bearer')) {
+      const attrs = this.normalizedRequestAttrs();
+      return commitments.create(attrs);
     }
+
     return new Mirage.Response(401, {}, {});
   });
 

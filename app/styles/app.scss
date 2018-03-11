@@ -224,7 +224,7 @@ md-table-container.debts .person .name {
   }
 }
 
-.person-badge {
+.ride-person {
   display: inline-block;
   background-color: #e0e0e0;
   color: #424242;
@@ -255,7 +255,9 @@ md-table-container.debts .person .name {
   .name-container {
     cursor: pointer;
   }
+}
 
+.person-badge {
   a {
     color: inherit;
     text-decoration: none;
@@ -265,6 +267,11 @@ md-table-container.debts .person .name {
       text-decoration: underline;
     }
   }
+}
+
+.commitments .md-chip-content .contact-container {
+  background: white;
+  color: black;
 }
 
 .person {

@@ -137,15 +137,31 @@ export default create({
   viewingSlot: text('.viewing-slot .hours'),
 
   people: collection({
-    itemScope: '.person-badge',
+    itemScope: 'md-chips.commitments md-chip',
 
     item: {
       name: text('.name'),
       reveal: clickable('.name-container'),
 
-      email: text('.email')
+      email: text('.email'),
+
+      remove: clickable('.md-chip-remove')
     }
   }),
+
+  peopleSearch: {
+    scope: 'md-chips.commitments input',
+
+    options: collection({
+      resetScope: true,
+      itemScope: '.ember-power-select-option',
+
+      item: {
+        name: text('.name'),
+        click: clickable('.name')
+      }
+    })
+  },
 
   error: text('.error')
 });
