@@ -455,6 +455,12 @@ test('an admin can create commitments', function(assert) {
     const [, , , commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
   });
+
+  page.peopleSearch.fillIn('commit');
+
+  andThen(() => {
+    assert.equal(page.peopleSearch.options().count, 1, 'expected the now-commited person to not show in the search');
+  });
 });
 
 test('an admin can delete commitments', function(assert) {

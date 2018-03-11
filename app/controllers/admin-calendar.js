@@ -42,8 +42,11 @@ export default CalendarController.extend({
 
   remainingPeople: setDiff('activePeople', 'people'),
 
-  viewingSlotPeople: mapBy('viewingSlot.commitments', 'person'),
-  uncommittedPeople: setDiff('activePeople', 'viewingSlotPeople'),
+  viewingSlotPeopleIds: mapBy('viewingSlot.commitments', 'person.id'),
+  uncommittedPeople: computed('activePeople.[]', 'viewingSlotPeopleIds.[]', function() {
+    const alreadyCommittedPeople = this.get('viewingSlotPeopleIds');
+    return this.get('activePeople').reject(person => alreadyCommittedPeople.includes(person.id));
+  }),
 
   actions: {
     addPerson(person) {
