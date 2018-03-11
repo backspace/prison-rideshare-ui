@@ -5,7 +5,7 @@ import { setDiff } from '@ember/object/computed';
 import { A } from '@ember/array';
 import fetch from 'fetch';
 import moment from 'moment';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import RSVP from 'rsvp';
 
 const format = 'YYYY-MM';
