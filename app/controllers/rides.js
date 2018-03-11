@@ -20,6 +20,8 @@ export default Controller.extend({
   peopleService: service('people'),
   people: alias('peopleService.all'),
 
+  tour: service(),
+
   editingRide: undefined,
   editingCancellation: undefined,
 
@@ -147,6 +149,55 @@ export default Controller.extend({
 
     clearSearch() {
       this.set('search', undefined);
+    },
+
+    startTour() {
+      this.get('tour').set('defaults', {
+        modal: true
+      });
+
+      this.get('tour').set('modal', true);
+
+      const builtInButtons = [
+        {
+          classes: 'shepherd-button-secondary',
+          text: 'Exit',
+          type: 'cancel'
+        },
+        {
+          classes: 'shepherd-button-primary',
+          text: 'Back',
+          type: 'back'
+        },
+        {
+          classes: 'shepherd-button-primary',
+          text: 'Next',
+          type: 'next'
+        }
+      ];
+      const classes = 'shepherd shepherd-open shepherd-theme-arrows shepherd-transparent-text';
+
+      this.get('tour').set('steps', [{
+        id: 'introduction',
+        options: {
+          title: 'Ride list',
+          text: ['This is the main screen. By default, it lists rides that are unfilled but not cancelled and ones where the driver has yet to submit the report.'],
+          builtInButtons,
+          classes,
+        }
+      }, {
+        id: 'sorting',
+        options: {
+          title: 'Sorting',
+          text: ['Rides are sorted by increasing start time by default; you can reverse with this icon.'],
+          attachTo: '.md-sort-icon bottom',
+          builtInButtons,
+          classes,
+          copyStyles: true
+        }
+      }]);
+
+      this.get('tour').start();
     }
   }
 });

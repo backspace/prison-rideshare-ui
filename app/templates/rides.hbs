@@ -1,4 +1,7 @@
 {{#toolbar-header title='Rides'}}
+  {{#paper-button mini=true aria-label='Get a tour' title='Get a tour' class='tour' onClick=(action 'startTour')}}
+    {{paper-icon 'question'}}
+  {{/paper-button}}
   {{#paper-button mini=true aria-label='New ride' title='New ride' class='new' onClick=(action 'newRide')}}
     {{paper-icon 'add'}}
   {{/paper-button}}
