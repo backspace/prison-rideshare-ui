@@ -89,7 +89,7 @@ export default function() {
     } else if (authorizationHeader.startsWith('Bearer')) {
       const attrs = this.normalizedRequestAttrs();
       return commitments.create(attrs);
-    };
+    }
 
     return new Mirage.Response(401, {}, {});
   });
