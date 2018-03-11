@@ -450,7 +450,7 @@ test('an admin can create commitments', function(assert) {
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Committed Also non-committal to drive on December 10');
-    assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
+    assert.equal(page.days(9).slots(1).count.text, '1/2', 'expected the slot to be newly committed-to');
 
     const [, , , commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
