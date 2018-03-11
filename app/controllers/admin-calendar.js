@@ -5,7 +5,7 @@ import { setDiff } from '@ember/object/computed';
 import { A } from '@ember/array';
 import fetch from 'fetch';
 import moment from 'moment';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import RSVP from 'rsvp';
 
 const format = 'YYYY-MM';
@@ -42,6 +42,12 @@ export default CalendarController.extend({
 
   remainingPeople: setDiff('activePeople', 'people'),
 
+  viewingSlotPeopleIds: mapBy('viewingSlot.commitments', 'person.id'),
+  uncommittedPeople: computed('activePeople.[]', 'viewingSlotPeopleIds.[]', function() {
+    const alreadyCommittedPeople = this.get('viewingSlotPeopleIds');
+    return this.get('activePeople').reject(person => alreadyCommittedPeople.includes(person.id));
+  }),
+
   actions: {
     addPerson(person) {
       this.get('people').pushObject(person);
@@ -53,6 +59,27 @@ export default CalendarController.extend({
 
     removePerson(person) {
       this.get('people').removeObject(person);
+    },
+
+    createCommitment(person) {
+      const slot = this.get('viewingSlot');
+      const commitment = this.store.createRecord('commitment', {slot: this.get('viewingSlot'), person: person});
+
+      commitment.save().then(() => {
+        this.get('toasts').show(`Committed ${person.get('name')} to drive on ${moment(slot.get('start')).format('MMMM D')}`);
+      }).catch(error => {
+        const errorDetail = get(error, 'errors.firstObject.detail');
+        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+      });
+    },
+
+    deleteCommitment(commitment) {
+      commitment.destroyRecord().then(() => {
+        this.get('toasts').show(`Deleted ${commitment.get('person.name')}’s commitment on ${moment(commitment.get('slot.start')).format('MMMM D')}`);
+      }).catch(error => {
+        const errorDetail = get(error, 'errors.firstObject.detail');
+        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+      });
     },
 
     email() {

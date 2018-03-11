@@ -21,6 +21,16 @@ moduleForAcceptance('Acceptance | calendar', {
     });
     this.person = person;
 
+    server.create('person', {
+      name: 'Non-committal',
+      active: true
+    });
+
+    server.create('person', {
+      name: 'Also non-committal',
+      active: true
+    });
+
     const committedSlot = server.create('slot', {
       start: new Date(2117, 11, 4, 17, 30),
       end: new Date(2117, 11, 4, 20),
@@ -39,7 +49,7 @@ moduleForAcceptance('Acceptance | calendar', {
       count: 0
     });
 
-    committedSlot.createCommitment({ person: server.create('person', { name: 'Other Slot Person '})});
+    committedSlot.createCommitment({ person: server.create('person', { name: 'Other Slot Person'})});
     committedSlot.createCommitment({ person });
 
     server.create('slot', {
@@ -413,5 +423,105 @@ test('an admin can see the commitments with person names', function(assert) {
   andThen(() => {
     assert.equal(page.month, 'December 2117: 2 commitments');
     assert.ok(currentURL().endsWith('2117-12'), 'expected the path to have returned to the original month');
+  });
+});
+
+test('an admin can create commitments', function(assert) {
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.days(9).slots(1).count.click();
+  page.peopleSearch.fillIn('commit');
+
+  andThen(() => {
+    assert.equal(page.peopleSearch.options().count, 2, 'expected two people to show for possible commitments');
+    assert.equal(page.peopleSearch.options(0).name, 'Also non-committal');
+    assert.equal(page.peopleSearch.options(1).name, 'Non-committal');
+  });
+
+  page.peopleSearch.fillIn('also');
+
+  andThen(() => {
+    assert.equal(page.peopleSearch.options().count, 1, 'expected only one match');
+  });
+
+  page.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Committed Also non-committal to drive on December 10');
+    assert.equal(page.days(9).slots(1).count.text, '1/2', 'expected the slot to be newly committed-to');
+
+    const [, , , commitment] = server.db.commitments;
+    assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
+  });
+
+  page.peopleSearch.fillIn('commit');
+
+  andThen(() => {
+    assert.equal(page.peopleSearch.options().count, 1, 'expected the now-commited person to not show in the search');
+  });
+});
+
+test('an error when an admin tries to create a commitment is displayed', function(assert) {
+  server.post('/commitments', function() {
+    return new Mirage.Response(422, {}, {
+      errors: [{
+        status: 422,
+        title: 'Unauthorized',
+        detail: 'Fail!'
+      }]
+    });
+  });
+
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.days(9).slots(1).count.click();
+  page.peopleSearch.fillIn('also');
+  page.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
+  });
+});
+
+test('an admin can delete commitments', function(assert) {
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.days(3).slots(0).count.click();
+  page.people(0).remove();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Deleted Other Slot Person’s commitment on December 4');
+    assert.equal(server.db.commitments.length, 2, 'expected there to be two commitments left on the server');
+  });
+});
+
+test('an error when an admin tries to delete a commitment is displayed', function(assert) {
+  server.delete('/commitments/:id', function() {
+    return new Mirage.Response(422, {}, {
+      errors: [{
+        status: 422,
+        title: 'Unauthorized',
+        detail: 'Fail!'
+      }]
+    });
+  });
+
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.days(3).slots(0).count.click();
+  page.people(0).remove();
+
+  andThen(() => {
+    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
   });
 });
