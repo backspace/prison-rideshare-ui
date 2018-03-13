@@ -43,6 +43,7 @@
       {{#vertical-collection
         (filter-by 'id' (sort-by table.sortDesc filteredRides))
         estimateHeight=48
+        key='id'
          as |ride|}}
         {{ride-row body=body ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{#each ride.children as |child|}}
