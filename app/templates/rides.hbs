@@ -39,11 +39,18 @@
       {{#head.column}}Driver/car owner{{/head.column}}
       {{#head.column}}{{/head.column}}
     {{/table.head}}
-    {{#table.body as |body|}}
-      {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
-        {{ride-row body=body ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+
+      {{#vertical-collection
+        (filter-by 'id' (sort-by table.sortDesc filteredRides))
+        containerSelector='md-table-container.rides'
+        estimateHeight=48
+        buffer=6
+        key='id'
+        tagName='tbody'
+         as |ride|}}
+        {{ride-row ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{#each ride.children as |child|}}
-          {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+          {{ride-row ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{/each}}
       {{else}}
         {{#body.row class='no-matches' as |row|}}
@@ -51,8 +58,7 @@
             No rides matched your criteria. 😭 <!-- FIXME WTF! Without this, the institutions select in the dialogue has no options? {{filteredRides.length}} -->
           {{/row.cell}}
         {{/body.row}}
-      {{/each}}
-    {{/table.body}}
+      {{/vertical-collection}}
   {{/paper-data-table}}
 
 

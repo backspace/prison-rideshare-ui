@@ -1,22 +1,23 @@
-{{#body.row class=classAttribute as |row|}}
+<tr class={{classAttribute}}>
   {{#if showCreation}}
-    {{#row.cell class='creation'}}{{creation}}{{/row.cell}}
+    <td class='creation'>{{creation}}</td>
   {{/if}}
-  {{#row.cell class='date-cell' onClick=(action 'toggleCreation')}}
+  {{!-- <td class='date-cell' <!-- onClick=(action 'toggleCreation') --> > --}}
+  <td class='date-cell'>
     <span class='date'>{{ride.rideTimes}}</span>
     {{#if showCreation}}
       {{paper-icon 'alarm off' size=14}}
     {{else}}
       {{paper-icon 'add alarm' size=14}}
     {{/if}}
-  {{/row.cell}}
-  {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
-  {{#row.cell class='name-and-contact'}}
+  </td>
+  <td class='institution'>{{ride.institution.name}}</td>
+  <td class='name-and-contact'>
     <span class='name'>{{ride.namePlusPassengers}}</span>{{#if ride.firstTime}} {{paper-icon 'announcement' size=10 title='first time rider'}}{{/if}}
     <div class='medium-and-contact'>{{#if mediumIcon}}{{paper-icon mediumIcon size=10 title=mediumIconTitle}} {{/if}}<span class='contact'>{{linked-contact contact=ride.contact}}</span></div>
-  {{/row.cell}}
-  {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
-  {{#row.cell class='driver-and-car-owner'}}
+  </td>
+  <td class='address'>{{ride.address}}</td>
+  <td class='driver-and-car-owner'>
     {{#if combined}}
       {{#if (not rideToCombine)}}
         {{#paper-button class='combine' iconButton=true aria-label='Uncombine this ride' title='Uncombine this ride' onClick=(action uncombineRide ride)}}
@@ -32,8 +33,8 @@
         {{/paper-button}}
       {{/if}}
     {{/if}}
-  {{/row.cell}}
-  {{#row.cell}}
+  </td>
+  <td>
     <span class='cancellation'>{{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
       {{#if ride.enabled}}
         {{paper-icon 'highlight off'}}
@@ -44,18 +45,18 @@
     {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action editRide ride)}}
       {{paper-icon 'mode edit'}}
     {{/paper-button}}
-  {{/row.cell}}
-{{/body.row}}
-{{#if ride.requestNotes}}
+  </td>
+</tr>
+{{!-- {{#if ride.requestNotes}}
   {{#body.row class='{{classAttribute}} notes' as |row|}}
     {{row.cell}}
-    {{#row.cell class='notes' colspan=6}}{{ride.requestNotes}}{{/row.cell}}
+    <td class='notes' colspan=6}}{{ride.requestNotes}}</td>
   {{/body.row}}
-{{/if}}
-{{#if ride.complete}}
+{{/if}} --}}
+{{!-- {{#if ride.complete}}
   {{#body.row class='report' as |row|}}
     {{row.cell}}
-    {{#row.cell colspan=6}}
+    <td colspan=6}}
       {{paper-icon 'map'}}<span class='distance'>{{ride.distance}}</span>
       {{#if ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{ride.foodExpensesDollars}}</span>{{/if}}
       {{#if ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{ride.reportNotes}}</span>{{/if}}
@@ -72,6 +73,6 @@
           {{paper-icon 'clear'}}
         {{/paper-button}}
       {{/if}}
-    {{/row.cell}}
+    </td>
   {{/body.row}}
-{{/if}}
+{{/if}} --}}
