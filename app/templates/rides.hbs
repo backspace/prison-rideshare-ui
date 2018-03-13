@@ -42,6 +42,7 @@
 
       {{#vertical-collection
         (filter-by 'id' (sort-by table.sortDesc filteredRides))
+        containerSelector='md-table-container.rides'
         estimateHeight=48
         key='id'
         tagName='tbody'
