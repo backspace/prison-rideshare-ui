@@ -40,7 +40,10 @@
       {{#head.column}}{{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
-      {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
+      {{#vertical-collection
+        (filter-by 'id' (sort-by table.sortDesc filteredRides))
+        estimateHeight=48
+         as |ride|}}
         {{ride-row body=body ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{#each ride.children as |child|}}
           {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
@@ -51,7 +54,7 @@
             No rides matched your criteria. 😭 <!-- FIXME WTF! Without this, the institutions select in the dialogue has no options? {{filteredRides.length}} -->
           {{/row.cell}}
         {{/body.row}}
-      {{/each}}
+      {{/vertical-collection}}
     {{/table.body}}
   {{/paper-data-table}}
 

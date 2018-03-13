@@ -17,6 +17,7 @@
     "test": "ember test"
   },
   "devDependencies": {
+    "@html-next/vertical-collection": "^1.0.0-beta.10",
     "broccoli-asset-rev": "^2.4.5",
     "chrono-node": "^1.3.4",
     "coveralls": "^2.12.0",
