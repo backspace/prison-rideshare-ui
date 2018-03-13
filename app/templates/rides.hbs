@@ -39,15 +39,16 @@
       {{#head.column}}Driver/car owner{{/head.column}}
       {{#head.column}}{{/head.column}}
     {{/table.head}}
-    {{#table.body as |body|}}
+
       {{#vertical-collection
         (filter-by 'id' (sort-by table.sortDesc filteredRides))
         estimateHeight=48
         key='id'
+        tagName='tbody'
          as |ride|}}
-        {{ride-row body=body ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+        {{ride-row ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{#each ride.children as |child|}}
-          {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+          {{ride-row ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
         {{/each}}
       {{else}}
         {{#body.row class='no-matches' as |row|}}
@@ -56,7 +57,6 @@
           {{/row.cell}}
         {{/body.row}}
       {{/vertical-collection}}
-    {{/table.body}}
   {{/paper-data-table}}
 
 
