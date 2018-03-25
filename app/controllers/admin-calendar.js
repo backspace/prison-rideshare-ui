@@ -61,6 +61,16 @@ export default CalendarController.extend({
       this.get('people').removeObject(person);
     },
 
+    addMatching() {
+      let string = this.get('emailMatch');
+      this.get('people').addObjects(this.get('activePeople').filter(person => person.get('email').includes(string)));
+    },
+
+    removeMatching() {
+      let string = this.get('emailMatch');
+      this.get('people').removeObjects(this.get('people').filter(person => person.get('email').includes(string)));
+    },
+
     createCommitment(person) {
       const slot = this.get('viewingSlot');
       const commitment = this.store.createRecord('commitment', {slot: this.get('viewingSlot'), person: person});

@@ -42,8 +42,22 @@
       content=people
       options=remainingPeople
       searchField='name' as |person|}}
-      {{person.name}}
+      {{person.name}}: {{person.email}}
     {{/paper-chips}}
+    {{#paper-input
+      placeholder='String to match in addresses'
+      value=emailMatch
+      onChange=(action (mut emailMatch)) as |input|}}
+      {{#if input.hasValue}}
+        {{#paper-button onClick=(action 'addMatching')}}
+          Add emails containing string
+        {{/paper-button}}
+        {{#paper-button onClick=(action 'removeMatching')}}
+          Remove emails containing string
+        {{/paper-button}}
+      {{/if}}
+    {{/paper-input}}
+
     {{#paper-button primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
     {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
     {{#if links}}
