@@ -7,6 +7,7 @@ import {
   hasClass,
   isVisible,
   text,
+  triggerable,
   value,
   visitable
 } from 'ember-cli-page-object';
@@ -64,7 +65,7 @@ export default create({
   processedSwitch: {
     scope: '.paper-switch.processed',
     enabled: hasClass('md-checked'),
-    click: clickable('.md-thumb')
+    click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
   },
 
   form: {
