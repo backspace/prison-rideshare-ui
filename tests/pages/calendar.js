@@ -164,5 +164,42 @@ export default create({
     })
   },
 
-  error: text('.error')
+  error: text('.error'),
+
+  email: {
+    open: clickable('button.email', {resetScope: true}),
+
+    scope: 'md-dialog',
+
+    title: text('h2'),
+
+    peopleSearch: {
+      scope: 'md-chips input',
+
+      options: collection({
+        resetScope: true,
+        itemScope: '.ember-power-select-option',
+
+        item: {
+          label: text(),
+          click: clickable()
+        }
+      }),
+
+      chips: collection({
+        resetScope: true,
+        itemScope: 'md-dialog md-chip',
+
+        item: {
+          text: text('.md-chip-content'),
+          remove: clickable('.md-chip-remove')
+        }
+      })
+    },
+
+    sendButton: {
+      scope: 'button.send',
+      isRaised: hasClass('md-raised')
+    }
+  }
 });

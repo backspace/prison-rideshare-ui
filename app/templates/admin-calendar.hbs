@@ -34,16 +34,8 @@
     </div>
     {{/if}}
     <h2>Temporary email interface</h2>
+    {{paper-button class='email' label='Email' raised=true onClick=(action (mut emailOpen true))}}
     {{paper-button label='Add all active people' raised=true onClick=(action 'addAllActive')}}
-    {{#paper-chips
-      removeItem=(action 'removePerson')
-      addItem=(action 'addPerson')
-      placeholder='Add a person to email'
-      content=people
-      options=remainingPeople
-      searchField='name' as |person|}}
-      {{person.name}}: {{person.email}}
-    {{/paper-chips}}
     {{#paper-input
       placeholder='String to match in addresses'
       value=emailMatch
@@ -58,7 +50,6 @@
       {{/if}}
     {{/paper-input}}
 
-    {{#paper-button primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
     {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
     {{#if links}}
       <ul>
@@ -72,3 +63,29 @@
     {{/if}}
   </section>
 </div>
+
+{{#if emailOpen}}
+{{#paper-dialog clickOutsideToClose=true
+                fullscreen=true
+                onClose=(action (mut emailOpen false))}}
+
+  {{#paper-dialog-content}}
+    <h2 class='md-title'>{{moment-format month 'MMMM YYYY'}} calendar emails</h2>
+    {{#paper-chips
+      removeItem=(action 'removePerson')
+      addItem=(action 'addPerson')
+      placeholder='Add a person to email'
+      content=people
+      options=remainingPeople
+      searchField='name' as |person|}}
+      {{person.name}}: {{person.email}}
+    {{/paper-chips}}
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='send' primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
+    {{#paper-button class='cancel' onClick=(action (mut jorts 'jants'))}}jants{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}

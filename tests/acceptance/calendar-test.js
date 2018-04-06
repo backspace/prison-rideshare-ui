@@ -23,12 +23,19 @@ moduleForAcceptance('Acceptance | calendar', {
 
     server.create('person', {
       name: 'Non-committal',
+      email: 'non@example.com',
       active: true
     });
 
     server.create('person', {
       name: 'Also non-committal',
+      email: 'alsonon@example.com',
       active: true
+    });
+
+    server.create('person', {
+      name: 'Inactive',
+      active: false
     });
 
     const committedSlot = server.create('slot', {
@@ -524,4 +531,50 @@ test('an error when an admin tries to delete a commitment is displayed', functio
     assert.equal(shared.toast.text, 'Fail!');
     assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
   });
+});
+
+test('an admin can send email and get calendar links', function(assert) {
+  let done = assert.async();
+
+  server.post('/people/:id/calendar-email/2117-12', (schema, {params: {id}}) => {
+    assert.equal(id, this.person.id);
+    done();
+  });
+
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.email.open();
+
+  andThen(() => {
+    assert.equal(page.email.title, 'December 2117 calendar emails');
+    assert.notOk(page.email.sendButton.isRaised, 'expected the send button to not be raised when no one is selected');
+  });
+
+  page.email.peopleSearch.fillIn('commit');
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.options(0).label, 'Also non-committal: alsonon@example.com');
+    assert.equal(page.email.peopleSearch.options(1).label, 'Non-committal: non@example.com');
+  });
+
+  page.email.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips.length, 1);
+    assert.equal(page.email.peopleSearch.chips(0).text, 'Also non-committal: alsonon@example.com');
+
+    assert.ok(page.email.sendButton.isRaised, 'expected the send button to be raised when someone is selected');
+  });
+
+  page.email.peopleSearch.fillIn('ortle');
+  page.email.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips(1).text, 'Jortle Tortle: jorts@jants.ca');
+  });
+
+  page.email.peopleSearch.chips(0).remove();
+  page.email.sendButton.click();
 });
