@@ -23,7 +23,7 @@ export default EmberObject.extend({
     const total = this.get('totalExpensesDollars');
 
     const today = new Date();
-    const dateString = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+    const dateString = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
 
     return `${dateString}\t` +
       this.get('clipboardDescriptionColumn') + '\t' +

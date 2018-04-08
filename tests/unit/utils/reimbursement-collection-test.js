@@ -9,7 +9,7 @@ const reimbursementDate = new Date('2017-10-23');
 const ride = EmberObject.create({start: reimbursementDate});
 
 const today = new Date();
-const dateString = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+const dateString = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
 
 const FakeReimbursement = EmberObject.extend({
   ride,
