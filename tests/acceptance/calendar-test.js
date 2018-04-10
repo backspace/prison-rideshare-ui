@@ -563,6 +563,30 @@ test('an admin can send email and get calendar links', function(assert) {
   page.email.peopleSearch.chips(0).remove();
   page.email.peopleSearch.chips(0).remove();
 
+  andThen(() => {
+    assert.ok(page.email.filter.add.isHidden, 'expected the filter add button to be hidden');
+    assert.ok(page.email.filter.remove.isHidden, 'expected the filter remove button to be hidden');
+  });
+
+  page.email.filter.fillIn('example');
+
+  andThen(() => {
+    assert.ok(page.email.filter.add.isVisible, 'expected the filter add button to be shown');
+  });
+
+  page.email.filter.add.click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips(0).text, 'Also non-committal: alsonon@example.com');
+    assert.equal(page.email.peopleSearch.chips(1).text, 'Non-committal: non@example.com');
+  });
+
+  page.email.filter.remove.click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips().count, 0);
+  });
+
   page.email.peopleSearch.fillIn('commit');
 
   andThen(() => {

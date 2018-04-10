@@ -203,6 +203,15 @@ export default create({
       scope: 'button.add-active'
     },
 
+    filter: {
+      scope: '.filter',
+
+      fillIn: fillable('input'),
+
+      add: { scope: '.add' },
+      remove: { scope: '.remove' }
+    },
+
     sendButton: {
       scope: 'button.send',
       isRaised: hasClass('md-raised')
