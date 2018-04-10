@@ -92,9 +92,8 @@
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='send' primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
     {{#paper-button class='fetch-links' onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
-    {{#paper-button class='cancel' onClick=(action (mut jorts 'jants'))}}jants{{/paper-button}}
+    {{#paper-button class='send' primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
   {{/paper-dialog-actions}}
 
 {{/paper-dialog}}
