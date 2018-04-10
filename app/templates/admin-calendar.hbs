@@ -34,7 +34,6 @@
     </div>
     {{/if}}
     {{paper-button class='email' label='Email' raised=true onClick=(action (mut emailOpen true))}}
-    {{paper-button label='Add all active people' raised=true onClick=(action 'addAllActive')}}
     {{#paper-input
       placeholder='String to match in addresses'
       value=emailMatch
@@ -79,6 +78,7 @@
       searchField='name' as |person|}}
       {{person.name}}: {{person.email}}
     {{/paper-chips}}
+    {{paper-button class='add-active' label='Add all active people' raised=true onClick=(action 'addAllActive')}}
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}

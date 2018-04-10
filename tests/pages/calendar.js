@@ -3,6 +3,7 @@ import {
   clickable,
   collection,
   create,
+  fillable,
   hasClass,
   text,
   triggerable,
@@ -174,7 +175,9 @@ export default create({
     title: text('h2'),
 
     peopleSearch: {
-      scope: 'md-chips input',
+      scope: 'md-chips',
+
+      fillIn: fillable('input'),
 
       options: collection({
         resetScope: true,
@@ -187,14 +190,17 @@ export default create({
       }),
 
       chips: collection({
-        resetScope: true,
-        itemScope: 'md-dialog md-chip',
+        itemScope: 'md-chip',
 
         item: {
           text: text('.md-chip-content'),
           remove: clickable('.md-chip-remove')
         }
       })
+    },
+
+    addActiveButton: {
+      scope: 'button.add-active'
     },
 
     sendButton: {

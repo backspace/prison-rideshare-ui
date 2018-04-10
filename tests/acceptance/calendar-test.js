@@ -552,6 +552,17 @@ test('an admin can send email and get calendar links', function(assert) {
     assert.notOk(page.email.sendButton.isRaised, 'expected the send button to not be raised when no one is selected');
   });
 
+  page.email.addActiveButton.click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips().count, 4);
+  });
+
+  page.email.peopleSearch.chips(0).remove();
+  page.email.peopleSearch.chips(0).remove();
+  page.email.peopleSearch.chips(0).remove();
+  page.email.peopleSearch.chips(0).remove();
+
   page.email.peopleSearch.fillIn('commit');
 
   andThen(() => {
