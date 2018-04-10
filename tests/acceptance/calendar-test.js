@@ -534,6 +534,10 @@ test('an error when an admin tries to delete a commitment is displayed', functio
 });
 
 test('an admin can send email and get calendar links', function(assert) {
+  server.get('/people/:id/calendar-link/2117-12', (schema, {params: {id}}) => {
+    return `link-for-${id}`;
+  });
+
   let done = assert.async();
 
   server.post('/people/:id/calendar-email/2117-12', (schema, {params: {id}}) => {
@@ -608,6 +612,18 @@ test('an admin can send email and get calendar links', function(assert) {
 
   andThen(() => {
     assert.equal(page.email.peopleSearch.chips(1).text, 'Jortle Tortle: jorts@jants.ca');
+  });
+
+  page.email.fetchLinksButton.click();
+
+  andThen(() => {
+    assert.equal(page.email.links().count, 2);
+
+    page.email.links(0).as(also => {
+      assert.equal(also.email, 'alsonon@example.com');
+      assert.equal(also.link, 'link-for-3');
+      assert.equal(also.mailto, 'mailto:alsonon@example.com?subject=calendar&body=a link link-for-3');
+    });
   });
 
   page.email.peopleSearch.chips(0).remove();

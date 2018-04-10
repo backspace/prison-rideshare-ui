@@ -212,6 +212,20 @@ export default create({
       remove: { scope: '.remove' }
     },
 
+    fetchLinksButton: {
+      scope: 'button.fetch-links',
+    },
+
+    links: collection({
+      itemScope: '.links li',
+
+      item: {
+        email: text('.email'),
+        link: attribute('href', '.link'),
+        mailto: attribute('href', '.mailto')
+      }
+    }),
+
     sendButton: {
       scope: 'button.send',
       isRaised: hasClass('md-raised')
