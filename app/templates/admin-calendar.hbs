@@ -40,10 +40,17 @@
 {{#if emailOpen}}
 {{#paper-dialog clickOutsideToClose=true
                 fullscreen=true
-                onClose=(action (mut emailOpen false))}}
+                onClose=(action 'closeEmail')}}
+
+  {{#paper-toolbar}}
+    {{#paper-toolbar-tools}}
+      <h2 class='md-title'>{{moment-format month 'MMMM YYYY'}} calendar emails</h2>
+      <span class="flex"></span>
+      {{#paper-button iconButton=true onClick=(action 'closeEmail')}}{{paper-icon icon="close"}}{{/paper-button}}
+    {{/paper-toolbar-tools}}
+  {{/paper-toolbar}}
 
   {{#paper-dialog-content}}
-    <h2 class='md-title'>{{moment-format month 'MMMM YYYY'}} calendar emails</h2>
     {{#paper-chips
       removeItem=(action 'removePerson')
       addItem=(action 'addPerson')

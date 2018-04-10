@@ -137,6 +137,10 @@ export default CalendarController.extend({
         this.set('links', undefined);
         this.set('linksError', e);
       });
+    },
+
+    closeEmail() {
+      this.set('emailOpen', false);
     }
   }
 });
