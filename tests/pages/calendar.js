@@ -212,6 +212,9 @@ export default create({
       remove: { scope: '.remove' }
     },
 
+    subject: { scope: '.subject' },
+    body: { scope: '.body' },
+
     fetchLinksButton: {
       scope: 'button.fetch-links',
     },

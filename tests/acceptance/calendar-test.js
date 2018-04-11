@@ -617,13 +617,21 @@ test('an admin can send email and get calendar links', function(assert) {
   page.email.fetchLinksButton.click();
 
   andThen(() => {
+    assert.equal(page.email.subject.value, 'Rides-to-prison calendar for December 2117');
+
     assert.equal(page.email.links().count, 2);
 
     page.email.links(0).as(also => {
       assert.equal(also.email, 'alsonon@example.com');
       assert.equal(also.link, 'link-for-3');
-      assert.equal(also.mailto, 'mailto:alsonon@example.com?subject=calendar&body=a link link-for-3');
+      assert.equal(also.mailto, 'mailto:alsonon@example.com?subject=Rides-to-prison calendar for December 2117&body=a link link-for-3');
     });
+  });
+
+  page.email.subject.fillIn('Calendar yes');
+
+  andThen(() => {
+    assert.equal(page.email.links(0).mailto, 'mailto:alsonon@example.com?subject=Calendar yes&body=a link link-for-3');
   });
 
   page.email.peopleSearch.chips(0).remove();

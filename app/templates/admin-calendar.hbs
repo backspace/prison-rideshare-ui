@@ -3,7 +3,7 @@
     <nav class="ember-power-calendar-nav">
       {{link-to '‹' 'admin-calendar' previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
       <div class="ember-power-calendar-nav-title">
-        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize commitmentCount 'commitment'}}
+        {{monthWords}}: {{pluralize commitmentCount 'commitment'}}
       </div>
       {{link-to '›' 'admin-calendar' nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}
     </nav>
@@ -44,7 +44,7 @@
 
   {{#paper-toolbar}}
     {{#paper-toolbar-tools}}
-      <h2 class='md-title'>{{moment-format month 'MMMM YYYY'}} calendar emails</h2>
+      <h2 class='md-title'>{{monthWords}} calendar emails</h2>
       <span class="flex"></span>
       {{#paper-button iconButton=true onClick=(action 'closeEmail')}}{{paper-icon icon="close"}}{{/paper-button}}
     {{/paper-toolbar-tools}}
@@ -75,13 +75,18 @@
         {{/paper-button}}
       {{/if}}
     {{/paper-input}}
+    <div class='layout-row layout-xs-column'>
+      <div class='flex'>
+        {{input class='subject' label='Subject' value=subject onChange=(action (mut subject))}}
+      </div>
+    </div>
     {{#if links}}
       <ul class='links'>
         {{#each-in links as |email link|}}
           <li>
             <span class='email'>{{email}}</span>:
             <a class='link' href={{link}}>link</a>
-            <a class='mailto' href='mailto:{{email}}?subject=calendar&body=a link {{link}}'>open an email</a>
+            <a class='mailto' href='mailto:{{email}}?subject={{subject}}&body=a link {{link}}'>open an email</a>
           </li>
         {{/each-in}}
       </ul>

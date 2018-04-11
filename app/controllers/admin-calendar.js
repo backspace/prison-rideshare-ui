@@ -35,6 +35,10 @@ export default CalendarController.extend({
     return moment(this.get('month')).format(format);
   }),
 
+  monthWords: computed('month', function() {
+    return moment(this.get('month')).format('MMMM YYYY');
+  }),
+
   init() {
     this._super(...arguments);
     this.set('people', A());
@@ -46,6 +50,10 @@ export default CalendarController.extend({
   uncommittedPeople: computed('activePeople.[]', 'viewingSlotPeopleIds.[]', function() {
     const alreadyCommittedPeople = this.get('viewingSlotPeopleIds');
     return this.get('activePeople').reject(person => alreadyCommittedPeople.includes(person.id));
+  }),
+
+  subject: computed('monthWords', function() {
+    return `Rides-to-prison calendar for ${this.get('monthWords')}`;
   }),
 
   actions: {
