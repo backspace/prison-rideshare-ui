@@ -56,6 +56,16 @@ export default CalendarController.extend({
     return `Rides-to-prison calendar for ${this.get('monthWords')}`;
   }),
 
+  body: computed(function() {
+    return `a link {{link}}`;
+  }),
+
+  bodyIsInvalid: computed('body', function() {
+    let body = this.get('body');
+
+    return !body.includes('{{link}}');
+  }),
+
   actions: {
     addPerson(person) {
       this.get('people').pushObject(person);

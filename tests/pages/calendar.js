@@ -5,6 +5,7 @@ import {
   create,
   fillable,
   hasClass,
+  is,
   text,
   triggerable,
   visitable
@@ -217,6 +218,7 @@ export default create({
 
     fetchLinksButton: {
       scope: 'button.fetch-links',
+      isDisabled: is('[disabled]'),
     },
 
     links: collection({

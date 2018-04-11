@@ -629,6 +629,11 @@ test('an admin can send email and get calendar links', function(assert) {
   });
 
   page.email.subject.fillIn('Calendar yes');
+  page.email.body.fillIn('A body with no place for a link');
+
+  andThen(() => {
+    assert.ok(page.email.fetchLinksButton.isDisabled, 'expected the fetch links button to be disabled because there was no place for a link');
+  });
 
   andThen(() => {
     assert.equal(page.email.links(0).mailto, 'mailto:alsonon@example.com?subject=Calendar yes&body=a link link-for-3');

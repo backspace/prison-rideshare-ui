@@ -80,6 +80,11 @@
         {{input class='subject' label='Subject' value=subject onChange=(action (mut subject))}}
       </div>
     </div>
+    <div class='layout-row layout-xs-column'>
+      <div class='flex'>
+        {{input class='body' textarea=true label='Body' value=body onChange=(action (mut body))}}
+      </div>
+    </div>
     {{#if links}}
       <ul class='links'>
         {{#each-in links as |email link|}}
@@ -97,7 +102,7 @@
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='fetch-links' onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
+    {{#paper-button class='fetch-links' onClick=(action 'fetchLinks') disabled=bodyIsInvalid}}View calendar links{{/paper-button}}
     {{#paper-button class='send' primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
   {{/paper-dialog-actions}}
 
