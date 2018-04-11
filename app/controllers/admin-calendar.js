@@ -57,14 +57,21 @@ export default CalendarController.extend({
   }),
 
   body: computed(function() {
-    return `a link {{link}}`;
+    return `a link {{link}} for {{name}}`;
   }),
 
   bodyIsInvalid: computed('body', function() {
     let body = this.get('body');
 
-    return !body.includes('{{link}}');
+    return !this.bodyValidation[0].validate(body);
   }),
+
+  bodyValidation: Object.freeze([{
+    message: 'Please include {{link}} and {{name}} blanks.',
+    validate: (body) => {
+      return body.includes('{{link}}') && body.includes('{{name}}');
+    }
+  }]),
 
   actions: {
     addPerson(person) {

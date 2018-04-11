@@ -214,7 +214,12 @@ export default create({
     },
 
     subject: { scope: '.subject' },
-    body: { scope: '.body' },
+
+    body: {
+      scope: '.body',
+      fillIn: fillable('textarea'),
+      error: { scope: '.paper-input-error' },
+    },
 
     fetchLinksButton: {
       scope: 'button.fetch-links',

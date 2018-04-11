@@ -619,6 +619,8 @@ test('an admin can send email and get calendar links', function(assert) {
   andThen(() => {
     assert.equal(page.email.subject.value, 'Rides-to-prison calendar for December 2117');
 
+    assert.ok(page.email.body.error.isHidden, 'expected there to be no body validation error');
+
     assert.equal(page.email.links().count, 2);
 
     page.email.links(0).as(also => {
@@ -633,6 +635,14 @@ test('an admin can send email and get calendar links', function(assert) {
 
   andThen(() => {
     assert.ok(page.email.fetchLinksButton.isDisabled, 'expected the fetch links button to be disabled because there was no place for a link');
+    assert.equal(page.email.body.error.text, 'Please include {{link}} and {{name}} blanks.');
+  });
+
+  page.email.body.fillIn('Dear {{name}} here is your link: {{link}}');
+
+  andThen(() => {
+    assert.ok(page.email.body.error.isHidden, 'expected the error to have disappeared');
+    assert.notOk(page.email.fetchLinksButton.isDisabled, 'expected the button to be enabled again');
   });
 
   andThen(() => {

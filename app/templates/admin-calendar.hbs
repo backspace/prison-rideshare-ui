@@ -82,7 +82,7 @@
     </div>
     <div class='layout-row layout-xs-column'>
       <div class='flex'>
-        {{input class='body' textarea=true label='Body' value=body onChange=(action (mut body))}}
+        {{paper-input class='body' textarea=true label='Body' value=body onChange=(action (mut body)) customValidations=bodyValidation isTouched=true}}
       </div>
     </div>
     {{#if links}}
