@@ -32,6 +32,8 @@ Router.map(function() {
   this.route('calendar', { path: '/calendar/:month' });
 
   this.route('statistics');
+
+  this.route('not-found', { path: '/*wildcard' });
 });
 
 export default Router;

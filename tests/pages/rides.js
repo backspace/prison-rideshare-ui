@@ -7,6 +7,7 @@ import {
   hasClass,
   isVisible,
   text,
+  triggerable,
   value,
   visitable
 } from 'ember-cli-page-object';
@@ -19,13 +20,13 @@ export default create({
     cancelledSwitch: {
       scope: '.paper-switch.cancelled',
       enabled: hasClass('md-checked'),
-      click: clickable('.md-thumb')
+      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
     },
 
     completedSwitch: {
       scope: '.paper-switch.completed',
       enabled: hasClass('md-checked'),
-      click: clickable('.md-thumb')
+      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
     },
 
     search: {

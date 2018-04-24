@@ -5,6 +5,7 @@ import {
   create,
   hasClass,
   text,
+  triggerable,
   visitable
 } from 'ember-cli-page-object';
 import { getter } from 'ember-cli-page-object/macros';
@@ -34,9 +35,9 @@ export default create({
     },
 
     activeSwitch: {
-      scope: '.paper-switch',
+      scope: 'md-switch',
       enabled: hasClass('md-checked'),
-      click: clickable('.md-thumb')
+      click: triggerable('keypress', '.md-thumb', { eventProperties: { keyCode: 13 } })
     },
 
     email: {

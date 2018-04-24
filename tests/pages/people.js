@@ -6,6 +6,7 @@ import {
   fillable,
   hasClass,
   text,
+  triggerable,
   visitable
 } from 'ember-cli-page-object';
 
@@ -17,7 +18,7 @@ export default create({
     inactiveSwitch: {
       scope: '.paper-switch.inactive',
       enabled: hasClass('md-checked'),
-      click: clickable('.md-thumb')
+      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
     }
   },
 
@@ -28,7 +29,7 @@ export default create({
       activeSwitch: {
         scope: '.paper-switch',
         enabled: hasClass('md-checked'),
-        click: clickable('.md-thumb')
+        click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
       },
 
       name: text('.name'),
