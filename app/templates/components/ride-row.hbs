@@ -3,6 +3,9 @@
     {{#row.cell class='creation'}}{{creation}}{{/row.cell}}
   {{/if}}
   {{#row.cell class='date-cell' onClick=(action 'toggleCreation')}}
+    {{#if ride.isDivider}}
+      {{scroll-to}}
+    {{/if}}
     <span class='date'>{{ride.rideTimes}}</span>
     {{#if showCreation}}
       {{paper-icon 'alarm off' size=14}}
