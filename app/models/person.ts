@@ -35,3 +35,9 @@ export default class Person extends DS.Model.extend({
     }, {});
   })
 }) {}
+
+declare module 'ember-data' {
+  interface ModelRegistry {
+    person: Person
+  }
+}

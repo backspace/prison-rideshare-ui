@@ -16,3 +16,9 @@ export default class Reimbursement extends DS.Model.extend({
 
   insertedAt: DS.attr('date')
 }) {}
+
+declare module 'ember-data' {
+  interface ModelRegistry {
+    reimbursement: Reimbursement
+  }
+}

@@ -18,3 +18,9 @@ export default class Institution extends DS.Model.extend({
     }, {});
   })
 }) {}
+
+declare module 'ember-data' {
+  interface ModelRegistry {
+    institution: Institution
+  }
+}
