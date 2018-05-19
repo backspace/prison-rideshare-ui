@@ -9,6 +9,10 @@ declare global {
     id: String;
     date: Date;
   }
+
+  interface ValidationDictionary {
+    [index: string]: string;
+  }
 }
 
 export {};

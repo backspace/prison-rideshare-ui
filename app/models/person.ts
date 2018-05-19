@@ -1,7 +1,7 @@
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
-export default DS.Model.extend({
+export default class Person extends DS.Model.extend({
   name: DS.attr(),
 
   email: DS.attr('string'),
@@ -14,7 +14,7 @@ export default DS.Model.extend({
   notes: DS.attr('string'),
   selfNotes: DS.attr('string'),
 
-  reimbursements: DS.hasMany(),
+  reimbursements: DS.hasMany('reimbursement'),
 
   drivings: DS.hasMany('ride', {inverse: 'driver'}),
   carOwnings: DS.hasMany('ride', {inverse: 'carOwner'}),
@@ -28,10 +28,10 @@ export default DS.Model.extend({
   validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
 
-    return attributes._keys.list.reduce((response, key) => {
+    return attributes._keys.list.reduce((response: ValidationDictionary, key: string) => {
       const errors = this.get(`errors.${key}`) || [];
       response[key] = errors.mapBy('message');
       return response;
     }, {});
   })
-});
+}) {}
