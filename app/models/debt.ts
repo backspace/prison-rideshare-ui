@@ -6,10 +6,10 @@ import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import sum from 'ember-cpm/macros/sum';
 
-export default DS.Model.extend({
-  person: DS.belongsTo(),
+export default class Debt extends DS.Model.extend({
+  person: DS.belongsTo('person'),
 
-  rides: DS.hasMany(),
+  rides: DS.hasMany('ride'),
 
   descendingRides: sort('rides', 'descendingRideSort'),
   descendingRideSort: Object.freeze(['start:desc']),
@@ -30,4 +30,10 @@ export default DS.Model.extend({
 
   totalExpenses: sum('foodExpenses', 'carExpenses'),
   totalExpensesDollars: dollars('totalExpenses')
-});
+}) {}
+
+declare module 'ember-data' {
+  interface ModelRegistry {
+    debt: Debt
+  }
+}
