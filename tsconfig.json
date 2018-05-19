@@ -3,22 +3,41 @@
     "target": "es2017",
     "allowJs": true,
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
     "noEmitOnError": false,
     "noEmit": true,
-    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": true,
     "baseUrl": ".",
     "module": "es6",
     "paths": {
-      "prison-rideshare-ui/tests/*": ["tests/*"],
+      "prison-rideshare-ui/tests/*": [
+        "tests/*"
+      ],
+      "prison-rideshare-ui/mirage/*": [
+        "mirage/*"
+      ],
       "prison-rideshare-ui/*": [
         "app/*"
+      ],
+      "*": [
+        "types/*"
       ]
     }
   },
-  "exclude": [
-    "tmp",
-    "dist",
-    "node_modules",
-    "bower_components"
+  "include": [
+    "app",
+    "tests",
+    "types",
+    "mirage"
   ]
 }
