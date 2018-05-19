@@ -10,7 +10,7 @@ import difference from 'ember-cpm/macros/difference';
 
 import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
 
-export default DS.Model.extend({
+export default class Ride extends DS.Model.extend({
   enabled: DS.attr('boolean', {defaultValue: true}),
   cancellationReason: DS.attr(),
 
@@ -24,16 +24,16 @@ export default DS.Model.extend({
   medium: DS.attr(),
 
   name: DS.attr(),
-  institution: DS.belongsTo(),
+  institution: DS.belongsTo('institution'),
   address: DS.attr(),
   contact: DS.attr(),
-  passengers: DS.attr({defaultValue: 1}),
+  passengers: DS.attr('number', {defaultValue: 1}),
   firstTime: DS.attr('boolean'),
 
   validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
 
-    return attributes._keys.list.reduce((response, key) => {
+    return attributes._keys.list.reduce((response: ValidationDictionary, key: string) => {
       const errors = this.get(`errors.${key}`) || [];
       response[key] = errors.mapBy('message');
       return response;
@@ -61,7 +61,7 @@ export default DS.Model.extend({
 
   reportNotes: DS.attr(),
 
-  reimbursements: DS.hasMany(),
+  reimbursements: DS.hasMany('reimbursement'),
 
   foodExpenses: DS.attr({defaultValue: 0}),
   foodExpensesDollars: dollars('foodExpenses'),
@@ -108,7 +108,7 @@ export default DS.Model.extend({
       return !this.get('enabled');
     },
 
-    set(key, value) {
+    set(_key, value) {
       this.set('enabled', !value);
       return value;
     }
@@ -118,18 +118,24 @@ export default DS.Model.extend({
     return [this.get('address')].concat(this.get('children').mapBy('address')).map(address => anonymiseAddress(address)).join(', ');
   }),
 
-  allPassengers: computed('passengers', 'children.@each.passengers', function() {
-    return this.get('children').mapBy('passengers').reduce((sum, count) => count + sum, this.get('passengers'));
-  }),
-
   matchString: computed('institution.name', 'driver.name', 'carOwner.name', 'name', 'address', function() {
     return `${this.getWithDefault('institution.name', '')} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault('carOwner.name', '')} ${this.getWithDefault('name', '')} ${this.getWithDefault('address')}`.toLowerCase();
   }),
 
-  matches(casedQuery) {
+  matches(casedQuery: string) {
     const query = casedQuery.toLowerCase();
     const matchString = this.get('matchString');
 
     return (query.match(/\S+/g) || []).every(queryTerm => matchString.includes(queryTerm));
   }
-});
+}) {
+  allPassengers = computed('passengers', 'children.@each.passengers', function(this: Ride) {
+    return this.children.mapBy('passengers').reduce((sum, count) => count + sum, this.passengers);
+  });
+}
+
+declare module 'ember-data' {
+  interface ModelRegistry {
+    ride: Ride
+  }
+}
