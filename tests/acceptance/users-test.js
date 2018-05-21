@@ -29,19 +29,19 @@ test('list users and update admin status', function(assert) {
   andThen(function() {
     assert.equal(shared.title, 'Users · Prison Rideshare');
 
-    assert.equal(page.users().count, 2, 'expected two users');
+    assert.equal(page.users.length, 2, 'expected two users');
 
-    assert.equal(page.users(0).email, 'abc@def.com');
-    assert.ok(page.users(0).adminCheckbox.checked);
+    assert.equal(page.users[0].email, 'abc@def.com');
+    assert.ok(page.users[0].adminCheckbox.checked);
 
-    assert.equal(page.users(1).email, 'ghi@jkl.com');
-    assert.notOk(page.users(1).adminCheckbox.checked);
+    assert.equal(page.users[1].email, 'ghi@jkl.com');
+    assert.notOk(page.users[1].adminCheckbox.checked);
   });
 
-  page.users(1).adminCheckbox.click();
+  page.users[1].adminCheckbox.click();
 
   andThen(function() {
-    assert.ok(page.users(1).adminCheckbox.checked);
+    assert.ok(page.users[1].adminCheckbox.checked);
 
     const serverUsers = server.db.users;
     const lastUser = serverUsers[serverUsers.length - 1];
@@ -88,8 +88,8 @@ test('shows who is present', function(assert) {
 
   andThen(() => {
     assert.equal(shared.userCount.text, '2', 'expected the count to show when two people are connected');
-    assert.ok(page.users(0).isPresent, 'expected the admin to be marked as present');
-    assert.ok(page.users(1).isPresent, 'expected the non-admin to be marked as present');
+    assert.ok(page.users[0].isPresent, 'expected the admin to be marked as present');
+    assert.ok(page.users[1].isPresent, 'expected the non-admin to be marked as present');
 
     const leavePresenceDiffMessage = {joins: {}, leaves: {}};
     leavePresenceDiffMessage.leaves[`User:${this.nonAdmin.id}`] = {};
@@ -98,7 +98,7 @@ test('shows who is present', function(assert) {
 
   andThen(() => {
     assert.ok(shared.userCount.isHidden, 'expected no user count to show when only one person is connected');
-    assert.notOk(page.users(1).isPresent, 'expected the non-admin to be not marked as present');
+    assert.notOk(page.users[1].isPresent, 'expected the non-admin to be not marked as present');
 
     const rejoinPresenceDiffMessage = {joins: {}, leaves: {}};
     rejoinPresenceDiffMessage.joins[`User:${this.admin.id}`] = {};

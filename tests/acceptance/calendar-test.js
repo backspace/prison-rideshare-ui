@@ -75,9 +75,9 @@ test('calendar shows existing commitments and lets them be changed', function(as
     assert.equal(page.personSession, 'Logged in as jorts@jants.ca');
     assert.equal(page.month, 'December 2117');
 
-    page.days(3).as(d4 => {
-      assert.equal(d4.slots().count, 1, 'expected one slot on Monday');
-      d4.slots(0).as(s1 => {
+    page.days[3].as(d4 => {
+      assert.equal(d4.slots.length, 1, 'expected one slot on Monday');
+      d4.slots[0].as(s1 => {
         assert.equal(s1.hours, '5:30p—8');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
         assert.notOk(s1.isDisabled, 'expected the slot to not be full');
@@ -85,23 +85,23 @@ test('calendar shows existing commitments and lets them be changed', function(as
       })
     });
 
-    page.days(9).as(d10 => {
-      assert.equal(d10.slots().count, 2, 'expected two slots on Sunday');
-      d10.slots(0).as(s1 => {
+    page.days[9].as(d10 => {
+      assert.equal(d10.slots.length, 2, 'expected two slots on Sunday');
+      d10.slots[0].as(s1 => {
         assert.equal(s1.hours, '11a—5p');
         assert.notOk(s1.isCommittedTo, 'expected the slot to not be committed-to');
       });
-      d10.slots(1).as(s2 => {
+      d10.slots[1].as(s2 => {
         assert.equal(s2.hours, '5p—9');
       });
     });
   });
 
-  page.days(3).slots(0).click();
+  page.days[3].slots[0].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Cancelled your agreement to drive on December 4');
-    assert.notOk(page.days(3).slots(0).isCommittedTo, 'expected the slot to not longer be committed-to');
+    assert.notOk(page.days[3].slots[0].isCommittedTo, 'expected the slot to not longer be committed-to');
     assert.equal(server.db.commitments.length, 2, 'expected the commitment to have been deleted on the server');
   });
 });
@@ -110,11 +110,11 @@ test('slots can be committed to', function(assert) {
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   // FIXME this is only a separate test because toasts linger forever in the test environment
-  page.days(9).slots(1).click();
+  page.days[9].slots[1].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Thanks for agreeing to drive on December 10!');
-    assert.ok(page.days(9).slots(1).isCommittedTo, 'expected the slot to be newly committed-to');
+    assert.ok(page.days[9].slots[1].isCommittedTo, 'expected the slot to be newly committed-to');
 
     const [, , , commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
@@ -132,13 +132,13 @@ test('full slots show as full and can’t be committed to', function(assert) {
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.days(9).slots(1).isDisabled, 'expected the full slot to be disabled');
+    assert.ok(page.days[9].slots[1].isDisabled, 'expected the full slot to be disabled');
   });
 
-  page.days(9).slots(1).click();
+  page.days[9].slots[1].click();
 
   andThen(() => {
-    assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
+    assert.notOk(page.days[9].slots[1].isCommittedTo, 'expected the slot to not be committed-to');
   });
 });
 
@@ -150,15 +150,15 @@ test('past slots can’t be committed to', function(assert) {
   page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.days(9).slots(0).isDisabled, 'expected the past slot to be disabled');
-    assert.ok(page.days(10).slots(0).isCommittedTo, 'expected the past committed slot to show as committed-to');
-    assert.ok(page.days(10).slots(0).isDisabled, 'expected the past committed slot to be disabled');
+    assert.ok(page.days[9].slots[0].isDisabled, 'expected the past slot to be disabled');
+    assert.ok(page.days[10].slots[0].isCommittedTo, 'expected the past committed slot to show as committed-to');
+    assert.ok(page.days[10].slots[0].isDisabled, 'expected the past committed slot to be disabled');
   });
 
-  page.days(9).slots(0).click();
+  page.days[9].slots[0].click();
 
   andThen(() => {
-    assert.notOk(page.days(9).slots(0).isCommittedTo, 'expected the slot to not be committed-to');
+    assert.notOk(page.days[9].slots[0].isCommittedTo, 'expected the slot to not be committed-to');
   });
 });
 
@@ -174,11 +174,11 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-  page.days(3).slots(0).click();
+  page.days[3].slots[0].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
-    assert.ok(page.days(3).slots(0).isCommittedTo, 'expected the slot to still be committed-to');
+    assert.ok(page.days[3].slots[0].isCommittedTo, 'expected the slot to still be committed-to');
     assert.equal(server.db.commitments.length, 3, 'expected the commitment to still be on the server');
   });
 });
@@ -195,11 +195,11 @@ test('a failure to create a commitment makes it not display and shows an error',
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-  page.days(9).slots(1).click();
+  page.days[9].slots[1].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
-    assert.notOk(page.days(9).slots(1).isCommittedTo, 'expected the slot to not be committed-to');
+    assert.notOk(page.days[9].slots[1].isCommittedTo, 'expected the slot to not be committed-to');
     assert.equal(server.db.commitments.length, 3, 'expected the commitments to be unchanged on the server');
   });
 })
@@ -217,7 +217,7 @@ test('a failure to create a commitment with a particular error shows the error',
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-  page.days(9).slots(1).click();
+  page.days[9].slots[1].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Fail!');
@@ -386,29 +386,29 @@ test('an admin can see the commitments with person names', function(assert) {
   page.adminVisit({ month: '2117-12' });
 
   andThen(() => {
-    assert.equal(page.days(3).slots(0).count.text, '2/3', 'expected two people to show for the slot out of a maximum of three');
-    assert.ok(page.days(3).slots(0).count.isCommittedTo, 'expected the two person-slot to show as committed to');
-    assert.ok(page.days(3).slots(0).checkbox.isHidden, 'expected the checkbox to not display');
+    assert.equal(page.days[3].slots[0].count.text, '2/3', 'expected two people to show for the slot out of a maximum of three');
+    assert.ok(page.days[3].slots[0].count.isCommittedTo, 'expected the two person-slot to show as committed to');
+    assert.ok(page.days[3].slots[0].checkbox.isHidden, 'expected the checkbox to not display');
 
-    assert.equal(page.people().count, 0, 'expected no people details to show initially');
+    assert.equal(page.people.length, 0, 'expected no people details to show initially');
 
-    assert.equal(page.days(9).slots(0).count.text, '0/∞', 'expected the slot capacity to show as ∞');
-    assert.notOk(page.days(9).slots(0).count.isCommittedTo, 'expected the empty slot to not show as committed to');
+    assert.equal(page.days[9].slots[0].count.text, '0/∞', 'expected the slot capacity to show as ∞');
+    assert.notOk(page.days[9].slots[0].count.isCommittedTo, 'expected the empty slot to not show as committed to');
   });
 
-  page.days(3).slots(0).count.click();
+  page.days[3].slots[0].count.click();
 
   andThen(() => {
     assert.equal(page.viewingSlot, 'Saturday, December 4, 5:30p–8:00p');
-    assert.equal(page.people().count, 2, 'expected two people details to show for the slot');
-    assert.equal(page.people(0).name, 'Other Slot Person');
-    assert.equal(page.people(1).name, 'Jortle Tortle');
+    assert.equal(page.people.length, 2, 'expected two people details to show for the slot');
+    assert.equal(page.people[0].name, 'Other Slot Person');
+    assert.equal(page.people[1].name, 'Jortle Tortle');
   });
 
-  page.people(1).reveal();
+  page.people[1].reveal();
 
   andThen(() => {
-    assert.equal(page.people(1).email, 'jorts@jants.ca', 'expected the contact information to be revealed');
+    assert.equal(page.people[1].email, 'jorts@jants.ca', 'expected the contact information to be revealed');
   });
 
   page.nextMonth.click();
@@ -431,26 +431,26 @@ test('an admin can create commitments', function(assert) {
   authenticateSession(this.application, { access_token: 'abcdef' });
   page.adminVisit({ month: '2117-12' });
 
-  page.days(9).slots(1).count.click();
+  page.days[9].slots[1].count.click();
   page.peopleSearch.fillIn('commit');
 
   andThen(() => {
-    assert.equal(page.peopleSearch.options().count, 2, 'expected two people to show for possible commitments');
-    assert.equal(page.peopleSearch.options(0).name, 'Also non-committal');
-    assert.equal(page.peopleSearch.options(1).name, 'Non-committal');
+    assert.equal(page.peopleSearch.options.length, 2, 'expected two people to show for possible commitments');
+    assert.equal(page.peopleSearch.options[0].name, 'Also non-committal');
+    assert.equal(page.peopleSearch.options[1].name, 'Non-committal');
   });
 
   page.peopleSearch.fillIn('also');
 
   andThen(() => {
-    assert.equal(page.peopleSearch.options().count, 1, 'expected only one match');
+    assert.equal(page.peopleSearch.options.length, 1, 'expected only one match');
   });
 
-  page.peopleSearch.options(0).click();
+  page.peopleSearch.options[0].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Committed Also non-committal to drive on December 10');
-    assert.equal(page.days(9).slots(1).count.text, '1/2', 'expected the slot to be newly committed-to');
+    assert.equal(page.days[9].slots[1].count.text, '1/2', 'expected the slot to be newly committed-to');
 
     const [, , , commitment] = server.db.commitments;
     assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
@@ -459,7 +459,7 @@ test('an admin can create commitments', function(assert) {
   page.peopleSearch.fillIn('commit');
 
   andThen(() => {
-    assert.equal(page.peopleSearch.options().count, 1, 'expected the now-commited person to not show in the search');
+    assert.equal(page.peopleSearch.options.length, 1, 'expected the now-commited person to not show in the search');
   });
 });
 
@@ -478,9 +478,9 @@ test('an error when an admin tries to create a commitment is displayed', functio
   authenticateSession(this.application, { access_token: 'abcdef' });
   page.adminVisit({ month: '2117-12' });
 
-  page.days(9).slots(1).count.click();
+  page.days[9].slots[1].count.click();
   page.peopleSearch.fillIn('also');
-  page.peopleSearch.options(0).click();
+  page.peopleSearch.options[0].click();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Fail!');
@@ -493,8 +493,8 @@ test('an admin can delete commitments', function(assert) {
   authenticateSession(this.application, { access_token: 'abcdef' });
   page.adminVisit({ month: '2117-12' });
 
-  page.days(3).slots(0).count.click();
-  page.people(0).remove();
+  page.days[3].slots[0].count.click();
+  page.people[0].remove();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Deleted Other Slot Person’s commitment on December 4');
@@ -517,8 +517,8 @@ test('an error when an admin tries to delete a commitment is displayed', functio
   authenticateSession(this.application, { access_token: 'abcdef' });
   page.adminVisit({ month: '2117-12' });
 
-  page.days(3).slots(0).count.click();
-  page.people(0).remove();
+  page.days[3].slots[0].count.click();
+  page.people[0].remove();
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Fail!');

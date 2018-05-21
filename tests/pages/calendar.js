@@ -108,59 +108,44 @@ export default create({
     scope: '.ember-power-calendar-nav-control.previous-month'
   },
 
-  days: collection({
-    itemScope: '.ember-power-calendar-day',
+  days: collection('.ember-power-calendar-day', {
+    slots: collection('.slot', {
+      click: clickable('md-checkbox'),
+      checkbox: { scope: 'md-checkbox' },
+      hours: text('.hours'),
 
-    item: {
-      slots: collection({
-        itemScope: '.slot',
+      count: {
+        scope: '.count',
+        isCommittedTo: hasClass('committed-to'),
+      },
 
-        item: {
-          click: clickable('md-checkbox'),
-          checkbox: { scope: 'md-checkbox' },
-          hours: text('.hours'),
-
-          count: {
-            scope: '.count',
-            isCommittedTo: hasClass('committed-to'),
-          },
-
-          isCommittedTo: hasClass('md-checked', 'md-checkbox'),
-          disabledAttribute: attribute('disabled', 'md-checkbox'),
-          isDisabled: getter(function() {
-            return this.disabledAttribute === 'disabled';
-          })
-        }
+      isCommittedTo: hasClass('md-checked', 'md-checkbox'),
+      disabledAttribute: attribute('disabled', 'md-checkbox'),
+      isDisabled: getter(function() {
+        return this.disabledAttribute === 'disabled';
       })
-    }
+    })
   }),
 
   viewingSlot: text('.viewing-slot .hours'),
 
-  people: collection({
-    itemScope: 'md-chips.commitments md-chip',
+  people: collection('md-chips.commitments md-chip', {
+    name: text('.name'),
+    reveal: clickable('.name-container'),
 
-    item: {
-      name: text('.name'),
-      reveal: clickable('.name-container'),
+    email: text('.email'),
 
-      email: text('.email'),
-
-      remove: clickable('.md-chip-remove')
-    }
+    remove: clickable('.md-chip-remove')
   }),
 
   peopleSearch: {
     scope: 'md-chips.commitments input',
 
-    options: collection({
+    options: collection('.ember-power-select-option', {
       resetScope: true,
-      itemScope: '.ember-power-select-option',
 
-      item: {
-        name: text('.name'),
-        click: clickable('.name')
-      }
+      name: text('.name'),
+      click: clickable('.name')
     })
   },
 

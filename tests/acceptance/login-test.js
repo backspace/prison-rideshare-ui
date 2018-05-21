@@ -70,7 +70,7 @@ test('a failure from the current endpoint logs the user out', function(assert) {
   page.submit();
 
   andThen(() => {
-    assert.equal(shared.flashes(0).text, 'Please log in');
+    assert.equal(shared.flashes[0].text, 'Please log in');
     // TODO this redirects to /reports/new but asserting that fails…
     // Also, invalidating the session means this flash message won’t even survive.
   });

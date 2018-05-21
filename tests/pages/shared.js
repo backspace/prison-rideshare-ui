@@ -11,12 +11,8 @@ export default create({
     scope: '.site-nav-container .session'
   },
 
-  flashes: collection({
-    itemScope: '.flashes div',
-
-    item: {
-      text: text()
-    }
+  flashes: collection('.flashes div', {
+    text: text()
   }),
 
   toast: {

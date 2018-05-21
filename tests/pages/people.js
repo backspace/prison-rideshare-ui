@@ -22,46 +22,42 @@ export default create({
     }
   },
 
-  people: collection({
-    itemScope: 'tbody tr.person',
+  people: collection('tbody tr.person', {
+    activeSwitch: {
+      scope: '.paper-switch',
+      enabled: hasClass('md-checked'),
+      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
+    },
 
-    item: {
-      activeSwitch: {
-        scope: '.paper-switch',
-        enabled: hasClass('md-checked'),
-        click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
-      },
+    name: text('.name'),
 
-      name: text('.name'),
+    email: {
+      scope: '.email',
+      href: attribute('href', 'a'),
+      isPreferred: hasClass('is-preferred'),
+    },
 
-      email: {
-        scope: '.email',
-        href: attribute('href', 'a'),
-        isPreferred: hasClass('is-preferred'),
-      },
+    landline: {
+      scope: '.landline',
+      href: attribute('href', 'a'),
+      isPreferred: hasClass('is-preferred'),
+    },
 
-      landline: {
-        scope: '.landline',
-        href: attribute('href', 'a'),
-        isPreferred: hasClass('is-preferred'),
-      },
+    mobile: {
+      scope: '.mobile',
+      href: attribute('href', 'a'),
+      isPreferred: hasClass('is-preferred'),
+    },
 
-      mobile: {
-        scope: '.mobile',
-        href: attribute('href', 'a'),
-        isPreferred: hasClass('is-preferred'),
-      },
+    lastRide: {
+      scope: '.last-ride'
+    },
 
-      lastRide: {
-        scope: '.last-ride'
-      },
+    notes: {
+      scope: '.notes'
+    },
 
-      notes: {
-        scope: '.notes'
-      },
-
-      edit: clickable('button.edit')
-    }
+    edit: clickable('button.edit')
   }),
 
   form: {

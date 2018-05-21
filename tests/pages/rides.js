@@ -41,81 +41,77 @@ export default create({
     }
   },
 
-  rides: collection({
-    itemScope: 'tbody tr.ride',
+  ridesHead: {
+    scope: 'thead',
+    clickDate: clickable('.date')
+  },
 
-    item: {
-      enabled: hasClass('enabled'),
-      isUncombinable: hasClass('uncombinable'),
+  rides: collection('tbody tr.ride', {
+    enabled: hasClass('enabled'),
+    isUncombinable: hasClass('uncombinable'),
 
-      isDivider: hasClass('divider'),
+    isDivider: hasClass('divider'),
 
-      cancellation: {
-        scope: '.cancellation',
-        click: clickable('button'),
-        showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
-        showsVisitor: isVisible('button md-icon[md-font-icon="perm identity"]'),
-        showsNotCancelled: isVisible('button md-icon[md-font-icon="highlight off"]'),
-        showsOther: isVisible('button md-icon[md-font-icon="help"]'),
+    cancellation: {
+      scope: '.cancellation',
+      click: clickable('button'),
+      showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
+      showsVisitor: isVisible('button md-icon[md-font-icon="perm identity"]'),
+      showsNotCancelled: isVisible('button md-icon[md-font-icon="highlight off"]'),
+      showsOther: isVisible('button md-icon[md-font-icon="help"]'),
 
-        title: attribute('title', 'button')
-      },
-
-      name: text('.name-and-contact .name'),
-      isFirstTimer: isVisible('.name-and-contact md-icon[md-font-icon=announcement]'),
-      date: text('.date'),
-      clickDate: clickable('.date-cell'),
-      institution: text('.institution'),
-      address: text('.address'),
-      contact: text('.contact'),
-      contactPhoneHref: attribute('href', '.contact a'),
-      passengers: text('.passengers'),
-
-      medium: {
-        scope: '.medium-and-contact',
-        isTxt: isVisible('md-icon[md-font-icon=textsms]'),
-        isEmail: isVisible('md-icon[md-font-icon=email]'),
-        isPhone: isVisible('md-icon[md-font-icon=phone]')
-      },
-
-      driver: {
-        scope: '.driver',
-        text: text('.name'),
-        click: clickable(),
-        reveal: clickable('.name-container'),
-        clear: clickable('.remove-container button'),
-
-        email: text('.email'),
-        landline: text('.landline'),
-
-        selfNotes: text('.self-notes')
-      },
-
-      carOwner: {
-        scope: '.car-owner',
-        text: text('.name'),
-        click: clickable(),
-        clear: clickable('.remove-container button')
-      },
-
-      combineButton: {
-        scope: 'button.combine',
-        isActive: hasClass('md-raised'),
-        title: attribute('title')
-      },
-
-      isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="call split"]'),
-
-      edit: clickable('button.edit'),
-
-      creationDate: {
-        scope: '.creation'
-      }
+      title: attribute('title', 'button')
     },
 
-    head: {
-      scope: 'thead',
-      clickDate: clickable('.date')
+    name: text('.name-and-contact .name'),
+    isFirstTimer: isVisible('.name-and-contact md-icon[md-font-icon=announcement]'),
+    date: text('.date'),
+    clickDate: clickable('.date-cell'),
+    institution: text('.institution'),
+    address: text('.address'),
+    contact: text('.contact'),
+    contactPhoneHref: attribute('href', '.contact a'),
+    passengers: text('.passengers'),
+
+    medium: {
+      scope: '.medium-and-contact',
+      isTxt: isVisible('md-icon[md-font-icon=textsms]'),
+      isEmail: isVisible('md-icon[md-font-icon=email]'),
+      isPhone: isVisible('md-icon[md-font-icon=phone]')
+    },
+
+    driver: {
+      scope: '.driver',
+      text: text('.name'),
+      click: clickable(),
+      reveal: clickable('.name-container'),
+      clear: clickable('.remove-container button'),
+
+      email: text('.email'),
+      landline: text('.landline'),
+
+      selfNotes: text('.self-notes')
+    },
+
+    carOwner: {
+      scope: '.car-owner',
+      text: text('.name'),
+      click: clickable(),
+      clear: clickable('.remove-container button')
+    },
+
+    combineButton: {
+      scope: 'button.combine',
+      isActive: hasClass('md-raised'),
+      title: attribute('title')
+    },
+
+    isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="call split"]'),
+
+    edit: clickable('button.edit'),
+
+    creationDate: {
+      scope: '.creation'
     }
   }),
 
@@ -123,26 +119,18 @@ export default create({
     scope: 'tr.no-matches'
   },
 
-  notes: collection({
-    itemScope: 'tr.notes',
-
-    item: {
-      text: text('td.notes')
-    }
+  notes: collection('tr.notes', {
+    text: text('td.notes')
   }),
 
-  reports: collection({
-    itemScope: 'tr.report',
+  reports: collection('tr.report', {
+    distance: text('.distance'),
+    foodExpenses: text('.food-expenses'),
+    notes: text('.notes'),
 
-    item: {
-      distance: text('.distance'),
-      foodExpenses: text('.food-expenses'),
-      notes: text('.notes'),
-
-      clear: clickable('button'),
-      clearConfirm: { scope: '.clear-confirm' },
-      clearCancel: { scope: '.clear-cancel' }
-    }
+    clear: clickable('button'),
+    clearConfirm: { scope: '.clear-confirm' },
+    clearCancel: { scope: '.clear-cancel' }
   }),
 
   form: {
@@ -170,15 +158,12 @@ export default create({
 
       fillIn: fillable('input'),
 
-      suggestions: collection({
+      suggestions: collection('.ember-power-select-option', {
         resetScope: true,
-        itemScope: '.ember-power-select-option',
 
-        item: {
-          name: text('.name'),
-          address: text('address'),
-          contact: text('.contact')
-        }
+        name: text('.name'),
+        address: text('address'),
+        contact: text('.contact')
       })
     },
 

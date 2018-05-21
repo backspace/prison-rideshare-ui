@@ -67,11 +67,11 @@ test('list reimbursements and optionally show processed ones', function(assert) 
   andThen(() => {
     assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
 
-    assert.equal(reimbursementsPage.rows().count, 8, 'expected two month rows and six person reimbursement rows');
+    assert.equal(reimbursementsPage.rows.length, 8, 'expected two month rows and six person reimbursement rows');
 
-    assert.equal(reimbursementsPage.rows(0).month, 'April 2017');
+    assert.equal(reimbursementsPage.rows[0].month, 'April 2017');
 
-    const kala = reimbursementsPage.rows(1);
+    const kala = reimbursementsPage.rows[1];
     assert.equal(kala.name, 'Kala');
     assert.equal(kala.foodExpenses, '0', 'expected the processed reimbursement to be excluded');
     assert.equal(kala.carExpenses, '22');
@@ -79,7 +79,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.ok(kala.processButton.isPrimary, 'expected the process button to be default for non-donations');
     assert.notOk(kala.donateButton.isPrimary, 'expected the donate button to not be default for non-donations');
 
-    reimbursementsPage.rows(2).as(kalaDonation => {
+    reimbursementsPage.rows[2].as(kalaDonation => {
       assert.equal(kalaDonation.name, '');
       assert.equal(kalaDonation.foodExpenses, '');
       assert.equal(kalaDonation.carExpenses, '1');
@@ -88,30 +88,30 @@ test('list reimbursements and optionally show processed ones', function(assert) 
       assert.ok(kalaDonation.donateButton.isPrimary, 'expected the donate button to be default for donations');
     });
 
-    const sun = reimbursementsPage.rows(3);
+    const sun = reimbursementsPage.rows[3];
     assert.equal(sun.name, 'Sun');
     assert.equal(sun.foodExpenses, '44');
     assert.equal(sun.carExpenses, '33');
     assert.equal(sun.totalExpenses, '77');
 
-    reimbursementsPage.rows(4).as(willDonation => {
+    reimbursementsPage.rows[4].as(willDonation => {
       assert.equal(willDonation.name, 'Will');
       assert.equal(willDonation.carExpenses, '3.33');
     });
 
-    assert.equal(reimbursementsPage.reimbursements().count, 0, 'expected no processed reimbursements to be shown');
+    assert.equal(reimbursementsPage.reimbursements.length, 0, 'expected no processed reimbursements to be shown');
 
-    assert.equal(reimbursementsPage.rows(5).month, 'May 2017');
-    assert.equal(reimbursementsPage.rows(7).name, 'Sun');
-    assert.equal(reimbursementsPage.rows(7).carExpenses, '99');
+    assert.equal(reimbursementsPage.rows[5].month, 'May 2017');
+    assert.equal(reimbursementsPage.rows[7].name, 'Sun');
+    assert.equal(reimbursementsPage.rows[7].carExpenses, '99');
   });
 
   reimbursementsPage.processedSwitch.click();
 
   andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements().count, 2, 'expected the processed reimbursements to be shown');
+    assert.equal(reimbursementsPage.reimbursements.length, 2, 'expected the processed reimbursements to be shown');
 
-    const foodProcessed = reimbursementsPage.reimbursements(0);
+    const foodProcessed = reimbursementsPage.reimbursements[0];
     assert.equal(foodProcessed.date, '2017-03-26');
     assert.equal(foodProcessed.name, 'Kala');
     assert.equal(foodProcessed.ride, '2017-03-22 to Fort Leavenworth');
@@ -119,7 +119,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.ok(foodProcessed.isFoodExpense, 'expected a food expense icon');
     assert.notOk(foodProcessed.isDonation, 'expected the food expense to not have been donated');
 
-    const carProcessed = reimbursementsPage.reimbursements(1);
+    const carProcessed = reimbursementsPage.reimbursements[1];
     assert.equal(carProcessed.date, '2017-03-25');
     assert.equal(carProcessed.name, 'Kala');
     assert.equal(carProcessed.expenses, '9.99');
@@ -131,7 +131,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
 test('process reimbursements', function(assert) {
   reimbursementsPage.visit();
 
-  reimbursementsPage.rows(3).processButton.click();
+  reimbursementsPage.rows[3].processButton.click();
 
   andThen(() => {
     const [, , , , sun1, sun2,] = server.db.reimbursements;
@@ -140,11 +140,11 @@ test('process reimbursements', function(assert) {
     assert.ok(sun2.processed);
   });
 
-  reimbursementsPage.rows(1).donateButton.click();
-  reimbursementsPage.rows(1).donateButton.click();
-  reimbursementsPage.rows(1).donateButton.click();
-  reimbursementsPage.rows(1).donateButton.click();
-  reimbursementsPage.rows(1).donateButton.click();
+  reimbursementsPage.rows[1].donateButton.click();
+  reimbursementsPage.rows[1].donateButton.click();
+  reimbursementsPage.rows[1].donateButton.click();
+  reimbursementsPage.rows[1].donateButton.click();
+  reimbursementsPage.rows[1].donateButton.click();
 
   andThen(() => {
     const [, , , , , , k] = server.db.reimbursements;
@@ -160,11 +160,11 @@ test('rows can be copied for the ledger', function(assert) {
   reimbursementsPage.visit();
 
   andThen(() => {
-    const clipboardText = reimbursementsPage.rows(2).copyButton.clipboardText;
+    const clipboardText = reimbursementsPage.rows[2].copyButton.clipboardText;
     const expectedClipboardTextEnding = 'April mileage\tKala\t-$1\t$1\t\t(donated)';
     assert.ok(clipboardText.includes(expectedClipboardTextEnding), `expected April clipboard text to include ${expectedClipboardTextEnding}, got ${clipboardText}`);
 
-    const mayClipboardText = reimbursementsPage.rows(5).copyButton.clipboardText;
+    const mayClipboardText = reimbursementsPage.rows[5].copyButton.clipboardText;
     const [kalaClipboardText, sunClipboardText] = mayClipboardText.split('\n');
     const expectedKalaClipboardTextEnding = 'May mileage\tKala\t-$11\t$11\t\t(donated)';
     const expectedSunClipboardTextEnding = 'May mileage + meal × 2\tSun\t-$102\t\t';
@@ -175,7 +175,7 @@ test('rows can be copied for the ledger', function(assert) {
 
 skip('create a reimbursement', function(assert) {
   peoplePage.visit();
-  peoplePage.rows(0).reimburseButton.click();
+  peoplePage.rows[0].reimburseButton.click();
 
   andThen(() => {
     assert.equal(reimbursementsPage.form.amountField.value, '22', 'expected the default reimbursement amount to equal the amount owed');
@@ -184,23 +184,23 @@ skip('create a reimbursement', function(assert) {
   reimbursementsPage.form.cancel();
 
   andThen(() => {
-    assert.equal(peoplePage.rows(0).owed, '22');
+    assert.equal(peoplePage.rows[0].owed, '22');
   });
 
-  peoplePage.rows(0).reimburseButton.click();
+  peoplePage.rows[0].reimburseButton.click();
 
   reimbursementsPage.form.amountField.fill('10');
   reimbursementsPage.form.submit();
 
   andThen(() => {
-    assert.equal(peoplePage.rows(0).owed, '12');
+    assert.equal(peoplePage.rows[0].owed, '12');
   });
 
   reimbursementsPage.visit();
 
   andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements().count, 4);
-    assert.equal(reimbursementsPage.reimbursements(3).amount, '10');
+    assert.equal(reimbursementsPage.reimbursements.length, 4);
+    assert.equal(reimbursementsPage.reimbursements[3].amount, '10');
   });
 });
 
@@ -208,10 +208,10 @@ skip('edit a reimbursement and the totals and donation status will be updated', 
   reimbursementsPage.visit();
 
   andThen(() => {
-    assert.ok(reimbursementsPage.reimbursements(0).donation, 'expected the first reimbursement to be a donation');
+    assert.ok(reimbursementsPage.reimbursements[0].donation, 'expected the first reimbursement to be a donation');
   });
 
-  reimbursementsPage.reimbursements(0).edit();
+  reimbursementsPage.reimbursements[0].edit();
 
   andThen(() => {
     assert.ok(reimbursementsPage.form.donationCheckbox.checked, 'expected the donation checkbox to be checked');
@@ -222,13 +222,13 @@ skip('edit a reimbursement and the totals and donation status will be updated', 
   reimbursementsPage.form.submit();
 
   andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements(0).amount, '44');
-    assert.notOk(reimbursementsPage.reimbursements(0).donation, 'expected the first reimbursements to no longer be a donation');
+    assert.equal(reimbursementsPage.reimbursements[0].amount, '44');
+    assert.notOk(reimbursementsPage.reimbursements[0].donation, 'expected the first reimbursements to no longer be a donation');
   });
 
   peoplePage.visit();
 
   andThen(() => {
-    assert.equal(peoplePage.rows(1).owed, '66');
+    assert.equal(peoplePage.rows[1].owed, '66');
   });
 });

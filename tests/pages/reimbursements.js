@@ -15,51 +15,43 @@ import {
 export default create({
   visit: visitable('/reimbursements'),
 
-  rows: collection({
-    itemScope: 'tbody tr',
+  rows: collection('tbody tr', {
+    month: text('.month'),
 
-    item: {
-      month: text('.month'),
+    name: text('.name'),
+    foodExpenses: text('.food-expenses'),
+    carExpenses: text('.car-expenses'),
+    carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]'),
+    totalExpenses: text('.total-expenses'),
 
-      name: text('.name'),
-      foodExpenses: text('.food-expenses'),
-      carExpenses: text('.car-expenses'),
-      carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]'),
-      totalExpenses: text('.total-expenses'),
+    processButton: {
+      scope: '.process',
+      isPrimary: hasClass('md-primary')
+    },
 
-      processButton: {
-        scope: '.process',
-        isPrimary: hasClass('md-primary')
-      },
+    donateButton: {
+      scope: '.donate',
+      isPrimary: hasClass('md-primary')
+    },
 
-      donateButton: {
-        scope: '.donate',
-        isPrimary: hasClass('md-primary')
-      },
-
-      copyButton: {
-        scope: '.copy-btn',
-        clipboardText: attribute('data-clipboard-text')
-      }
+    copyButton: {
+      scope: '.copy-btn',
+      clipboardText: attribute('data-clipboard-text')
     }
   }),
 
-  reimbursements: collection({
-    itemScope: 'tbody tr.reimbursement',
+  reimbursements: collection('tbody tr.reimbursement', {
+    date: text('.date'),
+    name: text('.name'),
+    ride: text('.ride'),
 
-    item: {
-      date: text('.date'),
-      name: text('.name'),
-      ride: text('.ride'),
+    expenses: text('.expenses span'),
+    isFoodExpense: isVisible('.paper-icon[md-font-icon="local cafe"]'),
+    isCarExpense: isVisible('.paper-icon[md-font-icon="local gas station"]'),
 
-      expenses: text('.expenses span'),
-      isFoodExpense: isVisible('.paper-icon[md-font-icon="local cafe"]'),
-      isCarExpense: isVisible('.paper-icon[md-font-icon="local gas station"]'),
+    isDonation: isVisible('.donation .paper-icon'),
 
-      isDonation: isVisible('.donation .paper-icon'),
-
-      edit: clickable('button')
-    }
+    edit: clickable('button')
   }),
 
   processedSwitch: {

@@ -10,15 +10,11 @@ export default create({
   visit: visitable('/institutions'),
   newInstitution: clickable('button.new'),
 
-  institutions: collection({
-    itemScope: 'tbody tr.institution',
+  institutions: collection('tbody tr.institution', {
+    name: text('.name'),
+    rate: text('.rate'),
 
-    item: {
-      name: text('.name'),
-      rate: text('.rate'),
-
-      edit: clickable('button.edit')
-    }
+    edit: clickable('button.edit')
   }),
 
   form: {

@@ -10,13 +10,9 @@ import {
 export default create({
   visit: visitable('/reports/new'),
 
-  rides: collection({
-    itemScope: 'md-radio-button',
-
-    item: {
-      label: text('.md-label span'),
-      choose: clickable()
-    }
+  rides: collection('md-radio-button', {
+    label: text('.md-label span'),
+    choose: clickable()
   }),
 
   noRides: { scope: '.no-rides' },

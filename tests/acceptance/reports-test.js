@@ -61,14 +61,14 @@ test('submit a report for a ride', function(assert) {
   andThen(function() {
     assert.equal(shared.title, 'Ride report · Prison Rideshare');
 
-    assert.equal(page.rides().count, 2, 'expected two rides to choose from');
+    assert.equal(page.rides.length, 2, 'expected two rides to choose from');
 
-    assert.equal(page.rides(0).label, 'francine: Sun, Dec 25 at 10:15a to Remand Centre');
-    assert.equal(page.rides(1).label, 'Tue, Dec 27 at 5:00p to Fort Leavenworth');
+    assert.equal(page.rides[0].label, 'francine: Sun, Dec 25 at 10:15a to Remand Centre');
+    assert.equal(page.rides[1].label, 'Tue, Dec 27 at 5:00p to Fort Leavenworth');
   });
 
   page.distance.fillIn(75);
-  page.rides(0).choose();
+  page.rides[0].choose();
   page.foodExpenses.fillIn(25.50);
   page.notes.fillIn('These r the notes');
   page.donation.click();
@@ -95,11 +95,11 @@ test('a fallback shows when no rides need a report', function(assert) {
   page.visit();
 
   page.distance.fillIn(75);
-  page.rides(1).choose();
+  page.rides[1].choose();
   page.submitButton.click();
 
   page.distance.fillIn(75);
-  page.rides(0).choose();
+  page.rides[0].choose();
   page.submitButton.click();
 
   andThen(function() {
@@ -111,7 +111,7 @@ test('submitting a report clears the form', function(assert) {
   page.visit();
 
   page.distance.fillIn(75);
-  page.rides(0).choose();
+  page.rides[0].choose();
   page.foodExpenses.fillIn(25.50);
   page.notes.fillIn('These r the notes');
 
@@ -132,13 +132,13 @@ test('partially completing a report and changing the ride doesn’t erase the va
 
   page.notes.fillIn(longReport);
 
-  page.rides(0).choose();
+  page.rides[0].choose();
 
   andThen(() => {
     assert.equal(page.notes.value, longReport);
   });
 
-  page.rides(1).choose();
+  page.rides[1].choose();
 
   andThen(() => {
     assert.equal(page.notes.value, longReport);
@@ -158,7 +158,7 @@ test('submitting a report without choosing a ride displays an error', function(a
 
 test('a ride that is not donatable doesn’t show the donation checkbox', function(assert) {
   page.visit();
-  page.rides(1).choose();
+  page.rides[1].choose();
 
   andThen(() => {
     assert.ok(page.donation.isHidden, 'expected the donation checkbox to be hidden when a ride is not donatable');
@@ -171,7 +171,7 @@ test('a failure to save keeps the values and displays an error', function(assert
   page.visit();
 
   page.distance.fillIn(75);
-  page.rides(0).choose();
+  page.rides[0].choose();
 
   page.submitButton.click();
 

@@ -79,43 +79,43 @@ test('debts are listed', function(assert) {
   andThen(() => {
     assert.equal(shared.title, 'Debts · Prison Rideshare');
 
-    assert.equal(page.people().count, 2, 'only people with outstanding debts are listed');
+    assert.equal(page.people.length, 2, 'only people with outstanding debts are listed');
 
-    const sun = page.people(0);
+    const sun = page.people[0];
     assert.equal(sun.foodExpenses, '120');
     assert.equal(sun.carExpenses, '0');
     assert.equal(sun.totalExpenses, '120');
 
-    assert.equal(sun.rides().count, '2');
+    assert.equal(sun.rides.length, '2');
 
-    const recentSunRide = sun.rides(0);
+    const recentSunRide = sun.rides[0];
     assert.equal(recentSunRide.date, 'Mon Dec 26 2016 10:15a — 12p');
     assert.equal(recentSunRide.foodExpenses, '10');
 
-    const sunRide = sun.rides(1);
+    const sunRide = sun.rides[1];
     assert.equal(sunRide.date, 'Sun Dec 25 2016 10:15a — 12p');
     assert.equal(sunRide.foodExpenses, '154');
     assert.equal(sunRide.carExpenses, '');
 
-    assert.equal(sun.reimbursements().count, '1', 'expected the Kala reimbursement to be hidden');
-    assert.equal(sun.reimbursements(0).foodExpenses, '-44');
-    assert.equal(sun.reimbursements(0).carExpenses, '');
+    assert.equal(sun.reimbursements.length, '1', 'expected the Kala reimbursement to be hidden');
+    assert.equal(sun.reimbursements[0].foodExpenses, '-44');
+    assert.equal(sun.reimbursements[0].carExpenses, '');
 
-    const will = page.people(1);
+    const will = page.people[1];
     assert.equal(will.foodExpenses, '19.19');
     assert.equal(will.carExpenses, '19.19');
     assert.equal(will.totalExpenses, '38.38');
-    assert.equal(will.rides().count, '1');
-    assert.ok(will.rides(0).carExpenseIsDonation, 'expected the ride’s car expenses to be marked a donation');
+    assert.equal(will.rides.length, '1');
+    assert.ok(will.rides[0].carExpenseIsDonation, 'expected the ride’s car expenses to be marked a donation');
   });
 });
 
 test('a debt can be reimbursed', function(assert) {
   page.visit();
-  page.people(0).reimburse();
+  page.people[0].reimburse();
 
   andThen(() => {
-    assert.equal(page.people().count, 1, 'expected the debt to have disappeared');
+    assert.equal(page.people.length, 1, 'expected the debt to have disappeared');
     assert.equal(server.db.debts.length, 1, 'expected the debt to have been deleted on the server');
   });
 });

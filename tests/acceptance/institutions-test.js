@@ -21,14 +21,14 @@ test('institutions can be listed and edited', function(assert) {
   andThen(() => {
     assert.equal(shared.title, 'Institutions · Prison Rideshare');
 
-    assert.equal(page.institutions().count, 2, 'expected two institutions to be listed');
-    assert.equal(page.institutions(0).name, 'Headingley');
-    assert.equal(page.institutions(0).rate, '0.35');
-    assert.equal(page.institutions(1).name, 'Milner Ridge');
-    assert.equal(page.institutions(1).rate, '0.25');
+    assert.equal(page.institutions.length, 2, 'expected two institutions to be listed');
+    assert.equal(page.institutions[0].name, 'Headingley');
+    assert.equal(page.institutions[0].rate, '0.35');
+    assert.equal(page.institutions[1].name, 'Milner Ridge');
+    assert.equal(page.institutions[1].rate, '0.25');
   });
 
-  page.institutions(1).edit();
+  page.institutions[1].edit();
   page.form.nameField.fillIn('Morlner Rordge');
   page.form.cancel();
 
@@ -36,10 +36,10 @@ test('institutions can be listed and edited', function(assert) {
     const [milnerRidge] = server.db.institutions;
 
     assert.equal(milnerRidge.name, 'Milner Ridge');
-    assert.equal(page.institutions(1).name, 'Milner Ridge');
+    assert.equal(page.institutions[1].name, 'Milner Ridge');
   });
 
-  page.institutions(1).edit();
+  page.institutions[1].edit();
   page.form.nameField.fillIn('Marlner Rardge');
   page.form.rateField.fillIn('0.44');
   page.form.submit();

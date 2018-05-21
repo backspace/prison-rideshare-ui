@@ -16,14 +16,8 @@ export default create({
   times: {
     scope: 'table',
 
-    days: collection({
-      itemScope: 'tr',
-
-      item: {
-        hours: collection({
-          itemScope: 'td.hour'
-        })
-      }
+    days: collection('tr', {
+      hours: collection('td.hour')
     })
   }
 });
