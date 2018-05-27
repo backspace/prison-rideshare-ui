@@ -1,4 +1,4 @@
-export default function anonymiseAddress(address) {
+export default function anonymiseAddress(address: string) {
   return address
     .trim()
     .replace(/^#?(\d+-\d+)/, (dashedNumber) => dashedNumber.split('-')[1])
