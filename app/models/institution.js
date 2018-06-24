@@ -1,12 +1,9 @@
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
-import dollars from 'prison-rideshare-ui/utils/dollars';
 
 export default DS.Model.extend({
   name: DS.attr(),
-  rate: DS.attr('number', {defaultValue: 0}),
-
-  rateDollars: dollars('rate'),
+  far: DS.attr('boolean'),
 
   validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
