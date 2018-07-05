@@ -304,3 +304,9 @@ md-table-container.reimbursements {
 md-toast {
   position: fixed;
 }
+
+.unit {
+  display: inline-block;
+  transform: translateY(-2px);
+  font-size: 60%;
+}

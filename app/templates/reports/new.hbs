@@ -12,7 +12,7 @@
               {{#group.radio value=ride}}
                 {{#if ride.initials}}{{ride.initials}}: {{/if}}
                 {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
-                {{#if ride.rate}}({{ride.rate}}¢/km){{/if}}
+                {{#if ride.rate}}({{ride.rate}}<span class='unit'><sup>¢</sup>&frasl;<sub>km</sub></span>){{/if}}
               {{/group.radio}}
             {{/each}}
           {{/paper-radio-group}}

@@ -11,7 +11,7 @@ export default create({
   visit: visitable('/reports/new'),
 
   rides: collection('md-radio-button', {
-    label: text('.md-label span'),
+    label: text('.md-label > span'),
     choose: clickable()
   }),
 
