@@ -39,6 +39,9 @@
         {{#paper-item}}
           {{#link-to 'reports.new'}}<span>Report</span>{{/link-to}}
         {{/paper-item}}
+        {{#paper-item}}
+          {{#link-to 'gas-prices'}}<span>Gas prices</span>{{/link-to}}
+        {{/paper-item}}
         {{#if session.isAuthenticated}}
           {{#if session.currentUser.admin}}
             {{#paper-item}}

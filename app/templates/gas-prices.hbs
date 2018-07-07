@@ -1,0 +1,28 @@
+{{toolbar-header title='Gas prices and reimbursement rates'}}
+
+<section class='flex'>
+  {{#paper-card as |card|}}
+    {{#card.content}}
+      <p>Ride reimbursement rates are calculated from the day’s average gas price, fetched from winnipeggasprices.com.</p>
+    {{/card.content}}
+  {{/paper-card}}
+
+  {{#paper-data-table class='gas-prices' as |table|}}
+    {{#table.head as |head|}}
+      {{#head.column}}Date{{/head.column}}
+      {{#head.column}}Gas price{{/head.column}}
+      {{#head.column}}Far institution rate{{/head.column}}
+      {{#head.column}}Close institution rate{{/head.column}}
+    {{/table.head}}
+    {{#table.body as |body|}}
+      {{#each (take 10 (sort-by 'insertedAt:desc' model)) as |gasPrice|}}
+        {{#body.row as |row|}}
+          {{#row.cell class='date'}}{{moment-format gasPrice.insertedAt 'ddd, MMM D'}}{{/row.cell}}
+          {{#row.cell class='price'}}{{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub>L</sub></span>{{/row.cell}}
+          {{#row.cell class='far'}}{{gasPrice.farRate}}<span class='unit'><sup>¢</sup>&frasl;<sub>km</sub></span>{{/row.cell}}
+          {{#row.cell class='close'}}{{gasPrice.closeRate}}<span class='unit'><sup>¢</sup>&frasl;<sub>km</sub></span>{{/row.cell}}
+        {{/body.row}}
+      {{/each}}
+    {{/table.body}}
+  {{/paper-data-table}}
+</section>

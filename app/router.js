@@ -23,6 +23,8 @@ Router.map(function() {
     this.route('new');
   });
 
+  this.route('gas-prices');
+
   this.route('users');
 
   this.route('login');
