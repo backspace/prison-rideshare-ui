@@ -64,7 +64,7 @@ test('submit a report for a ride', function(assert) {
 
     assert.equal(page.rides.length, 2, 'expected two rides to choose from');
 
-    assert.equal(page.rides[0].label, 'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km)');
+    assert.equal(page.rides[0].label, 'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km )');
     assert.equal(page.rides[1].label, 'Tue, Dec 27 at 5:00p to Fort Leavenworth');
   });
 

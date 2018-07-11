@@ -19,8 +19,8 @@
         {{#body.row as |row|}}
           {{#row.cell class='date'}}{{moment-format gasPrice.insertedAt 'ddd, MMM D'}}{{/row.cell}}
           {{#row.cell class='price'}}{{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub>L</sub></span>{{/row.cell}}
-          {{#row.cell class='far'}}{{gasPrice.farRate}}<span class='unit'><sup>¢</sup>&frasl;<sub>km</sub></span>{{/row.cell}}
-          {{#row.cell class='close'}}{{gasPrice.closeRate}}<span class='unit'><sup>¢</sup>&frasl;<sub>km</sub></span>{{/row.cell}}
+          {{#row.cell class='far'}}{{gasPrice.farRate}}{{reimbursement-unit}}{{/row.cell}}
+          {{#row.cell class='close'}}{{gasPrice.closeRate}}{{reimbursement-unit}}{{/row.cell}}
         {{/body.row}}
       {{/each}}
     {{/table.body}}
