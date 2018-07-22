@@ -60,6 +60,7 @@
     {{row.cell}}
     {{#row.cell colspan=6}}
       {{paper-icon 'map'}}<span class='distance'>{{ride.distance}}</span>
+      {{#if ride.rate}}{{paper-icon 'local gas station'}}<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>{{/if}}
       {{#if ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{ride.foodExpensesDollars}}</span>{{/if}}
       {{#if ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{ride.reportNotes}}</span>{{/if}}
       {{#if clearing}}

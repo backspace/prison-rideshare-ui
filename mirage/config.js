@@ -29,6 +29,8 @@ export default function() {
   this.post('/institutions');
   this.patch('/institutions/:id');
 
+  this.get('/gas-prices');
+
   this.get('/people');
   this.get('/people/:id');
   this.post('/people');

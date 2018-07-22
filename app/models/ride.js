@@ -24,7 +24,10 @@ export default DS.Model.extend({
   medium: DS.attr(),
 
   name: DS.attr(),
+
   institution: DS.belongsTo(),
+  rate: DS.attr('number'),
+
   address: DS.attr(),
   contact: DS.attr(),
   passengers: DS.attr({defaultValue: 1}),

@@ -8,8 +8,8 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | institutions', {
   beforeEach() {
-    server.create('institution', {name: 'Milner Ridge', rate: 25});
-    server.create('institution', {name: 'Headingley', rate: 35});
+    server.create('institution', {name: 'Milner Ridge', far: true});
+    server.create('institution', {name: 'Headingley', far: false});
 
     authenticateSession(this.application);
   }
@@ -23,9 +23,9 @@ test('institutions can be listed and edited', function(assert) {
 
     assert.equal(page.institutions.length, 2, 'expected two institutions to be listed');
     assert.equal(page.institutions[0].name, 'Headingley');
-    assert.equal(page.institutions[0].rate, '0.35');
+    assert.notOk(page.institutions[0].isFar);
     assert.equal(page.institutions[1].name, 'Milner Ridge');
-    assert.equal(page.institutions[1].rate, '0.25');
+    assert.ok(page.institutions[1].isFar);
   });
 
   page.institutions[1].edit();
@@ -41,14 +41,14 @@ test('institutions can be listed and edited', function(assert) {
 
   page.institutions[1].edit();
   page.form.nameField.fillIn('Marlner Rardge');
-  page.form.rateField.fillIn('0.44');
+  page.form.farField.click();
   page.form.submit();
 
   andThen(() => {
     const [milnerRidge] = server.db.institutions;
 
     assert.equal(milnerRidge.name, 'Marlner Rardge');
-    assert.equal(milnerRidge.rate, '44');
+    assert.notOk(milnerRidge.far);
   });
 });
 
@@ -57,16 +57,13 @@ test('institutions can be created', function(assert) {
 
   page.newInstitution();
 
-  andThen(() => {
-    assert.equal(page.form.rateField.value, '0');
-  });
-
   page.form.nameField.fillIn('Remand Centre');
-  page.form.rateField.fillIn('0.55');
+  page.form.farField.click();
   page.form.submit();
 
   andThen(() => {
     const [, , remand] = server.db.institutions;
     assert.equal(remand.name, 'Remand Centre');
+    assert.ok(remand.far);
   });
 });

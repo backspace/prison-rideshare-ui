@@ -2,6 +2,8 @@ import {
   clickable,
   collection,
   create,
+  hasClass,
+  isVisible,
   text,
   visitable
 } from 'ember-cli-page-object';
@@ -12,7 +14,7 @@ export default create({
 
   institutions: collection('tbody tr.institution', {
     name: text('.name'),
-    rate: text('.rate'),
+    isFar: isVisible('.far md-icon'),
 
     edit: clickable('button.edit')
   }),
@@ -22,8 +24,9 @@ export default create({
       scope: '.name input'
     },
 
-    rateField: {
-      scope: '.rate input'
+    farField: {
+      scope: 'md-checkbox',
+      isChecked: hasClass('md-checked')
     },
 
     submit: clickable('button.submit'),
