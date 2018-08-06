@@ -137,7 +137,10 @@ test('process reimbursements', function(assert) {
     const [, , , , sun1, sun2,] = server.db.reimbursements;
 
     assert.ok(sun1.processed);
+    assert.notOk(sun2.donation);
+
     assert.ok(sun2.processed);
+    assert.notOk(sun2.donation);
   });
 
   reimbursementsPage.rows[1].donateButton.click();

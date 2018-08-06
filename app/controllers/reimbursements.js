@@ -97,7 +97,7 @@ export default Controller.extend({
       personAndReimbursements.get('reimbursements').forEach(reimbursement => {
         reimbursement.set('processed', true);
 
-        if (donation) {
+        if (donation === true) {
           reimbursement.set('donation', true);
         }
 
