@@ -74,8 +74,11 @@ export default CalendarController.extend({
     },
 
     deleteCommitment(commitment) {
+      let name = commitment.get('person.name');
+      let date = moment(commitment.get('slot.start')).format('MMMM D');
+
       commitment.destroyRecord().then(() => {
-        this.get('toasts').show(`Deleted ${commitment.get('person.name')}’s commitment on ${moment(commitment.get('slot.start')).format('MMMM D')}`);
+        this.get('toasts').show(`Deleted ${name}’s commitment on ${date}`);
       }).catch(error => {
         const errorDetail = get(error, 'errors.firstObject.detail');
         this.get('toasts').show(errorDetail || 'Couldn’t save your change');
