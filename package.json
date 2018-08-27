@@ -23,7 +23,7 @@
     "ember-ajax": "^3.0.0",
     "ember-auto-import": "^1.2.13",
     "ember-browserify": "^1.1.14",
-    "ember-buffered-proxy": "^0.8.1",
+    "ember-buffered-proxy": "^1.0.0",
     "ember-cli": "~3.0.4",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^6.7.1",
