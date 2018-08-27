@@ -1,4 +1,4 @@
-import chrono from 'npm:chrono-node';
+import chrono from 'chrono-node';
 
 const assumeEndDay = new chrono.Refiner();
 assumeEndDay.refine = function(text, results) {
