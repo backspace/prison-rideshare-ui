@@ -90,6 +90,18 @@ export default Component.extend({
             return sum + ride.get('reimbursementFoodExpensesSum');
           }, 0)/100;
         })
+      }, {
+        name: 'Timespans',
+        type: 'spline',
+        yAxis: 3,
+        data: this.get('timeGroupKeys').map(timeGroupKey => {
+          return timeGroups[timeGroupKey].rejectBy('cancelled').rejectBy('combinedWith.cancelled').reduce((sum, ride) => {
+            let start = ride.get('start');
+            let end = ride.get('end');
+
+            return sum + (end - start)/1000/60/60;
+          }, 0);
+        })
       }
     ];
   }),
@@ -97,7 +109,7 @@ export default Component.extend({
   options: computed('timeGroups', 'timeGroupKeys.length', 'grouping', function() {
     return {
       title: {
-        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
+        text: `Ride distances, expenses, and timespans, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
         useHTML: true
       },
       plotOptions: {
@@ -128,6 +140,15 @@ export default Component.extend({
           format: '${value}'
         },
         opposite: true
+      }, {
+        title: {
+          text: 'Timespan'
+        },
+        labels: {
+          format: '{value}h'
+        },
+        opposite: true,
+        min: 0
       }]
     };
   }),
