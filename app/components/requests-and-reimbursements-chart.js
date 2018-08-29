@@ -147,7 +147,8 @@ export default Component.extend({
         labels: {
           format: '{value}h'
         },
-        opposite: true
+        opposite: true,
+        min: 0
       }]
     };
   }),
