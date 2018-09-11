@@ -24,6 +24,7 @@ export default DS.Model.extend({
   medium: DS.attr(),
 
   name: DS.attr(),
+  visitor: DS.belongsTo('person'),
 
   institution: DS.belongsTo(),
   rate: DS.attr('number'),
@@ -92,8 +93,8 @@ export default DS.Model.extend({
 
   outstandingTotalExpenses: sum('outstandingFoodExpenses', 'outstandingCarExpenses'),
 
-  namePlusPassengers: computed('name', 'passengers', function() {
-    const name = this.get('name');
+  namePlusPassengers: computed('visitor.name', 'passengers', function() {
+    const name = this.get('visitor.name');
     const passengers = this.get('passengers');
 
     if (passengers > 1) {

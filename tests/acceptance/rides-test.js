@@ -30,11 +30,19 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     name: 'Lito'
   });
 
+  const edward = server.create('person', {
+    name: 'Edward'
+  });
+
+  const chelsea = server.create('person', {
+    name: 'Chelsea'
+  });
+
   server.create('ride', {
     enabled: false,
     cancellationReason: 'lockdown',
 
-    name: 'Edward',
+    visitor: edward,
     address: '91 Albert',
     contact: 'jorts@example.com',
     passengers: 3,
@@ -51,7 +59,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   });
 
   const chelseaRide = server.create('ride', {
-    name: 'Chelsea',
+    visitor: chelsea,
     start: new Date(2016, 11, 25, 10, 15),
     end: new Date(2016, 11, 25, 12, 0),
     passengers: 1,
@@ -60,7 +68,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
   chelseaRide.createChild({
     combinedWith: chelseaRide,
-    name: 'Visitor'
+    visitor: server.create('person', {
+      name: 'Visitor'
+    })
   });
 
   page.visit();
@@ -446,10 +456,10 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
   const today = new Date();
   const tomorrow = new Date(today.getTime() + 1000*60*60*24);
 
-  server.create('ride', {name: 'A', passengers: 1, start: today, end: today});
-  const parentRide = server.create('ride', {name: 'B', passengers: 1, start: today, end: today});
-  server.create('ride', {name: 'C', passengers: 1, start: tomorrow, end: tomorrow});
-  server.create('ride', {name: 'D', combinedWith: parentRide});
+  server.create('ride', {passengers: 1, start: today, end: today}).createVisitor({name: 'A'});
+  const parentRide = server.create('ride', {passengers: 1, start: today, end: today}).createVisitor({name: 'B'});
+  server.create('ride', {passengers: 1, start: tomorrow, end: tomorrow}).createVisitor({name: 'C'});
+  server.create('ride', {combinedWith: parentRide}).createVisitor({name: 'D'});
 
   page.visit();
 
