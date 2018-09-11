@@ -126,8 +126,8 @@ export default DS.Model.extend({
     return this.get('children').mapBy('passengers').reduce((sum, count) => count + sum, this.get('passengers'));
   }),
 
-  matchString: computed('institution.name', 'driver.name', 'carOwner.name', 'name', 'address', function() {
-    return `${this.getWithDefault('institution.name', '')} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault('carOwner.name', '')} ${this.getWithDefault('name', '')} ${this.getWithDefault('address')}`.toLowerCase();
+  matchString: computed('institution.name', 'driver.name', 'carOwner.name', 'visitor.name', 'address', function() {
+    return `${this.getWithDefault('institution.name', '')} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault('carOwner.name', '')} ${this.getWithDefault('visitor.name', '')} ${this.getWithDefault('address')}`.toLowerCase();
   }),
 
   matches(casedQuery) {

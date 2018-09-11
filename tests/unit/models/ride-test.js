@@ -2,17 +2,20 @@ import { moduleForModel, test } from 'ember-qunit';
 import { run } from "@ember/runloop";
 
 moduleForModel('ride', 'Unit | Model | ride', {
-  needs: ['model:institution', 'model:person']
+  needs: ['model:institution', 'model:person', 'model:reimbursement']
 });
 
 test('it determines whether it matches a search query', function(assert) {
   let rockwood;
+  let visitor;
   let chelsea, edward;
 
   let rockwoodRide;
 
   run(() => {
     rockwood = this.store().createRecord('institution', { name: 'Rockwood' });
+
+    visitor = this.store().createRecord('person', { name: 'jORTLE' });
 
     chelsea = this.store().createRecord('person', { name: 'Chelsea Manning' });
     edward = this.store().createRecord('person', { name: 'Edward Snowden' });
@@ -22,7 +25,7 @@ test('it determines whether it matches a search query', function(assert) {
       driver: chelsea,
       carOwner: edward,
 
-      name: 'jORTLE',
+      visitor,
       address: '91 Albert'
     });
   });

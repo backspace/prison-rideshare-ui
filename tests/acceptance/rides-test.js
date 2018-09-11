@@ -529,7 +529,6 @@ test('rides can be filtered by various characteristics', function(assert) {
 
   server.create('ride', {
     enabled: false,
-    name: 'Philippa Georgiou',
     address: '91 Albert',
     contact: 'jorts@example.com',
     institution: stonyMountain,
@@ -538,17 +537,21 @@ test('rides can be filtered by various characteristics', function(assert) {
 
     driver: burnham,
     carOwner: lorca
-  });
+  }).createVisitor({
+    name: 'Philippa Georgiou',
+  })
 
   server.create('ride', {
-    name: 'Chelsea',
     start: new Date(2016, 11, 25, 10, 15),
     end: new Date(2016, 11, 25, 12, 0),
     passengers: 1,
     contact: '5145551212'
+  }).createVisitor({
+    name: 'Chelsea',
   });
 
   server.create('ride', {
+  }).createVisitor({
     name: 'NEVERMATCH'
   });
 
