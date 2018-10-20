@@ -100,6 +100,8 @@ export default create({
       clear: clickable('.remove-container button')
     },
 
+    isOverridable: isVisible('md-icon[md-font-icon=directions_bus]'),
+
     combineButton: {
       scope: 'button.combine',
       isActive: hasClass('md-raised'),

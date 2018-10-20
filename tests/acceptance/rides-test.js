@@ -46,6 +46,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     driver: sun,
     carOwner: lito,
+    overridable: true,
 
     insertedAt: new Date(2016, 11, 20, 20, 15)
   });
@@ -89,6 +90,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.contact, 'jorts@example.com');
     assert.ok(ride.medium.isTxt, 'expected the request to have been received via txt');
     assert.ok(ride.creationDate.isHidden, 'expected the creation date to be hidden by default');
+    assert.ok(ride.isOverridable, 'expected the ride to be overridable');
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
@@ -132,6 +134,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(() => {
     assert.ok(page.rides[0].enabled, 'expected the other ride to be enabled');
     assert.notOk(page.rides[0].isFirstTimer, 'expected the other ride to not be a first-timer');
+    assert.notOk(page.rides[0].isOverridable, 'expected the other ride to not be overridable');
     assert.ok(page.rides[0].cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides[0].name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
     assert.equal(page.rides[0].contactPhoneHref, 'tel:5145551212');
