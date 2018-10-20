@@ -64,6 +64,8 @@ export default DS.Model.extend({
 
   reportNotes: DS.attr(),
 
+  overridable: DS.attr('boolean'),
+
   reimbursements: DS.hasMany(),
 
   foodExpenses: DS.attr({defaultValue: 0}),

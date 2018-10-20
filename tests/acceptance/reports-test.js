@@ -33,7 +33,8 @@ moduleForAcceptance('Acceptance | reports', {
       institution: remand,
       rate: 33,
       initials: 'francine',
-      donatable: true
+      donatable: true,
+      overridable: true
     });
 
     server.create('ride', { enabled: false });
@@ -159,12 +160,13 @@ test('submitting a report without choosing a ride displays an error', function(a
   });
 });
 
-test('a ride that is not donatable doesn’t show the donation checkbox', function(assert) {
+test('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', function(assert) {
   page.visit();
   page.rides[1].choose();
 
   andThen(() => {
     assert.ok(page.donation.isHidden, 'expected the donation checkbox to be hidden when a ride is not donatable');
+    assert.ok(page.carExpenses.isHidden, 'expected the car expenses field to be hidden when a ride is not overridable');
   });
 });
 
