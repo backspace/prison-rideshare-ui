@@ -127,6 +127,7 @@ export default create({
 
   reports: collection('tr.report', {
     distance: text('.distance'),
+    carExpenses: text('.car-expenses'),
     rate: text('.rate'),
     foodExpenses: text('.food-expenses'),
     notes: text('.notes'),

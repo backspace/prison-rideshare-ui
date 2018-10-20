@@ -191,6 +191,7 @@ test('completed rides can be shown and cleared', function(assert) {
   server.create('ride');
   server.create('ride', {
     distance: 44,
+    carExpenses: 1010,
     rate: 26,
     foodExpenses: 5555,
     reportNotes: 'Some report notes?'
@@ -211,6 +212,7 @@ test('completed rides can be shown and cleared', function(assert) {
 
     assert.equal(page.reports.length, 1, 'expected the report to be rendered');
     assert.equal(page.reports[0].distance, '44');
+    assert.equal(page.reports[0].carExpenses, '10.1');
     assert.equal(page.reports[0].rate, '26¢⁄km');
     assert.equal(page.reports[0].foodExpenses, '55.55');
     assert.equal(page.reports[0].notes, 'Some report notes?');
