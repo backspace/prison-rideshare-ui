@@ -23,12 +23,19 @@ moduleForAcceptance('Acceptance | calendar', {
 
     server.create('person', {
       name: 'Non-committal',
+      email: 'non@example.com',
       active: true
     });
 
     server.create('person', {
       name: 'Also non-committal',
+      email: 'alsonon@example.com',
       active: true
+    });
+
+    server.create('person', {
+      name: 'Inactive',
+      active: false
     });
 
     const committedSlot = server.create('slot', {
@@ -524,4 +531,124 @@ test('an error when an admin tries to delete a commitment is displayed', functio
     assert.equal(shared.toast.text, 'Fail!');
     assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
   });
+});
+
+test('an admin can send email and get calendar links', function(assert) {
+  server.get('/people/:id/calendar-link/2117-12', (schema, {params: {id}}) => {
+    return `link-for-${id}`;
+  });
+
+  let done = assert.async();
+
+  server.post('/people/:id/calendar-email/2117-12', (schema, {params: {id}}) => {
+    assert.equal(id, this.person.id);
+    done();
+  });
+
+  server.create('user', { admin: true });
+  authenticateSession(this.application, { access_token: 'abcdef' });
+  page.adminVisit({ month: '2117-12' });
+
+  page.email.open();
+
+  andThen(() => {
+    assert.equal(page.email.title, 'December 2117 calendar emails');
+    assert.notOk(page.email.sendButton.isRaised, 'expected the send button to not be raised when no one is selected');
+  });
+
+  page.email.addActiveButton.click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips().count, 4);
+  });
+
+  page.email.peopleSearch.chips(0).remove();
+  page.email.peopleSearch.chips(0).remove();
+  page.email.peopleSearch.chips(0).remove();
+  page.email.peopleSearch.chips(0).remove();
+
+  andThen(() => {
+    assert.ok(page.email.filter.add.isHidden, 'expected the filter add button to be hidden');
+    assert.ok(page.email.filter.remove.isHidden, 'expected the filter remove button to be hidden');
+  });
+
+  page.email.filter.fillIn('example');
+
+  andThen(() => {
+    assert.ok(page.email.filter.add.isVisible, 'expected the filter add button to be shown');
+  });
+
+  page.email.filter.add.click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips(0).text, 'Also non-committal: alsonon@example.com');
+    assert.equal(page.email.peopleSearch.chips(1).text, 'Non-committal: non@example.com');
+  });
+
+  page.email.filter.remove.click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips().count, 0);
+  });
+
+  page.email.peopleSearch.fillIn('commit');
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.options(0).label, 'Also non-committal: alsonon@example.com');
+    assert.equal(page.email.peopleSearch.options(1).label, 'Non-committal: non@example.com');
+  });
+
+  page.email.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips.length, 1);
+    assert.equal(page.email.peopleSearch.chips(0).text, 'Also non-committal: alsonon@example.com');
+
+    assert.ok(page.email.sendButton.isRaised, 'expected the send button to be raised when someone is selected');
+  });
+
+  page.email.peopleSearch.fillIn('ortle');
+  page.email.peopleSearch.options(0).click();
+
+  andThen(() => {
+    assert.equal(page.email.peopleSearch.chips(1).text, 'Jortle Tortle: jorts@jants.ca');
+  });
+
+  page.email.fetchLinksButton.click();
+
+  andThen(() => {
+    assert.equal(page.email.subject.value, 'Rides-to-prison calendar for December 2117');
+
+    assert.ok(page.email.body.error.isHidden, 'expected there to be no body validation error');
+
+    assert.equal(page.email.links().count, 2);
+
+    page.email.links(0).as(also => {
+      assert.equal(also.email, 'alsonon@example.com');
+      assert.equal(also.link, 'link-for-3');
+      assert.equal(also.mailto, 'mailto:alsonon@example.com?subject=Rides-to-prison calendar for December 2117&body=a link link-for-3');
+    });
+  });
+
+  page.email.subject.fillIn('Calendar yes');
+  page.email.body.fillIn('A body with no place for a link');
+
+  andThen(() => {
+    assert.ok(page.email.fetchLinksButton.isDisabled, 'expected the fetch links button to be disabled because there was no place for a link');
+    assert.equal(page.email.body.error.text, 'Please include {{link}} and {{name}} blanks.');
+  });
+
+  page.email.body.fillIn('Dear {{name}} here is your link: {{link}}');
+
+  andThen(() => {
+    assert.ok(page.email.body.error.isHidden, 'expected the error to have disappeared');
+    assert.notOk(page.email.fetchLinksButton.isDisabled, 'expected the button to be enabled again');
+  });
+
+  andThen(() => {
+    assert.equal(page.email.links(0).mailto, 'mailto:alsonon@example.com?subject=Calendar yes&body=a link link-for-3');
+  });
+
+  page.email.peopleSearch.chips(0).remove();
+  page.email.sendButton.click();
 });

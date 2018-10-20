@@ -3,7 +3,7 @@
     <nav class="ember-power-calendar-nav">
       {{link-to '‹' 'admin-calendar' previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
       <div class="ember-power-calendar-nav-title">
-        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize commitmentCount 'commitment'}}
+        {{monthWords}}: {{pluralize commitmentCount 'commitment'}}
       </div>
       {{link-to '›' 'admin-calendar' nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}
     </nav>
@@ -33,8 +33,24 @@
       {{/paper-chips}}
     </div>
     {{/if}}
-    <h2>Temporary email interface</h2>
-    {{paper-button label='Add all active people' raised=true onClick=(action 'addAllActive')}}
+    {{paper-button class='email' label='Email' raised=true onClick=(action (mut emailOpen true))}}
+  </section>
+</div>
+
+{{#if emailOpen}}
+{{#paper-dialog clickOutsideToClose=true
+                fullscreen=true
+                onClose=(action 'closeEmail')}}
+
+  {{#paper-toolbar}}
+    {{#paper-toolbar-tools}}
+      <h2 class='md-title'>{{monthWords}} calendar emails</h2>
+      <span class="flex"></span>
+      {{#paper-button iconButton=true onClick=(action 'closeEmail')}}{{paper-icon icon="close"}}{{/paper-button}}
+    {{/paper-toolbar-tools}}
+  {{/paper-toolbar}}
+
+  {{#paper-dialog-content}}
     {{#paper-chips
       removeItem=(action 'removePerson')
       addItem=(action 'addPerson')
@@ -42,19 +58,53 @@
       content=people
       options=remainingPeople
       searchField='name' as |person|}}
-      {{person.name}}
+      {{person.name}}: {{person.email}}
     {{/paper-chips}}
-    {{#paper-button primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
-    {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
+    {{paper-button class='add-active' label='Add all active people' raised=true onClick=(action 'addAllActive')}}
+    {{#paper-input
+      placeholder='String to match in addresses'
+      value=emailMatch
+      class='filter'
+      onChange=(action (mut emailMatch)) as |input|}}
+      {{#if input.hasValue}}
+        {{#paper-button class='add' onClick=(action 'addMatching')}}
+          Add emails containing string
+        {{/paper-button}}
+        {{#paper-button class='remove' onClick=(action 'removeMatching')}}
+          Remove emails containing string
+        {{/paper-button}}
+      {{/if}}
+    {{/paper-input}}
+    <div class='layout-row layout-xs-column'>
+      <div class='flex'>
+        {{input class='subject' label='Subject' value=subject onChange=(action (mut subject))}}
+      </div>
+    </div>
+    <div class='layout-row layout-xs-column'>
+      <div class='flex'>
+        {{paper-input class='body' textarea=true label='Body' value=body onChange=(action (mut body)) customValidations=bodyValidation isTouched=true}}
+      </div>
+    </div>
     {{#if links}}
-      <ul>
+      <ul class='links'>
         {{#each-in links as |email link|}}
-          <li>{{email}}: <a href={{link}}>link</a></li>
+          <li>
+            <span class='email'>{{email}}</span>:
+            <a class='link' href={{link}}>link</a>
+            <a class='mailto' href='mailto:{{email}}?subject={{subject}}&body=a link {{link}}'>open an email</a>
+          </li>
         {{/each-in}}
       </ul>
     {{/if}}
     {{#if linksError}}
       There was an error loading calendar links: {{linksError}}
     {{/if}}
-  </section>
-</div>
+  {{/paper-dialog-content}}
+
+  {{#paper-dialog-actions class='layout-row'}}
+    {{#paper-button class='fetch-links' onClick=(action 'fetchLinks') disabled=bodyIsInvalid}}View calendar links{{/paper-button}}
+    {{#paper-button class='send' primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
+  {{/paper-dialog-actions}}
+
+{{/paper-dialog}}
+{{/if}}

@@ -3,7 +3,9 @@ import {
   clickable,
   collection,
   create,
+  fillable,
   hasClass,
+  is,
   text,
   triggerable,
   visitable
@@ -149,5 +151,79 @@ export default create({
     })
   },
 
-  error: text('.error')
+  error: text('.error'),
+
+  email: {
+    open: clickable('button.email', {resetScope: true}),
+
+    scope: 'md-dialog',
+
+    title: text('h2'),
+
+    peopleSearch: {
+      scope: 'md-chips',
+
+      fillIn: fillable('input'),
+
+      options: collection({
+        resetScope: true,
+        itemScope: '.ember-power-select-option',
+
+        item: {
+          label: text(),
+          click: clickable()
+        }
+      }),
+
+      chips: collection({
+        itemScope: 'md-chip',
+
+        item: {
+          text: text('.md-chip-content'),
+          remove: clickable('.md-chip-remove')
+        }
+      })
+    },
+
+    addActiveButton: {
+      scope: 'button.add-active'
+    },
+
+    filter: {
+      scope: '.filter',
+
+      fillIn: fillable('input'),
+
+      add: { scope: '.add' },
+      remove: { scope: '.remove' }
+    },
+
+    subject: { scope: '.subject' },
+
+    body: {
+      scope: '.body',
+      fillIn: fillable('textarea'),
+      error: { scope: '.paper-input-error' },
+    },
+
+    fetchLinksButton: {
+      scope: 'button.fetch-links',
+      isDisabled: is('[disabled]'),
+    },
+
+    links: collection({
+      itemScope: '.links li',
+
+      item: {
+        email: text('.email'),
+        link: attribute('href', '.link'),
+        mailto: attribute('href', '.mailto')
+      }
+    }),
+
+    sendButton: {
+      scope: 'button.send',
+      isRaised: hasClass('md-raised')
+    }
+  }
 });

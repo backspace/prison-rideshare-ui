@@ -35,6 +35,10 @@ export default CalendarController.extend({
     return moment(this.get('month')).format(format);
   }),
 
+  monthWords: computed('month', function() {
+    return moment(this.get('month')).format('MMMM YYYY');
+  }),
+
   init() {
     this._super(...arguments);
     this.set('people', A());
@@ -48,6 +52,27 @@ export default CalendarController.extend({
     return this.get('activePeople').reject(person => alreadyCommittedPeople.includes(person.id));
   }),
 
+  subject: computed('monthWords', function() {
+    return `Rides-to-prison calendar for ${this.get('monthWords')}`;
+  }),
+
+  body: computed(function() {
+    return `a link {{link}} for {{name}}`;
+  }),
+
+  bodyIsInvalid: computed('body', function() {
+    let body = this.get('body');
+
+    return !this.bodyValidation[0].validate(body);
+  }),
+
+  bodyValidation: Object.freeze([{
+    message: 'Please include {{link}} and {{name}} blanks.',
+    validate: (body) => {
+      return body.includes('{{link}}') && body.includes('{{name}}');
+    }
+  }]),
+
   actions: {
     addPerson(person) {
       this.get('people').pushObject(person);
@@ -59,6 +84,16 @@ export default CalendarController.extend({
 
     removePerson(person) {
       this.get('people').removeObject(person);
+    },
+
+    addMatching() {
+      let string = this.get('emailMatch');
+      this.get('people').addObjects(this.get('activePeople').filter(person => person.get('email').includes(string)));
+    },
+
+    removeMatching() {
+      let string = this.get('emailMatch');
+      this.get('people').removeObjects(this.get('people').filter(person => person.get('email').includes(string)));
     },
 
     createCommitment(person) {
@@ -130,6 +165,10 @@ export default CalendarController.extend({
         this.set('links', undefined);
         this.set('linksError', e);
       });
+    },
+
+    closeEmail() {
+      this.set('emailOpen', false);
     }
   }
 });
