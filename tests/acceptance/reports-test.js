@@ -71,6 +71,7 @@ test('submit a report for a ride', function(assert) {
   page.distance.fillIn(75);
   page.rides[0].choose();
   page.foodExpenses.fillIn(25.50);
+  page.carExpenses.fillIn(52.05);
   page.notes.fillIn('These r the notes');
   page.donation.click();
 
@@ -81,6 +82,7 @@ test('submit a report for a ride', function(assert) {
 
     assert.equal(changedRide.distance, 75);
     assert.equal(changedRide.foodExpenses, 2550);
+    assert.equal(changedRide.carExpenses, 5205);
     assert.equal(changedRide.reportNotes, 'These r the notes');
     assert.equal(changedRide.donation, true);
 

@@ -42,6 +42,13 @@
                        onChange=(action (mut rideProxy.foodExpensesDollars))}}
         </div>
         <div class='layout-column'>
+          {{form.input class='car-expenses'
+                       type='number'
+                       label='Car expenses'
+                       value=rideProxy.carExpensesDollars
+                       onChange=(action (mut rideProxy.carExpensesDollars))}}
+        </div>
+        <div class='layout-column'>
           {{#form.input class='report-notes'
                        textarea=true
                        label='Notes'
