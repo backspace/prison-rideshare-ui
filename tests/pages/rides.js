@@ -156,6 +156,12 @@ export default create({
       phone: { scope: '.phone' }
     },
 
+    overridable: {
+      scope: 'md-checkbox.overridable',
+      checked: hasClass('md-checked'),
+      click: clickable()
+    },
+
     name: {
       scope: 'md-autocomplete',
 
@@ -183,7 +189,7 @@ export default create({
     },
 
     firstTime: {
-      scope: 'md-checkbox',
+      scope: 'md-checkbox.first-time',
       checked: hasClass('md-checked'),
       click: clickable()
     },

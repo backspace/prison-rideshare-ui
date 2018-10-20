@@ -278,6 +278,8 @@ test('create and edit a ride', function(assert) {
 
   page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
 
+  page.form.overridable.click();
+
   page.form.medium.phone.click();
   page.form.name.fillIn('Edward');
   page.form.address.fillIn('114 Spence');
@@ -303,6 +305,8 @@ test('create and edit a ride', function(assert) {
 
     assert.equal(ride.institution, 'Rockwood');
 
+    assert.ok(ride.isOverridable);
+
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
 
@@ -316,6 +320,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.passengers, 2);
     assert.equal(lastRide.institutionId, rockwood.id);
     assert.equal(lastRide.requestNotes, undefined, 'expected the notes to have been unspecified');
+    assert.ok(lastRide.overridable);
   });
 
   page.rides[0].driver.click();

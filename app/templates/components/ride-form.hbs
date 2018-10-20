@@ -31,6 +31,12 @@
             {{institution.name}}
           {{/paper-select}}
         </div>
+        <div class='flex'>
+          {{#paper-checkbox
+            class='overridable'
+            value=ride.overridable
+            onChange=(action (mut ride.overridable))}}Van?{{/paper-checkbox}}
+        </div>
       </div>
       <div class='layout-row layout-xs-column medium-row'>
         {{#paper-radio-group
@@ -93,6 +99,7 @@
         </div>
         <div class='flex'>
           {{#paper-checkbox
+            class='first-time'
             value=ride.firstTime
             onChange=(action (mut ride.firstTime))}}First time?{{/paper-checkbox}}
         </div>
