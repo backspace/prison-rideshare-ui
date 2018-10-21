@@ -41,6 +41,15 @@
                        value=rideProxy.foodExpensesDollars
                        onChange=(action (mut rideProxy.foodExpensesDollars))}}
         </div>
+        {{#if rideProxy.overridable}}
+          <div class='layout-column'>
+            {{form.input class='car-expenses'
+                        type='number'
+                        label='Car expenses'
+                        value=rideProxy.carExpensesDollars
+                        onChange=(action (mut rideProxy.carExpensesDollars))}}
+          </div>
+        {{/if}}
         <div class='layout-column'>
           {{#form.input class='report-notes'
                        textarea=true

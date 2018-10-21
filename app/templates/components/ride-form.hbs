@@ -18,7 +18,7 @@
       <div class='layout-row layout-xs-column'>
         {{form.input class='timespan-result flex-100' label='Ride times' value=rideTimes disabled=true onChange=null}}
       </div>
-      <div class='layout-row layout-xs-column'>
+      <div class='layout-row layout-xs-column layout-align-center-center'>
         <div class='flex'>
           {{#paper-select
             class='institution'
@@ -30,6 +30,12 @@
             as |institution|}}
             {{institution.name}}
           {{/paper-select}}
+        </div>
+        <div class='flex'>
+          {{#paper-checkbox
+            class='overridable'
+            value=ride.overridable
+            onChange=(action (mut ride.overridable))}}Van?{{/paper-checkbox}}
         </div>
       </div>
       <div class='layout-row layout-xs-column medium-row'>
@@ -87,12 +93,13 @@
           {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact)) errors=ride.validationErrors.contact isTouched=(readonly ride.validationErrors.contact.length)}}
         </div>
       </div>
-      <div class='layout-row layout-xs-column'>
+      <div class='layout-row layout-xs-column layout-align-center-center'>
         <div class='flex'>
           {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=(readonly ride.validationErrors.passengers.length)}}
         </div>
         <div class='flex'>
           {{#paper-checkbox
+            class='first-time'
             value=ride.firstTime
             onChange=(action (mut ride.firstTime))}}First time?{{/paper-checkbox}}
         </div>

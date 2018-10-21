@@ -100,6 +100,8 @@ export default create({
       clear: clickable('.remove-container button')
     },
 
+    isOverridable: isVisible('md-icon[md-font-icon=directions_bus]'),
+
     combineButton: {
       scope: 'button.combine',
       isActive: hasClass('md-raised'),
@@ -125,6 +127,7 @@ export default create({
 
   reports: collection('tr.report', {
     distance: text('.distance'),
+    carExpenses: text('.car-expenses'),
     rate: text('.rate'),
     foodExpenses: text('.food-expenses'),
     notes: text('.notes'),
@@ -154,6 +157,12 @@ export default create({
       phone: { scope: '.phone' }
     },
 
+    overridable: {
+      scope: 'md-checkbox.overridable',
+      checked: hasClass('md-checked'),
+      click: clickable()
+    },
+
     name: {
       scope: 'md-autocomplete',
 
@@ -181,7 +190,7 @@ export default create({
     },
 
     firstTime: {
-      scope: 'md-checkbox',
+      scope: 'md-checkbox.first-time',
       checked: hasClass('md-checked'),
       click: clickable()
     },

@@ -46,6 +46,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     driver: sun,
     carOwner: lito,
+    overridable: true,
 
     insertedAt: new Date(2016, 11, 20, 20, 15)
   });
@@ -89,6 +90,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
     assert.equal(ride.contact, 'jorts@example.com');
     assert.ok(ride.medium.isTxt, 'expected the request to have been received via txt');
     assert.ok(ride.creationDate.isHidden, 'expected the creation date to be hidden by default');
+    assert.ok(ride.isOverridable, 'expected the ride to be overridable');
 
     assert.equal(ride.driver.text, 'Sun');
     assert.equal(ride.carOwner.text, 'Lito');
@@ -132,6 +134,7 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
   andThen(() => {
     assert.ok(page.rides[0].enabled, 'expected the other ride to be enabled');
     assert.notOk(page.rides[0].isFirstTimer, 'expected the other ride to not be a first-timer');
+    assert.notOk(page.rides[0].isOverridable, 'expected the other ride to not be overridable');
     assert.ok(page.rides[0].cancellation.showsNotCancelled, 'expected the other ride to not be cancelled');
     assert.equal(page.rides[0].name, 'Chelsea', 'expected the earlier ride to be sorted to the bottom');
     assert.equal(page.rides[0].contactPhoneHref, 'tel:5145551212');
@@ -188,6 +191,7 @@ test('completed rides can be shown and cleared', function(assert) {
   server.create('ride');
   server.create('ride', {
     distance: 44,
+    carExpenses: 1010,
     rate: 26,
     foodExpenses: 5555,
     reportNotes: 'Some report notes?'
@@ -208,6 +212,7 @@ test('completed rides can be shown and cleared', function(assert) {
 
     assert.equal(page.reports.length, 1, 'expected the report to be rendered');
     assert.equal(page.reports[0].distance, '44');
+    assert.equal(page.reports[0].carExpenses, '10.1');
     assert.equal(page.reports[0].rate, '26¢⁄km');
     assert.equal(page.reports[0].foodExpenses, '55.55');
     assert.equal(page.reports[0].notes, 'Some report notes?');
@@ -275,6 +280,8 @@ test('create and edit a ride', function(assert) {
 
   page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
 
+  page.form.overridable.click();
+
   page.form.medium.phone.click();
   page.form.name.fillIn('Edward');
   page.form.address.fillIn('114 Spence');
@@ -300,6 +307,8 @@ test('create and edit a ride', function(assert) {
 
     assert.equal(ride.institution, 'Rockwood');
 
+    assert.ok(ride.isOverridable);
+
     const serverRides = server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
 
@@ -313,6 +322,7 @@ test('create and edit a ride', function(assert) {
     assert.equal(lastRide.passengers, 2);
     assert.equal(lastRide.institutionId, rockwood.id);
     assert.equal(lastRide.requestNotes, undefined, 'expected the notes to have been unspecified');
+    assert.ok(lastRide.overridable);
   });
 
   page.rides[0].driver.click();

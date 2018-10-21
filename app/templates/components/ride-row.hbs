@@ -29,6 +29,9 @@
     {{else}}
       <span class='driver'>{{ride-person ride=ride property='driver' onChange=(action 'setDriver')}}</span>
       <span class='car-owner'>{{ride-person ride=ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
+      {{#if ride.overridable}}
+        {{paper-icon 'directions_bus' title='driver can override car expenses (van-driving, probably)'}}
+      {{/if}}
       {{#if (or (not ride.children) rideToCombine)}}
         {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
           {{paper-icon 'merge type'}}
@@ -60,7 +63,11 @@
     {{row.cell}}
     {{#row.cell colspan=6}}
       {{paper-icon 'map'}}<span class='distance'>{{ride.distance}}</span>
-      {{#if ride.rate}}{{paper-icon 'local gas station'}}<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>{{/if}}
+      {{#if ride.carExpenses}}
+        {{paper-icon 'local gas station'}}
+        <span class='car-expenses'>{{ride.carExpensesDollars}}</span>
+        {{#if (and ride.rate (not ride.overridable))}}(<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>){{/if}}
+      {{/if}}
       {{#if ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{ride.foodExpensesDollars}}</span>{{/if}}
       {{#if ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{ride.reportNotes}}</span>{{/if}}
       {{#if clearing}}
