@@ -66,7 +66,7 @@
       {{#if ride.carExpenses}}
         {{paper-icon 'local gas station'}}
         <span class='car-expenses'>{{ride.carExpensesDollars}}</span>
-        {{#if ride.rate}}(<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>){{/if}}
+        {{#if (and ride.rate (not ride.overridable))}}(<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>){{/if}}
       {{/if}}
       {{#if ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{ride.foodExpensesDollars}}</span>{{/if}}
       {{#if ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{ride.reportNotes}}</span>{{/if}}
