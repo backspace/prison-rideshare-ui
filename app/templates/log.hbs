@@ -1,0 +1,29 @@
+{{toolbar-header title="Log"}}
+<section class="flex">
+  {{#paper-data-table class="posts" as |table|}}
+    {{#table.head as |head|}}
+      {{#head.column}}Meta{{/head.column}}
+      {{#head.column}}Content{{/head.column}}
+      {{#head.column}}{{/head.column}}
+    {{/table.head}}
+    {{#table.body as |body|}}
+      {{#each (sort-by "insertedAt:desc" model) as |post|}}
+        {{#body.row as |row|}}
+          {{#row.cell}}
+            <span class="date">
+              {{moment-format post.insertedAt "ddd MMM D YYYY h:mma"}}
+            </span>
+            <br />
+            <span class="poster">
+              {{post.poster.email}}
+            </span>
+          {{/row.cell}}
+          {{#row.cell class="content"}}
+            {{post.content}}
+          {{/row.cell}}
+          {{#row.cell}}{{/row.cell}}
+        {{/body.row}}
+      {{/each}}
+    {{/table.body}}
+  {{/paper-data-table}}
+</section>

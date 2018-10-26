@@ -71,6 +71,8 @@ export default function() {
   this.get('/users');
   this.patch('/users/:id');
 
+  this.get('/posts');
+
   this.get('/users/current', ({ users }) => {
     return users.first();
   });

@@ -26,6 +26,7 @@ Router.map(function() {
   this.route('gas-prices');
 
   this.route('users');
+  this.route('log');
 
   this.route('login');
   this.route('register');
