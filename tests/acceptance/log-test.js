@@ -96,4 +96,18 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
 
     assert.equal(post.content, 'ya');
   });
+
+  page.posts[0].edit();
+  page.form.content.field.fillIn('new content');
+
+  page.form.submit();
+
+  andThen(() => {
+    assert.equal(page.posts[0].content, 'new content');
+
+    let posts = server.db.posts;
+    const post = posts[posts.length - 1];
+
+    assert.equal(post.content, 'new content');
+  });
 });
