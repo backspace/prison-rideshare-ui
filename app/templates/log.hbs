@@ -20,7 +20,7 @@
       {{#each (sort-by "insertedAt:desc" model) as |post|}}
         {{#unless post.isNew}}
           {{#body.row as |row|}}
-            {{#row.cell}}
+            {{#row.cell class="meta"}}
               <span class="date">
                 {{moment-format post.insertedAt "ddd MMM D YYYY h:mma"}}
               </span>
@@ -32,7 +32,7 @@
             {{#row.cell class="content"}}
               {{render-mobiledoc mobiledoc=post.bodyJson}}
             {{/row.cell}}
-            {{#row.cell}}
+            {{#row.cell class="controls"}}
               {{#if (eq session.currentUser.id post.poster.id)}}
                 {{#paper-button
                   iconButton=true
