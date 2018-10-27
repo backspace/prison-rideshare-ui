@@ -1,7 +1,10 @@
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { inject as service } from '@ember/service';
 
 export default Controller.extend({
+  session: service(),
+
   actions: {
     newPost() {
       this.set('editingPost', BufferedProxy.create({

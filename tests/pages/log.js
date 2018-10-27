@@ -15,7 +15,9 @@ export default create({
     poster: text('.poster'),
     content: text('.content'),
 
-    edit: clickable('button.edit'),
+    editButton: {
+      scope: 'button.edit'
+    },
   }),
 
   form: {

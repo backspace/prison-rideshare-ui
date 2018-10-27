@@ -3,6 +3,7 @@ import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-ac
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
 import page from 'prison-rideshare-ui/tests/pages/log';
+import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | log', {
@@ -11,7 +12,7 @@ moduleForAcceptance('Acceptance | log', {
 
     server.create('post', {
       content: 'hello',
-      poster,
+      poster: server.create('user'),
       insertedAt: new Date(2018, 6, 6, 14)
     });
 
@@ -20,12 +21,20 @@ moduleForAcceptance('Acceptance | log', {
       poster,
       insertedAt: new Date(2018, 7, 7, 14, 18, 22)
     });
-
-    authenticateSession(this.application, { access_token: 'abcdef' });
   }
 });
 
 test('it lists posts', function (assert) {
+  server.post('/token', () => {
+    return {
+      access_token: 'abcdef'
+    };
+  });
+
+  loginPage.visit();
+  loginPage.fillEmail('jorts@jants.ca');
+  loginPage.submit();
+
   page.visit();
 
   andThen(function () {
@@ -37,11 +46,16 @@ test('it lists posts', function (assert) {
       assert.equal(post.date, 'Tue Aug 7 2018 2:18p');
       assert.equal(post.poster, 'jortle@tortle.ca');
       assert.equal(post.content, 'ya');
+      assert.ok(post.editButton.isVisible);
     });
+
+    assert.ok(page.posts[1].editButton.isHidden);
   });
 });
 
 test('a post can be created', function (assert) {
+  authenticateSession(this.application, { access_token: 'abcdef' });
+
   page.visit();
 
   page.newPost();
@@ -62,6 +76,8 @@ test('a post can be created', function (assert) {
 });
 
 test('post validation errors are displayed', function (assert) {
+  authenticateSession(this.application, { access_token: 'abcdef' });
+
   server.post('/posts', {
     errors: [{
       'source': {
@@ -81,9 +97,11 @@ test('post validation errors are displayed', function (assert) {
 });
 
 test('posts can be edited, cancelled edits are discarded', function (assert) {
+  authenticateSession(this.application, { access_token: 'abcdef' });
+
   page.visit();
 
-  page.posts[0].edit();
+  page.posts[0].editButton.click();
   page.form.content.field.fillIn('new post content');
   page.form.cancel();
 
@@ -97,7 +115,7 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
     assert.equal(post.content, 'ya');
   });
 
-  page.posts[0].edit();
+  page.posts[0].editButton.click();
   page.form.content.field.fillIn('new content');
 
   page.form.submit();

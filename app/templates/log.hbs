@@ -33,15 +33,17 @@
               {{post.body}}
             {{/row.cell}}
             {{#row.cell}}
-              {{#paper-button
-                iconButton=true
-                aria-label="Edit post"
-                title="Edit post"
-                class="edit"
-                onClick=(action "editPost" post)
-              }}
-                {{paper-icon "mode edit"}}
-              {{/paper-button}}
+              {{#if (eq session.currentUser.id post.poster.id)}}
+                {{#paper-button
+                  iconButton=true
+                  aria-label="Edit post"
+                  title="Edit post"
+                  class="edit"
+                  onClick=(action "editPost" post)
+                }}
+                  {{paper-icon "mode edit"}}
+                {{/paper-button}}
+              {{/if}}
             {{/row.cell}}
           {{/body.row}}
         {{/unless}}
