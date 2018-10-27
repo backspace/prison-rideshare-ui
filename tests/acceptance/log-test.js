@@ -60,3 +60,22 @@ test('a post can be created', function (assert) {
     assert.equal(post.content, 'hello');
   });
 });
+
+test('post validation errors are displayed', function (assert) {
+  server.post('/posts', {
+    errors: [{
+      'source': {
+        'pointer': '/data/attributes/content'
+      },
+      'detail': 'Content can\'t be blank'
+    }]
+  }, 422);
+
+  page.visit();
+  page.newPost();
+  page.form.submit();
+
+  andThen(() => {
+    assert.equal(page.form.content.error.text, 'Content can\'t be blank');
+  });
+});
