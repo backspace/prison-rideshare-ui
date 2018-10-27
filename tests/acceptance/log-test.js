@@ -40,3 +40,23 @@ test('it lists posts', function (assert) {
     });
   });
 });
+
+test('a post can be created', function (assert) {
+  page.visit();
+
+  page.newPost();
+  page.form.content.field.fillIn('hello');
+
+  andThen(() => {
+    assert.equal(page.posts.length, 2);
+  });
+
+  page.form.submit();
+
+  andThen(() => {
+    assert.equal(page.posts.length, 3);
+
+    const [, , post] = server.db.posts;
+    assert.equal(post.content, 'hello');
+  });
+});

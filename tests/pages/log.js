@@ -1,4 +1,5 @@
 import {
+  clickable,
   collection,
   create,
   text,
@@ -7,10 +8,26 @@ import {
 
 export default create({
   visit: visitable('/log'),
+  newPost: clickable('button.new'),
 
   posts: collection('.posts tbody tr', {
     date: text('.date'),
     poster: text('.poster'),
     content: text('.content'),
   }),
+
+  form: {
+    content: {
+      scope: '.content',
+      field: {
+        scope: 'textarea'
+      },
+      error: {
+        scope: '.paper-input-error'
+      }
+    },
+
+    submit: clickable('button.submit'),
+    cancel: clickable('button.cancel')
+  },
 });

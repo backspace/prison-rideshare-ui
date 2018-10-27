@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  content: DS.attr(),
+  body: DS.attr(),
 
   poster: DS.belongsTo('user'),
 

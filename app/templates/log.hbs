@@ -1,4 +1,14 @@
-{{toolbar-header title="Log"}}
+{{#toolbar-header title="Log"}}
+  {{#paper-button
+    mini=true
+    aria-label="New post"
+    title="New post"
+    class="new"
+    onClick=(action "newPost")
+  }}
+    {{paper-icon "add"}}
+  {{/paper-button}}
+{{/toolbar-header}}
 <section class="flex">
   {{#paper-data-table class="posts" as |table|}}
     {{#table.head as |head|}}
@@ -8,22 +18,60 @@
     {{/table.head}}
     {{#table.body as |body|}}
       {{#each (sort-by "insertedAt:desc" model) as |post|}}
-        {{#body.row as |row|}}
-          {{#row.cell}}
-            <span class="date">
-              {{moment-format post.insertedAt "ddd MMM D YYYY h:mma"}}
-            </span>
-            <br />
-            <span class="poster">
-              {{post.poster.email}}
-            </span>
-          {{/row.cell}}
-          {{#row.cell class="content"}}
-            {{post.content}}
-          {{/row.cell}}
-          {{#row.cell}}{{/row.cell}}
-        {{/body.row}}
+        {{#unless post.isNew}}
+          {{#body.row as |row|}}
+            {{#row.cell}}
+              <span class="date">
+                {{moment-format post.insertedAt "ddd MMM D YYYY h:mma"}}
+              </span>
+              <br />
+              <span class="poster">
+                {{post.poster.email}}
+              </span>
+            {{/row.cell}}
+            {{#row.cell class="content"}}
+              {{post.body}}
+            {{/row.cell}}
+            {{#row.cell}}{{/row.cell}}
+          {{/body.row}}
+        {{/unless}}
       {{/each}}
     {{/table.body}}
   {{/paper-data-table}}
 </section>
+{{#if editingPost}}
+  {{#paper-dialog
+    clickOutsideToClose=true
+    fullscreen=true
+    onClose=(action "cancelPost")
+  }}
+    {{#paper-dialog-content}}
+      <h2 class="md-title">
+        {{if editingPost.isNew "New" "Edit"}}
+        post
+      </h2>
+      {{#paper-form onSubmit=savePost as |form|}}
+        <div class="layout layout-sm-column">
+          {{form.input
+            textarea=true
+            class="content"
+            label="Content"
+            autofocus=true
+            value=editingPost.body
+            onChange=(action (mut editingPost.body))
+            errors=editingPost.validationErrors.body
+            isTouched=(readonly editingPost.validationErrors.body.length)
+          }}
+        </div>
+      {{/paper-form}}
+    {{/paper-dialog-content}}
+    {{#paper-dialog-actions class="layout-row"}}
+      {{#paper-button class="cancel" onClick=(action "cancelPost")}}
+        Cancel
+      {{/paper-button}}
+      {{#paper-button class="submit" primary=true onClick=(action "savePost")}}
+        Save
+      {{/paper-button}}
+    {{/paper-dialog-actions}}
+  {{/paper-dialog}}
+{{/if}}
