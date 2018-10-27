@@ -64,11 +64,13 @@
           post
         </h2>
         <div class="layout layout-sm-column content">
-          {{mobiledoc-editor
+          {{#mobiledoc-editor
             mobiledoc=editingPost.bodyJson
             autofocus=true
-            on-change=(action (mut editingPost.bodyJson))
+            on-change=(action (mut editingPost.bodyJson)) as |editor|
           }}
+            {{mobiledoc-toolbar editor=editor}}
+          {{/mobiledoc-editor}}
           {{#if editingPost.validationErrors.body}}
             <div class="md-input-messages-animation md-auto-hide">
               {{#each editingPost.validationErrors.body as |error|}}
