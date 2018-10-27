@@ -26,7 +26,7 @@ export default create({
     content: {
       scope: '.content',
       field: {
-        scope: 'textarea'
+        scope: '.mobiledoc-editor__editor'
       },
       error: {
         scope: '.paper-input-error'

@@ -64,15 +64,11 @@
           post
         </h2>
         <div class="layout layout-sm-column">
-          {{form.input
-            textarea=true
-            class="content"
-            label="Content"
+          {{mobiledoc-editor
+            mobiledoc=editingPost.bodyJson
             autofocus=true
-            value=editingPost.body
-            onChange=(action (mut editingPost.body))
-            errors=editingPost.validationErrors.body
-            isTouched=(readonly editingPost.validationErrors.body.length)
+            on-change=(action (mut editingPost.bodyJson))
+            class="content"
           }}
         </div>
       {{/paper-dialog-content}}

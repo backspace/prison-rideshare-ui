@@ -2,10 +2,17 @@ import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  body: DS.attr(),
+  body: DS.attr({ defaultValue: '{"version": "0.3.1", "atoms": [], "cards": [], "markups": [], "sections": []}' }),
 
-  bodyJson: computed('body', function () {
-    return JSON.parse(this.get('body'));
+  bodyJson: computed('body', {
+    get() {
+      return JSON.parse(this.get('body'));
+    },
+
+    set(key, value) {
+      this.set('body', JSON.stringify(value));
+      return value;
+    }
   }),
 
   poster: DS.belongsTo('user'),

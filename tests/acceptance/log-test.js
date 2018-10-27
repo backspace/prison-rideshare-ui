@@ -59,7 +59,7 @@ test('a post can be created', function (assert) {
   page.visit();
 
   page.newPost();
-  page.form.content.field.fillIn(stringToMobiledoc('hello'));
+  page.form.content.field.fillIn('hello');
 
   andThen(() => {
     assert.equal(page.posts.length, 2);
@@ -116,7 +116,7 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
   });
 
   page.posts[0].editButton.click();
-  page.form.content.field.fillIn(stringToMobiledoc('new content'));
+  page.form.content.field.fillIn('new content');
 
   page.form.submit();
 
