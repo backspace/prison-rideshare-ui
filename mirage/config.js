@@ -74,6 +74,7 @@ export default function() {
   this.get('/posts');
   this.post('/posts');
   this.patch('/posts/:id');
+  this.delete('/posts/:id');
 
   this.get('/users/current', ({ users }) => {
     return users.first();

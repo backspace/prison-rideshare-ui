@@ -43,6 +43,36 @@
                 }}
                   {{paper-icon "mode edit"}}
                 {{/paper-button}}
+                {{#if (eq deletingPost post)}}
+                  Delete this post?
+                  {{#paper-button
+                    class="delete-confirm"
+                    warn=true
+                    aria-label="Delete post"
+                    title="Delete post"
+                    onClick=(action "deletePost")
+                  }}
+                    Yes
+                  {{/paper-button}}
+                  {{#paper-button
+                    class="delete-cancel"
+                    aria-label="Don’t delete report"
+                    title="Don’t delete report"
+                    onClick=(action (mut deletingPost))
+                  }}
+                    No
+                  {{/paper-button}}
+                {{else}}
+                  {{#paper-button
+                    iconButton=true
+                    aria-label="Delete post"
+                    title="Delete post"
+                    class="delete"
+                    onClick=(action (mut deletingPost) post)
+                  }}
+                    {{paper-icon "delete"}}
+                  {{/paper-button}}
+                {{/if}}
               {{/if}}
             {{/row.cell}}
           {{/body.row}}

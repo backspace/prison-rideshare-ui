@@ -50,6 +50,7 @@ test('it lists posts', function (assert) {
     });
 
     assert.ok(page.posts[1].editButton.isHidden);
+    assert.ok(page.posts[1].deleteButton.isHidden);
   });
 });
 
@@ -127,6 +128,20 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
     const post = posts[posts.length - 1];
 
     assert.equal(post.content, stringToMobiledoc('new content'));
+  });
+});
+
+test('posts can be deleted', function (assert) {
+  authenticateSession(this.application, { access_token: 'abcdef' });
+
+  page.visit();
+
+  page.posts[0].deleteButton.click();
+  page.posts[0].deleteConfirm.click();
+
+  andThen(() => {
+    assert.equal(server.db.posts.length, 1);
+    assert.equal(page.posts.length, 1);
   });
 });
 

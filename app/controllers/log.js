@@ -33,6 +33,10 @@ export default Controller.extend({
       }
 
       this.set('editingPost', undefined);
+    },
+
+    deletePost() {
+      return this.get('deletingPost').destroyRecord();
     }
   }
 });

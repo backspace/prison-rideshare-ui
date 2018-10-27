@@ -18,6 +18,14 @@ export default create({
     editButton: {
       scope: 'button.edit'
     },
+
+    deleteButton: {
+      scope: 'button.delete',
+    },
+
+    deleteConfirm: {
+      scope: 'button.delete-confirm'
+    }
   }),
 
   form: {
