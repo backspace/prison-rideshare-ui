@@ -20,7 +20,7 @@ md-table-container.posts {
   }
 
   .mobiledoc-toolbar__button {
-    &[title="Pull Quote"], &[title="Link"] {
+    &[title="Pull Quote"], &[title="Link"], &[title="Subheading"] {
       display: none;
     }
   }
