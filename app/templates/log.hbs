@@ -63,13 +63,24 @@
           {{if editingPost.isNew "New" "Edit"}}
           post
         </h2>
-        <div class="layout layout-sm-column">
+        <div class="layout layout-sm-column content">
           {{mobiledoc-editor
             mobiledoc=editingPost.bodyJson
             autofocus=true
             on-change=(action (mut editingPost.bodyJson))
-            class="content"
           }}
+          {{#if editingPost.validationErrors.body}}
+            <div class="md-input-messages-animation md-auto-hide">
+              {{#each editingPost.validationErrors.body as |error|}}
+                <div
+                  class="paper-input-error ng-enter ng-enter-active md-input-message-animation"
+                  style="opacity: 1; margin-top: 0"
+                >
+                  {{error}}
+                </div>
+              {{/each}}
+            </div>
+          {{/if}}
         </div>
       {{/paper-dialog-content}}
       {{#paper-dialog-actions class="layout-row"}}
