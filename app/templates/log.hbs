@@ -30,7 +30,7 @@
               </span>
             {{/row.cell}}
             {{#row.cell class="content"}}
-              {{post.body}}
+              {{render-mobiledoc mobiledoc=post.bodyJson}}
             {{/row.cell}}
             {{#row.cell}}
               {{#if (eq session.currentUser.id post.poster.id)}}

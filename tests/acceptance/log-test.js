@@ -11,13 +11,13 @@ moduleForAcceptance('Acceptance | log', {
     let poster = server.create('user', { email: 'jortle@tortle.ca', admin: true });
 
     server.create('post', {
-      content: 'hello',
+      content: stringToMobiledoc('hello'),
       poster: server.create('user'),
       insertedAt: new Date(2018, 6, 6, 14)
     });
 
     server.create('post', {
-      content: 'ya',
+      content: stringToMobiledoc('ya'),
       poster,
       insertedAt: new Date(2018, 7, 7, 14, 18, 22)
     });
@@ -59,7 +59,7 @@ test('a post can be created', function (assert) {
   page.visit();
 
   page.newPost();
-  page.form.content.field.fillIn('hello');
+  page.form.content.field.fillIn(stringToMobiledoc('hello'));
 
   andThen(() => {
     assert.equal(page.posts.length, 2);
@@ -71,7 +71,7 @@ test('a post can be created', function (assert) {
     assert.equal(page.posts.length, 3);
 
     const [, , post] = server.db.posts;
-    assert.equal(post.content, 'hello');
+    assert.equal(post.content, stringToMobiledoc('hello'));
   });
 });
 
@@ -112,11 +112,11 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
     let posts = server.db.posts;
     const post = posts[posts.length - 1];
 
-    assert.equal(post.content, 'ya');
+    assert.equal(post.content, stringToMobiledoc('ya'));
   });
 
   page.posts[0].editButton.click();
-  page.form.content.field.fillIn('new content');
+  page.form.content.field.fillIn(stringToMobiledoc('new content'));
 
   page.form.submit();
 
@@ -126,6 +126,29 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
     let posts = server.db.posts;
     const post = posts[posts.length - 1];
 
-    assert.equal(post.content, 'new content');
+    assert.equal(post.content, stringToMobiledoc('new content'));
   });
 });
+
+function stringToMobiledoc(string) {
+  return JSON.stringify({
+    "version": "0.3.1",
+    "atoms": [],
+    "cards": [],
+    "markups": [],
+    "sections": [
+      [
+        1,
+        "p",
+        [
+          [
+            0,
+            [],
+            0,
+            string
+          ]
+        ]
+      ]
+    ]
+  });
+}

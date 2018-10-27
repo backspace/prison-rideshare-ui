@@ -4,6 +4,10 @@ import DS from 'ember-data';
 export default DS.Model.extend({
   body: DS.attr(),
 
+  bodyJson: computed('body', function () {
+    return JSON.parse(this.get('body'));
+  }),
+
   poster: DS.belongsTo('user'),
 
   insertedAt: DS.attr('date'),
