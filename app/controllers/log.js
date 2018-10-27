@@ -9,6 +9,12 @@ export default Controller.extend({
       }));
     },
 
+    editPost(post) {
+      const proxy = BufferedProxy.create({ content: post });
+
+      this.set('editingPost', proxy);
+    },
+
     savePost() {
       const proxy = this.get('editingPost');
       proxy.applyBufferedChanges();
@@ -17,7 +23,13 @@ export default Controller.extend({
     },
 
     cancelPost() {
+      const model = this.get('editingPost.content');
 
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
+
+      this.set('editingPost', undefined);
     }
   }
 });

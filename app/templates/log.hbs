@@ -32,7 +32,17 @@
             {{#row.cell class="content"}}
               {{post.body}}
             {{/row.cell}}
-            {{#row.cell}}{{/row.cell}}
+            {{#row.cell}}
+              {{#paper-button
+                iconButton=true
+                aria-label="Edit post"
+                title="Edit post"
+                class="edit"
+                onClick=(action "editPost" post)
+              }}
+                {{paper-icon "mode edit"}}
+              {{/paper-button}}
+            {{/row.cell}}
           {{/body.row}}
         {{/unless}}
       {{/each}}
@@ -45,12 +55,12 @@
     fullscreen=true
     onClose=(action "cancelPost")
   }}
-    {{#paper-dialog-content}}
-      <h2 class="md-title">
-        {{if editingPost.isNew "New" "Edit"}}
-        post
-      </h2>
-      {{#paper-form onSubmit=savePost as |form|}}
+    {{#paper-form onSubmit=savePost as |form|}}
+      {{#paper-dialog-content}}
+        <h2 class="md-title">
+          {{if editingPost.isNew "New" "Edit"}}
+          post
+        </h2>
         <div class="layout layout-sm-column">
           {{form.input
             textarea=true
@@ -63,15 +73,16 @@
             isTouched=(readonly editingPost.validationErrors.body.length)
           }}
         </div>
-      {{/paper-form}}
-    {{/paper-dialog-content}}
-    {{#paper-dialog-actions class="layout-row"}}
-      {{#paper-button class="cancel" onClick=(action "cancelPost")}}
-        Cancel
-      {{/paper-button}}
-      {{#paper-button class="submit" primary=true onClick=(action "savePost")}}
-        Save
-      {{/paper-button}}
-    {{/paper-dialog-actions}}
+      {{/paper-dialog-content}}
+      {{#paper-dialog-actions class="layout-row"}}
+        {{#paper-button class="cancel" onClick=(action "cancelPost")}}
+          Cancel
+        {{/paper-button}}
+        {{#paper-button class="submit" primary=true onClick=(action "savePost")
+        }}
+          Save
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
   {{/paper-dialog}}
 {{/if}}

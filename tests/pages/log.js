@@ -14,9 +14,13 @@ export default create({
     date: text('.date'),
     poster: text('.poster'),
     content: text('.content'),
+
+    edit: clickable('button.edit'),
   }),
 
   form: {
+    scope: 'form',
+
     content: {
       scope: '.content',
       field: {

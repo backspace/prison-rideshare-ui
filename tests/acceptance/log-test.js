@@ -79,3 +79,21 @@ test('post validation errors are displayed', function (assert) {
     assert.equal(page.form.content.error.text, 'Content can\'t be blank');
   });
 });
+
+test('posts can be edited, cancelled edits are discarded', function (assert) {
+  page.visit();
+
+  page.posts[0].edit();
+  page.form.content.field.fillIn('new post content');
+  page.form.cancel();
+
+  andThen(() => {
+    assert.ok(page.form.isHidden);
+    assert.equal(page.posts[0].content, 'ya');
+
+    let posts = server.db.posts;
+    const post = posts[posts.length - 1];
+
+    assert.equal(post.content, 'ya');
+  });
+});
