@@ -45,6 +45,9 @@
         {{#if session.isAuthenticated}}
           {{#if session.currentUser.admin}}
             {{#paper-item}}
+              {{#link-to 'log'}}<span>Log</span>{{/link-to}}
+            {{/paper-item}}
+            {{#paper-item}}
               {{#link-to 'users'}}<span class='users'>
                 <span>Users</span>
                 {{#if userCount}}<span class='count' title='How many users are connected'>{{userCount}}</span>{{/if}}
