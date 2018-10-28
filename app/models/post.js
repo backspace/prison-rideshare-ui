@@ -2,11 +2,17 @@ import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  body: DS.attr({ defaultValue: '{"version": "0.3.1", "atoms": [], "cards": [], "markups": [], "sections": []}' }),
+  body: DS.attr('string'),
 
   bodyJson: computed('body', {
     get() {
-      return JSON.parse(this.get('body'));
+      let body = this.get('body');
+
+      if (body) {
+        return JSON.parse(this.get('body'));
+      } else {
+        return undefined;
+      }
     },
 
     set(key, value) {
