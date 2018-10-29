@@ -13,18 +13,20 @@ moduleForAcceptance('Acceptance | log', {
     server.create('post', {
       content: stringToMobiledoc('hello'),
       poster: server.create('user'),
+      unread: true,
       insertedAt: new Date(2018, 6, 6, 14)
     });
 
     server.create('post', {
       content: stringToMobiledoc('ya'),
       poster,
+      unread: false,
       insertedAt: new Date(2018, 7, 7, 14, 18, 22)
     });
   }
 });
 
-test('it lists posts', function (assert) {
+test('it lists posts, with the unread count in the sidebar', function (assert) {
   server.post('/token', () => {
     return {
       access_token: 'abcdef'
@@ -39,6 +41,8 @@ test('it lists posts', function (assert) {
 
   andThen(function () {
     assert.equal(shared.title, 'Log · Prison Rideshare');
+
+    assert.equal(shared.logCount.text, '1');
 
     assert.equal(page.posts.length, 2);
 

@@ -21,5 +21,9 @@ export default create({
 
   userCount: {
     scope: '.users .count'
+  },
+
+  logCount: {
+    scope: '.log .count'
   }
 });
