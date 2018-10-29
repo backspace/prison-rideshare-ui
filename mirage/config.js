@@ -76,18 +76,30 @@ export default function() {
   this.patch('/posts/:id');
   this.delete('/posts/:id');
 
+  this.post('/posts/:id/readings', function ({ posts }, { params: { id } }) {
+    let post = posts.find(id);
+    post.unread = false;
+    return post;
+  });
+
+  this.delete('/posts/:id/readings', function ({ posts }, { params: { id } }) {
+    let post = posts.find(id);
+    post.unread = true;
+    return post;
+  });
+
   this.get('/users/current', ({ users }) => {
     return users.first();
   });
 
   this.get('/slots');
 
-  this.post('/commitments', function({ commitments, people }, request) {
+  this.post('/commitments', function ({ commitments, people }, request) {
     const authorizationHeader = request.requestHeaders.Authorization;
 
     if (authorizationHeader.startsWith('Person Bearer')) {
       const [, , accessToken] = authorizationHeader.split(' ');
-      const person = people.findBy({accessToken});
+      const person = people.findBy({ accessToken });
       const attrs = this.normalizedRequestAttrs();
 
       if (person && attrs.personId === person.id) {

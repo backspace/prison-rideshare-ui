@@ -37,6 +37,14 @@ export default Controller.extend({
 
     deletePost() {
       return this.get('deletingPost').destroyRecord();
+    },
+
+    markRead(post) {
+      return post.markRead();
+    },
+
+    markUnread(post) {
+      return post.markUnread();
     }
   }
 });

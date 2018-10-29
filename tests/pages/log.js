@@ -25,6 +25,14 @@ export default create({
 
     deleteConfirm: {
       scope: 'button.delete-confirm'
+    },
+
+    markReadButton: {
+      scope: 'button.markRead',
+    },
+
+    markUnreadButton: {
+      scope: 'button.markUnread'
     }
   }),
 

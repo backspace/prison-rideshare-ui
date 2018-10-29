@@ -1,5 +1,6 @@
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
+import { modelAction } from 'ember-custom-actions';
 
 export default DS.Model.extend({
   body: DS.attr('string'),
@@ -33,5 +34,8 @@ export default DS.Model.extend({
       response[key] = errors.mapBy('message');
       return response;
     }, {});
-  })
+  }),
+
+  markRead: modelAction('readings', { method: 'POST', pushToStore: true }),
+  markUnread: modelAction('readings', { method: 'DELETE', pushToStore: true })
 });

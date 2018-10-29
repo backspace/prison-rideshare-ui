@@ -22,14 +22,24 @@ export default Controller.extend({
     }
   }),
 
-  unreadCountRequest: computed(function () {
+  postsRequest: computed(function () {
     return ObjectPromiseProxy.create({
       promise: this.get('store').findAll('post').then(posts => {
         return {
-          count: posts.filterBy('unread').length
+          posts
         };
       })
     });
+  }),
+
+  unreadCount: computed('postsRequest.posts.@each.unread', function () {
+    let posts = this.get('postsRequest.posts')
+
+    if (posts) {
+      return posts.filterBy('unread').length;
+    } else {
+      return 0;
+    }
   }),
 
   actions: {
