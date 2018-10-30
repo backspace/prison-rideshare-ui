@@ -74,6 +74,13 @@ test('it lists posts, with the unread count in the sidebar, and posts can be mar
     assert.equal(shared.logCount.text, '1');
     assert.ok(page.posts[0].markUnreadButton.isVisible);
   });
+
+  page.markAllReadButton.click();
+
+  andThen(function () {
+    assert.ok(shared.logCount.isHidden);
+    assert.ok(page.markAllReadButton.isHidden);
+  });
 });
 
 test('a post can be created', function (assert) {

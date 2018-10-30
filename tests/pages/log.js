@@ -10,6 +10,10 @@ export default create({
   visit: visitable('/log'),
   newPost: clickable('button.new'),
 
+  markAllReadButton: {
+    scope: 'button.markAllRead'
+  },
+
   posts: collection('.posts tbody tr', {
     date: text('.date'),
     poster: text('.poster'),

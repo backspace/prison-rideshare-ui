@@ -76,6 +76,11 @@ export default function() {
   this.patch('/posts/:id');
   this.delete('/posts/:id');
 
+  this.post('/posts/readings', function ({ posts }) {
+    posts.all().update('unread', false);
+    return posts.all();
+  });
+
   this.post('/posts/:id/readings', function ({ posts }, { params: { id } }) {
     let post = posts.find(id);
     post.unread = false;
