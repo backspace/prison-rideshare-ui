@@ -45,7 +45,10 @@
         {{#if session.isAuthenticated}}
           {{#if session.currentUser.admin}}
             {{#paper-item}}
-              {{#link-to 'log'}}<span>Log</span>{{/link-to}}
+              {{#link-to 'log'}}<span class='log'>
+                <span>Log</span>
+                {{#if unreadCount}}<span class='count' title='How many unread posts you have'>{{unreadCount}}</span>{{/if}}
+              </span>{{/link-to}}
             {{/paper-item}}
             {{#paper-item}}
               {{#link-to 'users'}}<span class='users'>

@@ -13,18 +13,20 @@ moduleForAcceptance('Acceptance | log', {
     server.create('post', {
       content: stringToMobiledoc('hello'),
       poster: server.create('user'),
+      unread: true,
       insertedAt: new Date(2018, 6, 6, 14)
     });
 
     server.create('post', {
       content: stringToMobiledoc('ya'),
       poster,
+      unread: false,
       insertedAt: new Date(2018, 7, 7, 14, 18, 22)
     });
   }
 });
 
-test('it lists posts', function (assert) {
+test('it lists posts, with the unread count in the sidebar, and posts can be marked read and unread', function (assert) {
   server.post('/token', () => {
     return {
       access_token: 'abcdef'
@@ -40,6 +42,8 @@ test('it lists posts', function (assert) {
   andThen(function () {
     assert.equal(shared.title, 'Log · Prison Rideshare');
 
+    assert.equal(shared.logCount.text, '1');
+
     assert.equal(page.posts.length, 2);
 
     page.posts[0].as(post => {
@@ -47,10 +51,35 @@ test('it lists posts', function (assert) {
       assert.equal(post.poster, 'jortle@tortle.ca');
       assert.equal(post.content, 'ya');
       assert.ok(post.editButton.isVisible);
+      assert.ok(post.markUnreadButton.isVisible);
+      assert.ok(post.markReadButton.isHidden);
     });
 
     assert.ok(page.posts[1].editButton.isHidden);
     assert.ok(page.posts[1].deleteButton.isHidden);
+    assert.ok(page.posts[1].markReadButton.isVisible);
+  });
+
+  page.posts[0].markUnreadButton.click();
+
+  andThen(function () {
+    assert.equal(shared.logCount.text, '2');
+    assert.ok(page.posts[0].markUnreadButton.isHidden);
+    assert.ok(page.posts[0].markReadButton.isVisible);
+  });
+
+  page.posts[0].markReadButton.click();
+
+  andThen(function () {
+    assert.equal(shared.logCount.text, '1');
+    assert.ok(page.posts[0].markUnreadButton.isVisible);
+  });
+
+  page.markAllReadButton.click();
+
+  andThen(function () {
+    assert.ok(shared.logCount.isHidden);
+    assert.ok(page.markAllReadButton.isHidden);
   });
 });
 

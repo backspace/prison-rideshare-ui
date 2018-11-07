@@ -37,6 +37,18 @@ export default Controller.extend({
 
     deletePost() {
       return this.get('deletingPost').destroyRecord();
+    },
+
+    markAllRead() {
+      this.get('model.firstObject').markAllRead();
+    },
+
+    markRead(post) {
+      return post.markRead();
+    },
+
+    markUnread(post) {
+      return post.markUnread();
     }
   }
 });

@@ -14,7 +14,18 @@
     {{#table.head as |head|}}
       {{#head.column}}Meta{{/head.column}}
       {{#head.column}}Content{{/head.column}}
-      {{#head.column}}{{/head.column}}
+      {{#head.column}}
+        {{#if (filter-by "unread" model)}}
+          {{#paper-button
+            aria-label="Mark all read"
+            title="Mark all read"
+            class="markAllRead"
+            onClick=(action "markAllRead")
+          }}
+            Mark all read{{paper-icon "done_all"}}
+          {{/paper-button}}
+        {{/if}}
+      {{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
       {{#each (sort-by "insertedAt:desc" model) as |post|}}
@@ -33,6 +44,25 @@
               {{render-mobiledoc mobiledoc=post.bodyJson}}
             {{/row.cell}}
             {{#row.cell class="controls"}}
+              {{#if post.unread}}
+                {{#paper-button
+                  aria-label="Mark read"
+                  title="Mark read"
+                  class="markRead"
+                  onClick=(action "markRead" post)
+                }}
+                  Mark read{{paper-icon "done"}}
+                {{/paper-button}}
+              {{else}}
+                {{#paper-button
+                  aria-label="Mark unread"
+                  title="Mark unread"
+                  class="markUnread"
+                  onClick=(action "markUnread" post)
+                }}
+                  Mark unread{{paper-icon "autorenew"}}
+                {{/paper-button}}
+              {{/if}}
               {{#if (eq session.currentUser.id post.poster.id)}}
                 {{#paper-button
                   iconButton=true
