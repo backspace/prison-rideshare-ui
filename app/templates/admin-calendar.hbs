@@ -1,3 +1,6 @@
+{{#toolbar-header title=title}}
+{{/toolbar-header}}
+
 <div class='admin-calendar'>
   {{#power-calendar center=month daysComponent='calendar-days' onCenterChange=(action (mut month) value="date") as |calendar|}}
     <nav class="ember-power-calendar-nav">

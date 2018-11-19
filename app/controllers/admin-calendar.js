@@ -35,6 +35,10 @@ export default CalendarController.extend({
     return moment(this.get('month')).format(format);
   }),
 
+  title: computed('month', function() {
+    return `${moment(this.get('month')).format('MMMM YYYY')} calendar`;
+  }),
+
   init() {
     this._super(...arguments);
     this.set('people', A());
