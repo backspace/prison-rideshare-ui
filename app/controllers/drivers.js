@@ -5,30 +5,6 @@ export default Controller.extend({
   showInactive: false,
 
   actions: {
-    // Parts of this will likely be useful in the reimbursements controller
-    // addReimbursement(person) {
-    //   const reimbursement = this.store.createRecord('reimbursement');
-    //   const proxy = BufferedProxy.create({content: reimbursement});
-    //
-    //   proxy.set('person', person);
-    //   proxy.set('amountDollars', person.get('owedDollars'));
-    //
-    //   this.set('editingReimbursement', proxy);
-    // },
-    //
-    // submit() {
-    //   const proxy = this.get('editingReimbursement');
-    //   proxy.applyBufferedChanges();
-    //   return proxy.get('content').save().then(() => this.set('editingReimbursement', undefined));
-    // },
-    //
-    // cancel() {
-    //   const proxy = this.get('editingReimbursement');
-    //   proxy.get('content').destroyRecord();
-    //
-    //   this.set('editingReimbursement', undefined);
-    // },
-
     newPerson() {
       this.set('editingPerson', BufferedProxy.create({
         content: this.store.createRecord('person')
