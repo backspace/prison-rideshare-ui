@@ -7,6 +7,7 @@ import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
 export default Controller.extend({
+  overlaps: service(),
   sidebar: service(),
   session: service(),
   store: service(),

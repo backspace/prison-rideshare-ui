@@ -17,6 +17,15 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
     }
   },
 
+  urlForQuery(query) {
+    if (query.overlaps) {
+      delete query.overlaps;
+      return `${this._super(...arguments)}/overlaps`;
+    }
+
+    return this._super(...arguments);
+  },
+
   urlForQueryRecord(query) {
     if (query.me) {
       delete query.me;
