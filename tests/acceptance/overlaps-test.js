@@ -32,10 +32,6 @@ test('overlaps display a count badge in the sidebar', function(assert) {
 });
 
 test('no badge is displayed when there are no overlaps', function(assert) {
-  server.get('/rides/overlaps', function({ rides }) {
-    return rides.none();
-  });
-
   page.visit();
 
   andThen(() => {
