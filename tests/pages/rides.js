@@ -49,6 +49,7 @@ export default create({
   rides: collection('tbody tr.ride', {
     enabled: hasClass('enabled'),
     isUncombinable: hasClass('uncombinable'),
+    isOverlapping: hasClass('overlaps'),
 
     isDivider: hasClass('divider'),
 

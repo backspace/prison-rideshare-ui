@@ -141,6 +141,10 @@ md-sidenav {
     opacity: 0.5;
   }
 
+  &.overlaps {
+    background-color: color($color-pink, '100');
+  }
+
   md-input-container {
     margin: 18px 0 0;
   }

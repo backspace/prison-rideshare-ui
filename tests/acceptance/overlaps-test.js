@@ -28,6 +28,7 @@ test('overlaps display a count badge in the sidebar', function(assert) {
 
   andThen(() => {
     assert.equal(shared.overlapCount.text, '1');
+    assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
   });
 });
 

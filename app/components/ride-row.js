@@ -1,5 +1,7 @@
 import { computed, get } from '@ember/object';
 import Component from '@ember/component';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import moment from 'moment';
 
@@ -10,8 +12,15 @@ const mediumIcon = {
 };
 
 export default Component.extend({
-  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', function() {
-    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''}`;
+  overlapsService: service('overlaps'),
+  overlapsCollection: alias('overlapsService.overlaps'),
+
+  overlaps: computed('overlapsCollection.@each.id', 'ride.id', function() {
+    return (this.get('overlapsCollection') || []).includes(this.get('ride'));
+  }),
+
+  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', 'overlaps', function() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''} ${this.get('overlaps') ? 'overlaps' : ''}`;
   }),
 
   tagName: '',
