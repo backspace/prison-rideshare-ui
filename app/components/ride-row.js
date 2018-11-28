@@ -1,6 +1,6 @@
 import { computed, get } from '@ember/object';
 import Component from '@ember/component';
-import { alias } from '@ember/object/computed';
+import { alias, mapBy } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import moment from 'moment';
@@ -13,10 +13,12 @@ const mediumIcon = {
 
 export default Component.extend({
   overlapsService: service('overlaps'),
-  overlapsCollection: alias('overlapsService.overlaps'),
+  overlapsResponse: alias('overlapsService.overlaps'),
 
-  overlaps: computed('overlapsCollection.@each.id', 'ride.id', function() {
-    return (this.get('overlapsCollection') || []).includes(this.get('ride'));
+  overlapsIds: mapBy('overlapsResponse.data', 'id'),
+
+  overlaps: computed('overlapsIds.[]', 'ride.id', function() {
+    return this.get('overlapsIds').includes(this.get('ride.id'));
   }),
 
   classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', 'overlaps', function() {

@@ -6,14 +6,30 @@ import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
+import fetch from 'fetch';
+
 export default Service.extend({
+  session: service(),
   store: service(),
 
   overlapsRequest: computed(function() {
+    let rideAdapter = this.get('store').adapterFor('ride');
+    let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
+    let token = this.get('session.data.authenticated.access_token');
+
+    let query = fetch(overlapsUrl, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
     return ObjectPromiseProxy.create({
-      promise: this.get('store').query('ride', { overlaps: true }).then(rides => ({rides}))
+      promise: query.then(response => response.json()).then(response => {
+        return { response };
+      })
     });
   }),
 
-  overlaps: alias('overlapsRequest.rides')
+  overlaps: alias('overlapsRequest.response')
 });
