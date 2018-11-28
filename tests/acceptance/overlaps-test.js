@@ -37,4 +37,4 @@ test('no badge is displayed when there are no overlaps', function(assert) {
   andThen(() => {
     assert.ok(shared.overlapCount.isHidden);
   });
-})
+});
