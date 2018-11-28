@@ -27,6 +27,13 @@
         {{/paper-button}}
       {{/if}}
     {{else}}
+      {{#each commitments as |commitment|}}
+        {{#let (concat 'Assign FIXME') as |label|}}
+          {{#paper-button class='overlap' aria-label=label title=label onClick=(action uncombineRide ride 'FIXME')}}
+            {{paper-icon 'date range'}} {{label}}
+          {{/paper-button}}
+        {{/let}}
+      {{/each}}
       <span class='driver'>{{ride-person ride=ride property='driver' onChange=(action 'setDriver')}}</span>
       <span class='car-owner'>{{ride-person ride=ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
       {{#if ride.overridable}}

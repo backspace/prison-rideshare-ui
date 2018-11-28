@@ -81,6 +81,10 @@ export default create({
       isPhone: isVisible('md-icon[md-font-icon=phone]')
     },
 
+    overlapButton: {
+      scope: 'button.overlap',
+    },
+
     driver: {
       scope: '.driver',
       text: text('.name'),

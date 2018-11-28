@@ -19,16 +19,19 @@ moduleForAcceptance('Acceptance | overlaps', {
   }
 });
 
-test('overlaps display a count badge in the sidebar', function(assert) {
-  server.get('/rides/overlaps', function({ rides }) {
-    return rides.all();
-  });
+test('overlaps display a count badge in the sidebar and overlapping rides can be assigned to the driver', function(assert) {
+  let person = server.create('person');
+  let slot = server.create('slot');
+  this.firstRide.createCommitment({ slot, person });
+  this.firstRide.save();
 
   page.visit();
 
   andThen(() => {
     assert.equal(shared.overlapCount.text, '1');
+
     assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
+    assert.equal(page.rides[0].overlapButton.text, 'date_range Assign FIXME');
   });
 });
 

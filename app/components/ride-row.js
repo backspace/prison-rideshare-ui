@@ -17,6 +17,28 @@ export default Component.extend({
 
   overlapsIds: mapBy('overlapsResponse.data', 'id'),
 
+  commitments: computed('overlapsResponse.{included.@each.id,data.@each.id}', function() {
+    let response = this.get('overlapsResponse');
+
+    if (!response) {
+      return [];
+    }
+
+    let matchingRide = response.data.find(ride => ride.id === this.get('ride.id'));
+
+    if (matchingRide) {
+      let commitmentIds = matchingRide.relationships.commitments.data.mapBy('id');
+      // FIXME singular and plural types 😞
+      let commitments = response.included
+        .filter(included => ['commitment', 'commitments'].includes(included.type))
+        .filter(included => commitmentIds.includes(included.id));
+
+      return commitments;
+    } else {
+      return [];
+    }
+  }),
+
   overlaps: computed('overlapsIds.[]', 'ride.id', function() {
     return this.get('overlapsIds').includes(this.get('ride.id'));
   }),
