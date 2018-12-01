@@ -33,6 +33,18 @@ test('overlaps display a count badge in the sidebar and overlapping rides can be
     assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
     assert.equal(page.rides[0].overlapButton.text, 'date_range Assign Octavia Butler');
   });
+
+  page.rides[0].overlapButton.click();
+
+  andThen(() => {
+    assert.equal(page.rides[0].driver.text, 'Octavia Butler');
+    assert.equal(page.rides[0].carOwner.text, 'Octavia Butler');
+
+    let [serverRide] = server.db.rides;
+
+    assert.equal(serverRide.driverId, person.id);
+    assert.equal(serverRide.carOwnerId, person.id);
+  });
 });
 
 test('no badge is displayed when there are no overlaps', function(assert) {

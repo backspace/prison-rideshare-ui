@@ -13,6 +13,8 @@ const mediumIcon = {
 
 export default Component.extend({
   overlapsService: service('overlaps'),
+  store: service(),
+
   overlapsResponse: alias('overlapsService.overlaps'),
 
   overlapsIds: mapBy('overlapsResponse.data', 'id'),
@@ -132,6 +134,12 @@ export default Component.extend({
 
       ride.set('carOwner', carOwner);
       return ride.save();
+    },
+
+    assignFromCommitment(commitmentJson) {
+      let person = this.get('store').peekRecord('person', commitmentJson.relationships.person.data.id);
+
+      this.send('setDriver', person);
     },
 
     match(option, searchTerm) {
