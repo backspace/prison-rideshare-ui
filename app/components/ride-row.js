@@ -33,6 +33,18 @@ export default Component.extend({
         .filter(included => ['commitment', 'commitments'].includes(included.type))
         .filter(included => commitmentIds.includes(included.id));
 
+      let personIdToPerson = response.included.reduce((personIdToPerson, included) => {
+        if (['person', 'people'].includes(included.type)) {
+          personIdToPerson[included.id] = included.attributes;
+        }
+
+        return personIdToPerson;
+      }, {});
+
+      commitments.forEach(commitment => {
+        return commitment.person = personIdToPerson[commitment.relationships.person.data.id];
+      });
+
       return commitments;
     } else {
       return [];
