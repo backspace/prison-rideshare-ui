@@ -30,6 +30,9 @@
       {{#each commitments as |commitment|}}
         {{#let (concat 'Assign ' commitment.person.name) as |label|}}
           {{#paper-button class='overlap' aria-label=label title=label onClick=(action uncombineRide ride 'FIXME')}}
+            {{#paper-tooltip}}
+              {{commitment.person.name}} committed to a slot that has some overlap with this request
+            {{/paper-tooltip}}
             {{paper-icon 'date range'}} {{label}}
           {{/paper-button}}
         {{/let}}
