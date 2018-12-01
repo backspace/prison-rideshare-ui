@@ -126,7 +126,7 @@ export default Component.extend({
         }
 
         return ride.save();
-      });
+      }).then(() => this.get('overlapsService').fetch());
     },
 
     setCarOwner(carOwner) {

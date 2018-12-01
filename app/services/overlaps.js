@@ -12,7 +12,7 @@ export default Service.extend({
   session: service(),
   store: service(),
 
-  overlapsRequest: computed(function() {
+  overlapsRequest: computed('count', function() {
     let rideAdapter = this.get('store').adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
     let token = this.get('session.data.authenticated.access_token');
@@ -31,5 +31,11 @@ export default Service.extend({
     });
   }),
 
-  overlaps: alias('overlapsRequest.response')
+  overlaps: alias('overlapsRequest.response'),
+
+  count: 0,
+
+  fetch() {
+    this.set('count', this.get('count') + 1);
+  }
 });

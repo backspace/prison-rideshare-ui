@@ -22,7 +22,7 @@ moduleForAcceptance('Acceptance | overlaps', {
 test('overlaps display a count badge in the sidebar and overlapping rides can be assigned to the driver', function(assert) {
   let person = server.create('person', { name: 'Octavia Butler' });
   let slot = server.create('slot');
-  this.firstRide.createCommitment({ slot, person });
+  let commitment = this.firstRide.createCommitment({ slot, person });
   this.firstRide.save();
 
   page.visit();
@@ -32,6 +32,10 @@ test('overlaps display a count badge in the sidebar and overlapping rides can be
 
     assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
     assert.equal(page.rides[0].overlapButton.text, 'date_range Assign Octavia Butler');
+
+    // Delete the commitment in an andThen in anticipation of the button being clicked
+    commitment.destroy();
+    this.firstRide.save();
   });
 
   page.rides[0].overlapButton.click();
@@ -44,6 +48,9 @@ test('overlaps display a count badge in the sidebar and overlapping rides can be
 
     assert.equal(serverRide.driverId, person.id);
     assert.equal(serverRide.carOwnerId, person.id);
+
+    assert.ok(shared.overlapCount.isHidden);
+    assert.notOk(page.rides[0].isOverlapping, 'expected the ride to no longer be overlapping');
   });
 });
 
