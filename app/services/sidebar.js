@@ -7,6 +7,7 @@ import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
 export default Service.extend({
+  overlaps: service(),
   store: service(),
   userSocket: service(),
 
@@ -43,6 +44,9 @@ export default Service.extend({
   }),
 
   notificationCount: computed('userCount', 'unreadCount', function() {
-    return this.get('userCount') + this.get('unreadCount');
+    // FIXME this is untested
+    return this.get('userCount') +
+      this.get('unreadCount') +
+      (this.get('overlaps.overlaps.data.length') || 0);
   }),
 });
