@@ -17,6 +17,8 @@ export default Controller.extend({
     }
   },
 
+  overlapsService: service('overlaps'),
+
   peopleService: service('people'),
   people: alias('peopleService.all'),
 
@@ -90,7 +92,7 @@ export default Controller.extend({
       proxy.applyBufferedChanges();
       return proxy.get('content').save().then(() => this.set('editingRide', undefined)).catch(() => {
         // FIXME what is to be done?
-      });
+      }).then(() => this.get('overlapsService').fetch());
     },
 
     cancel() {
