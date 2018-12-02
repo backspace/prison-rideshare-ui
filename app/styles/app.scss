@@ -58,6 +58,19 @@ md-toolbar {
       box-shadow: none;
     }
   }
+
+  .count {
+    border-radius: 10px;
+    background: white;
+    color: color($color-indigo, '600');
+    font-size: 50%;
+    text-align: center;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 10px;
+    left: 32px;
+  }
 }
 
 md-sidenav {

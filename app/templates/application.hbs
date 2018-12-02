@@ -47,13 +47,13 @@
             {{#paper-item}}
               {{#link-to 'log'}}<span class='log'>
                 <span>Log</span>
-                {{#if unreadCount}}<span class='count' title='How many unread posts you have'>{{unreadCount}}</span>{{/if}}
+                {{#if sidebar.unreadCount}}<span class='count' title='How many unread posts you have'>{{sidebar.unreadCount}}</span>{{/if}}
               </span>{{/link-to}}
             {{/paper-item}}
             {{#paper-item}}
               {{#link-to 'users'}}<span class='users'>
                 <span>Users</span>
-                {{#if userCount}}<span class='count' title='How many users are connected'>{{userCount}}</span>{{/if}}
+                {{#if sidebar.userCount}}<span class='count' title='How many users are connected'>{{sidebar.userCount}}</span>{{/if}}
               </span>{{/link-to}}
             {{/paper-item}}
             {{paper-divider}}
