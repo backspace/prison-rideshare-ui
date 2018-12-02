@@ -14,7 +14,7 @@ export default Service.extend({
 
   overlapsRequest: computed('count', function() {
     let rideAdapter = this.get('store').adapterFor('ride');
-    let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
+    let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`.replace('//rides/', '/rides/'); // FIXME ugh
     let token = this.get('session.data.authenticated.access_token');
 
     let query = fetch(overlapsUrl, {
