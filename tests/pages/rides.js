@@ -81,10 +81,6 @@ export default create({
       isPhone: isVisible('md-icon[md-font-icon=phone]')
     },
 
-    overlapButton: {
-      scope: 'button.overlap',
-    },
-
     driver: {
       scope: '.driver',
       text: text('.name'),
@@ -140,6 +136,11 @@ export default create({
     clear: clickable('button'),
     clearConfirm: { scope: '.clear-confirm' },
     clearCancel: { scope: '.clear-cancel' }
+  }),
+
+  overlaps: collection('tr.overlap', {
+    text: text('.text'),
+    assign: clickable('.assign'),
   }),
 
   form: {

@@ -1,4 +1,4 @@
-{{#body.row class=classAttribute as |row|}}
+{{#body.row class=classAttribute id=ride.id as |row|}}
   {{#if showCreation}}
     {{#row.cell class='creation'}}{{creation}}{{/row.cell}}
   {{/if}}
@@ -27,16 +27,6 @@
         {{/paper-button}}
       {{/if}}
     {{else}}
-      {{#each commitments as |commitment|}}
-        {{#let (concat 'Assign ' commitment.person.name) as |label|}}
-          {{#paper-button class='overlap' aria-label=label onClick=(action 'assignFromCommitment' commitment)}}
-            {{#paper-tooltip}}
-              {{commitment.person.name}} committed to a slot {{commitment.timespan}}
-            {{/paper-tooltip}}
-            {{paper-icon 'date range'}} {{label}}
-          {{/paper-button}}
-        {{/let}}
-      {{/each}}
       <span class='driver'>{{ride-person ride=ride property='driver' onChange=(action 'setDriver')}}</span>
       <span class='car-owner'>{{ride-person ride=ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
       {{#if ride.overridable}}
@@ -62,6 +52,23 @@
     {{/paper-button}}
   {{/row.cell}}
 {{/body.row}}
+
+{{#each commitments as |commitment|}}
+  {{#body.row class=(concat 'ride-' ride.id ' overlap') as |row|}}
+    {{row.cell}}
+    {{#row.cell colspan=3}}
+      {{paper-icon 'date range'}}
+      <span class='text'>{{commitment.person.name}} committed to slot {{commitment.timespan}}</span>
+    {{/row.cell}}
+    {{#row.cell colspan=3}}
+      {{#paper-button class='assign' onClick=(action 'assignFromCommitment' commitment)}}
+        Assign
+      {{/paper-button}}
+    {{/row.cell}}
+
+  {{/body.row}}
+{{/each}}
+
 {{#if ride.requestNotes}}
   {{#body.row class='{{classAttribute}} notes' as |row|}}
     {{row.cell}}

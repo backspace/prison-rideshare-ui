@@ -177,6 +177,10 @@ md-sidenav {
   }
 }
 
+tr.overlap {
+  background-color: color($color-pink, '100');
+}
+
 .search {
   button {
     position: absolute;
@@ -191,8 +195,10 @@ md-sidenav {
 }
 
 .rides table {
-  .notes td, .report td {
-    border-top: 0;
+  .notes, .report, .overlap {
+    td {
+      border-top: 0;
+    }
   }
 
   .report .distance::after {
