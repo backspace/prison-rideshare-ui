@@ -29,7 +29,7 @@
     {{else}}
       {{#each commitments as |commitment|}}
         {{#let (concat 'Assign ' commitment.person.name) as |label|}}
-          {{#paper-button class='overlap' aria-label=label title=label onClick=(action 'assignFromCommitment' commitment)}}
+          {{#paper-button class='overlap' aria-label=label onClick=(action 'assignFromCommitment' commitment)}}
             {{#paper-tooltip}}
               {{commitment.person.name}} committed to a slot {{commitment.timespan}}
             {{/paper-tooltip}}
