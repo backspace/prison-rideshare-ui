@@ -59,7 +59,6 @@
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "^3.2.7",
     "ember-highcharts": "^1.0.1",
-    "ember-let-polyfill": "^0.1.0",
     "ember-load": "0.0.12",
     "ember-load-initializers": "^1.0.0",
     "ember-maybe-import-regenerator": "^0.1.6",
