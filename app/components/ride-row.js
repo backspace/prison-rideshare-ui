@@ -3,6 +3,7 @@ import Component from '@ember/component';
 import { alias, mapBy } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment';
 
 const mediumIcon = {
@@ -35,16 +36,21 @@ export default Component.extend({
         .filter(included => ['commitment', 'commitments'].includes(included.type))
         .filter(included => commitmentIds.includes(included.id));
 
-      let personIdToPerson = response.included.reduce((personIdToPerson, included) => {
+      let relationshipIdToAttributes = response.included.reduce((relationshipIdToAttributes, included) => {
         if (['person', 'people'].includes(included.type)) {
-          personIdToPerson[included.id] = included.attributes;
+          relationshipIdToAttributes.people[included.id] = included.attributes;
+        } else if (['slot', 'slots'].includes(included.type)) {
+          relationshipIdToAttributes.slots[included.id] = included.attributes;
         }
 
-        return personIdToPerson;
-      }, {});
+        return relationshipIdToAttributes;
+      }, {people: {}, slots: {}});
 
       commitments.forEach(commitment => {
-        return commitment.person = personIdToPerson[commitment.relationships.person.data.id];
+        commitment.person = relationshipIdToAttributes.people[commitment.relationships.person.data.id];
+        commitment.slot = relationshipIdToAttributes.slots[commitment.relationships.slot.data.id];
+
+        commitment.timespan = formatBriefTimespan(new Date(Date.parse(commitment.slot.start)), new Date(Date.parse(commitment.slot.end)));
       });
 
       return commitments;
