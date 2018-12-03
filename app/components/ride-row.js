@@ -1,4 +1,4 @@
-import { computed, get } from '@ember/object';
+import { computed, get, set } from '@ember/object';
 import Component from '@ember/component';
 import { alias, mapBy } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
@@ -47,10 +47,9 @@ export default Component.extend({
       }, {people: {}, slots: {}});
 
       commitments.forEach(commitment => {
-        commitment.person = relationshipIdToAttributes.people[commitment.relationships.person.data.id];
-        commitment.slot = relationshipIdToAttributes.slots[commitment.relationships.slot.data.id];
-
-        commitment.timespan = formatBriefTimespan(new Date(Date.parse(commitment.slot.start)), new Date(Date.parse(commitment.slot.end)));
+        set(commitment, 'person', relationshipIdToAttributes.people[commitment.relationships.person.data.id]);
+        set(commitment, 'slot', relationshipIdToAttributes.slots[commitment.relationships.slot.data.id]);
+        set(commitment, 'timespan', formatBriefTimespan(new Date(Date.parse(commitment.slot.start)), new Date(Date.parse(commitment.slot.end))));
       });
 
       return commitments;
