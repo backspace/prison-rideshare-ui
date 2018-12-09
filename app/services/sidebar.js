@@ -44,7 +44,7 @@ export default Service.extend({
   }),
 
   notificationCount: computed('userCount', 'unreadCount', 'overlaps.count', function() {
-    // FIXME this is untested
+    // TODO this is untested
     return this.get('userCount') +
       this.get('unreadCount') +
       this.get('overlaps.count');
