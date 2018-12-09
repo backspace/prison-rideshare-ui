@@ -47,6 +47,6 @@ export default Service.extend({
     // FIXME this is untested
     return this.get('userCount') +
       this.get('unreadCount') +
-      (this.get('overlaps.count') || 0);
+      this.get('overlaps.count');
   }),
 });
