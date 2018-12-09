@@ -1,18 +1,20 @@
-import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 
-import ObjectProxy from '@ember/object/proxy';
-import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
-let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
-
 import fetch from 'fetch';
+import { task } from 'ember-concurrency';
 
 export default Service.extend({
   session: service(),
   store: service(),
 
-  overlapsRequest: computed('count', function() {
+  init() {
+    this._super(...arguments);
+
+    this.get('fetchOverlaps').perform();
+  },
+
+  fetchOverlaps: task(function * () {
     let rideAdapter = this.get('store').adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`.replace('//rides/', '/rides/'); // FIXME ugh
     let token = this.get('session.data.authenticated.access_token');
@@ -24,11 +26,10 @@ export default Service.extend({
       }
     });
 
-    return ObjectPromiseProxy.create({
-      promise: query.then(response => response.json()).then(response => {
-        return { response };
-      })
-    });
+    let response = yield query;
+    let json = yield response.json();
+
+    this.set('overlapsRequest', {response: json});
   }),
 
   overlaps: alias('overlapsRequest.response'),
@@ -36,6 +37,6 @@ export default Service.extend({
   count: 0,
 
   fetch() {
-    this.set('count', this.get('count') + 1);
+    this.get('fetchOverlaps').perform();
   }
 });
