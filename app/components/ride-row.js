@@ -1,9 +1,7 @@
-import { computed, get, set } from '@ember/object';
+import { computed, get } from '@ember/object';
 import Component from '@ember/component';
-import { alias, mapBy } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
-import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import fetch from 'fetch';
 import moment from 'moment';
 
@@ -24,45 +22,9 @@ export default Component.extend({
   session: service(),
   store: service(),
 
-  overlapsResponse: alias('overlapsService.overlaps'),
-
-  overlapsIds: mapBy('overlapsResponse.data', 'id'),
-
-  commitments: computed('overlapsResponse.{included.@each.id,data.@each.id}', function() {
-    let response = this.get('overlapsResponse');
-
-    if (!response) {
-      return [];
-    }
-
-    let matchingRide = response.data.find(ride => ride.id === this.get('ride.id'));
-
-    if (matchingRide) {
-      let commitmentIds = matchingRide.relationships.commitments.data.mapBy('id');
-      let commitments = response.included
-        .filterBy('type', 'commitments')
-        .filter(included => commitmentIds.includes(included.id));
-
-      let relationshipIdToAttributes = response.included.reduce((relationshipIdToAttributes, included) => {
-        if (included.type === 'people') {
-          relationshipIdToAttributes.people[included.id] = included.attributes;
-        } else if (included.type === 'slots') {
-          relationshipIdToAttributes.slots[included.id] = included.attributes;
-        }
-
-        return relationshipIdToAttributes;
-      }, {people: {}, slots: {}});
-
-      commitments.forEach(commitment => {
-        set(commitment, 'person', relationshipIdToAttributes.people[commitment.relationships.person.data.id]);
-        set(commitment, 'slot', relationshipIdToAttributes.slots[commitment.relationships.slot.data.id]);
-        set(commitment, 'timespan', formatBriefTimespan(new Date(Date.parse(commitment.slot.start)), new Date(Date.parse(commitment.slot.end))));
-      });
-
-      return commitments;
-    } else {
-      return [];
-    }
+  // FIXME this dependent key seems like an interface leak
+  commitments: computed('overlapsService.overlaps.data.@each.id', function() {
+    return this.get('overlapsService').commitmentsForRide(this.get('ride'));
   }),
 
   clearing: false,
