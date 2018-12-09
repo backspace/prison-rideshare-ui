@@ -33,15 +33,14 @@ export default Component.extend({
 
     if (matchingRide) {
       let commitmentIds = matchingRide.relationships.commitments.data.mapBy('id');
-      // FIXME singular and plural types 😞
       let commitments = response.included
-        .filter(included => ['commitment', 'commitments'].includes(included.type))
+        .filterBy('type', 'commitments')
         .filter(included => commitmentIds.includes(included.id));
 
       let relationshipIdToAttributes = response.included.reduce((relationshipIdToAttributes, included) => {
-        if (['person', 'people'].includes(included.type)) {
+        if (included.type === 'people') {
           relationshipIdToAttributes.people[included.id] = included.attributes;
-        } else if (['slot', 'slots'].includes(included.type)) {
+        } else if (included.type === 'slots') {
           relationshipIdToAttributes.slots[included.id] = included.attributes;
         }
 
