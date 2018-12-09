@@ -14,8 +14,8 @@ const mediumIcon = {
 };
 
 export default Component.extend({
-  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', 'overlaps', function() {
-    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''} ${this.get('overlaps') ? 'overlaps' : ''}`;
+  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', 'commitments.[]', function() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''} ${this.get('commitments.length') ? 'overlaps' : ''}`;
   }),
 
   tagName: '',
@@ -63,10 +63,6 @@ export default Component.extend({
     } else {
       return [];
     }
-  }),
-
-  overlaps: computed('overlapsIds.[]', 'ride.id', function() {
-    return this.get('overlapsIds').includes(this.get('ride.id'));
   }),
 
   clearing: false,
