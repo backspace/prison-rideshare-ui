@@ -1,4 +1,4 @@
-{{#body.row class=classAttribute id=ride.id as |row|}}
+{{#body.row class=classAttribute as |row|}}
   {{#if showCreation}}
     {{#row.cell class='creation'}}{{creation}}{{/row.cell}}
   {{/if}}
@@ -54,7 +54,7 @@
 {{/body.row}}
 
 {{#each commitments as |commitment|}}
-  {{#body.row class=(concat 'ride-' ride.id ' overlap') as |row|}}
+  {{#body.row class='overlap' as |row|}}
     {{row.cell}}
     {{#row.cell colspan=3}}
       {{paper-icon 'date range'}}
