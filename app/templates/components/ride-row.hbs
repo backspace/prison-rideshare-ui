@@ -64,6 +64,9 @@
       {{#paper-button class='assign' onClick=(action 'assignFromCommitment' commitment)}}
         Assign
       {{/paper-button}}
+      {{#paper-button class='ignore' onClick=(action 'ignoreCommitment' commitment)}}
+        Ignore
+      {{/paper-button}}
     {{/row.cell}}
 
   {{/body.row}}

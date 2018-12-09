@@ -6,6 +6,7 @@ import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 import moment from 'moment';
+import Mirage from 'ember-cli-mirage';
 
 moduleForAcceptance('Acceptance | overlaps', {
   beforeEach() {
@@ -86,6 +87,35 @@ test('creating a ride triggers a check for overlaps', function(assert) {
   andThen(function() {
     assert.equal(shared.overlapCount.text, '1');
     assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
+  });
+});
+
+test('an overlap can be ignored', function(assert) {
+  let person = server.create('person', { name: 'Octavia Butler' });
+  let slot = server.create('slot', {
+    start: new Date(2117, 11, 4, 17, 30),
+    end: new Date(2117, 11, 4, 20),
+  });
+
+  let commitment = this.firstRide.createCommitment({ slot, person });
+  this.firstRide.save();
+
+  server.post('/rides/:ride_id/ignore/:commitment_id', (schema, { params: { ride_id, commitment_id }}) => {
+    assert.equal(ride_id, this.firstRide.id);
+    assert.equal(commitment_id, commitment.id);
+
+    this.firstRide.commitments = [];
+    this.firstRide.save();
+
+    return new Mirage.Response(201, {}, {});
+  });
+
+  page.visit();
+  page.overlaps[0].ignore();
+
+  andThen(() => {
+    assert.ok(shared.overlapCount.isHidden);
+    assert.notOk(page.rides[0].isOverlapping, 'expected the ride to no longer be overlapping');
   });
 });
 

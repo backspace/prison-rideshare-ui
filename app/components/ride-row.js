@@ -4,6 +4,7 @@ import { alias, mapBy } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
+import fetch from 'fetch';
 import moment from 'moment';
 
 const mediumIcon = {
@@ -14,6 +15,7 @@ const mediumIcon = {
 
 export default Component.extend({
   overlapsService: service('overlaps'),
+  session: service(),
   store: service(),
 
   overlapsResponse: alias('overlapsService.overlaps'),
@@ -145,6 +147,21 @@ export default Component.extend({
       let person = this.get('store').peekRecord('person', commitmentJson.relationships.person.data.id);
 
       this.send('setDriver', person);
+    },
+
+    ignoreCommitment(commitmentJson) {
+      let ride = this.get('ride');
+      let url = `${ride.store.adapterFor('ride').buildURL('ride', ride.id)}/ignore/${commitmentJson.id}`;
+      let token = this.get('session.data.authenticated.access_token');
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(() => {
+        return this.get('overlapsService').fetch();
+      });
     },
 
     match(option, searchTerm) {

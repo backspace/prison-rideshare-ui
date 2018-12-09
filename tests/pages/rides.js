@@ -141,6 +141,7 @@ export default create({
   overlaps: collection('tr.overlap', {
     text: text('.text'),
     assign: clickable('.assign'),
+    ignore: clickable('.ignore'),
   }),
 
   form: {
