@@ -43,10 +43,10 @@ export default Service.extend({
     }
   }),
 
-  notificationCount: computed('userCount', 'unreadCount', function() {
+  notificationCount: computed('userCount', 'unreadCount', 'overlaps.count', function() {
     // FIXME this is untested
     return this.get('userCount') +
       this.get('unreadCount') +
-      (this.get('overlaps.overlaps.data.length') || 0);
+      (this.get('overlaps.count') || 0);
   }),
 });

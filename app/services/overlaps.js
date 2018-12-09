@@ -1,4 +1,4 @@
-import { alias } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 
 import fetch from 'fetch';
@@ -29,12 +29,12 @@ export default Service.extend({
     let response = yield query;
     let json = yield response.json();
 
-    this.set('overlapsRequest', {response: json});
+    this.set('overlaps', json);
   }),
 
-  overlaps: alias('overlapsRequest.response'),
-
-  count: 0,
+  count: computed('overlaps.data.length', function() {
+    return this.get('overlaps.data.length') || 0;
+  }),
 
   fetch() {
     this.get('fetchOverlaps').perform();

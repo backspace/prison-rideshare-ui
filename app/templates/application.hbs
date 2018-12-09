@@ -26,7 +26,7 @@
           {{#paper-item}}
             {{#link-to 'rides'}}<span class='rides'>
               <span>Rides</span>
-              {{#if overlaps.overlaps.data.length}}<span class='count' title='How many calendar commitments overlap with unfilled requests'>{{overlaps.overlaps.data.length}}</span>{{/if}}
+              {{#if overlaps.count}}<span class='count' title='How many calendar commitments overlap with unfilled requests'>{{overlaps.count}}</span>{{/if}}
             </span>{{/link-to}}
           {{/paper-item}}
           {{#paper-item}}
