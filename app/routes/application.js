@@ -9,6 +9,7 @@ export default Route.extend(ApplicationRouteMixin, {
   account: service(),
   userSocket: service(),
   flashMessages: service(),
+  overlaps: service(),
   poll: service(),
 
   beforeModel() {
@@ -32,6 +33,7 @@ export default Route.extend(ApplicationRouteMixin, {
   sessionAuthenticated() {
     this._super(...arguments);
     this.get('userSocket').connect();
+    this.get('overlaps').fetch();
     this._loadCurrentUser();
   },
 

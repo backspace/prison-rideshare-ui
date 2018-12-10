@@ -52,6 +52,26 @@
     {{/paper-button}}
   {{/row.cell}}
 {{/body.row}}
+
+{{#each commitments as |commitment|}}
+  {{#body.row class='overlap' as |row|}}
+    {{row.cell}}
+    {{#row.cell colspan=3}}
+      {{paper-icon 'date range'}}
+      <span class='text'>{{commitment.person.name}} committed to slot {{commitment.timespan}}</span>
+    {{/row.cell}}
+    {{#row.cell colspan=3}}
+      {{#paper-button class='assign' onClick=(action 'assignFromCommitment' commitment)}}
+        Assign
+      {{/paper-button}}
+      {{#paper-button class='ignore' onClick=(action 'ignoreCommitment' commitment)}}
+        Ignore
+      {{/paper-button}}
+    {{/row.cell}}
+
+  {{/body.row}}
+{{/each}}
+
 {{#if ride.requestNotes}}
   {{#body.row class='{{classAttribute}} notes' as |row|}}
     {{row.cell}}

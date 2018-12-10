@@ -1,6 +1,8 @@
 import { computed, get } from '@ember/object';
 import Component from '@ember/component';
+import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+import fetch from 'fetch';
 import moment from 'moment';
 
 const mediumIcon = {
@@ -10,11 +12,20 @@ const mediumIcon = {
 };
 
 export default Component.extend({
-  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', function() {
-    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''}`;
+  classAttribute: computed('uncombinable', 'ride.{isCombined,isDivider,enabled}', 'commitments.[]', function() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${this.get('uncombinable') ? 'uncombinable' : ''} ${this.get('ride.isCombined') ? 'combined' : ''} ${this.get('ride.isDivider') ? 'divider' : ''} ${this.get('commitments.length') ? 'overlaps' : ''}`;
   }),
 
   tagName: '',
+
+  overlaps: service(),
+  session: service(),
+  store: service(),
+
+  // TODO this is unfortunate but without it ignoring doesn’t make the overlap immediately disappear
+  commitments: computed('overlaps.overlaps.data.@each.id', function() {
+    return this.get('overlaps').commitmentsForRide(this.get('ride'));
+  }),
 
   clearing: false,
 
@@ -79,7 +90,7 @@ export default Component.extend({
         }
 
         return ride.save();
-      });
+      }).then(() => this.get('overlaps').fetch());
     },
 
     setCarOwner(carOwner) {
@@ -87,6 +98,27 @@ export default Component.extend({
 
       ride.set('carOwner', carOwner);
       return ride.save();
+    },
+
+    assignFromCommitment(commitmentJson) {
+      let person = this.get('store').peekRecord('person', commitmentJson.relationships.person.data.id);
+
+      this.send('setDriver', person);
+    },
+
+    ignoreCommitment(commitmentJson) {
+      let ride = this.get('ride');
+      let url = `${ride.store.adapterFor('ride').buildURL('ride', ride.id)}/ignore/${commitmentJson.id}`;
+      let token = this.get('session.data.authenticated.access_token');
+
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(() => {
+        return this.get('overlaps').fetch();
+      });
     },
 
     match(option, searchTerm) {

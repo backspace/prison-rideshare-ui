@@ -49,6 +49,7 @@ export default create({
   rides: collection('tbody tr.ride', {
     enabled: hasClass('enabled'),
     isUncombinable: hasClass('uncombinable'),
+    isOverlapping: hasClass('overlaps'),
 
     isDivider: hasClass('divider'),
 
@@ -135,6 +136,12 @@ export default create({
     clear: clickable('button'),
     clearConfirm: { scope: '.clear-confirm' },
     clearCancel: { scope: '.clear-cancel' }
+  }),
+
+  overlaps: collection('tr.overlap', {
+    text: text('.text'),
+    assign: clickable('.assign'),
+    ignore: clickable('.ignore'),
   }),
 
   form: {

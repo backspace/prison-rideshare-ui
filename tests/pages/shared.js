@@ -25,5 +25,9 @@ export default create({
 
   logCount: {
     scope: '.log .count'
+  },
+
+  overlapCount: {
+    scope: '.rides .count'
   }
 });

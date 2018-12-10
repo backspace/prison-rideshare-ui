@@ -25,6 +25,10 @@ export default function() {
   this.post('/rides');
   this.patch('/rides/:id');
 
+  this.get('/rides/overlaps', function({ rides }) {
+    return rides.all().filter(ride => ride.commitments.length > 0);
+  });
+
   this.get('/institutions');
   this.post('/institutions');
   this.patch('/institutions/:id');

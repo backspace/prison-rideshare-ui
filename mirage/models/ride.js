@@ -10,5 +10,7 @@ export default Model.extend({
   children: hasMany('ride', { inverse: 'combinedWith' }),
 
   reimbursements: hasMany(),
-  debt: hasMany()
+  debt: hasMany(),
+
+  commitments: hasMany(),
 });

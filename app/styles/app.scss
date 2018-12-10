@@ -106,7 +106,7 @@ md-sidenav {
     }
   }
 
-  .users, .log {
+  .rides, .users, .log {
     display: flex;
     width: 100%;
     padding-right: 16px;
@@ -154,6 +154,10 @@ md-sidenav {
     opacity: 0.5;
   }
 
+  &.overlaps {
+    background-color: color($color-pink, '100');
+  }
+
   md-input-container {
     margin: 18px 0 0;
   }
@@ -173,6 +177,10 @@ md-sidenav {
   }
 }
 
+tr.overlap {
+  background-color: color($color-pink, '100');
+}
+
 .search {
   button {
     position: absolute;
@@ -187,8 +195,10 @@ md-sidenav {
 }
 
 .rides table {
-  .notes td, .report td {
-    border-top: 0;
+  .notes, .report, .overlap {
+    td {
+      border-top: 0;
+    }
   }
 
   .report .distance::after {

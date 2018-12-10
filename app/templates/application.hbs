@@ -24,7 +24,10 @@
             {{#link-to 'debts'}}<span>Debts</span>{{/link-to}}
           {{/paper-item}}
           {{#paper-item}}
-            {{#link-to 'rides'}}<span>Rides</span>{{/link-to}}
+            {{#link-to 'rides'}}<span class='rides'>
+              <span>Rides</span>
+              {{#if overlaps.count}}<span class='count' title='How many unfilled rides have overlapping calendar commitments'>{{overlaps.count}}</span>{{/if}}
+            </span>{{/link-to}}
           {{/paper-item}}
           {{#paper-item}}
             {{#link-to 'institutions'}}<span>Institutions</span>{{/link-to}}
