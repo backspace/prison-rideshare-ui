@@ -46,7 +46,7 @@ export default Service.extend({
     let rideIds = this.get('rideIds');
     let response = this.get('overlaps');
 
-    if (!response) {
+    if (!response || !response.data) {
       return {};
     }
 
