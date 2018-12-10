@@ -9,7 +9,8 @@
     {{paper-icon "note_add"}}
   {{/paper-button}}
 {{/toolbar-header}}
-<section class="flex">
+
+{{#paper-content}}
   {{#paper-data-table class="posts" as |table|}}
     {{#table.head as |head|}}
       {{#head.column}}Meta{{/head.column}}
@@ -110,7 +111,8 @@
       {{/each}}
     {{/table.body}}
   {{/paper-data-table}}
-</section>
+{{/paper-content}}
+
 {{#if editingPost}}
   {{#paper-dialog
     clickOutsideToClose=true
