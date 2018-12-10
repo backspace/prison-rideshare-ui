@@ -1,13 +1,9 @@
 md-table-container.posts {
-  table {
+  table.md-table.md-row-select tbody {
     td.md-cell {
-      &.meta, &.controls {
-        &:nth-child(n) {
-          vertical-align: top;
-          padding-top: 1em;
-          padding-bottom: 1em;
-        }
-      }
+      vertical-align: top;
+      padding-top: 1em;
+      padding-bottom: 1em;
     }
   }
 }
