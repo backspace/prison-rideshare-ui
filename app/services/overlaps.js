@@ -1,5 +1,4 @@
 import { computed, set } from '@ember/object';
-import { mapBy } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 
 import fetch from 'fetch';
@@ -38,12 +37,7 @@ export default Service.extend({
     return this.get('overlaps.data.length') || 0;
   }),
 
-  rideIds: mapBy('overlaps.data', 'id'),
-
   rideIdsToCommitments: computed('overlaps.data.@each.id', function() {
-    // TODO without this, this property never updates, but why…?
-    // eslint-disable-next-line
-    let rideIds = this.get('rideIds');
     let response = this.get('overlaps');
 
     if (!response || !response.data) {

@@ -22,7 +22,8 @@ export default Component.extend({
   session: service(),
   store: service(),
 
-  commitments: computed('overlaps.rideIds.[]', function() {
+  // TODO this is unfortunate but without it ignoring doesn’t make the overlap immediately disappear
+  commitments: computed('overlaps.overlaps.data.@each.id', function() {
     return this.get('overlaps').commitmentsForRide(this.get('ride'));
   }),
 
