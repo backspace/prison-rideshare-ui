@@ -18,13 +18,12 @@ export default Component.extend({
 
   tagName: '',
 
-  overlapsService: service('overlaps'),
+  overlaps: service(),
   session: service(),
   store: service(),
 
-  // FIXME this dependent key seems like an interface leak
-  commitments: computed('overlapsService.overlaps.data.@each.id', function() {
-    return this.get('overlapsService').commitmentsForRide(this.get('ride'));
+  commitments: computed('overlaps.rideIds.[]', function() {
+    return this.get('overlaps').commitmentsForRide(this.get('ride'));
   }),
 
   clearing: false,
@@ -90,7 +89,7 @@ export default Component.extend({
         }
 
         return ride.save();
-      }).then(() => this.get('overlapsService').fetch());
+      }).then(() => this.get('overlaps').fetch());
     },
 
     setCarOwner(carOwner) {
@@ -117,7 +116,7 @@ export default Component.extend({
           'Authorization': `Bearer ${token}`
         }
       }).then(() => {
-        return this.get('overlapsService').fetch();
+        return this.get('overlaps').fetch();
       });
     },
 
