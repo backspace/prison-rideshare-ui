@@ -12,6 +12,7 @@ export default create({
 
   pastYear: { scope: '.past-year'},
   pastTwoWeeks: { scope: '.past-two-weeks' },
+  thisYear: { scope: '.this-year' },
 
   times: {
     scope: 'table',
