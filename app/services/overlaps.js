@@ -15,7 +15,7 @@ export default Service.extend({
     this.get('fetchOverlaps').perform();
   },
 
-  fetchOverlaps: task(function * () {
+  fetchOverlaps: task(function*() {
     let rideAdapter = this.get('store').adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
     let token = this.get('session.data.authenticated.access_token');
@@ -23,8 +23,8 @@ export default Service.extend({
     let query = fetch(overlapsUrl, {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
 
     let response = yield query;
@@ -50,20 +50,43 @@ export default Service.extend({
         .filterBy('type', 'commitments')
         .filter(included => commitmentIds.includes(included.id));
 
-      let relationshipIdToAttributes = response.included.reduce((relationshipIdToAttributes, included) => {
-        if (included.type === 'people') {
-          relationshipIdToAttributes.people[included.id] = included.attributes;
-        } else if (included.type === 'slots') {
-          relationshipIdToAttributes.slots[included.id] = included.attributes;
-        }
+      let relationshipIdToAttributes = response.included.reduce(
+        (relationshipIdToAttributes, included) => {
+          if (included.type === 'people') {
+            relationshipIdToAttributes.people[included.id] =
+              included.attributes;
+          } else if (included.type === 'slots') {
+            relationshipIdToAttributes.slots[included.id] = included.attributes;
+          }
 
-        return relationshipIdToAttributes;
-      }, {people: {}, slots: {}});
+          return relationshipIdToAttributes;
+        },
+        { people: {}, slots: {} }
+      );
 
       commitments.forEach(commitment => {
-        set(commitment, 'person', relationshipIdToAttributes.people[commitment.relationships.person.data.id]);
-        set(commitment, 'slot', relationshipIdToAttributes.slots[commitment.relationships.slot.data.id]);
-        set(commitment, 'timespan', formatBriefTimespan(new Date(Date.parse(commitment.slot.start)), new Date(Date.parse(commitment.slot.end))));
+        set(
+          commitment,
+          'person',
+          relationshipIdToAttributes.people[
+            commitment.relationships.person.data.id
+          ]
+        );
+        set(
+          commitment,
+          'slot',
+          relationshipIdToAttributes.slots[
+            commitment.relationships.slot.data.id
+          ]
+        );
+        set(
+          commitment,
+          'timespan',
+          formatBriefTimespan(
+            new Date(Date.parse(commitment.slot.start)),
+            new Date(Date.parse(commitment.slot.end))
+          )
+        );
       });
 
       ridesToCommitments[rideJson.id] = commitments;
@@ -78,5 +101,5 @@ export default Service.extend({
 
   fetch() {
     this.get('fetchOverlaps').perform();
-  }
+  },
 });

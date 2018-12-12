@@ -8,8 +8,8 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | login', {
   beforeEach() {
-    server.post('/token', (schema, {requestBody}) => {
-      authenticateSession(this.application, {access_token: 'abcdef'});
+    server.post('/token', (schema, { requestBody }) => {
+      authenticateSession(this.application, { access_token: 'abcdef' });
 
       // FIXME yeah… weird to create the user here!
 
@@ -17,20 +17,20 @@ moduleForAcceptance('Acceptance | login', {
         schema.create('user', {
           email: 'jorts@jants.ca',
           password: 'aaaaaaaaa',
-          admin: true
+          admin: true,
         });
       } else if (requestBody.includes('jj')) {
         schema.create('user', {
           email: 'jj@jj.ca',
-          password: 'aaaaaaaaa'
+          password: 'aaaaaaaaa',
         });
       }
 
       return {
-        access_token: 'abcdef'
+        access_token: 'abcdef',
       };
     });
-  }
+  },
 });
 
 test('successful admin login forwards to the rides list', function(assert) {
@@ -62,7 +62,13 @@ test('successful non-admin login forwards to the report route', function(assert)
 });
 
 test('a failure from the current endpoint logs the user out', function(assert) {
-  server.get('/users/current', () => { return {}; }, 401);
+  server.get(
+    '/users/current',
+    () => {
+      return {};
+    },
+    401
+  );
 
   page.visit();
   page.fillEmail('x');
@@ -77,7 +83,13 @@ test('a failure from the current endpoint logs the user out', function(assert) {
 });
 
 test('a failed login shows an error', function(assert) {
-  server.post('/token', () => { return {}; }, 401);
+  server.post(
+    '/token',
+    () => {
+      return {};
+    },
+    401
+  );
 
   page.visit();
   page.fillEmail('x');

@@ -9,7 +9,7 @@ import {
   text,
   triggerable,
   value,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -26,18 +26,18 @@ export default create({
 
     processButton: {
       scope: '.process',
-      isPrimary: hasClass('md-primary')
+      isPrimary: hasClass('md-primary'),
     },
 
     donateButton: {
       scope: '.donate',
-      isPrimary: hasClass('md-primary')
+      isPrimary: hasClass('md-primary'),
     },
 
     copyButton: {
       scope: '.copy-btn',
-      clipboardText: attribute('data-clipboard-text')
-    }
+      clipboardText: attribute('data-clipboard-text'),
+    },
   }),
 
   reimbursements: collection('tbody tr.reimbursement', {
@@ -51,33 +51,35 @@ export default create({
 
     isDonation: isVisible('.donation .paper-icon'),
 
-    edit: clickable('button')
+    edit: clickable('button'),
   }),
 
   processedSwitch: {
     scope: '.paper-switch.processed',
     enabled: hasClass('md-checked'),
-    click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
+    click: triggerable('keypress', '.md-container', {
+      eventProperties: { keyCode: 13 },
+    }),
   },
 
   form: {
     amountField: {
       scope: '.amount input',
       value: value(),
-      fill: fillable()
+      fill: fillable(),
     },
 
     donationCheckbox: {
       scope: 'md-checkbox',
       checked: hasClass('md-checked'),
-      click: clickable()
+      click: clickable(),
     },
 
     submit: clickable('button.submit'),
-    cancel: clickable('button.cancel')
+    cancel: clickable('button.cancel'),
   },
 
   noReimbursementsMessage: {
-    scope: '.no-reimbursements'
-  }
+    scope: '.no-reimbursements',
+  },
 });

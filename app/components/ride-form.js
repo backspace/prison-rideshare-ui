@@ -54,9 +54,11 @@ export default Component.extend({
     },
 
     searchRides(name) {
-      return this.get('store').query('ride', {'filter[name]': name}).then(rides => {
-        return deduplicateVisitorSuggestions(rides);
-      });
+      return this.get('store')
+        .query('ride', { 'filter[name]': name })
+        .then(rides => {
+          return deduplicateVisitorSuggestions(rides);
+        });
     },
 
     autocompleteSelectionChanged(ride) {
@@ -69,9 +71,11 @@ export default Component.extend({
 
     matchInstitution(option, searchTerm) {
       const name = get(option, 'name');
-      const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
+      const result = (name || '')
+        .toLowerCase()
+        .startsWith(searchTerm.toLowerCase());
 
       return result ? 1 : -1;
-    }
-  }
+    },
+  },
 });

@@ -32,14 +32,16 @@ export default Component.extend({
   }),
 
   timeGroupKeys: computed('timeGroups', 'grouping', function() {
-    return Object.keys(this.get('timeGroups')).sort()
+    return Object.keys(this.get('timeGroups')).sort();
   }),
 
   timeGroupForRide(ride) {
     const start = ride.get('start');
 
     if (this.get('grouping') === 'weeks') {
-      return moment(start).startOf('week').format('YYMMDD');
+      return moment(start)
+        .startOf('week')
+        .format('YYMMDD');
     } else {
       return moment(start).format('YYYY-MM');
     }
@@ -49,92 +51,122 @@ export default Component.extend({
     const timeGroups = this.get('timeGroups');
     const grouping = this.get('grouping');
 
-    return [{
-      name: 'Cancelled',
-      type: 'column',
-      data: this.get('timeGroupKeys').map(timeGroupKey => {
-        return countRidesOrVisitors(timeGroups[timeGroupKey].filterBy('cancelled'), grouping);
-      }),
-      stack: 'Requests'
-    }, {
-      name: 'Not cancelled',
-      type: 'column',
-      data: this.get('timeGroupKeys').map(timeGroupKey => {
-        return countRidesOrVisitors(timeGroups[timeGroupKey].rejectBy('cancelled'), grouping);
-      }),
-      stack: 'Requests'
-    }, {
-      name: 'Distance',
-      type: 'spline',
-      yAxis: 1,
-      data: this.get('timeGroupKeys').map(timeGroupKey => {
-        return timeGroups[timeGroupKey].reduce((sum, ride) => {
-          return sum + (ride.get('distance') || 0);
-        }, 0);
-      })
-      }, {
+    return [
+      {
+        name: 'Cancelled',
+        type: 'column',
+        data: this.get('timeGroupKeys').map(timeGroupKey => {
+          return countRidesOrVisitors(
+            timeGroups[timeGroupKey].filterBy('cancelled'),
+            grouping
+          );
+        }),
+        stack: 'Requests',
+      },
+      {
+        name: 'Not cancelled',
+        type: 'column',
+        data: this.get('timeGroupKeys').map(timeGroupKey => {
+          return countRidesOrVisitors(
+            timeGroups[timeGroupKey].rejectBy('cancelled'),
+            grouping
+          );
+        }),
+        stack: 'Requests',
+      },
+      {
+        name: 'Distance',
+        type: 'spline',
+        yAxis: 1,
+        data: this.get('timeGroupKeys').map(timeGroupKey => {
+          return timeGroups[timeGroupKey].reduce((sum, ride) => {
+            return sum + (ride.get('distance') || 0);
+          }, 0);
+        }),
+      },
+      {
         name: 'Reimbursements',
         type: 'spline',
         yAxis: 2,
         data: this.get('timeGroupKeys').map(timeGroupKey => {
-          return timeGroups[timeGroupKey].reduce((sum, ride) => {
-            return sum + ride.get('reimbursementFoodExpensesSum') + ride.get('reimbursementCarExpensesSum');
-          }, 0)/100;
-        })
-      }, {
+          return (
+            timeGroups[timeGroupKey].reduce((sum, ride) => {
+              return (
+                sum +
+                ride.get('reimbursementFoodExpensesSum') +
+                ride.get('reimbursementCarExpensesSum')
+              );
+            }, 0) / 100
+          );
+        }),
+      },
+      {
         name: 'Food expenses',
         type: 'spline',
         yAxis: 2,
         data: this.get('timeGroupKeys').map(timeGroupKey => {
-          return timeGroups[timeGroupKey].reduce((sum, ride) => {
-            return sum + ride.get('reimbursementFoodExpensesSum');
-          }, 0)/100;
-        })
-      }
+          return (
+            timeGroups[timeGroupKey].reduce((sum, ride) => {
+              return sum + ride.get('reimbursementFoodExpensesSum');
+            }, 0) / 100
+          );
+        }),
+      },
     ];
   }),
 
-  options: computed('timeGroups', 'timeGroupKeys.length', 'grouping', function() {
-    return {
-      title: {
-        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
-        useHTML: true
-      },
-      plotOptions: {
-        column: {
-          stacking: 'normal'
-        }
-      },
-      xAxis: [{
-        categories: this.get('timeGroupKeys')
-      }],
-      yAxis:[{
+  options: computed(
+    'timeGroups',
+    'timeGroupKeys.length',
+    'grouping',
+    function() {
+      return {
         title: {
-          text: 'Requests'
-        }
-      }, {
-        title: {
-          text: 'Distance'
+          text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
+          useHTML: true,
         },
-        labels: {
-          format: '{value}km'
+        plotOptions: {
+          column: {
+            stacking: 'normal',
+          },
         },
-        opposite: true
-      }, {
-        title: {
-          text: 'Reimbursements'
-        },
-        labels: {
-          format: '${value}'
-        },
-        opposite: true
-      }]
-    };
-  }),
+        xAxis: [
+          {
+            categories: this.get('timeGroupKeys'),
+          },
+        ],
+        yAxis: [
+          {
+            title: {
+              text: 'Requests',
+            },
+          },
+          {
+            title: {
+              text: 'Distance',
+            },
+            labels: {
+              format: '{value}km',
+            },
+            opposite: true,
+          },
+          {
+            title: {
+              text: 'Reimbursements',
+            },
+            labels: {
+              format: '${value}',
+            },
+            opposite: true,
+          },
+        ],
+      };
+    }
+  ),
 
   actions: {
     afterRenderCallback() {
       this.set('rendered', true);
-    }
-  }
+    },
+  },
 });

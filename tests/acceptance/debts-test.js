@@ -8,9 +8,9 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | debts', {
   beforeEach() {
-    const sun = server.create('person', {name: 'Sun'});
-    const kala = server.create('person', {name: 'Kala'});
-    const will = server.create('person', {name: 'Will'});
+    const sun = server.create('person', { name: 'Sun' });
+    const kala = server.create('person', { name: 'Kala' });
+    const will = server.create('person', { name: 'Will' });
 
     const sunRide = server.create('ride', {
       driver: sun,
@@ -20,7 +20,7 @@ moduleForAcceptance('Acceptance | debts', {
       carExpenses: 4400,
 
       start: new Date(2016, 11, 25, 10, 15),
-      end: new Date(2016, 11, 25, 12, 0)
+      end: new Date(2016, 11, 25, 12, 0),
     });
 
     const secondSunRide = server.create('ride', {
@@ -31,7 +31,7 @@ moduleForAcceptance('Acceptance | debts', {
       carExpenses: 0,
 
       start: new Date(2016, 11, 26, 10, 15),
-      end: new Date(2016, 11, 25, 12, 0)
+      end: new Date(2016, 11, 25, 12, 0),
     });
 
     const willRide = server.create('ride', {
@@ -40,37 +40,37 @@ moduleForAcceptance('Acceptance | debts', {
 
       carOwner: will,
       carExpenses: 1919,
-      donation: true
+      donation: true,
     });
 
     server.create('reimbursement', {
       person: sun,
       ride: sunRide,
-      foodExpenses: 4400
+      foodExpenses: 4400,
     });
 
     server.create('reimbursement', {
       person: kala,
       ride: sunRide,
-      carExpenses: 4400
+      carExpenses: 4400,
     });
 
     // This is not how the server calculates what to return but it’s not worth duplicating the API
     const firstDebt = server.create('debt', {
-      person: sun
+      person: sun,
     });
     // FIXME is this a Mirage bug? This was formerly within the creation but the mock server was returning *both* rides.
     firstDebt.rides = [sunRide, secondSunRide];
     firstDebt.save();
 
     const secondDebt = server.create('debt', {
-      person: will
+      person: will,
     });
     secondDebt.rides = [willRide];
     secondDebt.save();
 
     authenticateSession(this.application);
-  }
+  },
 });
 
 test('debts are listed', function(assert) {
@@ -79,7 +79,11 @@ test('debts are listed', function(assert) {
   andThen(() => {
     assert.equal(shared.title, 'Debts · Prison Rideshare');
 
-    assert.equal(page.people.length, 2, 'only people with outstanding debts are listed');
+    assert.equal(
+      page.people.length,
+      2,
+      'only people with outstanding debts are listed'
+    );
 
     const sun = page.people[0];
     assert.equal(sun.foodExpenses, '120');
@@ -97,7 +101,11 @@ test('debts are listed', function(assert) {
     assert.equal(sunRide.foodExpenses, '154');
     assert.equal(sunRide.carExpenses, '');
 
-    assert.equal(sun.reimbursements.length, '1', 'expected the Kala reimbursement to be hidden');
+    assert.equal(
+      sun.reimbursements.length,
+      '1',
+      'expected the Kala reimbursement to be hidden'
+    );
     assert.equal(sun.reimbursements[0].foodExpenses, '-44');
     assert.equal(sun.reimbursements[0].carExpenses, '');
 
@@ -106,7 +114,10 @@ test('debts are listed', function(assert) {
     assert.equal(will.carExpenses, '19.19');
     assert.equal(will.totalExpenses, '38.38');
     assert.equal(will.rides.length, '1');
-    assert.ok(will.rides[0].carExpenseIsDonation, 'expected the ride’s car expenses to be marked a donation');
+    assert.ok(
+      will.rides[0].carExpenseIsDonation,
+      'expected the ride’s car expenses to be marked a donation'
+    );
   });
 });
 
@@ -115,7 +126,15 @@ test('a debt can be reimbursed', function(assert) {
   page.people[0].reimburse();
 
   andThen(() => {
-    assert.equal(page.people.length, 1, 'expected the debt to have disappeared');
-    assert.equal(server.db.debts.length, 1, 'expected the debt to have been deleted on the server');
+    assert.equal(
+      page.people.length,
+      1,
+      'expected the debt to have disappeared'
+    );
+    assert.equal(
+      server.db.debts.length,
+      1,
+      'expected the debt to have been deleted on the server'
+    );
   });
 });

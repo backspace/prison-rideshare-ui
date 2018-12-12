@@ -13,8 +13,14 @@ test('it strips leading apartment numbers, even with a #', function(assert) {
 });
 
 test('it strips trailing bracketed strings', function(assert) {
-  assert.equal(anonymiseAddress('440 Jorts street (building X unit 666)'), '400 block Jorts street');
-  assert.equal(anonymiseAddress('440 Jorts street (building X unit 666) '), '400 block Jorts street');
+  assert.equal(
+    anonymiseAddress('440 Jorts street (building X unit 666)'),
+    '400 block Jorts street'
+  );
+  assert.equal(
+    anonymiseAddress('440 Jorts street (building X unit 666) '),
+    '400 block Jorts street'
+  );
 });
 
 test('it strips trailing #-led strings', function(assert) {
@@ -25,5 +31,8 @@ test('it strips trailing unit/suite/building identifiers', function(assert) {
   assert.equal(anonymiseAddress('421 osborne apt B'), '400 block osborne');
   assert.equal(anonymiseAddress('421 osborne uNit 33'), '400 block osborne');
   assert.equal(anonymiseAddress('421 osborne suite X'), '400 block osborne');
-  assert.equal(anonymiseAddress('421 osborne building A suite X'), '400 block osborne');
+  assert.equal(
+    anonymiseAddress('421 osborne building A suite X'),
+    '400 block osborne'
+  );
 });

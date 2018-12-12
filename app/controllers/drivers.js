@@ -6,13 +6,16 @@ export default Controller.extend({
 
   actions: {
     newPerson() {
-      this.set('editingPerson', BufferedProxy.create({
-        content: this.store.createRecord('person')
-      }));
+      this.set(
+        'editingPerson',
+        BufferedProxy.create({
+          content: this.store.createRecord('person'),
+        })
+      );
     },
 
     editPerson(person) {
-      const proxy = BufferedProxy.create({content: person});
+      const proxy = BufferedProxy.create({ content: person });
 
       this.set('editingPerson', proxy);
     },
@@ -20,7 +23,10 @@ export default Controller.extend({
     savePerson() {
       const proxy = this.get('editingPerson');
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingPerson', undefined))
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingPerson', undefined))
         .catch(() => {});
     },
 
@@ -32,6 +38,6 @@ export default Controller.extend({
       }
 
       this.set('editingPerson', undefined);
-    }
-  }
+    },
+  },
 });

@@ -8,7 +8,7 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
   authorizer: 'authorizer:application',
 
   urlForCreateRecord(modelName) {
-    switch(modelName) {
+    switch (modelName) {
       case 'user':
       case 'users':
         return this._super.apply(this, arguments).replace('users', 'register');
@@ -33,5 +33,5 @@ export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
     }
 
     return this._super(...arguments);
-  }
+  },
 });

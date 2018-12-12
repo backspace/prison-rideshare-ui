@@ -16,7 +16,9 @@ export default Route.extend({
     }
 
     const token = queryParams.token;
-    const personTokenEndpoint = `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/people/token`;
+    const personTokenEndpoint = `${Ember.testing ? '' : config.DS.host}/${
+      config.DS.namespace
+    }/people/token`;
 
     if (isEmpty(token)) {
       throw new Error('We were unable to log you in without a token.');
@@ -26,26 +28,33 @@ export default Route.extend({
       method: 'POST',
       body: `grant_type=magic&token=${encodeURIComponent(token)}`,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }).then(response => {
-      if (response.ok) {
-        return response.json();
-      }
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
 
-      throw new Error('We were unable to log you in with that token.');
-    }).then(({ access_token }) => {
-      localStorage.setItem('person-token', access_token);
-      return this.store.queryRecord('person', { me: true, token: access_token })
-    }).catch(() => {
-      throw new Error('We were unable to log you in with that token.');
-    }).then(person => {
-      return RSVP.hash({
-        slots: this.store.findAll('slot'),
-        person,
-        month
+        throw new Error('We were unable to log you in with that token.');
+      })
+      .then(({ access_token }) => {
+        localStorage.setItem('person-token', access_token);
+        return this.store.queryRecord('person', {
+          me: true,
+          token: access_token,
+        });
+      })
+      .catch(() => {
+        throw new Error('We were unable to log you in with that token.');
+      })
+      .then(person => {
+        return RSVP.hash({
+          slots: this.store.findAll('slot'),
+          person,
+          month,
+        });
       });
-    });
   },
 
   afterModel() {
@@ -55,7 +64,7 @@ export default Route.extend({
       this.get('poll').setup({
         name: 'slotsPoll',
         resource_name: 'slots',
-        url
+        url,
       });
     }
   },
@@ -64,6 +73,6 @@ export default Route.extend({
     willTransition(transition) {
       this._super(transition);
       this.get('poll').removePoll('slotsPoll');
-    }
-  }
+    },
+  },
 });

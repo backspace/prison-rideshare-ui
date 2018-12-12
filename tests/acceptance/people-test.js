@@ -9,27 +9,42 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | people', {
   beforeEach() {
-    const sun = server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?', medium: 'email'});
+    const sun = server.create('person', {
+      name: 'Sun',
+      email: 'sun@sense8',
+      landline: '111',
+      notes: 'notes?',
+      medium: 'email',
+    });
 
     server.create('ride', {
       start: new Date(2017, 2, 22),
-      driver: sun
+      driver: sun,
     });
 
-    server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111', medium: 'mobile'});
-    server.create('person', {name: 'Will', active: false});
+    server.create('person', {
+      name: 'Kala',
+      email: 'kala@sense8',
+      mobile: '111',
+      medium: 'mobile',
+    });
+    server.create('person', { name: 'Will', active: false });
 
     server.create('ride');
 
     authenticateSession(this.application);
-  }
+  },
 });
 
 test('people are listed, with inactive people hidden by default', function(assert) {
   page.visit();
 
   andThen(() => {
-    assert.equal(page.people.length, 2, 'expected the inactive person to be hidden');
+    assert.equal(
+      page.people.length,
+      2,
+      'expected the inactive person to be hidden'
+    );
 
     page.people[1].as(sun => {
       assert.equal(sun.name, 'Sun');
@@ -42,14 +57,25 @@ test('people are listed, with inactive people hidden by default', function(asser
       assert.equal(sun.notes.text, 'notes?');
     });
 
-    assert.ok(page.people[0].mobile.isPreferred, 'expected Kala to prefer mobile');
-    assert.equal(page.people[0].lastRide.text, '', 'expected someone with no rides to have a blank last ride');
+    assert.ok(
+      page.people[0].mobile.isPreferred,
+      'expected Kala to prefer mobile'
+    );
+    assert.equal(
+      page.people[0].lastRide.text,
+      '',
+      'expected someone with no rides to have a blank last ride'
+    );
   });
 
   page.head.inactiveSwitch.click();
 
   andThen(() => {
-    assert.equal(page.people.length, 3, 'expected the inactive person to be shown after the switch is flipped');
+    assert.equal(
+      page.people.length,
+      3,
+      'expected the inactive person to be shown after the switch is flipped'
+    );
   });
 });
 
@@ -105,16 +131,26 @@ test('a person can be created and chosen for a ride', function(assert) {
 
   page.newPerson();
 
-  andThen(() => assert.equal(page.people.length, '2', 'expected the new person to not yet be listed'));
+  andThen(() =>
+    assert.equal(
+      page.people.length,
+      '2',
+      'expected the new person to not yet be listed'
+    )
+  );
 
   page.form.nameField.fill('Capheus');
   page.form.submit();
 
   andThen(() => {
-    assert.equal(page.people.length, '3', 'expected the new person to have been added to the list');
+    assert.equal(
+      page.people.length,
+      '3',
+      'expected the new person to have been added to the list'
+    );
     assert.equal(page.people[0].name, 'Capheus');
 
-    const [,,,capheus] = server.db.people;
+    const [, , , capheus] = server.db.people;
     assert.equal(capheus.name, 'Capheus');
   });
 
@@ -133,10 +169,17 @@ test('people can be made inactive and active', function(assert) {
   page.people[1].activeSwitch.click();
 
   andThen(() => {
-    assert.equal(page.people.length, 1, 'expected the person made inactive to have disappeared');
+    assert.equal(
+      page.people.length,
+      1,
+      'expected the person made inactive to have disappeared'
+    );
 
     const [sun] = server.db.people;
-    assert.notOk(sun.active, 'expected Sun to have been made inactive on the server');
+    assert.notOk(
+      sun.active,
+      'expected Sun to have been made inactive on the server'
+    );
   });
 
   page.head.inactiveSwitch.click();
@@ -144,7 +187,10 @@ test('people can be made inactive and active', function(assert) {
 
   andThen(() => {
     const [sun] = server.db.people;
-    assert.ok(sun.active, 'expected Sun to have been made active on the server');
+    assert.ok(
+      sun.active,
+      'expected Sun to have been made active on the server'
+    );
 
     server.patch('/people/:id', {}, 422);
   });
@@ -154,31 +200,41 @@ test('people can be made inactive and active', function(assert) {
   page.people[1].activeSwitch.click();
 
   andThen(() => {
-    assert.equal(shared.toast.text, 'There was an error saving the active status of Sun');
+    assert.equal(
+      shared.toast.text,
+      'There was an error saving the active status of Sun'
+    );
   });
 });
 
 test('person validation errors are displayed', function(assert) {
-  server.post('/people', {
-      errors: [{
-        'source': {
-          'pointer': '/data/attributes/name'
+  server.post(
+    '/people',
+    {
+      errors: [
+        {
+          source: {
+            pointer: '/data/attributes/name',
+          },
+          detail: "Name can't be blank",
         },
-        'detail': 'Name can\'t be blank'
-      },{
-        source: {
-          pointer: '/data/attributes/email'
+        {
+          source: {
+            pointer: '/data/attributes/email',
+          },
+          detail: "Email can't be blank",
         },
-        detail: 'Email can\'t be blank'
-      }]
-    }, 422);
+      ],
+    },
+    422
+  );
 
   page.visit();
   page.newPerson();
   page.form.submit();
 
   andThen(() => {
-    assert.equal(page.form.nameError.text, 'Name can\'t be blank');
-    assert.equal(page.form.email.error.text, 'Email can\'t be blank');
+    assert.equal(page.form.nameError.text, "Name can't be blank");
+    assert.equal(page.form.email.error.text, "Email can't be blank");
   });
 });

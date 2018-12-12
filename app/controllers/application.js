@@ -12,6 +12,6 @@ export default Controller.extend({
     logout() {
       this.get('session').invalidate();
       this.store.unloadAll();
-    }
-  }
+    },
+  },
 });

@@ -4,13 +4,16 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 export default Controller.extend({
   actions: {
     newInstitution() {
-      this.set('editingInstitution', BufferedProxy.create({
-        content: this.store.createRecord('institution')
-      }));
+      this.set(
+        'editingInstitution',
+        BufferedProxy.create({
+          content: this.store.createRecord('institution'),
+        })
+      );
     },
 
     editInstitution(institution) {
-      const proxy = BufferedProxy.create({content: institution});
+      const proxy = BufferedProxy.create({ content: institution });
 
       this.set('editingInstitution', proxy);
     },
@@ -18,7 +21,10 @@ export default Controller.extend({
     saveInstitution() {
       const proxy = this.get('editingInstitution');
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingInstitution', undefined))
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingInstitution', undefined))
         .catch(() => {});
     },
 
@@ -30,6 +36,6 @@ export default Controller.extend({
       }
 
       this.set('editingInstitution', undefined);
-    }
-  }
+    },
+  },
 });

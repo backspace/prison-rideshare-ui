@@ -17,55 +17,57 @@ moduleForAcceptance('Acceptance | calendar', {
       magicToken: 'MAGIC??TOKEN',
       accessToken: 'XXX',
       calendarSecret: 'SECRET++',
-      selfNotes: 'My self notes'
+      selfNotes: 'My self notes',
     });
     this.person = person;
 
     server.create('person', {
       name: 'Non-committal',
-      active: true
+      active: true,
     });
 
     server.create('person', {
       name: 'Also non-committal',
-      active: true
+      active: true,
     });
 
     const committedSlot = server.create('slot', {
       start: new Date(2117, 11, 4, 17, 30),
       end: new Date(2117, 11, 4, 20),
-      count: 3
+      count: 3,
     });
 
     this.toCommitSlot = server.create('slot', {
       start: new Date(2117, 11, 10, 17),
       end: new Date(2117, 11, 10, 21),
-      count: 2
+      count: 2,
     });
 
     server.create('slot', {
       start: new Date(2117, 11, 10, 11),
       end: new Date(2117, 11, 10, 17),
-      count: 0
+      count: 0,
     });
 
-    committedSlot.createCommitment({ person: server.create('person', { name: 'Other Slot Person'})});
+    committedSlot.createCommitment({
+      person: server.create('person', { name: 'Other Slot Person' }),
+    });
     committedSlot.createCommitment({ person });
 
     server.create('slot', {
       start: new Date(2017, 11, 10, 11),
       end: new Date(2017, 11, 10, 17),
-      count: 0
+      count: 0,
     });
 
     const pastCommittedSlot = server.create('slot', {
       start: new Date(2017, 11, 11, 11),
       end: new Date(2017, 11, 11, 17),
-      count: 0
+      count: 0,
     });
 
     pastCommittedSlot.createCommitment({ person });
-  }
+  },
 });
 
 test('calendar shows existing commitments and lets them be changed', function(assert) {
@@ -81,15 +83,21 @@ test('calendar shows existing commitments and lets them be changed', function(as
         assert.equal(s1.hours, '5:30p—8');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
         assert.notOk(s1.isDisabled, 'expected the slot to not be full');
-        assert.notOk(s1.count.isVisible, 'expected the slot count not to show for a non-admin');
-      })
+        assert.notOk(
+          s1.count.isVisible,
+          'expected the slot count not to show for a non-admin'
+        );
+      });
     });
 
     page.days[9].as(d10 => {
       assert.equal(d10.slots.length, 2, 'expected two slots on Sunday');
       d10.slots[0].as(s1 => {
         assert.equal(s1.hours, '11a—5p');
-        assert.notOk(s1.isCommittedTo, 'expected the slot to not be committed-to');
+        assert.notOk(
+          s1.isCommittedTo,
+          'expected the slot to not be committed-to'
+        );
       });
       d10.slots[1].as(s2 => {
         assert.equal(s2.hours, '5p—9');
@@ -100,9 +108,19 @@ test('calendar shows existing commitments and lets them be changed', function(as
   page.days[3].slots[0].click();
 
   andThen(() => {
-    assert.equal(shared.toast.text, 'Cancelled your agreement to drive on December 4');
-    assert.notOk(page.days[3].slots[0].isCommittedTo, 'expected the slot to not longer be committed-to');
-    assert.equal(server.db.commitments.length, 2, 'expected the commitment to have been deleted on the server');
+    assert.equal(
+      shared.toast.text,
+      'Cancelled your agreement to drive on December 4'
+    );
+    assert.notOk(
+      page.days[3].slots[0].isCommittedTo,
+      'expected the slot to not longer be committed-to'
+    );
+    assert.equal(
+      server.db.commitments.length,
+      2,
+      'expected the commitment to have been deleted on the server'
+    );
   });
 });
 
@@ -113,11 +131,21 @@ test('slots can be committed to', function(assert) {
   page.days[9].slots[1].click();
 
   andThen(() => {
-    assert.equal(shared.toast.text, 'Thanks for agreeing to drive on December 10!');
-    assert.ok(page.days[9].slots[1].isCommittedTo, 'expected the slot to be newly committed-to');
+    assert.equal(
+      shared.toast.text,
+      'Thanks for agreeing to drive on December 10!'
+    );
+    assert.ok(
+      page.days[9].slots[1].isCommittedTo,
+      'expected the slot to be newly committed-to'
+    );
 
     const [, , , commitment] = server.db.commitments;
-    assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
+    assert.equal(
+      commitment.slotId,
+      this.toCommitSlot.id,
+      'expected the server to have the newly-created commitment'
+    );
   });
 });
 
@@ -132,13 +160,19 @@ test('full slots show as full and can’t be committed to', function(assert) {
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.days[9].slots[1].isDisabled, 'expected the full slot to be disabled');
+    assert.ok(
+      page.days[9].slots[1].isDisabled,
+      'expected the full slot to be disabled'
+    );
   });
 
   page.days[9].slots[1].click();
 
   andThen(() => {
-    assert.notOk(page.days[9].slots[1].isCommittedTo, 'expected the slot to not be committed-to');
+    assert.notOk(
+      page.days[9].slots[1].isCommittedTo,
+      'expected the slot to not be committed-to'
+    );
   });
 });
 
@@ -150,26 +184,44 @@ test('past slots can’t be committed to', function(assert) {
   page.visit({ month: '2017-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.days[9].slots[0].isDisabled, 'expected the past slot to be disabled');
-    assert.ok(page.days[10].slots[0].isCommittedTo, 'expected the past committed slot to show as committed-to');
-    assert.ok(page.days[10].slots[0].isDisabled, 'expected the past committed slot to be disabled');
+    assert.ok(
+      page.days[9].slots[0].isDisabled,
+      'expected the past slot to be disabled'
+    );
+    assert.ok(
+      page.days[10].slots[0].isCommittedTo,
+      'expected the past committed slot to show as committed-to'
+    );
+    assert.ok(
+      page.days[10].slots[0].isDisabled,
+      'expected the past committed slot to be disabled'
+    );
   });
 
   page.days[9].slots[0].click();
 
   andThen(() => {
-    assert.notOk(page.days[9].slots[0].isCommittedTo, 'expected the slot to not be committed-to');
+    assert.notOk(
+      page.days[9].slots[0].isCommittedTo,
+      'expected the slot to not be committed-to'
+    );
   });
 });
 
 test('a failure to delete a commitment keeps it displayed and shows an error', function(assert) {
   server.delete('/commitments/:id', function() {
-    return new Mirage.Response(401, {}, {
-      errors: [{
-        status: 401,
-        title: 'Unauthorized'
-      }]
-    });
+    return new Mirage.Response(
+      401,
+      {},
+      {
+        errors: [
+          {
+            status: 401,
+            title: 'Unauthorized',
+          },
+        ],
+      }
+    );
   });
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
@@ -178,19 +230,32 @@ test('a failure to delete a commitment keeps it displayed and shows an error', f
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
-    assert.ok(page.days[3].slots[0].isCommittedTo, 'expected the slot to still be committed-to');
-    assert.equal(server.db.commitments.length, 3, 'expected the commitment to still be on the server');
+    assert.ok(
+      page.days[3].slots[0].isCommittedTo,
+      'expected the slot to still be committed-to'
+    );
+    assert.equal(
+      server.db.commitments.length,
+      3,
+      'expected the commitment to still be on the server'
+    );
   });
 });
 
 test('a failure to create a commitment makes it not display and shows an error', function(assert) {
   server.post('/commitments', function() {
-    return new Mirage.Response(401, {}, {
-      errors: [{
-        status: 401,
-        title: 'Unauthorized'
-      }]
-    });
+    return new Mirage.Response(
+      401,
+      {},
+      {
+        errors: [
+          {
+            status: 401,
+            title: 'Unauthorized',
+          },
+        ],
+      }
+    );
   });
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
@@ -199,20 +264,33 @@ test('a failure to create a commitment makes it not display and shows an error',
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
-    assert.notOk(page.days[9].slots[1].isCommittedTo, 'expected the slot to not be committed-to');
-    assert.equal(server.db.commitments.length, 3, 'expected the commitments to be unchanged on the server');
+    assert.notOk(
+      page.days[9].slots[1].isCommittedTo,
+      'expected the slot to not be committed-to'
+    );
+    assert.equal(
+      server.db.commitments.length,
+      3,
+      'expected the commitments to be unchanged on the server'
+    );
   });
-})
+});
 
 test('a failure to create a commitment with a particular error shows the error', function(assert) {
   server.post('/commitments', function() {
-    return new Mirage.Response(422, {}, {
-      errors: [{
-        status: 422,
-        title: 'Unauthorized',
-        detail: 'Fail!'
-      }]
-    });
+    return new Mirage.Response(
+      422,
+      {},
+      {
+        errors: [
+          {
+            status: 422,
+            title: 'Unauthorized',
+            detail: 'Fail!',
+          },
+        ],
+      }
+    );
   });
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
@@ -238,16 +316,22 @@ test('visiting with no token shows an error', function(assert) {
   andThen(function() {
     assert.equal(page.error, 'We were unable to log you in without a token.');
   });
-})
+});
 
 test('visiting with a magic token that doesn’t resolve to a person shows an error', function(assert) {
   server.get('/people/me', function() {
-    return new Mirage.Response(401, {}, {
-      errors: [{
-        status: 401,
-        title: 'Unauthorized'
-      }]
-    });
+    return new Mirage.Response(
+      401,
+      {},
+      {
+        errors: [
+          {
+            status: 401,
+            title: 'Unauthorized',
+          },
+        ],
+      }
+    );
   });
 
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
@@ -261,38 +345,63 @@ test('the person can edit their details', function(assert) {
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.person.name.isHidden, 'expected the name field to be hidden by default');
+    assert.ok(
+      page.person.name.isHidden,
+      'expected the name field to be hidden by default'
+    );
   });
 
   page.person.toggle.click();
 
   andThen(() => {
-    assert.ok(page.person.name.isVisible, 'expected the name field to have become visible');
+    assert.ok(
+      page.person.name.isVisible,
+      'expected the name field to have become visible'
+    );
     assert.equal(page.person.name.field.value, 'Jortle Tortle');
 
-    assert.ok(page.person.activeSwitch.enabled, 'expected the active switch to be on');
+    assert.ok(
+      page.person.activeSwitch.enabled,
+      'expected the active switch to be on'
+    );
 
-    assert.ok(page.person.email.field.isDisabled, 'expected the email field to be disabled');
+    assert.ok(
+      page.person.email.field.isDisabled,
+      'expected the email field to be disabled'
+    );
     assert.equal(page.person.email.field.value, 'jorts@jants.ca');
 
-    assert.ok(page.person.mobile.desiredMedium, 'expected mobile to be the desired medium');
+    assert.ok(
+      page.person.mobile.desiredMedium,
+      'expected mobile to be the desired medium'
+    );
 
     assert.equal(page.person.selfNotes.field.value, 'My self notes');
 
-    assert.notOk(page.person.submitButton.isHighlighted, 'expected the submit button to not be highlighted before anything has changed');
+    assert.notOk(
+      page.person.submitButton.isHighlighted,
+      'expected the submit button to not be highlighted before anything has changed'
+    );
   });
 
   page.person.name.field.fillIn('Jartle');
   page.person.cancelButton.click();
 
   andThen(() => {
-    assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
+    assert.ok(
+      page.person.name.isHidden,
+      'expected the form to be hidden again'
+    );
   });
 
   page.person.toggle.click();
 
   andThen(() => {
-    assert.equal(page.person.name.field.value, 'Jortle Tortle', 'expected the change to have been reverted');
+    assert.equal(
+      page.person.name.field.value,
+      'Jortle Tortle',
+      'expected the change to have been reverted'
+    );
   });
 
   page.person.name.field.fillIn('Jortleby');
@@ -302,7 +411,10 @@ test('the person can edit their details', function(assert) {
   page.person.selfNotes.field.fillIn('Updated self notes');
 
   andThen(() => {
-    assert.ok(page.person.submitButton.isHighlighted, 'expected the submit button to be highlighted when the record is dirty');
+    assert.ok(
+      page.person.submitButton.isHighlighted,
+      'expected the submit button to be highlighted when the record is dirty'
+    );
   });
 
   page.person.submitButton.click();
@@ -310,20 +422,45 @@ test('the person can edit their details', function(assert) {
   andThen(() => {
     const [person] = server.db.people;
 
-    assert.equal(person.name, 'Jortleby', 'expected the name to have changed on the server');
-    assert.notOk(person.active, 'expected the person to be inactive on the server');
-    assert.equal(person.mobile, '1234', 'expected the mobile number to have changed on the server');
-    assert.equal(person.medium, 'email', 'expected the medium to have changed on the server');
-    assert.equal(person.selfNotes, 'Updated self notes', 'expected the self notes to have changed on the server');
+    assert.equal(
+      person.name,
+      'Jortleby',
+      'expected the name to have changed on the server'
+    );
+    assert.notOk(
+      person.active,
+      'expected the person to be inactive on the server'
+    );
+    assert.equal(
+      person.mobile,
+      '1234',
+      'expected the mobile number to have changed on the server'
+    );
+    assert.equal(
+      person.medium,
+      'email',
+      'expected the medium to have changed on the server'
+    );
+    assert.equal(
+      person.selfNotes,
+      'Updated self notes',
+      'expected the self notes to have changed on the server'
+    );
 
     assert.equal(shared.toast.text, 'Saved your details');
-    assert.ok(page.person.name.isHidden, 'expected the form to be hidden again');
+    assert.ok(
+      page.person.name.isHidden,
+      'expected the form to be hidden again'
+    );
   });
 
   page.person.toggle.click();
 
   andThen(() => {
-    assert.notOk(page.person.name.isError, 'expected the name field to not show as being invalid');
+    assert.notOk(
+      page.person.name.isError,
+      'expected the name field to not show as being invalid'
+    );
   });
 });
 
@@ -331,7 +468,12 @@ test('the person can get a link to subscribe to their calendar', function(assert
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   andThen(() => {
-    assert.ok(page.subscription.link.href.endsWith(`/people/${this.person.id}/calendar?secret=SECRET%2B%2B`), 'expected the calendar URL to have the encoded secret');
+    assert.ok(
+      page.subscription.link.href.endsWith(
+        `/people/${this.person.id}/calendar?secret=SECRET%2B%2B`
+      ),
+      'expected the calendar URL to have the encoded secret'
+    );
   });
 });
 
@@ -345,8 +487,11 @@ test('shows detail validation errors', function(assert) {
   andThen(() => {
     // FIXME validation-specific error text?
     assert.equal(shared.toast.text, 'Couldn’t save your details');
-    assert.equal(page.person.name.error.text, 'Name can\'t be blank');
-    assert.ok(page.person.name.isError, 'expected the name field to show as being invalid');
+    assert.equal(page.person.name.error.text, "Name can't be blank");
+    assert.ok(
+      page.person.name.isError,
+      'expected the name field to show as being invalid'
+    );
   });
 });
 
@@ -354,12 +499,18 @@ test('handles an error saving details', function(assert) {
   page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
   server.patch('/people/me', function() {
-    return new Mirage.Response(401, {}, {
-      errors: [{
-        status: 401,
-        title: 'Unauthorized'
-      }]
-    });
+    return new Mirage.Response(
+      401,
+      {},
+      {
+        errors: [
+          {
+            status: 401,
+            title: 'Unauthorized',
+          },
+        ],
+      }
+    );
   });
 
   page.person.toggle.click();
@@ -368,7 +519,10 @@ test('handles an error saving details', function(assert) {
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Couldn’t save your details');
-    assert.ok(page.person.name.isVisible, 'expected the form to still be visible');
+    assert.ok(
+      page.person.name.isVisible,
+      'expected the form to still be visible'
+    );
   });
 });
 
@@ -386,21 +540,46 @@ test('an admin can see the commitments with person names', function(assert) {
   page.adminVisit({ month: '2117-12' });
 
   andThen(() => {
-    assert.equal(page.days[3].slots[0].count.text, '2/3', 'expected two people to show for the slot out of a maximum of three');
-    assert.ok(page.days[3].slots[0].count.isCommittedTo, 'expected the two person-slot to show as committed to');
-    assert.ok(page.days[3].slots[0].checkbox.isHidden, 'expected the checkbox to not display');
+    assert.equal(
+      page.days[3].slots[0].count.text,
+      '2/3',
+      'expected two people to show for the slot out of a maximum of three'
+    );
+    assert.ok(
+      page.days[3].slots[0].count.isCommittedTo,
+      'expected the two person-slot to show as committed to'
+    );
+    assert.ok(
+      page.days[3].slots[0].checkbox.isHidden,
+      'expected the checkbox to not display'
+    );
 
-    assert.equal(page.people.length, 0, 'expected no people details to show initially');
+    assert.equal(
+      page.people.length,
+      0,
+      'expected no people details to show initially'
+    );
 
-    assert.equal(page.days[9].slots[0].count.text, '0/∞', 'expected the slot capacity to show as ∞');
-    assert.notOk(page.days[9].slots[0].count.isCommittedTo, 'expected the empty slot to not show as committed to');
+    assert.equal(
+      page.days[9].slots[0].count.text,
+      '0/∞',
+      'expected the slot capacity to show as ∞'
+    );
+    assert.notOk(
+      page.days[9].slots[0].count.isCommittedTo,
+      'expected the empty slot to not show as committed to'
+    );
   });
 
   page.days[3].slots[0].count.click();
 
   andThen(() => {
     assert.equal(page.viewingSlot, 'Saturday, December 4, 5:30p–8:00p');
-    assert.equal(page.people.length, 2, 'expected two people details to show for the slot');
+    assert.equal(
+      page.people.length,
+      2,
+      'expected two people details to show for the slot'
+    );
     assert.equal(page.people[0].name, 'Other Slot Person');
     assert.equal(page.people[1].name, 'Jortle Tortle');
   });
@@ -408,21 +587,31 @@ test('an admin can see the commitments with person names', function(assert) {
   page.people[1].reveal();
 
   andThen(() => {
-    assert.equal(page.people[1].email, 'jorts@jants.ca', 'expected the contact information to be revealed');
+    assert.equal(
+      page.people[1].email,
+      'jorts@jants.ca',
+      'expected the contact information to be revealed'
+    );
   });
 
   page.nextMonth.click();
 
   andThen(() => {
     assert.equal(page.month, 'January 2118: 0 commitments');
-    assert.ok(currentURL().endsWith('2118-01'), 'expected the path to have changed with the new month');
+    assert.ok(
+      currentURL().endsWith('2118-01'),
+      'expected the path to have changed with the new month'
+    );
   });
 
   page.previousMonth.click();
 
   andThen(() => {
     assert.equal(page.month, 'December 2117: 2 commitments');
-    assert.ok(currentURL().endsWith('2117-12'), 'expected the path to have returned to the original month');
+    assert.ok(
+      currentURL().endsWith('2117-12'),
+      'expected the path to have returned to the original month'
+    );
   });
 });
 
@@ -435,7 +624,11 @@ test('an admin can create commitments', function(assert) {
   page.peopleSearch.fillIn('commit');
 
   andThen(() => {
-    assert.equal(page.peopleSearch.options.length, 2, 'expected two people to show for possible commitments');
+    assert.equal(
+      page.peopleSearch.options.length,
+      2,
+      'expected two people to show for possible commitments'
+    );
     assert.equal(page.peopleSearch.options[0].name, 'Also non-committal');
     assert.equal(page.peopleSearch.options[1].name, 'Non-committal');
   });
@@ -443,35 +636,60 @@ test('an admin can create commitments', function(assert) {
   page.peopleSearch.fillIn('also');
 
   andThen(() => {
-    assert.equal(page.peopleSearch.options.length, 1, 'expected only one match');
+    assert.equal(
+      page.peopleSearch.options.length,
+      1,
+      'expected only one match'
+    );
   });
 
   page.peopleSearch.options[0].click();
 
   andThen(() => {
-    assert.equal(shared.toast.text, 'Committed Also non-committal to drive on December 10');
-    assert.equal(page.days[9].slots[1].count.text, '1/2', 'expected the slot to be newly committed-to');
+    assert.equal(
+      shared.toast.text,
+      'Committed Also non-committal to drive on December 10'
+    );
+    assert.equal(
+      page.days[9].slots[1].count.text,
+      '1/2',
+      'expected the slot to be newly committed-to'
+    );
 
     const [, , , commitment] = server.db.commitments;
-    assert.equal(commitment.slotId, this.toCommitSlot.id, 'expected the server to have the newly-created commitment');
+    assert.equal(
+      commitment.slotId,
+      this.toCommitSlot.id,
+      'expected the server to have the newly-created commitment'
+    );
   });
 
   page.peopleSearch.fillIn('commit');
 
   andThen(() => {
-    assert.equal(page.peopleSearch.options.length, 1, 'expected the now-commited person to not show in the search');
+    assert.equal(
+      page.peopleSearch.options.length,
+      1,
+      'expected the now-commited person to not show in the search'
+    );
   });
 });
 
 test('an error when an admin tries to create a commitment is displayed', function(assert) {
   server.post('/commitments', function() {
-    return new Mirage.Response(422, {}, {
-      errors: [{
-        status: 422,
-        title: 'Unauthorized',
-        detail: 'Fail!'
-      }]
-    });
+    return new Mirage.Response(
+      422,
+      {},
+      {
+        errors: [
+          {
+            status: 422,
+            title: 'Unauthorized',
+            detail: 'Fail!',
+          },
+        ],
+      }
+    );
   });
 
   server.create('user', { admin: true });
@@ -484,7 +702,11 @@ test('an error when an admin tries to create a commitment is displayed', functio
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Fail!');
-    assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
+    assert.equal(
+      server.db.commitments.length,
+      3,
+      'expected no change on the server'
+    );
   });
 });
 
@@ -497,20 +719,33 @@ test('an admin can delete commitments', function(assert) {
   page.people[0].remove();
 
   andThen(() => {
-    assert.equal(shared.toast.text, 'Deleted Other Slot Person’s commitment on December 4');
-    assert.equal(server.db.commitments.length, 2, 'expected there to be two commitments left on the server');
+    assert.equal(
+      shared.toast.text,
+      'Deleted Other Slot Person’s commitment on December 4'
+    );
+    assert.equal(
+      server.db.commitments.length,
+      2,
+      'expected there to be two commitments left on the server'
+    );
   });
 });
 
 test('an error when an admin tries to delete a commitment is displayed', function(assert) {
   server.delete('/commitments/:id', function() {
-    return new Mirage.Response(422, {}, {
-      errors: [{
-        status: 422,
-        title: 'Unauthorized',
-        detail: 'Fail!'
-      }]
-    });
+    return new Mirage.Response(
+      422,
+      {},
+      {
+        errors: [
+          {
+            status: 422,
+            title: 'Unauthorized',
+            detail: 'Fail!',
+          },
+        ],
+      }
+    );
   });
 
   server.create('user', { admin: true });
@@ -522,6 +757,10 @@ test('an error when an admin tries to delete a commitment is displayed', functio
 
   andThen(() => {
     assert.equal(shared.toast.text, 'Fail!');
-    assert.equal(server.db.commitments.length, 3, 'expected no change on the server');
+    assert.equal(
+      server.db.commitments.length,
+      3,
+      'expected no change on the server'
+    );
   });
 });

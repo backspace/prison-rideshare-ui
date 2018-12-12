@@ -13,5 +13,5 @@ export default DS.Model.extend({
     const commitmentCount = this.get('commitments.length');
 
     return count === 0 || commitmentCount < count;
-  })
+  }),
 });

@@ -3,7 +3,7 @@ import {
   create,
   fillable,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({

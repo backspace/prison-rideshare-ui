@@ -1,9 +1,4 @@
-import {
-  collection,
-  create,
-  text,
-  visitable
-} from 'ember-cli-page-object';
+import { collection, create, text, visitable } from 'ember-cli-page-object';
 
 export default create({
   visit: visitable('/gas-prices'),
@@ -12,6 +7,6 @@ export default create({
     date: text('.date'),
     price: text('.price'),
     farRate: text('.far'),
-    closeRate: text('.close')
+    closeRate: text('.close'),
   }),
 });

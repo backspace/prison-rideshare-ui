@@ -14,6 +14,6 @@ export default Component.extend({
       }
 
       this.set('ride.cancelled', cancelled);
-    }
-  }
+    },
+  },
 });

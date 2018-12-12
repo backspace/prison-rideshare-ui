@@ -1,8 +1,8 @@
 export default function(defaultOptions) {
   defaultOptions.chart = {
     style: {
-      fontFamily: 'inherit'
-    }
+      fontFamily: 'inherit',
+    },
   };
 
   return defaultOptions;

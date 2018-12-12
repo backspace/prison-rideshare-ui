@@ -9,7 +9,7 @@ import {
   text,
   triggerable,
   value,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -20,13 +20,17 @@ export default create({
     cancelledSwitch: {
       scope: '.paper-switch.cancelled',
       enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
+      click: triggerable('keypress', '.md-container', {
+        eventProperties: { keyCode: 13 },
+      }),
     },
 
     completedSwitch: {
       scope: '.paper-switch.completed',
       enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
+      click: triggerable('keypress', '.md-container', {
+        eventProperties: { keyCode: 13 },
+      }),
     },
 
     search: {
@@ -36,14 +40,14 @@ export default create({
       value: value('input'),
 
       clear: {
-        scope: 'button'
-      }
-    }
+        scope: 'button',
+      },
+    },
   },
 
   ridesHead: {
     scope: 'thead',
-    clickDate: clickable('.date')
+    clickDate: clickable('.date'),
   },
 
   rides: collection('tbody tr.ride', {
@@ -58,14 +62,18 @@ export default create({
       click: clickable('button'),
       showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
       showsVisitor: isVisible('button md-icon[md-font-icon="perm identity"]'),
-      showsNotCancelled: isVisible('button md-icon[md-font-icon="highlight off"]'),
+      showsNotCancelled: isVisible(
+        'button md-icon[md-font-icon="highlight off"]'
+      ),
       showsOther: isVisible('button md-icon[md-font-icon="help"]'),
 
-      title: attribute('title', 'button')
+      title: attribute('title', 'button'),
     },
 
     name: text('.name-and-contact .name'),
-    isFirstTimer: isVisible('.name-and-contact md-icon[md-font-icon=announcement]'),
+    isFirstTimer: isVisible(
+      '.name-and-contact md-icon[md-font-icon=announcement]'
+    ),
     date: text('.date'),
     clickDate: clickable('.date-cell'),
     institution: text('.institution'),
@@ -78,7 +86,7 @@ export default create({
       scope: '.medium-and-contact',
       isTxt: isVisible('md-icon[md-font-icon=textsms]'),
       isEmail: isVisible('md-icon[md-font-icon=email]'),
-      isPhone: isVisible('md-icon[md-font-icon=phone]')
+      isPhone: isVisible('md-icon[md-font-icon=phone]'),
     },
 
     driver: {
@@ -91,14 +99,14 @@ export default create({
       email: text('.email'),
       landline: text('.landline'),
 
-      selfNotes: text('.self-notes')
+      selfNotes: text('.self-notes'),
     },
 
     carOwner: {
       scope: '.car-owner',
       text: text('.name'),
       click: clickable(),
-      clear: clickable('.remove-container button')
+      clear: clickable('.remove-container button'),
     },
 
     isOverridable: isVisible('md-icon[md-font-icon=directions_bus]'),
@@ -106,24 +114,26 @@ export default create({
     combineButton: {
       scope: 'button.combine',
       isActive: hasClass('md-raised'),
-      title: attribute('title')
+      title: attribute('title'),
     },
 
-    isCombined: isVisible('.driver-and-car-owner md-icon[md-font-icon="call split"]'),
+    isCombined: isVisible(
+      '.driver-and-car-owner md-icon[md-font-icon="call split"]'
+    ),
 
     edit: clickable('button.edit'),
 
     creationDate: {
-      scope: '.creation'
-    }
+      scope: '.creation',
+    },
   }),
 
   noMatchesRow: {
-    scope: 'tr.no-matches'
+    scope: 'tr.no-matches',
   },
 
   notes: collection('tr.notes', {
-    text: text('td.notes')
+    text: text('td.notes'),
   }),
 
   reports: collection('tr.report', {
@@ -135,7 +145,7 @@ export default create({
 
     clear: clickable('button'),
     clearConfirm: { scope: '.clear-confirm' },
-    clearCancel: { scope: '.clear-cancel' }
+    clearCancel: { scope: '.clear-cancel' },
   }),
 
   overlaps: collection('tr.overlap', {
@@ -150,24 +160,24 @@ export default create({
     notice: text('.warning'),
 
     timespan: {
-      scope: '.timespan textarea'
+      scope: '.timespan textarea',
     },
 
     timespanResult: {
-      scope: '.timespan-result input'
+      scope: '.timespan-result input',
     },
 
     medium: {
       scope: '.medium-row',
       txt: { scope: '.txt' },
       email: { scope: '.email' },
-      phone: { scope: '.phone' }
+      phone: { scope: '.phone' },
     },
 
     overridable: {
       scope: 'md-checkbox.overridable',
       checked: hasClass('md-checked'),
-      click: clickable()
+      click: clickable(),
     },
 
     name: {
@@ -180,12 +190,12 @@ export default create({
 
         name: text('.name'),
         address: text('address'),
-        contact: text('.contact')
-      })
+        contact: text('.contact'),
+      }),
     },
 
     nameError: {
-      scope: 'md-autocomplete .paper-input-error'
+      scope: 'md-autocomplete .paper-input-error',
     },
 
     address: {
@@ -199,11 +209,11 @@ export default create({
     firstTime: {
       scope: 'md-checkbox.first-time',
       checked: hasClass('md-checked'),
-      click: clickable()
+      click: clickable(),
     },
 
     firstTimePoints: {
-      scope: '.first-time-points'
+      scope: '.first-time-points',
     },
 
     passengers: {
@@ -215,7 +225,7 @@ export default create({
     },
 
     submit: clickable('button.submit'),
-    cancel: clickable('button.cancel')
+    cancel: clickable('button.cancel'),
   },
 
   cancellationForm: {
@@ -226,17 +236,17 @@ export default create({
     cancelled: {
       scope: 'md-checkbox',
       checked: hasClass('md-checked'),
-      click: clickable()
+      click: clickable(),
     },
 
     reason: {
-      value: text('.ember-power-select-selected-item')
+      value: text('.ember-power-select-selected-item'),
     },
 
     other: {
       scope: '.md-input',
     },
 
-    save: clickable('button.submit')
-  }
+    save: clickable('button.submit'),
+  },
 });

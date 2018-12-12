@@ -9,9 +9,14 @@ export default Component.extend({
   peopleService: service('people'),
   people: alias('peopleService.active'),
 
-  person: computed('ride', 'property', 'ride.{carOwner.id,driver.id}', function() {
-    return this.get('ride').get(this.get('property'));
-  }),
+  person: computed(
+    'ride',
+    'property',
+    'ride.{carOwner.id,driver.id}',
+    function() {
+      return this.get('ride').get(this.get('property'));
+    }
+  ),
 
   showContact: false,
 
@@ -27,6 +32,6 @@ export default Component.extend({
       const ride = this.get('ride');
       ride.set(this.get('property'), null);
       return ride.save();
-    }
-  }
+    },
+  },
 });

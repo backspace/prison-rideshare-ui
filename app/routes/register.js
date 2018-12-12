@@ -6,5 +6,5 @@ export default Route.extend(UnauthenticatedRouteMixin, {
     return this.store.createRecord('user');
   },
 
-  titleToken: 'Register'
+  titleToken: 'Register',
 });

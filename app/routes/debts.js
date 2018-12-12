@@ -6,5 +6,5 @@ export default Route.extend(AuthenticatedRoute, {
     return this.store.findAll('debt');
   },
 
-  titleToken: 'Debts'
+  titleToken: 'Debts',
 });

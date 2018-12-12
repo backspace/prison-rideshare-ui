@@ -4,5 +4,7 @@ import OAuth2PasswordGrant from 'ember-simple-auth/authenticators/oauth2-passwor
 import config from 'prison-rideshare-ui/config/environment';
 
 export default OAuth2PasswordGrant.extend({
-  serverTokenEndpoint: `${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace}/token`
+  serverTokenEndpoint: `${Ember.testing ? '' : config.DS.host}/${
+    config.DS.namespace
+  }/token`,
 });

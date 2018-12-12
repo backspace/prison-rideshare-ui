@@ -3,7 +3,7 @@ import {
   collection,
   create,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -11,7 +11,7 @@ export default create({
   newPost: clickable('button.new'),
 
   markAllReadButton: {
-    scope: 'button.markAllRead'
+    scope: 'button.markAllRead',
   },
 
   posts: collection('.posts tbody tr', {
@@ -20,7 +20,7 @@ export default create({
     content: text('.content'),
 
     editButton: {
-      scope: 'button.edit'
+      scope: 'button.edit',
     },
 
     deleteButton: {
@@ -28,7 +28,7 @@ export default create({
     },
 
     deleteConfirm: {
-      scope: 'button.delete-confirm'
+      scope: 'button.delete-confirm',
     },
 
     markReadButton: {
@@ -36,8 +36,8 @@ export default create({
     },
 
     markUnreadButton: {
-      scope: 'button.markUnread'
-    }
+      scope: 'button.markUnread',
+    },
   }),
 
   form: {
@@ -46,14 +46,14 @@ export default create({
     content: {
       scope: '.content',
       field: {
-        scope: '.mobiledoc-editor__editor'
+        scope: '.mobiledoc-editor__editor',
       },
       error: {
-        scope: '.paper-input-error'
-      }
+        scope: '.paper-input-error',
+      },
     },
 
     submit: clickable('button.submit'),
-    cancel: clickable('button.cancel')
+    cancel: clickable('button.cancel'),
   },
 });

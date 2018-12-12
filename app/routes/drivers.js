@@ -12,5 +12,5 @@ export default Route.extend(AuthenticatedRoute, {
     return this.store.findAll('ride');
   },
 
-  titleToken: 'Drivers'
+  titleToken: 'Drivers',
 });

@@ -16,16 +16,20 @@ export default Controller.extend({
   httpSubscriptionUrl: computed('person.{id,calendarSecret}', function() {
     const person = this.get('person');
 
-    const base = person.store.adapterFor('person').buildURL('person', person.id);
+    const base = person.store
+      .adapterFor('person')
+      .buildURL('person', person.id);
 
     return `${base}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
   }),
 
   webcalSubscriptionUrl: computed('httpSubscriptionUrl', function() {
-    return this.get('httpSubscriptionUrl').replace('https', 'webcal').replace('http', 'webcal')
+    return this.get('httpSubscriptionUrl')
+      .replace('https', 'webcal')
+      .replace('http', 'webcal');
   }),
 
-  savePerson: task(function * () {
+  savePerson: task(function*() {
     try {
       yield this.get('person').save();
 
@@ -40,6 +44,6 @@ export default Controller.extend({
     cancel() {
       this.set('showPerson', false);
       this.get('person').rollbackAttributes();
-    }
-  }
+    },
+  },
 });

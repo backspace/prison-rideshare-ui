@@ -5,15 +5,19 @@ import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-sim
 
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | authentication', {
-});
+moduleForAcceptance('Acceptance | authentication', {});
 
 test('authenticated users are redirected to the report form after logging out', function(assert) {
   authenticateSession(this.application);
   visit('/rides');
   shared.session.click();
 
-  andThen(() => assert.ok(shared.session.isHidden, 'expected the sidebar to show not being logged in'));
+  andThen(() =>
+    assert.ok(
+      shared.session.isHidden,
+      'expected the sidebar to show not being logged in'
+    )
+  );
 });
 
 test('unauthenticated users are redirected to the report form', function(assert) {

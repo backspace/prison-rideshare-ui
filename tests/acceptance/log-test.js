@@ -8,28 +8,31 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | log', {
   beforeEach() {
-    let poster = server.create('user', { email: 'jortle@tortle.ca', admin: true });
+    let poster = server.create('user', {
+      email: 'jortle@tortle.ca',
+      admin: true,
+    });
 
     server.create('post', {
       content: stringToMobiledoc('hello'),
       poster: server.create('user'),
       unread: true,
-      insertedAt: new Date(2018, 6, 6, 14)
+      insertedAt: new Date(2018, 6, 6, 14),
     });
 
     server.create('post', {
       content: stringToMobiledoc('ya'),
       poster,
       unread: false,
-      insertedAt: new Date(2018, 7, 7, 14, 18, 22)
+      insertedAt: new Date(2018, 7, 7, 14, 18, 22),
     });
-  }
+  },
 });
 
-test('it lists posts, with the unread count in the sidebar, and posts can be marked read and unread', function (assert) {
+test('it lists posts, with the unread count in the sidebar, and posts can be marked read and unread', function(assert) {
   server.post('/token', () => {
     return {
-      access_token: 'abcdef'
+      access_token: 'abcdef',
     };
   });
 
@@ -39,7 +42,7 @@ test('it lists posts, with the unread count in the sidebar, and posts can be mar
 
   page.visit();
 
-  andThen(function () {
+  andThen(function() {
     assert.equal(shared.title, 'Log · Prison Rideshare');
 
     assert.equal(shared.logCount.text, '1');
@@ -62,7 +65,7 @@ test('it lists posts, with the unread count in the sidebar, and posts can be mar
 
   page.posts[0].markUnreadButton.click();
 
-  andThen(function () {
+  andThen(function() {
     assert.equal(shared.logCount.text, '2');
     assert.ok(page.posts[0].markUnreadButton.isHidden);
     assert.ok(page.posts[0].markReadButton.isVisible);
@@ -70,20 +73,20 @@ test('it lists posts, with the unread count in the sidebar, and posts can be mar
 
   page.posts[0].markReadButton.click();
 
-  andThen(function () {
+  andThen(function() {
     assert.equal(shared.logCount.text, '1');
     assert.ok(page.posts[0].markUnreadButton.isVisible);
   });
 
   page.markAllReadButton.click();
 
-  andThen(function () {
+  andThen(function() {
     assert.ok(shared.logCount.isHidden);
     assert.ok(page.markAllReadButton.isHidden);
   });
 });
 
-test('a post can be created', function (assert) {
+test('a post can be created', function(assert) {
   authenticateSession(this.application, { access_token: 'abcdef' });
 
   page.visit();
@@ -105,28 +108,34 @@ test('a post can be created', function (assert) {
   });
 });
 
-test('post validation errors are displayed', function (assert) {
+test('post validation errors are displayed', function(assert) {
   authenticateSession(this.application, { access_token: 'abcdef' });
 
-  server.post('/posts', {
-    errors: [{
-      'source': {
-        'pointer': '/data/attributes/content'
-      },
-      'detail': 'Content can\'t be blank'
-    }]
-  }, 422);
+  server.post(
+    '/posts',
+    {
+      errors: [
+        {
+          source: {
+            pointer: '/data/attributes/content',
+          },
+          detail: "Content can't be blank",
+        },
+      ],
+    },
+    422
+  );
 
   page.visit();
   page.newPost();
   page.form.submit();
 
   andThen(() => {
-    assert.equal(page.form.content.error.text, 'Content can\'t be blank');
+    assert.equal(page.form.content.error.text, "Content can't be blank");
   });
 });
 
-test('posts can be edited, cancelled edits are discarded', function (assert) {
+test('posts can be edited, cancelled edits are discarded', function(assert) {
   authenticateSession(this.application, { access_token: 'abcdef' });
 
   page.visit();
@@ -160,7 +169,7 @@ test('posts can be edited, cancelled edits are discarded', function (assert) {
   });
 });
 
-test('posts can be deleted', function (assert) {
+test('posts can be deleted', function(assert) {
   authenticateSession(this.application, { access_token: 'abcdef' });
 
   page.visit();
@@ -176,23 +185,10 @@ test('posts can be deleted', function (assert) {
 
 function stringToMobiledoc(string) {
   return JSON.stringify({
-    "version": "0.3.1",
-    "atoms": [],
-    "cards": [],
-    "markups": [],
-    "sections": [
-      [
-        1,
-        "p",
-        [
-          [
-            0,
-            [],
-            0,
-            string
-          ]
-        ]
-      ]
-    ]
+    version: '0.3.1',
+    atoms: [],
+    cards: [],
+    markups: [],
+    sections: [[1, 'p', [[0, [], 0, string]]]],
   });
 }

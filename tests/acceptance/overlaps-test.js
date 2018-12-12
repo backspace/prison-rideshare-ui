@@ -15,9 +15,9 @@ moduleForAcceptance('Acceptance | overlaps', {
 
     this.firstRide = server.create('ride', {
       start: moment().add(1, 'week'),
-      end: moment().add(1, 'week')
+      end: moment().add(1, 'week'),
     });
-  }
+  },
 });
 
 test('overlaps display a count badge in the sidebar and overlapping rides can be assigned to the driver', function(assert) {
@@ -35,8 +35,14 @@ test('overlaps display a count badge in the sidebar and overlapping rides can be
   andThen(() => {
     assert.equal(shared.overlapCount.text, '1');
 
-    assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
-    assert.equal(page.overlaps[0].text, 'Octavia Butler committed to slot 5:30p—8');
+    assert.ok(
+      page.rides[0].isOverlapping,
+      'expected the overlapping ride to be highlighted'
+    );
+    assert.equal(
+      page.overlaps[0].text,
+      'Octavia Butler committed to slot 5:30p—8'
+    );
 
     // Delete the commitment in an andThen in anticipation of the button being clicked
     commitment.destroy();
@@ -55,7 +61,10 @@ test('overlaps display a count badge in the sidebar and overlapping rides can be
     assert.equal(serverRide.carOwnerId, person.id);
 
     assert.ok(shared.overlapCount.isHidden);
-    assert.notOk(page.rides[0].isOverlapping, 'expected the ride to no longer be overlapping');
+    assert.notOk(
+      page.rides[0].isOverlapping,
+      'expected the ride to no longer be overlapping'
+    );
   });
 });
 
@@ -74,7 +83,7 @@ test('creating a ride triggers a check for overlaps', function(assert) {
   });
 
   server.create('institution', {
-    name: 'Rockwood'
+    name: 'Rockwood',
   });
 
   page.visit();
@@ -86,7 +95,10 @@ test('creating a ride triggers a check for overlaps', function(assert) {
 
   andThen(function() {
     assert.equal(shared.overlapCount.text, '1');
-    assert.ok(page.rides[0].isOverlapping, 'expected the overlapping ride to be highlighted');
+    assert.ok(
+      page.rides[0].isOverlapping,
+      'expected the overlapping ride to be highlighted'
+    );
   });
 });
 
@@ -100,22 +112,28 @@ test('an overlap can be ignored', function(assert) {
   let commitment = this.firstRide.createCommitment({ slot, person });
   this.firstRide.save();
 
-  server.post('/rides/:ride_id/ignore/:commitment_id', (schema, { params: { ride_id, commitment_id }}) => {
-    assert.equal(ride_id, this.firstRide.id);
-    assert.equal(commitment_id, commitment.id);
+  server.post(
+    '/rides/:ride_id/ignore/:commitment_id',
+    (schema, { params: { ride_id, commitment_id } }) => {
+      assert.equal(ride_id, this.firstRide.id);
+      assert.equal(commitment_id, commitment.id);
 
-    this.firstRide.commitments = [];
-    this.firstRide.save();
+      this.firstRide.commitments = [];
+      this.firstRide.save();
 
-    return new Mirage.Response(201, {}, {});
-  });
+      return new Mirage.Response(201, {}, {});
+    }
+  );
 
   page.visit();
   page.overlaps[0].ignore();
 
   andThen(() => {
     assert.ok(shared.overlapCount.isHidden);
-    assert.notOk(page.rides[0].isOverlapping, 'expected the ride to no longer be overlapping');
+    assert.notOk(
+      page.rides[0].isOverlapping,
+      'expected the ride to no longer be overlapping'
+    );
   });
 });
 

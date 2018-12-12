@@ -29,5 +29,5 @@ export default DS.Model.extend({
   carExpensesDollars: dollars('carExpenses'),
 
   totalExpenses: sum('foodExpenses', 'carExpenses'),
-  totalExpensesDollars: dollars('totalExpenses')
+  totalExpensesDollars: dollars('totalExpenses'),
 });

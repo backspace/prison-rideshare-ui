@@ -8,20 +8,21 @@ module.exports = function(defaults) {
   let fingerprint = {};
 
   if (deployTarget) {
-    const s3Bucket = require('./config/deploy')(process.env.DEPLOY_TARGET).s3.bucket;
+    const s3Bucket = require('./config/deploy')(process.env.DEPLOY_TARGET).s3
+      .bucket;
 
-    fingerprint.prepend = `//${s3Bucket}.s3.amazonaws.com/`
+    fingerprint.prepend = `//${s3Bucket}.s3.amazonaws.com/`;
   }
 
   let app = new EmberApp(defaults, {
     fingerprint,
     sourcemaps: {
-      enabled: true
+      enabled: true,
     },
     emberHighCharts: {
       includeHighCharts: true,
-      includeModules: ['heatmap']
-    }
+      includeModules: ['heatmap'],
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

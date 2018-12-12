@@ -10,14 +10,14 @@ moduleForAcceptance('Acceptance | reports', {
       price: 100,
       closeRate: 96,
       farRate: 69,
-      insertedAt: new Date(2018, 6, 6, 14)
+      insertedAt: new Date(2018, 6, 6, 14),
     });
 
     server.create('gas-price', {
       price: 101,
       closeRate: 84,
       farRate: 48,
-      insertedAt: new Date(2018, 6, 7, 14)
+      insertedAt: new Date(2018, 6, 7, 14),
     });
 
     server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
@@ -30,7 +30,7 @@ moduleForAcceptance('Acceptance | reports', {
     server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
     server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
     server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-  }
+  },
 });
 
 test('it lists gas prices and reïmbursement rates', function(assert) {
@@ -39,7 +39,11 @@ test('it lists gas prices and reïmbursement rates', function(assert) {
   andThen(function() {
     assert.equal(shared.title, 'Gas prices · Prison Rideshare');
 
-    assert.equal(page.gasPrices.length, 10, 'expected ten gas prices to be listed');
+    assert.equal(
+      page.gasPrices.length,
+      10,
+      'expected ten gas prices to be listed'
+    );
 
     page.gasPrices[0].as(latest => {
       assert.equal(latest.date, 'Sat, Jul 7');

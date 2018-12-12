@@ -10,5 +10,5 @@ export default Route.extend(AuthenticatedRoute, {
     return this.get('store').findAll('reimbursement');
   },
 
-  titleToken: 'Statistics'
+  titleToken: 'Statistics',
 });

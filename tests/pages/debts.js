@@ -4,7 +4,7 @@ import {
   create,
   isVisible,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -22,13 +22,13 @@ export default create({
       date: text('.date'),
       foodExpenses: text('.food-expenses'),
       carExpenses: text('.car-expenses'),
-      carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]')
+      carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]'),
     }),
 
     // TODO this should be nested but table rows 😢
     reimbursements: collection('tr.reimbursement', {
       foodExpenses: text('.food-expenses'),
-      carExpenses: text('.car-expenses')
-    })
-  })
+      carExpenses: text('.car-expenses'),
+    }),
+  }),
 });

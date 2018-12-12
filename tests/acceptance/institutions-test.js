@@ -8,11 +8,11 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 moduleForAcceptance('Acceptance | institutions', {
   beforeEach() {
-    server.create('institution', {name: 'Milner Ridge', far: true});
-    server.create('institution', {name: 'Headingley', far: false});
+    server.create('institution', { name: 'Milner Ridge', far: true });
+    server.create('institution', { name: 'Headingley', far: false });
 
     authenticateSession(this.application);
-  }
+  },
 });
 
 test('institutions can be listed and edited', function(assert) {
@@ -21,7 +21,11 @@ test('institutions can be listed and edited', function(assert) {
   andThen(() => {
     assert.equal(shared.title, 'Institutions · Prison Rideshare');
 
-    assert.equal(page.institutions.length, 2, 'expected two institutions to be listed');
+    assert.equal(
+      page.institutions.length,
+      2,
+      'expected two institutions to be listed'
+    );
     assert.equal(page.institutions[0].name, 'Headingley');
     assert.notOk(page.institutions[0].isFar);
     assert.equal(page.institutions[1].name, 'Milner Ridge');

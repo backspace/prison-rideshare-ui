@@ -9,11 +9,11 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 moduleForAcceptance('Acceptance | reports', {
   beforeEach() {
     const leavenworth = server.create('institution', {
-      name: 'Fort Leavenworth'
+      name: 'Fort Leavenworth',
     });
 
     const remand = server.create('institution', {
-      name: 'Remand Centre'
+      name: 'Remand Centre',
     });
 
     const edwardRide = server.create('ride', {
@@ -22,7 +22,7 @@ moduleForAcceptance('Acceptance | reports', {
       end: new Date(2016, 11, 27, 19, 0),
       passengers: 1,
       institution: leavenworth,
-      donatable: false
+      donatable: false,
     });
 
     server.create('ride', {
@@ -34,14 +34,14 @@ moduleForAcceptance('Acceptance | reports', {
       rate: 33,
       initials: 'francine',
       donatable: true,
-      overridable: true
+      overridable: true,
     });
 
     server.create('ride', { enabled: false });
 
     server.create('ride', {
       name: 'Assata',
-      distance: 100
+      distance: 100,
     });
 
     server.create('ride', { combinedWith: edwardRide });
@@ -49,10 +49,10 @@ moduleForAcceptance('Acceptance | reports', {
     // This ride should not display because it’s in the future.
     server.create('ride', {
       name: 'Future',
-      start: new Date(new Date().getTime() + 1000*60*60*24),
-      end: new Date(new Date().getTime() + 1000*60*60*24 + 1000)
+      start: new Date(new Date().getTime() + 1000 * 60 * 60 * 24),
+      end: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 + 1000),
     });
-  }
+  },
 });
 
 test('submit a report for a ride', function(assert) {
@@ -65,13 +65,19 @@ test('submit a report for a ride', function(assert) {
 
     assert.equal(page.rides.length, 2, 'expected two rides to choose from');
 
-    assert.equal(page.rides[0].label, 'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km )');
-    assert.equal(page.rides[1].label, 'Tue, Dec 27 at 5:00p to Fort Leavenworth');
+    assert.equal(
+      page.rides[0].label,
+      'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km )'
+    );
+    assert.equal(
+      page.rides[1].label,
+      'Tue, Dec 27 at 5:00p to Fort Leavenworth'
+    );
   });
 
   page.distance.fillIn(75);
   page.rides[0].choose();
-  page.foodExpenses.fillIn(25.50);
+  page.foodExpenses.fillIn(25.5);
   page.carExpenses.fillIn(52.05);
   page.notes.fillIn('These r the notes');
   page.donation.click();
@@ -107,7 +113,10 @@ test('a fallback shows when no rides need a report', function(assert) {
   page.submitButton.click();
 
   andThen(function() {
-    assert.ok(page.noRides.isVisible, 'expected there to be no rides to report on');
+    assert.ok(
+      page.noRides.isVisible,
+      'expected there to be no rides to report on'
+    );
   });
 });
 
@@ -116,15 +125,23 @@ test('submitting a report clears the form', function(assert) {
 
   page.distance.fillIn(75);
   page.rides[0].choose();
-  page.foodExpenses.fillIn(25.50);
+  page.foodExpenses.fillIn(25.5);
   page.notes.fillIn('These r the notes');
 
   page.submitButton.click();
 
   andThen(function() {
     assert.equal(currentURL(), '/reports/new');
-    assert.equal(page.distance.value, '', 'expected the distance field to be empty');
-    assert.equal(page.foodExpenses.value, '', 'expected the food expenses to have been cleared');
+    assert.equal(
+      page.distance.value,
+      '',
+      'expected the distance field to be empty'
+    );
+    assert.equal(
+      page.foodExpenses.value,
+      '',
+      'expected the food expenses to have been cleared'
+    );
     assert.equal(page.notes.value, '', 'expected the notes to be empty');
   });
 });
@@ -165,13 +182,25 @@ test('a ride that is not donatable doesn’t show the donation checkbox, same fo
   page.rides[1].choose();
 
   andThen(() => {
-    assert.ok(page.donation.isHidden, 'expected the donation checkbox to be hidden when a ride is not donatable');
-    assert.ok(page.carExpenses.isHidden, 'expected the car expenses field to be hidden when a ride is not overridable');
+    assert.ok(
+      page.donation.isHidden,
+      'expected the donation checkbox to be hidden when a ride is not donatable'
+    );
+    assert.ok(
+      page.carExpenses.isHidden,
+      'expected the car expenses field to be hidden when a ride is not overridable'
+    );
   });
 });
 
 test('a failure to save keeps the values and displays an error', function(assert) {
-  server.patch('/rides/:id', () => { return {}; }, 422);
+  server.patch(
+    '/rides/:id',
+    () => {
+      return {};
+    },
+    422
+  );
 
   page.visit();
 
@@ -184,6 +213,10 @@ test('a failure to save keeps the values and displays an error', function(assert
     assert.equal(shared.toast.text, 'There was an error saving your report!');
 
     assert.equal(currentURL(), '/reports/new');
-    assert.equal(page.distance.value, '75', 'expected the distance field to have the same value');
+    assert.equal(
+      page.distance.value,
+      '75',
+      'expected the distance field to have the same value'
+    );
   });
 });

@@ -1,8 +1,4 @@
-import {
-  collection,
-  create,
-  visitable
-} from 'ember-cli-page-object';
+import { collection, create, visitable } from 'ember-cli-page-object';
 
 export default create({
   visit: visitable('/statistics'),
@@ -10,7 +6,7 @@ export default create({
   start: { scope: '.start input' },
   end: { scope: '.end input' },
 
-  pastYear: { scope: '.past-year'},
+  pastYear: { scope: '.past-year' },
   pastTwoWeeks: { scope: '.past-two-weeks' },
   thisYear: { scope: '.this-year' },
 
@@ -18,7 +14,7 @@ export default create({
     scope: 'table',
 
     days: collection('tr', {
-      hours: collection('td.hour')
-    })
-  }
+      hours: collection('td.hour'),
+    }),
+  },
 });

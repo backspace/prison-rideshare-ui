@@ -5,7 +5,11 @@ module('Unit | Utility | deduplicate visitor suggestions');
 
 const essun = { name: 'essun', address: 'tirimo', contact: 'oneoneone' };
 const Essun = { name: 'Essun', address: 'Tirimo', contact: 'ONEONEONE' };
-const essunAtCastrima = { name: 'essun', address: 'Castrima', contact: 'oneoneone' };
+const essunAtCastrima = {
+  name: 'essun',
+  address: 'Castrima',
+  contact: 'oneoneone',
+};
 
 test('it removes elements where the name, address, and contact are identical', function(assert) {
   const result = deduplicateVisitorSuggestions([essun, essun]);
@@ -27,9 +31,9 @@ test('it truncates at 3 rides', function(assert) {
     return {
       name: `${index}`,
       address: `${index}`,
-      contact: `${index}`
+      contact: `${index}`,
     };
-  })
+  });
   const result = deduplicateVisitorSuggestions(rides);
   assert.equal(result.length, 3);
 });

@@ -1,15 +1,9 @@
 module.exports = {
   test_page: 'tests/index.html?hidepassed',
   disable_watching: true,
-  launch_in_ci: [
-    'Firefox'
-  ],
-  launch_in_dev: [
-    'Firefox'
-  ],
+  launch_in_ci: ['Firefox'],
+  launch_in_dev: ['Firefox'],
   browser_args: {
-    Firefox: [
-      '--headless'
-    ]
-  }
+    Firefox: ['--headless'],
+  },
 };

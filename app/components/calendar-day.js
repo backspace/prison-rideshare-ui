@@ -6,6 +6,8 @@ export default Component.extend({
     const dayDateString = this.get('day.date').toDateString();
     const slots = this.get('slots');
 
-    return slots.filter(slot => dayDateString === slot.get('start').toDateString()).sortBy('start');
-  })
+    return slots
+      .filter(slot => dayDateString === slot.get('start').toDateString())
+      .sortBy('start');
+  }),
 });

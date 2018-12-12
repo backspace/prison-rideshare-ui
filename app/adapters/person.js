@@ -13,7 +13,7 @@ export default ApplicationAdapter.extend({
     if (this.get('onCalendar')) {
       const personToken = localStorage.getItem('person-token');
       return {
-        'Authorization': `Person Bearer ${personToken}`
+        Authorization: `Person Bearer ${personToken}`,
       };
     } else {
       return {};
@@ -26,5 +26,5 @@ export default ApplicationAdapter.extend({
     } else {
       return this._super(...arguments);
     }
-  }
+  },
 });

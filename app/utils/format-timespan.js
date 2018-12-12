@@ -8,7 +8,7 @@ moment.updateLocale('en', {
     } else {
       return isLower ? 'a' : 'A';
     }
-  }
+  },
 });
 
 function isAnteMeridiem(time) {
@@ -19,7 +19,7 @@ export default function formatTimespan(start, end, date = true) {
   let startDate, startTime, endTime;
 
   if (start && new Date().getFullYear() == start.getFullYear()) {
-    startDate = 'ddd MMM D'
+    startDate = 'ddd MMM D';
   } else {
     startDate = 'ddd MMM D YYYY';
   }
@@ -40,5 +40,7 @@ export default function formatTimespan(start, end, date = true) {
     endTime += 'a';
   }
 
-  return `${date ? `${moment(start).format(startDate)} ` : ''}${moment(start).format(startTime)} — ${moment(end).format(endTime)}`;
+  return `${date ? `${moment(start).format(startDate)} ` : ''}${moment(
+    start
+  ).format(startTime)} — ${moment(end).format(endTime)}`;
 }

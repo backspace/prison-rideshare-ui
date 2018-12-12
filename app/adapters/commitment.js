@@ -13,13 +13,13 @@ export default ApplicationAdapter.extend({
     if (this.get('onAdminCalendar')) {
       const token = this.get('session.data.authenticated.access_token');
       return {
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
     } else {
       const personToken = localStorage.getItem('person-token');
       return {
-        'Authorization': `Person Bearer ${personToken}`
+        Authorization: `Person Bearer ${personToken}`,
       };
     }
-  }).volatile()
+  }).volatile(),
 });

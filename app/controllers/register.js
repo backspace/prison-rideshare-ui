@@ -11,16 +11,23 @@ export default Controller.extend({
 
       const user = this.get('model');
 
-      return user.save().then(() => {
-        return this.get('session').authenticate(
-          'authenticator:application',
-          user.get('email'),
-          user.get('password')
-        );
-      }).catch(error => {
-        const errorText = getWithDefault(error, 'errors.firstObject.detail', 'There was an error registering you');
-        this.set('error', errorText);
-      });
-    }
-  }
+      return user
+        .save()
+        .then(() => {
+          return this.get('session').authenticate(
+            'authenticator:application',
+            user.get('email'),
+            user.get('password')
+          );
+        })
+        .catch(error => {
+          const errorText = getWithDefault(
+            error,
+            'errors.firstObject.detail',
+            'There was an error registering you'
+          );
+          this.set('error', errorText);
+        });
+    },
+  },
 });

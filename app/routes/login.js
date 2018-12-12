@@ -14,5 +14,5 @@ export default Route.extend(UnauthenticatedRouteMixin, {
     return EmberObject.create(user);
   },
 
-  titleToken: 'Log in'
+  titleToken: 'Log in',
 });

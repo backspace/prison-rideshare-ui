@@ -16,11 +16,13 @@ export default DS.Model.extend({
 
   reimbursements: DS.hasMany(),
 
-  drivings: DS.hasMany('ride', {inverse: 'driver'}),
-  carOwnings: DS.hasMany('ride', {inverse: 'carOwner'}),
+  drivings: DS.hasMany('ride', { inverse: 'driver' }),
+  carOwnings: DS.hasMany('ride', { inverse: 'carOwner' }),
 
   lastRide: computed('drivings.@each.start', function() {
-    return this.get('drivings').sortBy('start').get('lastObject');
+    return this.get('drivings')
+      .sortBy('start')
+      .get('lastObject');
   }),
 
   calendarSecret: DS.attr('string'),
@@ -33,5 +35,5 @@ export default DS.Model.extend({
       response[key] = errors.mapBy('message');
       return response;
     }, {});
-  })
+  }),
 });

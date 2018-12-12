@@ -5,7 +5,7 @@ import {
   hasClass,
   isVisible,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -16,20 +16,20 @@ export default create({
     name: text('.name'),
     isFar: isVisible('.far md-icon'),
 
-    edit: clickable('button.edit')
+    edit: clickable('button.edit'),
   }),
 
   form: {
     nameField: {
-      scope: '.name input'
+      scope: '.name input',
     },
 
     farField: {
       scope: 'md-checkbox',
-      isChecked: hasClass('md-checked')
+      isChecked: hasClass('md-checked'),
     },
 
     submit: clickable('button.submit'),
-    cancel: clickable('button.cancel')
-  }
+    cancel: clickable('button.cancel'),
+  },
 });

@@ -21,7 +21,7 @@ export default Route.extend(ApplicationRouteMixin, {
     if (!Ember.testing) {
       this.get('poll').start({
         idle_timeout: 10000,
-        interval: 10000
+        interval: 10000,
       });
     }
   },
@@ -38,9 +38,11 @@ export default Route.extend(ApplicationRouteMixin, {
   },
 
   _loadCurrentUser() {
-    return this.get('account').loadCurrentUser().catch(() => {
-      this.get('flashMessages').warning('Please log in');
-      this.get('session').invalidate();
-    });
-  }
+    return this.get('account')
+      .loadCurrentUser()
+      .catch(() => {
+        this.get('flashMessages').warning('Please log in');
+        this.get('session').invalidate();
+      });
+  },
 });

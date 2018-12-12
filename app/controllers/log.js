@@ -7,9 +7,12 @@ export default Controller.extend({
 
   actions: {
     newPost() {
-      this.set('editingPost', BufferedProxy.create({
-        content: this.store.createRecord('post')
-      }));
+      this.set(
+        'editingPost',
+        BufferedProxy.create({
+          content: this.store.createRecord('post'),
+        })
+      );
     },
 
     editPost(post) {
@@ -21,8 +24,11 @@ export default Controller.extend({
     savePost() {
       const proxy = this.get('editingPost');
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingPost', undefined))
-        .catch(() => { });
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingPost', undefined))
+        .catch(() => {});
     },
 
     cancelPost() {
@@ -49,6 +55,6 @@ export default Controller.extend({
 
     markUnread(post) {
       return post.markUnread();
-    }
-  }
+    },
+  },
 });

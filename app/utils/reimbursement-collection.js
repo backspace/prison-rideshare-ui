@@ -23,48 +23,62 @@ export default EmberObject.extend({
     const total = this.get('totalExpensesDollars');
 
     const today = new Date();
-    const dateString = `${today.getMonth() + 1}/${today.getDate()}/${today.getFullYear()}`;
+    const dateString = `${today.getMonth() +
+      1}/${today.getDate()}/${today.getFullYear()}`;
 
-    return `${dateString}\t` +
-      this.get('clipboardDescriptionColumn') + '\t' +
+    return (
+      `${dateString}\t` +
+      this.get('clipboardDescriptionColumn') +
+      '\t' +
       `${name}\t` +
       `-$${total}\t` +
       `${this.get('donations') ? `$${total}` : ''}\t` +
       '\t' +
-      `${this.get('donations') ? '(donated)' : ''}`;
+      `${this.get('donations') ? '(donated)' : ''}`
+    );
   }),
 
   copyIconTitle: computed('clipboardText', function() {
-    return `This will copy the following to the clipboard: ${this.get('clipboardText')}`;
+    return `This will copy the following to the clipboard: ${this.get(
+      'clipboardText'
+    )}`;
   }),
 
-  clipboardDescriptionColumn: computed('monthName', 'foodExpensesSum', 'carExpensesSum', function() {
-    const food = this.get('foodExpensesSum');
-    const car = this.get('carExpensesSum');
+  clipboardDescriptionColumn: computed(
+    'monthName',
+    'foodExpensesSum',
+    'carExpensesSum',
+    function() {
+      const food = this.get('foodExpensesSum');
+      const car = this.get('carExpensesSum');
 
-    let description;
+      let description;
 
-    if (car && food) {
-      description = `mileage + ${this.get('clipboardDescriptionColumnMeal')}`;
-    } else if (car) {
-      description = 'mileage';
-    } else {
-      description = this.get('clipboardDescriptionColumnMeal');
+      if (car && food) {
+        description = `mileage + ${this.get('clipboardDescriptionColumnMeal')}`;
+      } else if (car) {
+        description = 'mileage';
+      } else {
+        description = this.get('clipboardDescriptionColumnMeal');
+      }
+
+      return `${this.get('monthName')} ${description}`;
     }
+  ),
 
-    return `${this.get('monthName')} ${description}`;
-  }),
+  clipboardDescriptionColumnMeal: computed(
+    'reimbursementsWithFoodExpenses.length',
+    function() {
+      const meals = this.get('reimbursementsWithFoodExpenses.length');
 
-  clipboardDescriptionColumnMeal: computed('reimbursementsWithFoodExpenses.length', function() {
-    const meals = this.get('reimbursementsWithFoodExpenses.length');
-
-    return `meal${meals > 1 ? ` × ${meals}` : ''}`;
-  }),
+      return `meal${meals > 1 ? ` × ${meals}` : ''}`;
+    }
+  ),
 
   reimbursementsWithFoodExpenses: filterBy('reimbursements', 'foodExpenses'),
 
   monthName: computed('reimbursements.firstObject.ride.start', function() {
     const date = this.get('reimbursements.firstObject.ride.start');
     return moment(date).format('MMMM');
-  })
+  }),
 });

@@ -13,7 +13,7 @@ export default Service.extend({
 
   open: false,
 
-  userCount: computed('userSocket.present.length', function () {
+  userCount: computed('userSocket.present.length', function() {
     const count = this.get('userSocket.present.length');
 
     if (count > 1) {
@@ -23,18 +23,20 @@ export default Service.extend({
     }
   }),
 
-  postsRequest: computed(function () {
+  postsRequest: computed(function() {
     return ObjectPromiseProxy.create({
-      promise: this.get('store').findAll('post').then(posts => {
-        return {
-          posts
-        };
-      })
+      promise: this.get('store')
+        .findAll('post')
+        .then(posts => {
+          return {
+            posts,
+          };
+        }),
     });
   }),
 
-  unreadCount: computed('postsRequest.posts.@each.unread', function () {
-    let posts = this.get('postsRequest.posts')
+  unreadCount: computed('postsRequest.posts.@each.unread', function() {
+    let posts = this.get('postsRequest.posts');
 
     if (posts) {
       return posts.filterBy('unread').length;
@@ -43,10 +45,17 @@ export default Service.extend({
     }
   }),
 
-  notificationCount: computed('userCount', 'unreadCount', 'overlaps.count', function() {
-    // TODO this is untested
-    return this.get('userCount') +
-      this.get('unreadCount') +
-      this.get('overlaps.count');
-  }),
+  notificationCount: computed(
+    'userCount',
+    'unreadCount',
+    'overlaps.count',
+    function() {
+      // TODO this is untested
+      return (
+        this.get('userCount') +
+        this.get('unreadCount') +
+        this.get('overlaps.count')
+      );
+    }
+  ),
 });

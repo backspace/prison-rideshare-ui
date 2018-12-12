@@ -1,8 +1,8 @@
 import { moduleForModel, test } from 'ember-qunit';
-import { run } from "@ember/runloop";
+import { run } from '@ember/runloop';
 
 moduleForModel('ride', 'Unit | Model | ride', {
-  needs: ['model:institution', 'model:person']
+  needs: ['model:institution', 'model:person'],
 });
 
 test('it determines whether it matches a search query', function(assert) {
@@ -23,13 +23,19 @@ test('it determines whether it matches a search query', function(assert) {
       carOwner: edward,
 
       name: 'jORTLE',
-      address: '91 Albert'
+      address: '91 Albert',
     });
   });
 
   assert.ok(rockwoodRide.matches('Rock'));
-  assert.ok(rockwoodRide.matches('rock'), 'expected institution-matching to ignore case');
-  assert.ok(rockwoodRide.matches('ROCK'), 'expected institution-matching to ignore case');
+  assert.ok(
+    rockwoodRide.matches('rock'),
+    'expected institution-matching to ignore case'
+  );
+  assert.ok(
+    rockwoodRide.matches('ROCK'),
+    'expected institution-matching to ignore case'
+  );
   assert.notOk(rockwoodRide.matches('head'));
 
   assert.ok(rockwoodRide.matches('edward'));
@@ -38,5 +44,8 @@ test('it determines whether it matches a search query', function(assert) {
   assert.ok(rockwoodRide.matches('jort'));
   assert.ok(rockwoodRide.matches('albert'));
 
-  assert.ok(rockwoodRide.matches('rock snow'), 'expected each word in the query to be matched independently');
+  assert.ok(
+    rockwoodRide.matches('rock snow'),
+    'expected each word in the query to be matched independently'
+  );
 });

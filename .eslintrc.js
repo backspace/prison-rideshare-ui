@@ -5,7 +5,8 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'ember'
+    'ember',
+    'prettier'
   ],
   extends: [
     'eslint:recommended',
@@ -15,6 +16,7 @@ module.exports = {
     browser: true
   },
   rules: {
+    'prettier/prettier': 'error'
   },
   overrides: [
     // node files

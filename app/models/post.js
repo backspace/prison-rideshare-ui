@@ -20,14 +20,14 @@ export default DS.Model.extend({
     set(key, value) {
       this.set('body', JSON.stringify(value));
       return value;
-    }
+    },
   }),
 
   poster: DS.belongsTo('user'),
 
   insertedAt: DS.attr('date'),
 
-  validationErrors: computed('errors.[]', function () {
+  validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
     return attributes._keys.list.reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];
@@ -36,7 +36,10 @@ export default DS.Model.extend({
     }, {});
   }),
 
-  markAllRead: resourceAction('readings', { method: 'POST', pushToStore: true }),
+  markAllRead: resourceAction('readings', {
+    method: 'POST',
+    pushToStore: true,
+  }),
   markRead: modelAction('readings', { method: 'POST', pushToStore: true }),
-  markUnread: modelAction('readings', { method: 'DELETE', pushToStore: true })
+  markUnread: modelAction('readings', { method: 'DELETE', pushToStore: true }),
 });

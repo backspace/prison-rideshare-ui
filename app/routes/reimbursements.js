@@ -12,5 +12,5 @@ export default Route.extend(AuthenticatedRoute, {
     return all(reimbursements.mapBy('ride'));
   },
 
-  titleToken: 'Reimbursements'
+  titleToken: 'Reimbursements',
 });

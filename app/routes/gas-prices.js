@@ -5,5 +5,5 @@ export default Route.extend({
     return this.store.findAll('gas-price');
   },
 
-  titleToken: 'Gas prices'
+  titleToken: 'Gas prices',
 });

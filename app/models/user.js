@@ -18,5 +18,5 @@ export default DS.Model.extend({
   presenceCount: computed('userSocket.present.length', function() {
     const myId = this.get('id');
     return this.get('userSocket.present').filter(id => myId === id).length;
-  })
+  }),
 });

@@ -8,12 +8,17 @@ export default Route.extend(AuthenticatedRoute, {
 
   beforeModel() {
     // FIXME this is loading twice, also in application
-    return this.get('account').loadCurrentUser().then(() => {
-      if (this.get('session.isAuthenticated') && this.get('session.currentUser.admin')) {
-        this.transitionTo('rides');
-      } else {
-        this.transitionTo('reports.new');
-      }
-    });
-  }
+    return this.get('account')
+      .loadCurrentUser()
+      .then(() => {
+        if (
+          this.get('session.isAuthenticated') &&
+          this.get('session.currentUser.admin')
+        ) {
+          this.transitionTo('rides');
+        } else {
+          this.transitionTo('reports.new');
+        }
+      });
+  },
 });

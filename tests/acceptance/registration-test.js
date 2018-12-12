@@ -12,19 +12,19 @@ moduleForAcceptance('Acceptance | registration', {
     // FIXME this is duplicated here and in login-test because it needs access to the application
     // which seems impossible from mirage/config
     server.post('/token', schema => {
-      authenticateSession(this.application, {access_token: 'abcdef'});
+      authenticateSession(this.application, { access_token: 'abcdef' });
 
       // FIXME yeah…
       schema.create('user', {
         email: 'jorts@jants.ca',
-        password: 'aaaaaaaaa'
+        password: 'aaaaaaaaa',
       });
 
       return {
-        access_token: 'abcdef'
+        access_token: 'abcdef',
       };
     });
-  }
+  },
 });
 
 test('registrations are sent to the server, currently with no followup', function(assert) {
@@ -52,14 +52,20 @@ test('registrations are sent to the server, currently with no followup', functio
 
 test('a failed registration shows an unprocessed error', function(assert) {
   server.post('/register', () => {
-    return new Mirage.Response(422, {}, {
-      errors: [{
-        'source': {
-          'pointer': '/data/attributes/password-confirmation'
-        },
-        'detail': 'Password confirmation did not match'
-      }]
-    });
+    return new Mirage.Response(
+      422,
+      {},
+      {
+        errors: [
+          {
+            source: {
+              pointer: '/data/attributes/password-confirmation',
+            },
+            detail: 'Password confirmation did not match',
+          },
+        ],
+      }
+    );
   });
 
   page.visit();

@@ -13,5 +13,5 @@ export default DS.Model.extend({
       response[key] = errors.mapBy('message');
       return response;
     }, {});
-  })
+  }),
 });

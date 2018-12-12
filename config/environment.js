@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -23,14 +23,14 @@ module.exports = function(environment) {
     },
 
     DS: {
-     host: 'http://localhost:4000',
-     socketHost: 'ws://localhost:4000',
-     namespace: ''
+      host: 'http://localhost:4000',
+      socketHost: 'ws://localhost:4000',
+      namespace: '',
     },
 
     'ember-simple-auth': {
       authenticationRoute: 'login',
-      routeAfterAuthentication: 'index'
+      routeAfterAuthentication: 'index',
     },
 
     sentry: {},
@@ -39,8 +39,8 @@ module.exports = function(environment) {
     toastDuration: 3000,
 
     moment: {
-      includeTimezone: 'subset'
-    }
+      includeTimezone: 'subset',
+    },
   };
 
   if (environment === 'development') {
@@ -50,7 +50,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV['ember-cli-mirage'] = {
-      enabled: false
+      enabled: false,
     };
 
     if (process.env.API_HOST) {
@@ -82,7 +82,7 @@ module.exports = function(environment) {
   if (environment === 'production') {
     if (process.env.SENTRY_DSN) {
       ENV.sentry = {
-        dsn: process.env.SENTRY_DSN
+        dsn: process.env.SENTRY_DSN,
       };
     }
 
@@ -90,7 +90,7 @@ module.exports = function(environment) {
       ENV.DS.host = process.env.API_HOST;
     } else {
       ENV['ember-cli-mirage'] = {
-        enabled: true
+        enabled: true,
       };
     }
 

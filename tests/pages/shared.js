@@ -1,33 +1,29 @@
-import {
-  collection,
-  create,
-  text
-} from 'ember-cli-page-object';
+import { collection, create, text } from 'ember-cli-page-object';
 
 export default create({
   title: text('title:nth-of-type(2)', { testContainer: 'html' }),
 
   session: {
-    scope: '.site-nav-container .session'
+    scope: '.site-nav-container .session',
   },
 
   flashes: collection('.flashes div', {
-    text: text()
+    text: text(),
   }),
 
   toast: {
-    scope: '.md-toast-content span'
+    scope: '.md-toast-content span',
   },
 
   userCount: {
-    scope: '.users .count'
+    scope: '.users .count',
   },
 
   logCount: {
-    scope: '.log .count'
+    scope: '.log .count',
   },
 
   overlapCount: {
-    scope: '.rides .count'
-  }
+    scope: '.rides .count',
+  },
 });
