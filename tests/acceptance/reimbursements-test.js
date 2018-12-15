@@ -1,9 +1,8 @@
-import { skip, test } from 'qunit';
+import { test } from 'qunit';
 import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
 
 import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
 
-import peoplePage from 'prison-rideshare-ui/tests/pages/people';
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
@@ -269,78 +268,5 @@ test('rows can be copied for the ledger', function(assert) {
       sunClipboardText.includes(expectedSunClipboardTextEnding),
       `expected Sun clipboard text to include ${expectedSunClipboardTextEnding}, got ${sunClipboardText}`
     );
-  });
-});
-
-skip('create a reimbursement', function(assert) {
-  peoplePage.visit();
-  peoplePage.rows[0].reimburseButton.click();
-
-  andThen(() => {
-    assert.equal(
-      reimbursementsPage.form.amountField.value,
-      '22',
-      'expected the default reimbursement amount to equal the amount owed'
-    );
-  });
-
-  reimbursementsPage.form.cancel();
-
-  andThen(() => {
-    assert.equal(peoplePage.rows[0].owed, '22');
-  });
-
-  peoplePage.rows[0].reimburseButton.click();
-
-  reimbursementsPage.form.amountField.fill('10');
-  reimbursementsPage.form.submit();
-
-  andThen(() => {
-    assert.equal(peoplePage.rows[0].owed, '12');
-  });
-
-  reimbursementsPage.visit();
-
-  andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements.length, 4);
-    assert.equal(reimbursementsPage.reimbursements[3].amount, '10');
-  });
-});
-
-skip('edit a reimbursement and the totals and donation status will be updated', function(assert) {
-  reimbursementsPage.visit();
-
-  andThen(() => {
-    assert.ok(
-      reimbursementsPage.reimbursements[0].donation,
-      'expected the first reimbursement to be a donation'
-    );
-  });
-
-  reimbursementsPage.reimbursements[0].edit();
-
-  andThen(() => {
-    assert.ok(
-      reimbursementsPage.form.donationCheckbox.checked,
-      'expected the donation checkbox to be checked'
-    );
-  });
-
-  reimbursementsPage.form.amountField.fill('44');
-  reimbursementsPage.form.donationCheckbox.click();
-  reimbursementsPage.form.submit();
-
-  andThen(() => {
-    assert.equal(reimbursementsPage.reimbursements[0].amount, '44');
-    assert.notOk(
-      reimbursementsPage.reimbursements[0].donation,
-      'expected the first reimbursements to no longer be a donation'
-    );
-  });
-
-  peoplePage.visit();
-
-  andThen(() => {
-    assert.equal(peoplePage.rows[1].owed, '66');
   });
 });
