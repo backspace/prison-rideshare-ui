@@ -65,6 +65,8 @@ export default create({
   }),
 
   form: {
+    testContainer: 'html',
+
     nameField: {
       scope: '.name input',
       fill: fillable(),

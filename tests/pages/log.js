@@ -41,7 +41,8 @@ export default create({
   }),
 
   form: {
-    scope: 'form',
+    scope: 'form.log',
+    testContainer: 'html',
 
     content: {
       scope: '.content',

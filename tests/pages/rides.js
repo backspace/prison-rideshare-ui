@@ -156,6 +156,7 @@ export default create({
 
   form: {
     scope: '.md-dialog-container',
+    testContainer: 'html',
 
     notice: text('.warning'),
 

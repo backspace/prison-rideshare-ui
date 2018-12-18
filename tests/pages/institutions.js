@@ -20,8 +20,11 @@ export default create({
   }),
 
   form: {
+    testContainer: 'html',
+
     nameField: {
       scope: '.name input',
+      testContainer: 'html',
     },
 
     farField: {

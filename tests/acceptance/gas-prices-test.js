@@ -1,42 +1,44 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | reports', {
-  beforeEach() {
-    server.create('gas-price', {
+module('Acceptance | reports', function(hooks) {
+  setupApplicationTest(hooks);
+  setupMirage(hooks);
+
+  hooks.beforeEach(function() {
+    this.server.create('gas-price', {
       price: 100,
       closeRate: 96,
       farRate: 69,
       insertedAt: new Date(2018, 6, 6, 14),
     });
 
-    server.create('gas-price', {
+    this.server.create('gas-price', {
       price: 101,
       closeRate: 84,
       farRate: 48,
       insertedAt: new Date(2018, 6, 7, 14),
     });
 
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-  },
-});
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+  });
 
-test('it lists gas prices and reïmbursement rates', function(assert) {
-  page.visit();
+  test('it lists gas prices and reïmbursement rates', async function(assert) {
+    await page.visit();
 
-  andThen(function() {
     assert.equal(shared.title, 'Gas prices · Prison Rideshare');
 
     assert.equal(

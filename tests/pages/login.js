@@ -9,10 +9,10 @@ import {
 export default create({
   visit: visitable('/login'),
 
-  fillEmail: fillable('.email input'),
-  fillPassword: fillable('.password input'),
+  fillEmail: fillable('.email input', { testContainer: 'html' }),
+  fillPassword: fillable('.password input', { testContainer: 'html' }),
 
-  error: text('.error'),
+  error: text('.error', { testContainer: 'html' }),
 
-  submit: clickable('button'),
+  submit: clickable('button.login', { testContainer: 'html' }),
 });
