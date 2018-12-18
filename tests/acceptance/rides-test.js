@@ -4,6 +4,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
+import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -380,7 +381,7 @@ module('Acceptance | rides', function(hooks) {
     );
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    selectChoose('md-input-container.institution', 'Rockwood');
+    await selectChoose('md-input-container.institution', 'Rockwood');
 
     await page.form.submit();
 
@@ -423,7 +424,7 @@ module('Acceptance | rides', function(hooks) {
     assert.ok(lastRide.overridable);
 
     await page.rides[0].driver.click();
-    selectChoose('.driver md-input-container', 'Sun');
+    await selectChoose('.driver md-input-container', 'Sun');
 
     assert.equal(page.rides[0].driver.text, 'Sun');
     assert.equal(
@@ -441,7 +442,7 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(lastRide.carOwnerId, sun.id);
 
     await page.rides[0].carOwner.clear();
-    selectChoose('.car-owner md-input-container', 'Lito');
+    await selectChoose('.car-owner md-input-container', 'Lito');
 
     assert.equal(page.rides[0].carOwner.text, 'Lito');
 

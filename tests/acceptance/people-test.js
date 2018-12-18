@@ -3,6 +3,7 @@ import { setupApplicationTest } from 'ember-qunit';
 import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
+import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
@@ -141,7 +142,7 @@ module('Acceptance | people', function(hooks) {
 
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();
-    selectChoose('.driver md-input-container', 'Capheus');
+    await selectChoose('.driver md-input-container', 'Capheus');
 
     assert.equal(ridesPage.rides[0].driver.text, 'Capheus');
   });
