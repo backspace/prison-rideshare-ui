@@ -13,7 +13,7 @@ export default create({
 
   toast: {
     scope: '.md-toast-content span',
-    testContainer: 'html'
+    testContainer: 'html',
   },
 
   userCount: {
