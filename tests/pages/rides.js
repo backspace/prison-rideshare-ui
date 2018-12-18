@@ -230,6 +230,7 @@ export default create({
   },
 
   cancellationForm: {
+    testContainer: 'html',
     scope: '.md-dialog-container',
 
     notice: text('md-card-content'),
