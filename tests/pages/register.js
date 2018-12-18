@@ -7,6 +7,8 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
+  testContainer: 'html',
+
   visit: visitable('/register'),
 
   fillEmail: fillable('.email input'),
@@ -15,5 +17,5 @@ export default create({
 
   error: text('.error'),
 
-  submit: clickable('button'),
+  submit: clickable('button.register'),
 });
