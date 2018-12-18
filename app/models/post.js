@@ -29,7 +29,7 @@ export default DS.Model.extend({
 
   validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
-    return attributes._keys.list.reduce((response, key) => {
+    return Array.from(attributes.keys()).reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];
       response[key] = errors.mapBy('message');
       return response;
