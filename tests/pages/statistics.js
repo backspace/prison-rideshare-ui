@@ -1,6 +1,8 @@
 import { collection, create, visitable } from 'ember-cli-page-object';
 
 export default create({
+  testContainer: 'html',
+
   visit: visitable('/statistics'),
 
   start: { scope: '.start input' },

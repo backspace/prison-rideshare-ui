@@ -1,7 +1,8 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/statistics';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -10,16 +11,17 @@ import moment from 'moment';
 
 const format = 'YYYY-MM-DD';
 
-moduleForAcceptance('Acceptance | statistics', {
-  beforeEach() {
-    authenticateSession(this.application);
-  },
-});
+module('Acceptance | statistics', function(hooks) {
+  setupApplicationTest(hooks);
+  setupMirage(hooks);
 
-test('has convenience buttons for timespans', function(assert) {
-  page.visit();
+  hooks.beforeEach(function() {
+    authenticateSession();
+  });
 
-  andThen(() => {
+  test('has convenience buttons for timespans', async function(assert) {
+    await page.visit();
+
     assert.equal(shared.title, 'Statistics · Prison Rideshare');
 
     assert.equal(
@@ -34,11 +36,9 @@ test('has convenience buttons for timespans', function(assert) {
       moment().format(format),
       'expected the end date to be today'
     );
-  });
 
-  page.pastTwoWeeks.click();
+    await page.pastTwoWeeks.click();
 
-  andThen(() => {
     assert.equal(
       page.start.value,
       moment()
@@ -51,11 +51,9 @@ test('has convenience buttons for timespans', function(assert) {
       moment().format(format),
       'expected the end date to be today'
     );
-  });
 
-  page.thisYear.click();
+    await page.thisYear.click();
 
-  andThen(() => {
     assert.equal(
       page.start.value,
       moment()
@@ -68,11 +66,9 @@ test('has convenience buttons for timespans', function(assert) {
       moment().format(format),
       'expected the end date to be today'
     );
-  });
 
-  page.pastYear.click();
+    await page.pastYear.click();
 
-  andThen(() => {
     assert.equal(
       page.start.value,
       moment()
