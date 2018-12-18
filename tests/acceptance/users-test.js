@@ -1,32 +1,34 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from 'ember-qunit';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/users';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | users', {
-  beforeEach() {
-    this.admin = server.create('user', {
+module('Acceptance | users', function(hooks) {
+  setupApplicationTest(hooks);
+  setupMirage(hooks);
+
+  hooks.beforeEach(function() {
+    this.admin = this.server.create('user', {
       email: 'abc@def.com',
       admin: true,
     });
 
-    this.nonAdmin = server.create('user', {
+    this.nonAdmin = this.server.create('user', {
       email: 'ghi@jkl.com',
       admin: false,
     });
-  },
-});
+  });
 
-test('list users and update admin status', function(assert) {
-  authenticateSession(this.application);
+  test('list users and update admin status', async function(assert) {
+    authenticateSession();
 
-  page.visit();
+    await page.visit();
 
-  andThen(function() {
     assert.equal(shared.title, 'Users · Prison Rideshare');
 
     assert.equal(page.users.length, 2, 'expected two users');
@@ -36,52 +38,45 @@ test('list users and update admin status', function(assert) {
 
     assert.equal(page.users[1].email, 'ghi@jkl.com');
     assert.notOk(page.users[1].adminCheckbox.checked);
-  });
 
-  page.users[1].adminCheckbox.click();
+    await page.users[1].adminCheckbox.click();
 
-  andThen(function() {
     assert.ok(page.users[1].adminCheckbox.checked);
 
-    const serverUsers = server.db.users;
+    const serverUsers = this.server.db.users;
     const lastUser = serverUsers[serverUsers.length - 1];
     assert.ok(lastUser.admin);
   });
-});
 
-test('shows who is present', function(assert) {
-  server.post('/token', schema => {
-    authenticateSession(this.application, { access_token: 'abcdef' });
+  test('shows who is present', async function(assert) {
+    this.server.post('/token', schema => {
+      authenticateSession({ access_token: 'abcdef' });
 
-    // FIXME another repetition… how to log in as admin???
-    schema.create('user', {
-      email: 'jorts@jants.ca',
-      password: 'aaaaaaaaa',
+      // FIXME another repetition… how to log in as admin???
+      schema.create('user', {
+        email: 'jorts@jants.ca',
+        password: 'aaaaaaaaa',
+      });
+
+      return {
+        access_token: 'abcdef',
+      };
     });
 
-    return {
-      access_token: 'abcdef',
-    };
-  });
+    await loginPage.visit();
+    await loginPage.fillEmail('jorts@jants.ca');
+    await loginPage.fillPassword('aaaaaaaaa');
+    await loginPage.submit();
 
-  loginPage.visit();
-  loginPage.fillEmail('jorts@jants.ca');
-  loginPage.fillPassword('aaaaaaaaa');
-  loginPage.submit();
+    await page.visit();
 
-  page.visit();
+    const userSocket = this.owner.lookup('service:user-socket');
 
-  const userSocket = this.application.__container__.lookup(
-    'service:user-socket'
-  );
-
-  andThen(() => {
     assert.ok(
       shared.userCount.isHidden,
       'expected no user count to show when no one is connected'
     );
 
-    // TODO why does this have to go inside the andThen?
     const presenceStateMessage = {};
     presenceStateMessage[`User:${this.admin.id}`] = {};
     userSocket._onPresenceState(presenceStateMessage);
@@ -89,9 +84,9 @@ test('shows who is present', function(assert) {
     const joinPresenceDiffMessage = { joins: {}, leaves: {} };
     joinPresenceDiffMessage.joins[`User:${this.nonAdmin.id}`] = {};
     userSocket._onPresenceDiff(joinPresenceDiffMessage);
-  });
 
-  andThen(() => {
+    await page.visit();
+
     assert.equal(
       shared.userCount.text,
       '2',
@@ -109,9 +104,9 @@ test('shows who is present', function(assert) {
     const leavePresenceDiffMessage = { joins: {}, leaves: {} };
     leavePresenceDiffMessage.leaves[`User:${this.nonAdmin.id}`] = {};
     userSocket._onPresenceDiff(leavePresenceDiffMessage);
-  });
 
-  andThen(() => {
+    await page.visit();
+
     assert.ok(
       shared.userCount.isHidden,
       'expected no user count to show when only one person is connected'
@@ -124,9 +119,6 @@ test('shows who is present', function(assert) {
     const rejoinPresenceDiffMessage = { joins: {}, leaves: {} };
     rejoinPresenceDiffMessage.joins[`User:${this.admin.id}`] = {};
     userSocket._onPresenceDiff(rejoinPresenceDiffMessage);
-  });
-
-  andThen(() => {
     assert.ok(
       shared.userCount.isHidden,
       'expected the count to not include duplicates'
