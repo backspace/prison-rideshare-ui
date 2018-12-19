@@ -44,7 +44,6 @@ module('Acceptance | overlaps', function(hooks) {
       'Octavia Butler committed to slot 5:30p—8'
     );
 
-    // Delete the commitment in an andThen in anticipation of the button being clicked
     commitment.destroy();
     this.firstRide.save();
 
