@@ -160,7 +160,7 @@ module('Acceptance | log', function(hooks) {
     await page.posts[0].deleteButton.click();
     await page.posts[0].deleteConfirm.click();
 
-    assert.equal(server.db.posts.length, 1);
+    assert.equal(this.server.db.posts.length, 1);
     assert.equal(page.posts.length, 1);
   });
 
