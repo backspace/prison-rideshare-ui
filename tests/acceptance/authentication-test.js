@@ -1,6 +1,7 @@
 import { currentURL, visit } from '@ember/test-helpers';
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
+import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -8,6 +9,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | authentication', function(hooks) {
   setupApplicationTest(hooks);
+  setupMirage(hooks);
 
   test('authenticated users are redirected to the report form after logging out', async function(assert) {
     await authenticateSession();
@@ -20,8 +22,11 @@ module('Acceptance | authentication', function(hooks) {
     );
   });
 
-  skip('unauthenticated users are redirected to the report form', async function(assert) {
+  test('unauthenticated users are redirected to the report form', async function(assert) {
+    this.server.create('ride');
+
     await visit('/');
+
     assert.equal(currentURL(), '/reports/new');
   });
 
