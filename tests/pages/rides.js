@@ -41,6 +41,7 @@ export default create({
 
       clear: {
         scope: 'button',
+        click: triggerable('click'),
       },
     },
   },
