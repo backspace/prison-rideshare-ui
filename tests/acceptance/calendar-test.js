@@ -1,8 +1,7 @@
 import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
 import Mirage from 'ember-cli-mirage';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';
@@ -10,7 +9,6 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | calendar', function(hooks) {
   setupApplicationTest(hooks);
-  setupMirage(hooks);
 
   hooks.beforeEach(function() {
     const person = this.server.create('person', {
@@ -72,11 +70,6 @@ module('Acceptance | calendar', function(hooks) {
     });
 
     pastCommittedSlot.createCommitment({ person });
-  });
-
-  hooks.afterEach(function() {
-    let toasts = this.owner.lookup('service:paperToaster');
-    toasts.get('queue').forEach(toast => toasts.cancelToast(toast));
   });
 
   test('calendar shows existing commitments and lets them be changed', async function(assert) {

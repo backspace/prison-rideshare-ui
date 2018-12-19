@@ -1,13 +1,11 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { setupApplicationTest } from '../helpers/application-tests';
 
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | reports', function(hooks) {
   setupApplicationTest(hooks);
-  setupMirage(hooks);
 
   hooks.beforeEach(function() {
     this.server.create('gas-price', {

@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { setupApplicationTest } from '../helpers/application-tests';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -10,7 +9,6 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | users', function(hooks) {
   setupApplicationTest(hooks);
-  setupMirage(hooks);
 
   hooks.beforeEach(function() {
     this.admin = this.server.create('user', {

@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { setupApplicationTest } from '../helpers/application-tests';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/log';
@@ -9,7 +8,6 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | log', function(hooks) {
   setupApplicationTest(hooks);
-  setupMirage(hooks);
 
   hooks.beforeEach(function() {
     let poster = this.server.create('user', {

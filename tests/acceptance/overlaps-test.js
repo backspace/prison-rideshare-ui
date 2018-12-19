@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { setupApplicationTest } from '../helpers/application-tests';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
@@ -11,7 +10,6 @@ import Mirage from 'ember-cli-mirage';
 
 module('Acceptance | overlaps', function(hooks) {
   setupApplicationTest(hooks);
-  setupMirage(hooks);
 
   hooks.beforeEach(function() {
     this.server.create('user', { admin: true });

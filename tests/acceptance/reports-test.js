@@ -1,7 +1,6 @@
 import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
-import { setupApplicationTest } from 'ember-qunit';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { setupApplicationTest } from '../helpers/application-tests';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -10,7 +9,6 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | reports', function(hooks) {
   setupApplicationTest(hooks);
-  setupMirage(hooks);
 
   hooks.beforeEach(function() {
     const leavenworth = this.server.create('institution', {
@@ -57,11 +55,6 @@ module('Acceptance | reports', function(hooks) {
       start: new Date(new Date().getTime() + 1000 * 60 * 60 * 24),
       end: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 + 1000),
     });
-  });
-
-  hooks.afterEach(function() {
-    let toasts = this.owner.lookup('service:paperToaster');
-    toasts.get('queue').forEach(toast => toasts.cancelToast(toast));
   });
 
   test('submit a report for a ride', async function(assert) {
