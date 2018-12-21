@@ -8,7 +8,7 @@ export default Route.extend(ApplicationRouteMixin, {
   session: service(),
   account: service(),
   userSocket: service(),
-  flashMessages: service(),
+  toasts: service(),
   overlaps: service(),
   poll: service(),
 
@@ -41,7 +41,7 @@ export default Route.extend(ApplicationRouteMixin, {
     return this.get('account')
       .loadCurrentUser()
       .catch(() => {
-        this.get('flashMessages').warning('Please log in');
+        this.get('toasts').show('Please log in');
         this.get('session').invalidate();
       });
   },

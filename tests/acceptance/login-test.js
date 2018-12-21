@@ -71,9 +71,9 @@ module('Acceptance | login', function(hooks) {
     await page.fillPassword('x');
     await page.submit();
 
-    assert.equal(shared.flashes[0].text, 'Please log in');
+    assert.equal(shared.toast.text, 'Please log in');
     // TODO this redirects to /reports/new but asserting that fails…
-    // Also, invalidating the session means this flash message won’t even survive.
+    // Also, invalidating the session means this toast won’t even survive.
   });
 
   test('a failed login shows an error', async function(assert) {
