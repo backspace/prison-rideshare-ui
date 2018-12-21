@@ -41,6 +41,7 @@ export default create({
 
       clear: {
         scope: 'button',
+        click: triggerable('click'),
       },
     },
   },
@@ -155,7 +156,7 @@ export default create({
   }),
 
   form: {
-    scope: '.md-dialog-container',
+    testContainer: 'md-dialog',
 
     notice: text('.warning'),
 
@@ -186,6 +187,7 @@ export default create({
       fillIn: fillable('input'),
 
       suggestions: collection('.ember-power-select-option', {
+        testContainer: '.ember-power-select-options',
         resetScope: true,
 
         name: text('.name'),
@@ -229,7 +231,7 @@ export default create({
   },
 
   cancellationForm: {
-    scope: '.md-dialog-container',
+    testContainer: 'md-dialog',
 
     notice: text('md-card-content'),
 

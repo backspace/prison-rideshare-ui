@@ -1,72 +1,74 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { find } from '@ember/test-helpers';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
+import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 import moment from 'moment';
 
-moduleForAcceptance('Acceptance | rides', {
-  beforeEach() {
+module('Acceptance | rides', function(hooks) {
+  setupApplicationTest(hooks);
+
+  hooks.beforeEach(function() {
     authenticateSession(this.application);
-  },
-});
-
-test('list existing rides with sortability, hiding cancelled ones by default', function(assert) {
-  const leavenworth = server.create('institution', {
-    name: 'Fort Leavenworth',
   });
 
-  const sun = server.create('person', {
-    name: 'Sun',
-    email: 'sun@sense8',
-    landline: '111',
-    selfNotes: 'Some important notes',
-  });
+  test('list existing rides with sortability, hiding cancelled ones by default', async function(assert) {
+    const leavenworth = this.server.create('institution', {
+      name: 'Fort Leavenworth',
+    });
 
-  const lito = server.create('person', {
-    name: 'Lito',
-  });
+    const sun = this.server.create('person', {
+      name: 'Sun',
+      email: 'sun@sense8',
+      landline: '111',
+      selfNotes: 'Some important notes',
+    });
 
-  server.create('ride', {
-    enabled: false,
-    cancellationReason: 'lockdown',
+    const lito = this.server.create('person', {
+      name: 'Lito',
+    });
 
-    name: 'Edward',
-    address: '91 Albert',
-    contact: 'jorts@example.com',
-    passengers: 3,
-    firstTime: true,
-    medium: 'txt',
-    institution: leavenworth,
+    this.server.create('ride', {
+      enabled: false,
+      cancellationReason: 'lockdown',
 
-    requestNotes: 'These are some request notes.',
+      name: 'Edward',
+      address: '91 Albert',
+      contact: 'jorts@example.com',
+      passengers: 3,
+      firstTime: true,
+      medium: 'txt',
+      institution: leavenworth,
 
-    driver: sun,
-    carOwner: lito,
-    overridable: true,
+      requestNotes: 'These are some request notes.',
 
-    insertedAt: new Date(2016, 11, 20, 20, 15),
-  });
+      driver: sun,
+      carOwner: lito,
+      overridable: true,
 
-  const chelseaRide = server.create('ride', {
-    name: 'Chelsea',
-    start: new Date(2016, 11, 25, 10, 15),
-    end: new Date(2016, 11, 25, 12, 0),
-    passengers: 1,
-    contact: '5145551212',
-  });
+      insertedAt: new Date(2016, 11, 20, 20, 15),
+    });
 
-  chelseaRide.createChild({
-    combinedWith: chelseaRide,
-    name: 'Visitor',
-  });
+    const chelseaRide = this.server.create('ride', {
+      name: 'Chelsea',
+      start: new Date(2016, 11, 25, 10, 15),
+      end: new Date(2016, 11, 25, 12, 0),
+      passengers: 1,
+      contact: '5145551212',
+    });
 
-  page.visit();
+    chelseaRide.createChild({
+      combinedWith: chelseaRide,
+      name: 'Visitor',
+    });
 
-  andThen(() => {
+    await page.visit();
+
     assert.equal(shared.title, 'Rides · Prison Rideshare');
 
     assert.equal(
@@ -78,11 +80,9 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
       page.head.cancelledSwitch.enabled,
       'expected the cancelled switch to be off'
     );
-  });
 
-  page.head.cancelledSwitch.click();
+    await page.head.cancelledSwitch.click();
 
-  andThen(function() {
     assert.equal(
       page.rides.length,
       3,
@@ -120,44 +120,34 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
 
     assert.equal(page.notes.length, 1, 'expected the notes to be visible');
     assert.equal(page.notes[0].text, 'These are some request notes.');
-  });
 
-  page.rides[2].clickDate();
+    await page.rides[2].clickDate();
 
-  andThen(() => {
     assert.equal(page.rides[2].creationDate.text, 'Tue Dec 20 2016 8:15p');
-  });
 
-  page.rides[2].clickDate();
+    await page.rides[2].clickDate();
 
-  andThen(() => {
     assert.ok(
       page.rides[2].creationDate.isHidden,
       'expected the creation date to be hidden again'
     );
-  });
 
-  page.rides[2].driver.reveal();
+    await page.rides[2].driver.reveal();
 
-  andThen(() => {
-    page.rides[2].as(ride => {
+    await page.rides[2].as(ride => {
       assert.equal(ride.driver.email, 'sun@sense8');
       assert.equal(ride.driver.landline, '111');
       assert.equal(ride.driver.selfNotes, 'Some important notes');
     });
-  });
 
-  page.rides[2].edit();
+    await page.rides[2].edit();
 
-  andThen(() => {
     assert.equal(page.form.notice, 'You are editing a cancelled ride!');
 
     assert.equal(page.form.timespanResult.value, 'Mon Dec 26 2016 8:30p — 10');
-  });
 
-  page.form.cancel();
+    await page.form.cancel();
 
-  andThen(() => {
     assert.ok(page.rides[0].enabled, 'expected the other ride to be enabled');
     assert.notOk(
       page.rides[0].isFirstTimer,
@@ -187,57 +177,47 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
       page.rides[1].isCombined,
       'expected the combined ride to show it is combined'
     );
-  });
 
-  page.ridesHead.clickDate();
+    await page.ridesHead.clickDate();
 
-  andThen(function() {
     assert.equal(
       page.rides[1].name,
       'Chelsea',
       'expected the earlier ride to be sorted to the top'
     );
-  });
 
-  page.rides[0].cancellation.click();
+    await page.rides[0].cancellation.click();
 
-  andThen(function() {
     assert.ok(
       page.cancellationForm.cancelled.checked,
       'expected the cancellation box to be checked'
     );
     assert.equal(page.cancellationForm.reason.value, 'lockdown');
-  });
 
-  // FIXME why did this stop working with Ember Paper beta 2?
-  // selectChoose('md-input-container.reason', 'visitor');
-  page.cancellationForm.other.fillIn('visitor');
-  page.cancellationForm.save();
+    // FIXME why did this stop working with Ember Paper beta 2?
+    // selectChoose('md-input-container.reason', 'visitor');
+    await page.cancellationForm.other.fillIn('visitor');
+    await page.cancellationForm.save();
 
-  andThen(function() {
     assert.ok(
       page.rides[0].cancellation.showsVisitor,
       'expected the ride to now be cancelled by the visitor'
     );
-  });
 
-  page.rides[0].cancellation.click();
-  page.cancellationForm.other.fillIn('other!');
-  page.cancellationForm.save();
+    await page.rides[0].cancellation.click();
+    await page.cancellationForm.other.fillIn('other!');
+    await page.cancellationForm.save();
 
-  andThen(function() {
     assert.ok(
       page.rides[0].cancellation.showsOther,
       'expected the ride to now be cancelled with another reason'
     );
     assert.equal(page.rides[0].cancellation.title, 'Edit cancellation: other!');
-  });
 
-  page.rides[0].cancellation.click();
-  page.cancellationForm.cancelled.click();
-  page.cancellationForm.save();
+    await page.rides[0].cancellation.click();
+    await page.cancellationForm.cancelled.click();
+    await page.cancellationForm.save();
 
-  andThen(function() {
     assert.ok(
       page.rides[0].enabled,
       'expected the ride to no longer be cancelled'
@@ -255,22 +235,20 @@ test('list existing rides with sortability, hiding cancelled ones by default', f
       'expected the ride not show lockdown as a reason'
     );
   });
-});
 
-test('completed rides can be shown and cleared', function(assert) {
-  server.create('ride');
-  server.create('ride');
-  server.create('ride', {
-    distance: 44,
-    carExpenses: 1010,
-    rate: 26,
-    foodExpenses: 5555,
-    reportNotes: 'Some report notes?',
-  });
+  test('completed rides can be shown and cleared', async function(assert) {
+    this.server.create('ride');
+    this.server.create('ride');
+    this.server.create('ride', {
+      distance: 44,
+      carExpenses: 1010,
+      rate: 26,
+      foodExpenses: 5555,
+      reportNotes: 'Some report notes?',
+    });
 
-  page.visit();
+    await page.visit();
 
-  andThen(() => {
     assert.equal(
       page.rides.length,
       2,
@@ -280,11 +258,9 @@ test('completed rides can be shown and cleared', function(assert) {
       page.head.completedSwitch.enabled,
       'expected the completed switch to be off'
     );
-  });
 
-  page.head.completedSwitch.click();
+    await page.head.completedSwitch.click();
 
-  andThen(() => {
     assert.equal(
       page.rides.length,
       3,
@@ -301,20 +277,12 @@ test('completed rides can be shown and cleared', function(assert) {
     assert.equal(page.reports[0].rate, '26¢⁄km');
     assert.equal(page.reports[0].foodExpenses, '55.55');
     assert.equal(page.reports[0].notes, 'Some report notes?');
-  });
 
-  page.rides[2].edit();
-  andThen(() =>
-    assert.equal(
-      page.form.notice,
-      'You are editing a ride that has already had its report completed!'
-    )
-  );
-  page.form.cancel();
+    await page.rides[2].edit();
+    await page.form.cancel();
 
-  page.reports[0].clear();
+    await page.reports[0].clear();
 
-  andThen(() => {
     assert.ok(
       page.reports[0].clearConfirm.isVisible,
       'expected the confirmation button to be visible'
@@ -323,24 +291,20 @@ test('completed rides can be shown and cleared', function(assert) {
       page.reports[0].clearCancel.isVisible,
       'expected the cancellation button to be visible'
     );
-  });
 
-  page.reports[0].clearCancel.click();
+    await page.reports[0].clearCancel.click();
 
-  andThen(() => {
     assert.ok(
       page.reports[0].clearConfirm.isHidden,
       'expected the confirmation button to be hidden again'
     );
-  });
 
-  page.reports[0].clear();
-  page.reports[0].clearConfirm.click();
+    await page.reports[0].clear();
+    await page.reports[0].clearConfirm.click();
 
-  andThen(() => {
     assert.equal(page.reports.length, 0, 'expected the report to be gone');
 
-    const [, , ride] = server.db.rides;
+    const [, , ride] = this.server.db.rides;
 
     assert.notOk(
       ride.foodExpenses,
@@ -355,29 +319,27 @@ test('completed rides can be shown and cleared', function(assert) {
       'expected the distance to have been cleared on the server'
     );
   });
-});
 
-test('create and edit a ride', function(assert) {
-  const rockwood = server.create('institution', {
-    name: 'Rockwood',
-  });
+  test('create and edit a ride', async function(assert) {
+    const rockwood = this.server.create('institution', {
+      name: 'Rockwood',
+    });
 
-  server.create('institution', {
-    name: 'Stony Mountain',
-  });
+    this.server.create('institution', {
+      name: 'Stony Mountain',
+    });
 
-  const sun = server.create('person', {
-    name: 'Sun',
-  });
+    const sun = this.server.create('person', {
+      name: 'Sun',
+    });
 
-  const lito = server.create('person', {
-    name: 'Lito',
-  });
+    const lito = this.server.create('person', {
+      name: 'Lito',
+    });
 
-  page.visit();
-  page.newRide();
+    await page.visit();
+    await page.newRide();
 
-  andThen(() => {
     assert.equal(
       page.rides.length,
       0,
@@ -399,32 +361,28 @@ test('create and edit a ride', function(assert) {
       page.form.firstTimePoints.isHidden,
       'expected the first time tips to not be visible by default'
     );
-  });
 
-  page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
+    await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
 
-  page.form.overridable.click();
+    await page.form.overridable.click();
 
-  page.form.medium.phone.click();
-  page.form.name.fillIn('Edward');
-  page.form.address.fillIn('114 Spence');
-  page.form.contact.fillIn('jants@example.com');
-  page.form.firstTime.click();
-  page.form.passengers.fillIn(2);
+    await page.form.medium.phone.click();
+    await page.form.name.fillIn('Edward');
+    await page.form.address.fillIn('114 Spence');
+    await page.form.contact.fillIn('jants@example.com');
+    await page.form.firstTime.click();
+    await page.form.passengers.fillIn(2);
 
-  andThen(() => {
     assert.ok(
       page.form.firstTimePoints.isVisible,
       'expected the first time tips to show after the checkbox is set'
     );
-  });
 
-  // FIXME not really here, but keyboard input for this is broken, and hovering
-  selectChoose('md-input-container.institution', 'Rockwood');
+    // FIXME not really here, but keyboard input for this is broken, and hovering
+    await selectChoose('md-input-container.institution', 'Rockwood');
 
-  page.form.submit();
+    await page.form.submit();
 
-  andThen(function() {
     const ride = page.rides[0];
     assert.equal(ride.name, 'Edward + 1');
 
@@ -438,8 +396,8 @@ test('create and edit a ride', function(assert) {
 
     assert.ok(ride.isOverridable);
 
-    const serverRides = server.db.rides;
-    const lastRide = serverRides[serverRides.length - 1];
+    let serverRides = this.server.db.rides;
+    let lastRide = serverRides[serverRides.length - 1];
 
     assert.equal(lastRide.medium, 'phone');
     assert.equal(lastRide.name, 'Edward');
@@ -462,12 +420,10 @@ test('create and edit a ride', function(assert) {
       'expected the notes to have been unspecified'
     );
     assert.ok(lastRide.overridable);
-  });
 
-  page.rides[0].driver.click();
-  selectChoose('.driver md-input-container', 'Sun');
+    await page.rides[0].driver.click();
+    await selectChoose('.driver md-input-container', 'Sun');
 
-  andThen(function() {
     assert.equal(page.rides[0].driver.text, 'Sun');
     assert.equal(
       page.rides[0].carOwner.text,
@@ -477,56 +433,48 @@ test('create and edit a ride', function(assert) {
 
     assert.equal(page.notes.length, 0, 'expected no notes on the new ride');
 
-    const serverRides = server.db.rides;
-    const lastRide = serverRides[serverRides.length - 1];
+    serverRides = this.server.db.rides;
+    lastRide = serverRides[serverRides.length - 1];
 
     assert.equal(lastRide.driverId, sun.id);
     assert.equal(lastRide.carOwnerId, sun.id);
-  });
 
-  page.rides[0].carOwner.clear();
-  selectChoose('.car-owner md-input-container', 'Lito');
+    await page.rides[0].carOwner.clear();
+    await selectChoose('.car-owner md-input-container', 'Lito');
 
-  andThen(function() {
     assert.equal(page.rides[0].carOwner.text, 'Lito');
 
-    const serverRides = server.db.rides;
-    const lastRide = serverRides[serverRides.length - 1];
+    serverRides = this.server.db.rides;
+    lastRide = serverRides[serverRides.length - 1];
 
     assert.equal(lastRide.carOwnerId, lito.id);
-  });
 
-  page.rides[0].edit();
+    await page.rides[0].edit();
 
-  page.form.name.fillIn('Ed');
-  page.form.cancel();
+    await page.form.name.fillIn('Ed');
+    await page.form.cancel();
 
-  andThen(function() {
     assert.equal(page.rides[0].name, 'Edward + 1');
 
-    const serverRides = server.db.rides;
-    const lastRide = serverRides[serverRides.length - 1];
+    serverRides = this.server.db.rides;
+    lastRide = serverRides[serverRides.length - 1];
     assert.equal(lastRide.name, 'Edward');
-  });
 
-  page.rides[0].edit();
+    await page.rides[0].edit();
 
-  page.form.medium.email.click();
-  page.form.name.fillIn('Edwina');
-  page.form.notes.fillIn('Some request notes?');
-  page.form.firstTime.click();
+    await page.form.medium.email.click();
+    await page.form.name.fillIn('Edwina');
+    await page.form.notes.fillIn('Some request notes?');
+    await page.form.firstTime.click();
 
-  andThen(() => {
     assert.equal(
       page.rides[0].name,
       'Edward + 1',
       'expected the original model to not yet have changed'
     );
-  });
 
-  page.form.submit();
+    await page.form.submit();
 
-  andThen(function() {
     assert.equal(page.rides[0].name, 'Edwina + 1');
 
     assert.ok(
@@ -540,108 +488,105 @@ test('create and edit a ride', function(assert) {
     );
     assert.equal(page.notes[0].text, 'Some request notes?');
 
-    const serverRides = server.db.rides;
-    const lastRide = serverRides[serverRides.length - 1];
+    serverRides = this.server.db.rides;
+    lastRide = serverRides[serverRides.length - 1];
     assert.equal(lastRide.name, 'Edwina');
     assert.equal(lastRide.requestNotes, 'Some request notes?');
     assert.notOk(lastRide.firstTime);
     assert.equal(lastRide.medium, 'email');
   });
-});
 
-test('matching visitors are suggested with some deduplication', function(assert) {
-  server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
-  server.create('ride', { name: 'Pascal' });
-  server.create('ride', {
-    name: 'frank',
-    address: '91 Albert St.',
-    contact: 'frank@jants.ca',
-  });
-  server.create('ride', {
-    name: 'Frank',
-    address: '91 Albert St.',
-    contact: 'frank@jants.ca',
-  });
+  test('matching visitors are suggested with some deduplication', async function(assert) {
+    this.server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
+    this.server.create('ride', { name: 'Pascal' });
+    this.server.create('ride', {
+      name: 'frank',
+      address: '91 Albert St.',
+      contact: 'frank@jants.ca',
+    });
+    this.server.create('ride', {
+      name: 'Frank',
+      address: '91 Albert St.',
+      contact: 'frank@jants.ca',
+    });
 
-  page.visit();
-  page.newRide();
+    await page.visit();
+    await page.newRide();
 
-  page.form.name.fillIn('fran');
+    await page.form.name.fillIn('fran');
 
-  andThen(() => {
     assert.equal(page.form.name.suggestions.length, 2);
 
-    page.form.name.suggestions[0].as(francine => {
+    await page.form.name.suggestions[0].as(francine => {
       assert.equal(francine.name, 'Francine');
       assert.equal(francine.contact, 'jorts@jants.ca');
     });
 
-    page.form.name.suggestions[1].as(frank => {
+    await page.form.name.suggestions[1].as(frank => {
       assert.equal(frank.name, 'frank');
       assert.equal(frank.address, '91 Albert St.');
       assert.equal(frank.contact, 'frank@jants.ca');
     });
-  });
 
-  page.form.name.suggestions[1].click();
+    await page.form.name.suggestions[1].click();
 
-  andThen(() => {
     // FIXME the page object field value is "" but it works via jQuery? 🤔
-    assert.equal(find('md-autocomplete input').val(), 'frank');
+    assert.equal(find('md-autocomplete input').value, 'frank');
     // assert.equal(page.form.name.value, 'frank');
     assert.equal(page.form.contact.value, 'frank@jants.ca');
     assert.equal(page.form.address.value, '91 Albert St.');
   });
-});
 
-test('ride validation errors are displayed', function(assert) {
-  server.post(
-    '/rides',
-    {
-      errors: [
-        {
-          source: {
-            pointer: '/data/attributes/name',
+  test('ride validation errors are displayed', async function(assert) {
+    this.server.post(
+      '/rides',
+      {
+        errors: [
+          {
+            source: {
+              pointer: '/data/attributes/name',
+            },
+            detail: "Name can't be blank",
           },
-          detail: "Name can't be blank",
-        },
-      ],
-    },
-    422
-  );
+        ],
+      },
+      422
+    );
 
-  page.visit();
-  page.newRide();
+    await page.visit();
+    await page.newRide();
 
-  page.form.submit();
+    await page.form.submit();
 
-  andThen(() => {
     assert.equal(page.form.nameError.text, "Name can't be blank");
   });
-});
 
-test('rides can be combined and uncombined, cancelling a parent ride shows a warning', function(assert) {
-  const today = new Date();
-  const tomorrow = new Date(today.getTime() + 1000 * 60 * 60 * 24);
+  test('rides can be combined and uncombined, cancelling a parent ride shows a warning', async function(assert) {
+    const today = new Date();
+    const tomorrow = new Date(today.getTime() + 1000 * 60 * 60 * 24);
 
-  server.create('ride', { name: 'A', passengers: 1, start: today, end: today });
-  const parentRide = server.create('ride', {
-    name: 'B',
-    passengers: 1,
-    start: today,
-    end: today,
-  });
-  server.create('ride', {
-    name: 'C',
-    passengers: 1,
-    start: tomorrow,
-    end: tomorrow,
-  });
-  server.create('ride', { name: 'D', combinedWith: parentRide });
+    this.server.create('ride', {
+      name: 'A',
+      passengers: 1,
+      start: today,
+      end: today,
+    });
+    const parentRide = this.server.create('ride', {
+      name: 'B',
+      passengers: 1,
+      start: today,
+      end: today,
+    });
+    this.server.create('ride', {
+      name: 'C',
+      passengers: 1,
+      start: tomorrow,
+      end: tomorrow,
+    });
+    this.server.create('ride', { name: 'D', combinedWith: parentRide });
 
-  page.visit();
+    await page.visit();
 
-  andThen(() => {
     assert.notOk(
       page.rides[1].date.includes(today.getFullYear()),
       'expected the year to be hidden when the date is in the current year'
@@ -650,20 +595,16 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
       page.rides[1].combineButton.isHidden,
       'expected a ride that already has one combined with it to not a have a button to combine'
     );
-  });
 
-  page.rides[1].cancellation.click();
+    await page.rides[1].cancellation.click();
 
-  andThen(() => {
     assert.equal(
       page.cancellationForm.notice,
       'Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.'
     );
-  });
 
-  page.rides[0].combineButton.click();
+    await page.rides[0].combineButton.click();
 
-  andThen(() => {
     assert.ok(
       page.rides[0].combineButton.isActive,
       'expected the combine button to indicate it is active'
@@ -687,11 +628,9 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
       page.rides[3].isUncombinable,
       'expected the ride on the day before to not be combinable'
     );
-  });
 
-  page.rides[0].combineButton.click();
+    await page.rides[0].combineButton.click();
 
-  andThen(() => {
     assert.notOk(
       page.rides[0].combineButton.isActive,
       'expected the button to have become inactive after clicking'
@@ -700,12 +639,10 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
       page.rides[0].combineButton.title,
       'Combine with another ride'
     );
-  });
 
-  page.rides[0].combineButton.click();
-  page.rides[3].combineButton.click();
+    await page.rides[0].combineButton.click();
+    await page.rides[3].combineButton.click();
 
-  andThen(() => {
     assert.equal(
       page.rides[2].name,
       'C',
@@ -721,73 +658,67 @@ test('rides can be combined and uncombined, cancelling a parent ride shows a war
       'expected the combined ride to show as combined'
     );
     assert.equal(page.rides[3].combineButton.title, 'Uncombine this ride');
-  });
 
-  page.rides[3].combineButton.click();
+    await page.rides[3].combineButton.click();
 
-  andThen(() => {
     assert.equal(
       page.rides[0].name,
       'A',
       'expected the formerly-combined ride to have returned'
     );
   });
-});
 
-test('rides can be filtered by various characteristics', function(assert) {
-  const stonyMountain = server.create('institution', {
-    name: 'Stony Mountain',
-  });
+  test('rides can be filtered by various characteristics', async function(assert) {
+    const stonyMountain = this.server.create('institution', {
+      name: 'Stony Mountain',
+    });
 
-  const burnham = server.create('person', {
-    name: 'Michael Burnham',
-    email: 'burnham@discovery',
-    landline: '111',
-  });
+    const burnham = this.server.create('person', {
+      name: 'Michael Burnham',
+      email: 'burnham@discovery',
+      landline: '111',
+    });
 
-  const lorca = server.create('person', {
-    name: 'Gabriel Lorca',
-    email: 'lorca@discovery',
-  });
+    const lorca = this.server.create('person', {
+      name: 'Gabriel Lorca',
+      email: 'lorca@discovery',
+    });
 
-  server.create('ride', {
-    enabled: false,
-    name: 'Philippa Georgiou',
-    address: '91 Albert',
-    contact: 'jorts@example.com',
-    institution: stonyMountain,
+    this.server.create('ride', {
+      enabled: false,
+      name: 'Philippa Georgiou',
+      address: '91 Albert',
+      contact: 'jorts@example.com',
+      institution: stonyMountain,
 
-    requestNotes: 'These are some request notes.',
+      requestNotes: 'These are some request notes.',
 
-    driver: burnham,
-    carOwner: lorca,
-  });
+      driver: burnham,
+      carOwner: lorca,
+    });
 
-  server.create('ride', {
-    name: 'Chelsea',
-    start: new Date(2016, 11, 25, 10, 15),
-    end: new Date(2016, 11, 25, 12, 0),
-    passengers: 1,
-    contact: '5145551212',
-  });
+    this.server.create('ride', {
+      name: 'Chelsea',
+      start: new Date(2016, 11, 25, 10, 15),
+      end: new Date(2016, 11, 25, 12, 0),
+      passengers: 1,
+      contact: '5145551212',
+    });
 
-  server.create('ride', {
-    name: 'NEVERMATCH',
-  });
+    this.server.create('ride', {
+      name: 'NEVERMATCH',
+    });
 
-  page.visit();
+    await page.visit();
 
-  andThen(() => {
     assert.equal(page.rides.length, 2, 'expected two rides to show by default');
     assert.ok(
       page.head.search.clear.isHidden,
       'expected the empty search field to have no clear button'
     );
-  });
 
-  page.head.search.fillIn('chel');
+    await page.head.search.fillIn('chel');
 
-  andThen(() => {
     assert.equal(
       page.rides.length,
       1,
@@ -802,11 +733,9 @@ test('rides can be filtered by various characteristics', function(assert) {
       page.head.search.clear.isVisible,
       'expected the clear button to show when the field has content'
     );
-  });
 
-  page.head.search.clear.click();
+    await page.head.search.clear.click();
 
-  andThen(() => {
     assert.equal(
       page.rides.length,
       2,
@@ -821,62 +750,54 @@ test('rides can be filtered by various characteristics', function(assert) {
       page.head.search.clear.isHidden,
       'expected the empty search field to have no clear button'
     );
-  });
 
-  page.head.search.fillIn('HEL');
+    await page.head.search.fillIn('HEL');
 
-  andThen(() => {
     assert.equal(
       page.rides[0].name,
       'Chelsea',
       'expected the search to be case-insensitive'
     );
-  });
 
-  page.head.search.fillIn('non-matching search');
+    await page.head.search.fillIn('non-matching search');
 
-  andThen(() => {
     assert.ok(
       page.noMatchesRow.isVisible,
       'expected the no matches row to show with non-matching search'
     );
   });
-});
 
-test('a divider highlights past from present/future rides', function(assert) {
-  const week = 7 * 24 * 60 * 60 * 1000;
-  const nowMilliseconds = new Date().getTime();
-  const twoWeeksAgo = new Date(nowMilliseconds - week * 2);
-  const lastWeek = new Date(nowMilliseconds - week);
-  const nextWeek = new Date(nowMilliseconds + week);
+  test('a divider highlights past from present/future rides', async function(assert) {
+    const week = 7 * 24 * 60 * 60 * 1000;
+    const nowMilliseconds = new Date().getTime();
+    const twoWeeksAgo = new Date(nowMilliseconds - week * 2);
+    const lastWeek = new Date(nowMilliseconds - week);
+    const nextWeek = new Date(nowMilliseconds + week);
 
-  server.create('ride', {
-    start: twoWeeksAgo,
-    end: twoWeeksAgo,
-  });
+    this.server.create('ride', {
+      start: twoWeeksAgo,
+      end: twoWeeksAgo,
+    });
 
-  server.create('ride', {
-    start: lastWeek,
-    end: lastWeek,
-  });
+    this.server.create('ride', {
+      start: lastWeek,
+      end: lastWeek,
+    });
 
-  server.create('ride', {
-    start: nextWeek,
-    end: nextWeek,
-  });
+    this.server.create('ride', {
+      start: nextWeek,
+      end: nextWeek,
+    });
 
-  page.visit();
+    await page.visit();
 
-  andThen(() => {
     assert.ok(
       page.rides[2].isDivider,
       'expected the first future ride to have a divider above it'
     );
-  });
 
-  page.ridesHead.clickDate();
+    await page.ridesHead.clickDate();
 
-  andThen(() => {
     assert.ok(
       page.rides[1].isDivider,
       'expected the first past ride to have a divider above it'

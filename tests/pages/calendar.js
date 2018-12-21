@@ -144,6 +144,7 @@ export default create({
     scope: 'md-chips.commitments input',
 
     options: collection('.ember-power-select-option', {
+      testContainer: '.ember-power-select-options',
       resetScope: true,
 
       name: text('.name'),

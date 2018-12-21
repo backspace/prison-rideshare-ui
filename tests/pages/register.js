@@ -7,6 +7,8 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
+  testContainer: 'md-dialog',
+
   visit: visitable('/register'),
 
   fillEmail: fillable('.email input'),

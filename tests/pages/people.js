@@ -65,6 +65,8 @@ export default create({
   }),
 
   form: {
+    testContainer: 'md-dialog',
+
     nameField: {
       scope: '.name input',
       fill: fillable(),

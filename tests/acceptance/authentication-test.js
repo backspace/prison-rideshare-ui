@@ -1,31 +1,35 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { currentURL, visit } from '@ember/test-helpers';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | authentication', {});
+module('Acceptance | authentication', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('authenticated users are redirected to the report form after logging out', function(assert) {
-  authenticateSession(this.application);
-  visit('/rides');
-  shared.session.click();
+  test('authenticated users are redirected to the report form after logging out', async function(assert) {
+    await authenticateSession();
+    await visit('/rides');
+    await shared.session.click();
 
-  andThen(() =>
     assert.ok(
       shared.session.isHidden,
       'expected the sidebar to show not being logged in'
-    )
-  );
-});
+    );
+  });
 
-test('unauthenticated users are redirected to the report form', function(assert) {
-  visit('/');
-  andThen(() => assert.equal(currentURL(), '/reports/new'));
-});
+  test('unauthenticated users are redirected to the report form', async function(assert) {
+    this.server.create('ride');
 
-test('unauthenticated users are redirected to log in from authenticated routes', assert => {
-  visit('/debts');
-  andThen(() => assert.equal(currentURL(), '/login'));
+    await visit('/');
+
+    assert.equal(currentURL(), '/reports/new');
+  });
+
+  test('unauthenticated users are redirected to log in from authenticated routes', async assert => {
+    await visit('/debts');
+    assert.equal(currentURL(), '/login');
+  });
 });

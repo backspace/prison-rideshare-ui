@@ -1,25 +1,27 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | reimbursements', {
-  beforeEach() {
-    const sun = server.create('person', { name: 'Sun' });
-    const kala = server.create('person', { name: 'Kala' });
-    const will = server.create('person', { name: 'Will' });
+module('Acceptance | reimbursements', function(hooks) {
+  setupApplicationTest(hooks);
 
-    const leavenworth = server.create('institution', {
+  hooks.beforeEach(function() {
+    const sun = this.server.create('person', { name: 'Sun' });
+    const kala = this.server.create('person', { name: 'Kala' });
+    const will = this.server.create('person', { name: 'Will' });
+
+    const leavenworth = this.server.create('institution', {
       name: 'Fort Leavenworth',
     });
 
-    const unprocessedRideNextMonth = server.create('ride', {
+    const unprocessedRideNextMonth = this.server.create('ride', {
       start: new Date(2017, 4, 22),
     });
-    const unprocessedRide = server.create('ride', {
+    const unprocessedRide = this.server.create('ride', {
       start: new Date(2017, 3, 22),
     });
 
@@ -62,7 +64,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
       donation: true,
     });
 
-    const reimbursedRide = server.create('ride', {
+    const reimbursedRide = this.server.create('ride', {
       institution: leavenworth,
       start: new Date(2017, 2, 22),
       driver: kala,
@@ -83,7 +85,7 @@ moduleForAcceptance('Acceptance | reimbursements', {
       insertedAt: new Date(2017, 2, 26),
     });
 
-    server.create('ride', {
+    this.server.create('ride', {
       driver: sun,
       foodExpenses: 15400,
 
@@ -91,19 +93,17 @@ moduleForAcceptance('Acceptance | reimbursements', {
       carExpenses: 4400,
     });
 
-    server.create('ride', {
+    this.server.create('ride', {
       driver: will,
       carOwner: will,
     });
 
     authenticateSession(this.application);
-  },
-});
+  });
 
-test('list reimbursements and optionally show processed ones', function(assert) {
-  reimbursementsPage.visit();
+  test('list reimbursements and optionally show processed ones', async function(assert) {
+    await reimbursementsPage.visit();
 
-  andThen(() => {
     assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
 
     assert.equal(
@@ -132,7 +132,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
       'expected the donate button to not be default for non-donations'
     );
 
-    reimbursementsPage.rows[2].as(kalaDonation => {
+    await reimbursementsPage.rows[2].as(kalaDonation => {
       assert.equal(kalaDonation.name, '');
       assert.equal(kalaDonation.foodExpenses, '');
       assert.equal(kalaDonation.carExpenses, '1');
@@ -156,7 +156,7 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.equal(sun.carExpenses, '33');
     assert.equal(sun.totalExpenses, '77');
 
-    reimbursementsPage.rows[4].as(willDonation => {
+    await reimbursementsPage.rows[4].as(willDonation => {
       assert.equal(willDonation.name, 'Will');
       assert.equal(willDonation.carExpenses, '3.33');
     });
@@ -170,11 +170,9 @@ test('list reimbursements and optionally show processed ones', function(assert) 
     assert.equal(reimbursementsPage.rows[5].month, 'May 2017');
     assert.equal(reimbursementsPage.rows[7].name, 'Sun');
     assert.equal(reimbursementsPage.rows[7].carExpenses, '99');
-  });
 
-  reimbursementsPage.processedSwitch.click();
+    await reimbursementsPage.processedSwitch.click();
 
-  andThen(() => {
     assert.equal(
       reimbursementsPage.reimbursements.length,
       2,
@@ -202,31 +200,27 @@ test('list reimbursements and optionally show processed ones', function(assert) 
       'expected the car expense to have been donated'
     );
   });
-});
 
-test('process reimbursements', function(assert) {
-  reimbursementsPage.visit();
+  test('process reimbursements', async function(assert) {
+    await reimbursementsPage.visit();
 
-  reimbursementsPage.rows[3].processButton.click();
+    await reimbursementsPage.rows[3].processButton.click();
 
-  andThen(() => {
-    const [, , , , sun1, sun2] = server.db.reimbursements;
+    const [, , , , sun1, sun2] = this.server.db.reimbursements;
 
     assert.ok(sun1.processed);
     assert.notOk(sun2.donation);
 
     assert.ok(sun2.processed);
     assert.notOk(sun2.donation);
-  });
 
-  reimbursementsPage.rows[1].donateButton.click();
-  reimbursementsPage.rows[1].donateButton.click();
-  reimbursementsPage.rows[1].donateButton.click();
-  reimbursementsPage.rows[1].donateButton.click();
-  reimbursementsPage.rows[1].donateButton.click();
+    await reimbursementsPage.rows[1].donateButton.click();
+    await reimbursementsPage.rows[1].donateButton.click();
+    await reimbursementsPage.rows[1].donateButton.click();
+    await reimbursementsPage.rows[1].donateButton.click();
+    await reimbursementsPage.rows[1].donateButton.click();
 
-  andThen(() => {
-    const [, , , , , , k] = server.db.reimbursements;
+    const [, , , , , , k] = this.server.db.reimbursements;
 
     assert.ok(
       k.processed,
@@ -239,12 +233,10 @@ test('process reimbursements', function(assert) {
 
     assert.ok(reimbursementsPage.noReimbursementsMessage.isVisible);
   });
-});
 
-test('rows can be copied for the ledger', function(assert) {
-  reimbursementsPage.visit();
+  test('rows can be copied for the ledger', async function(assert) {
+    await reimbursementsPage.visit();
 
-  andThen(() => {
     const clipboardText = reimbursementsPage.rows[2].copyButton.clipboardText;
     const expectedClipboardTextEnding =
       'April mileage\tKala\t-$1\t$1\t\t(donated)';

@@ -41,7 +41,7 @@ export default create({
   }),
 
   form: {
-    scope: 'form',
+    testContainer: 'md-dialog',
 
     content: {
       scope: '.content',
