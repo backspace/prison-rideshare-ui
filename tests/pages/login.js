@@ -16,5 +16,5 @@ export default create({
 
   error: text('.error'),
 
-  submit: clickable('button.login'),
+  submit: clickable('button'),
 });

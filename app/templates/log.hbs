@@ -119,7 +119,7 @@
     fullscreen=true
     onClose=(action "cancelPost")
   }}
-    {{#paper-form class='log' onSubmit=savePost as |form|}}
+    {{#paper-form onSubmit=savePost as |form|}}
       {{#paper-dialog-content}}
         <h2 class="md-title">
           {{if editingPost.isNew "New" "Edit"}}
