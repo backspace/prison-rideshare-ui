@@ -163,14 +163,14 @@ module('Acceptance | log', function(hooks) {
     assert.equal(this.server.db.posts.length, 1);
     assert.equal(page.posts.length, 1);
   });
-
-  function stringToMobiledoc(string) {
-    return JSON.stringify({
-      version: '0.3.1',
-      atoms: [],
-      cards: [],
-      markups: [],
-      sections: [[1, 'p', [[0, [], 0, string]]]],
-    });
-  }
 });
+
+function stringToMobiledoc(string) {
+  return JSON.stringify({
+    version: '0.3.1',
+    atoms: [],
+    cards: [],
+    markups: [],
+    sections: [[1, 'p', [[0, [], 0, string]]]],
+  });
+}
