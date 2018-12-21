@@ -1,11 +1,10 @@
-import config from 'prison-rideshare-ui/config/environment';
 import Mirage from 'ember-cli-mirage';
 import { isEmpty } from '@ember/utils';
 
 export default function() {
   this.passthrough('/write-coverage');
 
-  this.logging = config.mirageLogging;
+  this.logging = window.location.search.includes('mirage-logging=true');
 
   this.namespace = '/api';
 

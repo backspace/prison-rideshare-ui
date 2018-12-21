@@ -35,7 +35,6 @@ module.exports = function(environment) {
 
     sentry: {},
 
-    mirageLogging: process.env.MIRAGE_LOGGING === 'false' ? false : true,
     toastDuration: 3000,
 
     moment: {
