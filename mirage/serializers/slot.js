@@ -1,5 +1,5 @@
 import { JSONAPISerializer } from 'ember-cli-mirage';
 
 export default JSONAPISerializer.extend({
-  include: Object.freeze(['commitments'])
+  include: Object.freeze(['commitments']),
 });

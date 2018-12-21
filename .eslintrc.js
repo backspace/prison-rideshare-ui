@@ -39,7 +39,10 @@ module.exports = {
 
     // test files
     {
-      files: ['tests/**/*.js'],
+      files: [
+        'tests/**/*.js',
+        'mirage/**/*.js'
+      ],
       excludedFiles: ['tests/dummy/**/*.js'],
       env: {
         embertest: true
