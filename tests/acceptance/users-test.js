@@ -10,7 +10,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 module('Acceptance | users', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     this.admin = this.server.create('user', {
       email: 'abc@def.com',
       admin: true,
@@ -20,11 +20,22 @@ module('Acceptance | users', function(hooks) {
       email: 'ghi@jkl.com',
       admin: false,
     });
+
+    this.server.post('/token', () => {
+      authenticateSession({ access_token: 'abcdef' });
+
+      return {
+        access_token: 'abcdef',
+      };
+    });
+
+    await loginPage.visit();
+    await loginPage.fillEmail('jorts@jants.ca');
+    await loginPage.fillPassword('aaaaaaaaa');
+    await loginPage.submit();
   });
 
   test('list users and update admin status', async function(assert) {
-    authenticateSession();
-
     await page.visit();
 
     assert.equal(shared.title, 'Users · Prison Rideshare');
@@ -33,6 +44,7 @@ module('Acceptance | users', function(hooks) {
 
     assert.equal(page.users[0].email, 'abc@def.com');
     assert.ok(page.users[0].adminCheckbox.checked);
+    assert.ok(page.users[0].adminCheckbox.isDisabled);
 
     assert.equal(page.users[1].email, 'ghi@jkl.com');
     assert.notOk(page.users[1].adminCheckbox.checked);
@@ -47,25 +59,6 @@ module('Acceptance | users', function(hooks) {
   });
 
   test('shows who is present', async function(assert) {
-    this.server.post('/token', schema => {
-      authenticateSession({ access_token: 'abcdef' });
-
-      // FIXME another repetition… how to log in as admin???
-      schema.create('user', {
-        email: 'jorts@jants.ca',
-        password: 'aaaaaaaaa',
-      });
-
-      return {
-        access_token: 'abcdef',
-      };
-    });
-
-    await loginPage.visit();
-    await loginPage.fillEmail('jorts@jants.ca');
-    await loginPage.fillPassword('aaaaaaaaa');
-    await loginPage.submit();
-
     await page.visit();
 
     const userSocket = this.owner.lookup('service:user-socket');

@@ -3,6 +3,7 @@ import {
   collection,
   create,
   hasClass,
+  is,
   isVisible,
   text,
   visitable,
@@ -15,10 +16,12 @@ export default create({
     email: text('.email'),
     isPresent: isVisible('.present md-icon'),
     presenceCount: text('.present .count'),
+
     adminCheckbox: {
       scope: 'md-checkbox',
       checked: hasClass('md-checked'),
       click: clickable(),
+      isDisabled: is('[disabled]'),
     },
   }),
 });

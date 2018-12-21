@@ -16,7 +16,6 @@
           {{/if}}
         {{/row.cell}}
         {{#row.cell}}
-          {{!FIXME add a test for disabled}}
           {{paper-checkbox value=user.admin disabled=(eq user session.currentUser) onChange=(action 'updateUserAdmin' user)}}
         {{/row.cell}}
       {{/body.row}}
