@@ -7,7 +7,7 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: 'html',
+  testContainer: 'md-dialog',
 
   visit: visitable('/register'),
 
@@ -17,5 +17,5 @@ export default create({
 
   error: text('.error'),
 
-  submit: clickable('button.register'),
+  submit: clickable('button'),
 });

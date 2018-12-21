@@ -142,9 +142,9 @@ export default create({
 
   peopleSearch: {
     scope: 'md-chips.commitments input',
-    testContainer: 'html',
 
     options: collection('.ember-power-select-option', {
+      testContainer: '.ember-power-select-options',
       resetScope: true,
 
       name: text('.name'),
