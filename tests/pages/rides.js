@@ -12,6 +12,8 @@ import {
   visitable,
 } from 'ember-cli-page-object';
 
+import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+
 export default create({
   visit: visitable('/rides'),
   newRide: clickable('button.new'),
@@ -61,8 +63,15 @@ export default create({
     cancellation: {
       scope: '.cancellation',
       click: clickable('button'),
-      showsLockdown: isVisible('button md-icon[md-font-icon=lock]'),
-      showsVisitor: isVisible('button md-icon[md-font-icon="perm identity"]'),
+      showsLockdown: isVisible(
+        `button md-icon[md-font-icon='${reasonToIcon['lockdown']}']`
+      ),
+      showsVisitor: isVisible(
+        `button md-icon[md-font-icon='${reasonToIcon['visitor']}']`
+      ),
+      showsDriverNotFound: isVisible(
+        `button md-icon[md-font-icon='${reasonToIcon['driver not found']}']`
+      ),
       showsNotCancelled: isVisible(
         'button md-icon[md-font-icon="highlight off"]'
       ),
@@ -234,6 +243,8 @@ export default create({
     testContainer: 'md-dialog',
 
     notice: text('md-card-content'),
+
+    shortcutButtons: collection('button.shortcut'),
 
     cancelled: {
       scope: 'md-checkbox',

@@ -234,6 +234,11 @@ module('Acceptance | rides', function(hooks) {
       page.rides[0].cancellation.showsLockdown,
       'expected the ride not show lockdown as a reason'
     );
+
+    await page.rides[0].cancellation.click();
+    await page.cancellationForm.shortcutButtons[0].click();
+
+    assert.ok(page.rides[0].cancellation.showsDriverNotFound);
   });
 
   test('completed rides can be shown and cleared', async function(assert) {
