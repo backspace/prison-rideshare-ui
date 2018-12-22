@@ -4,6 +4,7 @@ import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 
+import moment from 'moment';
 import { task } from 'ember-concurrency';
 
 export default Controller.extend({
@@ -12,6 +13,10 @@ export default Controller.extend({
   month: alias('model.month'),
   slots: alias('model.slots'),
   person: alias('model.person'),
+
+  monthMoment: computed('month', function() {
+    return moment(this.get('month'));
+  }),
 
   httpSubscriptionUrl: computed('person.{id,calendarSecret}', function() {
     const person = this.get('person');

@@ -39,6 +39,10 @@ export default CalendarController.extend({
     return moment(this.get('month')).format(format);
   }),
 
+  monthMoment: computed('month', function() {
+    return moment(this.get('month'));
+  }),
+
   title: computed('month', function() {
     return `${moment(this.get('month')).format('MMMM YYYY')} calendar`;
   }),
