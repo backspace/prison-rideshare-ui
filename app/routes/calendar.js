@@ -11,10 +11,6 @@ export default Route.extend({
 
   // FIXME is it possible to get the token from elsewhere than the transition object?
   model({ month }, { queryParams }) {
-    if (month === '2018-01') {
-      month = '2018-02';
-    }
-
     const token = queryParams.token;
     const personTokenEndpoint = `${Ember.testing ? '' : config.DS.host}/${
       config.DS.namespace
