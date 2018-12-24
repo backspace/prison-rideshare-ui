@@ -150,9 +150,17 @@ export default Controller.extend({
 });
 
 const MonthReimbursementCollections = EmberObject.extend({
-  reimbursementCollectionsWithReimbursements: filterBy(
+  reimbursementCollectionsReimbursements: mapBy(
     'reimbursementCollections',
-    'reimbursements.length'
+    'reimbursements'
+  ),
+  reimbursementCollectionsWithReimbursements: computed(
+    'reimbursementCollectionsReimbursements.@each.length',
+    function() {
+      return this.get('reimbursementCollections').filterBy(
+        'reimbursements.length'
+      );
+    }
   ),
   reimbursementCollectionsClipboardText: mapBy(
     'reimbursementCollectionsWithReimbursements',

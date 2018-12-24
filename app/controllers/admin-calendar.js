@@ -54,7 +54,9 @@ export default CalendarController.extend({
 
   remainingPeople: setDiff('activePeople', 'people'),
 
-  viewingSlotPeopleIds: mapBy('viewingSlot.commitments', 'person.id'),
+  viewingSlotPeople: mapBy('viewingSlot.commitments', 'person'),
+  viewingSlotPeopleIds: mapBy('viewingSlotPeople', 'id'),
+
   uncommittedPeople: computed(
     'activePeople.[]',
     'viewingSlotPeopleIds.[]',
