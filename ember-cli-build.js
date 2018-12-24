@@ -2,6 +2,8 @@
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
+const nodeSass = require('node-sass');
+
 module.exports = function(defaults) {
   const deployTarget = process.env.DEPLOY_TARGET;
 
@@ -22,6 +24,9 @@ module.exports = function(defaults) {
     emberHighCharts: {
       includeHighCharts: true,
       includeModules: ['heatmap'],
+    },
+    sassOptions: {
+      implementation: nodeSass,
     },
   });
 

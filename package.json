@@ -45,7 +45,7 @@
     "ember-cli-page-object": "^1.15.0",
     "ember-cli-poll": "^0.1.0",
     "ember-cli-qunit": "^4.3.2",
-    "ember-cli-sass": "^7.1.1",
+    "ember-cli-sass": "^8.0.1",
     "ember-cli-sentry": "^4.0.0",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
@@ -78,11 +78,12 @@
     "eslint-plugin-prettier": "^3.0.0",
     "highcharts": "^6.0.4",
     "loader.js": "^4.2.3",
+    "node-sass": "^4.11.0",
     "paper-data-table": "0.1.4",
     "prettier": "^1.15.3"
   },
   "engines": {
-    "node": "9.2.0",
-    "npm": "5.5.1"
+    "node": "10.14.2",
+    "npm": "6.4.1"
   }
 }
