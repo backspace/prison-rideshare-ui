@@ -49,7 +49,7 @@ export default function() {
       const person = people.findBy({ accessToken });
 
       if (person) {
-        const attrs = this.normalizedRequestAttrs();
+        const attrs = this.normalizedRequestAttrs('person');
 
         if (isEmpty(attrs.name)) {
           return new Mirage.Response(
@@ -67,7 +67,7 @@ export default function() {
             }
           );
         } else {
-          return person.update(this.normalizedRequestAttrs());
+          return person.update(attrs);
         }
       }
     }
