@@ -146,24 +146,6 @@ export default Controller.extend({
         reimbursement.save();
       });
     },
-
-    // Reimbursement editing will surely return!
-
-    // editReimbursement(reimbursement) {
-    //   const proxy = BufferedProxy.create({content: reimbursement});
-    //
-    //   this.set('editingReimbursement', proxy);
-    // },
-    //
-    // submit() {
-    //   const proxy = this.get('editingReimbursement');
-    //   proxy.applyBufferedChanges();
-    //   return proxy.get('content').save().then(() => this.set('editingReimbursement', undefined));
-    // },
-    //
-    // cancel() {
-    //   this.set('editingReimbursement', undefined);
-    // }
   },
 });
 
