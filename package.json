@@ -12,7 +12,7 @@
   "repository": "",
   "scripts": {
     "build": "ember build",
-    "lint:js": "eslint ./*.js app config lib mirage server tests",
+    "lint:js": "eslint ./*.js app blueprints config lib server tests",
     "start": "ember serve",
     "test": "ember test"
   },
@@ -23,7 +23,7 @@
     "ember-ajax": "^3.1.0",
     "ember-auto-import": "^1.2.19",
     "ember-buffered-proxy": "^1.0.0",
-    "ember-cli": "~3.0.4",
+    "ember-cli": "~3.1.4",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-babel": "^6.7.1",
     "ember-cli-clipboard": "^0.10.0",
