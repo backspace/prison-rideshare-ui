@@ -1,6 +1,6 @@
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
-import PhoenixSocket from 'phoenix/services/phoenix-socket';
+import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';
 import Ember from 'ember';
 import config from '../config/environment';
 
