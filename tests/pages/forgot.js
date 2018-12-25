@@ -9,7 +9,7 @@ import {
 export default create({
   testContainer: 'md-dialog',
 
-  visit: visitable('/reset'),
+  visit: visitable('/forgot'),
 
   fillEmail: fillable('.email input'),
 
