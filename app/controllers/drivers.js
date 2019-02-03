@@ -27,7 +27,9 @@ export default Controller.extend({
         .get('content')
         .save()
         .then(() => this.set('editingPerson', undefined))
-        .catch(() => {});
+        .catch(() => {
+          // FIXME this is handled for ride-saving failures, how to generalise?
+        });
     },
 
     cancelPerson() {

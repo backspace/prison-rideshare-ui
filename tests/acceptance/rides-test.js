@@ -499,6 +499,16 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(lastRide.requestNotes, 'Some request notes?');
     assert.notOk(lastRide.firstTime);
     assert.equal(lastRide.medium, 'email');
+
+    this.server.patch('/rides/:id', {}, 500);
+
+    await page.rides[0].edit();
+    await page.form.notes.fillIn('Updated request notes?');
+    await page.form.submit();
+
+    assert.equal(shared.toast.text, 'There was an error saving this ride');
+    assert.equal(page.notes[0].text, 'Some request notes?');
+    assert.equal(page.form.notes.value, 'Updated request notes?');
   });
 
   test('matching visitors are suggested with some deduplication', async function(assert) {
