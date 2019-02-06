@@ -103,6 +103,13 @@ export default create({
       },
     },
 
+    address: {
+      scope: '.address',
+      field: {
+        scope: 'textarea',
+      },
+    },
+
     notes: {
       scope: '.notes',
       field: {

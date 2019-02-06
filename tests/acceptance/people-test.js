@@ -31,7 +31,12 @@ module('Acceptance | people', function(hooks) {
       mobile: '111',
       medium: 'mobile',
     });
-    this.server.create('person', { name: 'Will', active: false });
+
+    this.server.create('person', {
+      name: 'Will',
+      active: false,
+      address: '91 Albert',
+    });
 
     this.server.create('ride');
 
@@ -96,6 +101,9 @@ module('Acceptance | people', function(hooks) {
     assert.equal(will.name, 'Will');
 
     await page.people[2].edit();
+
+    assert.equal(page.form.address.field.value, '91 Albert');
+
     await page.form.nameField.fill('William');
 
     await page.form.email.field.fillIn('will@sense8');

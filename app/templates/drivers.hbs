@@ -65,6 +65,9 @@
           {{#group.radio value='landline'}}{{paper-icon 'favorite'}}{{/group.radio}}
         </div>
         <div class='layout layout-sm-column'>
+          {{form.input textarea=true class='address' label='Mailing address' value=editingPerson.address onChange=(action (mut editingPerson.address)) errors=editingPerson.validationErrors.address isTouched=(readonly editingPerson.validationErrors.address.length)}}
+        </div>
+        <div class='layout layout-sm-column'>
           {{form.input textarea=true class='notes' label='Notes' value=editingPerson.notes onChange=(action (mut editingPerson.notes)) errors=editingPerson.validationErrors.notes isTouched=(readonly editingPerson.validationErrors.notes.length)}}
         </div>
       {{/paper-radio-group}}
