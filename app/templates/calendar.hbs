@@ -48,6 +48,17 @@
             </div>
             <div class='layout-row'>
               <div class='layout-column flex-100'>
+                {{#form.input class='address'
+                             textarea=true
+                             label='Mailing address'
+                             value=person.address
+                             onChange=(action (mut person.address))}}
+                  <div class='hint'>Any text here?</div>
+                {{/form.input}}
+              </div>
+            </div>
+            <div class='layout-row'>
+              <div class='layout-column flex-100'>
                 {{#form.input class='self-notes'
                              textarea=true
                              label='Notes'

@@ -21,6 +21,7 @@ module('Acceptance | calendar', function(hooks) {
       accessToken: 'XXX',
       calendarSecret: 'SECRET++',
       selfNotes: 'My self notes',
+      address: '91 Albert',
     });
     this.person = person;
 
@@ -350,6 +351,7 @@ module('Acceptance | calendar', function(hooks) {
     );
 
     assert.equal(page.person.selfNotes.field.value, 'My self notes');
+    assert.equal(page.person.address.field.value, '91 Albert');
 
     assert.notOk(
       page.person.submitButton.isHighlighted,
@@ -377,6 +379,7 @@ module('Acceptance | calendar', function(hooks) {
     await page.person.mobile.field.fillIn('1234');
     await page.person.email.desiredMedium.click();
     await page.person.selfNotes.field.fillIn('Updated self notes');
+    await page.person.address.field.fillIn('A new address');
 
     assert.ok(
       page.person.submitButton.isHighlighted,
@@ -411,8 +414,10 @@ module('Acceptance | calendar', function(hooks) {
       'Updated self notes',
       'expected the self notes to have changed on the server'
     );
+    assert.equal(person.address, 'A new address');
 
     assert.equal(shared.toast.text, 'Saved your details');
+
     assert.ok(
       page.person.name.isHidden,
       'expected the form to be hidden again'

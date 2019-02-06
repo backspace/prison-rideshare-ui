@@ -81,6 +81,13 @@ export default create({
       },
     },
 
+    address: {
+      scope: '.address',
+      field: {
+        scope: 'textarea',
+      },
+    },
+
     cancelButton: {
       scope: 'button.cancel',
     },
