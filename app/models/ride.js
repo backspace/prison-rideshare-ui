@@ -1,4 +1,4 @@
-import { mapBy, gt, not } from '@ember/object/computed';
+import { mapBy, gt, not, or } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
@@ -121,7 +121,10 @@ export default DS.Model.extend({
     }
   }),
 
-  complete: gt('distance', 0),
+  distanceExists: gt('distance', 0),
+  carExpensesExist: gt('carExpenses', 0),
+
+  complete: or('distanceExists', 'carExpensesExist'),
   notComplete: not('complete'),
 
   cancelled: computed('enabled', {
