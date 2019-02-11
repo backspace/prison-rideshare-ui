@@ -18,6 +18,7 @@ export default Controller.extend({
   },
 
   overlapsService: service('overlaps'),
+  toasts: service(),
 
   peopleService: service('people'),
   people: alias('peopleService.all'),
@@ -103,13 +104,17 @@ export default Controller.extend({
     },
 
     submit(proxy) {
+      let buffer = proxy.buffer;
       proxy.applyBufferedChanges();
+
       return proxy
         .get('content')
         .save()
         .then(() => this.set('editingRide', undefined))
         .catch(() => {
-          // FIXME what is to be done?
+          this.get('toasts').show('There was an error saving this ride');
+          proxy.content.rollbackAttributes();
+          proxy.setProperties(buffer);
         })
         .then(() => this.get('overlapsService').fetch());
     },

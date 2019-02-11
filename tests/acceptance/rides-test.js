@@ -251,13 +251,19 @@ module('Acceptance | rides', function(hooks) {
       foodExpenses: 5555,
       reportNotes: 'Some report notes?',
     });
+    this.server.create('ride', {
+      distance: 0,
+      carExpenses: 1010,
+      rate: 26,
+      foodExpenses: 5555,
+    });
 
     await page.visit();
 
     assert.equal(
       page.rides.length,
       2,
-      'expected the completed ride to be hidden'
+      'expected the completed rides to be hidden'
     );
     assert.notOk(
       page.head.completedSwitch.enabled,
@@ -268,15 +274,15 @@ module('Acceptance | rides', function(hooks) {
 
     assert.equal(
       page.rides.length,
-      3,
-      'expected the completed ride to be showing'
+      4,
+      'expected the completed rides to be showing'
     );
     assert.ok(
       page.head.completedSwitch.enabled,
       'expected the completed switch to be on'
     );
 
-    assert.equal(page.reports.length, 1, 'expected the report to be rendered');
+    assert.equal(page.reports.length, 2, 'expected the reports to be rendered');
     assert.equal(page.reports[0].distance, '44');
     assert.equal(page.reports[0].carExpenses, '10.1');
     assert.equal(page.reports[0].rate, '26¢⁄km');
@@ -307,7 +313,7 @@ module('Acceptance | rides', function(hooks) {
     await page.reports[0].clear();
     await page.reports[0].clearConfirm.click();
 
-    assert.equal(page.reports.length, 0, 'expected the report to be gone');
+    assert.equal(page.reports.length, 1, 'expected the report to be gone');
 
     const [, , ride] = this.server.db.rides;
 
@@ -499,6 +505,16 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(lastRide.requestNotes, 'Some request notes?');
     assert.notOk(lastRide.firstTime);
     assert.equal(lastRide.medium, 'email');
+
+    this.server.patch('/rides/:id', {}, 500);
+
+    await page.rides[0].edit();
+    await page.form.notes.fillIn('Updated request notes?');
+    await page.form.submit();
+
+    assert.equal(shared.toast.text, 'There was an error saving this ride');
+    assert.equal(page.notes[0].text, 'Some request notes?');
+    assert.equal(page.form.notes.value, 'Updated request notes?');
   });
 
   test('matching visitors are suggested with some deduplication', async function(assert) {
