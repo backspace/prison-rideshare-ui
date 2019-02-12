@@ -32,6 +32,7 @@ Router.map(function() {
   this.route('register');
 
   this.route('forgot');
+  this.route('reset', { path: '/reset/:token' });
 
   this.route('admin-calendar', { path: '/admin-calendar/:month' });
   this.route('calendar', { path: '/calendar/:month' });
