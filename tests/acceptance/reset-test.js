@@ -38,7 +38,7 @@ module('Acceptance | reset password', function(hooks) {
     assert.equal(shared.toast.text, 'FIXME It worked?');
   });
 
-  test('a failed login shows an error', async function(assert) {
+  test('a validation error is displayed', async function(assert) {
     this.server.put('/users/:token', () => {
       return new Mirage.Response(
         422,
