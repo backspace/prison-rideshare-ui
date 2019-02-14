@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import Mirage from 'ember-cli-mirage';
 
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -36,6 +37,29 @@ module('Acceptance | reset password', function(hooks) {
     assert.equal(shared.title, 'Reset password · Prison Rideshare');
     assert.equal(shared.toast.text, 'FIXME It worked?');
   });
-});
 
-// FIXME add error-checking
+  test('a failed login shows an error', async function(assert) {
+    this.server.put('/users/:token', () => {
+      return new Mirage.Response(
+        422,
+        {},
+        {
+          errors: [
+            {
+              source: {
+                pointer: '/data/attributes/password-confirmation',
+              },
+              detail: 'Password confirmation did not match',
+            },
+          ],
+        }
+      );
+    });
+
+    await resetPage.visit({ token: 'hey' });
+    await resetPage.fillPassword('x');
+    await resetPage.submit();
+
+    assert.equal(shared.toast.text, 'Password confirmation did not match');
+  });
+});

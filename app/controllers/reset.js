@@ -1,5 +1,6 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
+import { get } from '@ember/object';
 
 import fetch from 'fetch';
 
@@ -30,8 +31,14 @@ export default Controller.extend({
         },
       });
 
-      query.then(() => {
-        this.get('toasts').show('FIXME It worked?');
+      query.then(response => {
+        if (response.ok) {
+          this.get('toasts').show('FIXME It worked?');
+        } else {
+          response.json().then(json => {
+            this.get('toasts').show(get(json, 'errors.firstObject.detail'));
+          });
+        }
       });
     },
   },
