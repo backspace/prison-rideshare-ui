@@ -5,6 +5,7 @@ import { get } from '@ember/object';
 import fetch from 'fetch';
 
 export default Controller.extend({
+  session: service(),
   store: service(),
   toasts: service(),
 
@@ -34,6 +35,16 @@ export default Controller.extend({
       query.then(response => {
         if (response.ok) {
           this.get('toasts').show('FIXME It worked?');
+
+          response.json().then(json => {
+            let email = get(json, 'data.attributes.email');
+
+            this.get('session').authenticate(
+              'authenticator:application',
+              email,
+              this.get('password')
+            );
+          });
         } else {
           response.json().then(json => {
             let message = get(json, 'errors.firstObject.detail');

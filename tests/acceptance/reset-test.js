@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { currentURL } from '@ember/test-helpers';
 import Mirage from 'ember-cli-mirage';
 
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
@@ -8,11 +9,16 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 module('Acceptance | reset password', function(hooks) {
   setupApplicationTest(hooks);
 
-  test('resets a password', async function(assert) {
-    let done = assert.async();
+  test('resets a password and logs the user in', async function(assert) {
+    this.server.create('user', {
+      email: 'test@example.com',
+    });
+
+    let resetDone = false,
+      loginDone = false;
 
     this.server.put('/users/:token', function(
-      schema,
+      { users },
       { params: { token }, requestBody }
     ) {
       let {
@@ -26,16 +32,31 @@ module('Acceptance | reset password', function(hooks) {
       assert.equal(password, 'hello');
       assert.equal(confirmation, 'hello');
 
-      return done();
+      resetDone = true;
+
+      return users.first();
+    });
+
+    this.server.post('/token', () => {
+      loginDone = true;
+
+      return {
+        access_token: 'abcdef',
+      };
     });
 
     await resetPage.visit({ token: 'Strike!' });
+    assert.equal(shared.title, 'Reset password · Prison Rideshare');
+
     await resetPage.fillPassword('hello');
     await resetPage.fillPasswordConfirmation('hello');
     await resetPage.submit();
 
-    assert.equal(shared.title, 'Reset password · Prison Rideshare');
     assert.equal(shared.toast.text, 'FIXME It worked?');
+    assert.equal(currentURL(), '/reports/new');
+
+    assert.ok(resetDone);
+    assert.ok(loginDone);
   });
 
   test('a validation error is displayed', async function(assert) {
