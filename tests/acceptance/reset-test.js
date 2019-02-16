@@ -52,7 +52,10 @@ module('Acceptance | reset password', function(hooks) {
     await resetPage.fillPasswordConfirmation('hello');
     await resetPage.submit();
 
-    assert.equal(shared.toast.text, 'FIXME It worked?');
+    assert.equal(
+      shared.toast.text,
+      'Changed your password, will now log you in'
+    );
     assert.equal(currentURL(), '/reports/new');
 
     assert.ok(resetDone);

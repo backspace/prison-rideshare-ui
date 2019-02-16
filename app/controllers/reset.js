@@ -34,7 +34,7 @@ export default Controller.extend({
 
       query.then(response => {
         if (response.ok) {
-          this.get('toasts').show('FIXME It worked?');
+          this.get('toasts').show('Changed your password, will now log you in');
 
           response.json().then(json => {
             let email = get(json, 'data.attributes.email');
