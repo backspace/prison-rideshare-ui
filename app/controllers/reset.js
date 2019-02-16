@@ -36,7 +36,9 @@ export default Controller.extend({
           this.get('toasts').show('FIXME It worked?');
         } else {
           response.json().then(json => {
-            this.get('toasts').show(get(json, 'errors.firstObject.detail'));
+            let message = get(json, 'errors.firstObject.detail');
+
+            this.get('toasts').show(message || 'An unknown error occurred');
           });
         }
       });

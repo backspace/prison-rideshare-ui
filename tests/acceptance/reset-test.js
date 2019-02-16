@@ -62,4 +62,16 @@ module('Acceptance | reset password', function(hooks) {
 
     assert.equal(shared.toast.text, 'Password confirmation did not match');
   });
+
+  test('an unknown error is handled', async function(assert) {
+    this.server.put('/users/:token', () => {
+      return new Mirage.Response(500, {}, {});
+    });
+
+    await resetPage.visit({ token: 'hey' });
+    await resetPage.fillPassword('x');
+    await resetPage.submit();
+
+    assert.equal(shared.toast.text, 'An unknown error occurred');
+  });
 });
