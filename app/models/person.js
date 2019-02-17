@@ -9,6 +9,8 @@ export default DS.Model.extend({
   landline: DS.attr('string'),
   medium: DS.attr('string'),
 
+  address: DS.attr('string'),
+
   active: DS.attr('boolean', { defaultValue: true }),
 
   notes: DS.attr('string'),

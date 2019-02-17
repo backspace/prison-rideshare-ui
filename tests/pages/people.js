@@ -61,6 +61,11 @@ export default create({
       scope: '.notes',
     },
 
+    copyButton: {
+      scope: '.copy-btn',
+      clipboardText: attribute('data-clipboard-text'),
+    },
+
     edit: clickable('button.edit'),
   }),
 
@@ -100,6 +105,13 @@ export default create({
       },
       error: {
         scope: '.paper-input-error',
+      },
+    },
+
+    address: {
+      scope: '.address',
+      field: {
+        scope: 'textarea',
       },
     },
 

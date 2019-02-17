@@ -26,6 +26,10 @@ export default Component.extend({
   }),
 
   actions: {
+    copied() {
+      this.get('toasts').show('Copied address');
+    },
+
     toggleActiveness(active) {
       this.set('person.active', active);
       this.get('person')
