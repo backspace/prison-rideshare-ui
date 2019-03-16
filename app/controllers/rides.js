@@ -144,11 +144,18 @@ export default Controller.extend({
     },
 
     submitCancellation(proxy) {
+      let buffer = proxy.buffer;
       proxy.applyBufferedChanges();
+
       return proxy
         .get('content')
         .save()
-        .then(() => this.set('editingCancellation'), undefined);
+        .then(() => this.set('editingCancellation'), undefined)
+        .catch(() => {
+          this.get('toasts').show('There was an error cancelling this ride');
+          proxy.content.rollbackAttributes();
+          proxy.setProperties(buffer);
+        });
     },
 
     cancelCancellation() {

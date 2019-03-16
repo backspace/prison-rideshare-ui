@@ -239,6 +239,13 @@ module('Acceptance | rides', function(hooks) {
     await page.cancellationForm.shortcutButtons[0].click();
 
     assert.ok(page.rides[0].cancellation.showsDriverNotFound);
+
+    this.server.patch('/rides/:id', {}, 500);
+
+    await page.rides[2].cancellation.click();
+    await page.cancellationForm.shortcutButtons[0].click();
+
+    assert.equal(shared.toast.text, 'There was an error cancelling this ride');
   });
 
   test('completed rides can be shown and cleared', async function(assert) {
