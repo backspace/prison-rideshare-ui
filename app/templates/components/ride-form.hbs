@@ -42,13 +42,13 @@
         {{#paper-radio-group
           groupValue=(readonly ride.medium)
           onChange=(action (mut ride.medium)) as |group|}}
-          <div class='flex'>
+          <div class='flex' title='ride was requested via txt'>
             {{#group.radio value='txt' class='txt'}}{{paper-icon 'textsms'}}{{/group.radio}}
           </div>
-          <div class='flex'>
+          <div class='flex' title='ride was requested via email'>
             {{#group.radio value='email' class='email'}}{{paper-icon 'email'}}{{/group.radio}}
           </div>
-          <div class='flex'>
+          <div class='flex' title='ride was requested via phone'>
             {{#group.radio value='phone' class='phone'}}{{paper-icon 'phone'}}{{/group.radio}}
           </div>
         {{/paper-radio-group}}
