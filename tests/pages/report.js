@@ -16,6 +16,7 @@ export default create({
   }),
 
   noRides: { scope: '.no-rides' },
+  noSession: { scope: '.no-session' },
 
   distance: { scope: '.distance input' },
   carExpenses: { scope: '.car-expenses input' },

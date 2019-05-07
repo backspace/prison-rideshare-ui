@@ -58,13 +58,12 @@ module('Acceptance | reports', function(hooks) {
   });
 
   test('submit a report for a ride', async function(assert) {
-    authenticateSession(this.application);
-
     await page.visit();
 
     assert.equal(shared.title, 'Ride report · Prison Rideshare');
 
     assert.equal(page.rides.length, 2, 'expected two rides to choose from');
+    assert.ok(page.noSession.isHidden);
 
     assert.equal(
       page.rides[0].label,
@@ -98,8 +97,6 @@ module('Acceptance | reports', function(hooks) {
   });
 
   test('a fallback shows when no rides need a report', async function(assert) {
-    authenticateSession(this.application);
-
     await page.visit();
 
     await page.distance.fillIn(75);
@@ -114,6 +111,15 @@ module('Acceptance | reports', function(hooks) {
       page.noRides.isVisible,
       'expected there to be no rides to report on'
     );
+  });
+
+  test('the report interface is hidden when a user is logged in', async function(assert) {
+    authenticateSession(this.application);
+
+    await page.visit();
+
+    assert.equal(page.rides.length, 0);
+    assert.ok(page.noSession.isVisible);
   });
 
   test('submitting a report clears the form', async function(assert) {

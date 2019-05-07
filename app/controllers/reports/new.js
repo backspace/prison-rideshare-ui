@@ -3,6 +3,7 @@ import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default Controller.extend({
+  session: service(),
   toasts: service(),
 
   editingRide: undefined,
