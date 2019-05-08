@@ -13,8 +13,9 @@ import moment from 'moment';
 module('Acceptance | rides', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
-    authenticateSession(this.application);
+  hooks.beforeEach(async function() {
+    this.server.create('user', { admin: true });
+    await authenticateSession({ access_token: 'abcdef' });
   });
 
   test('list existing rides with sortability, hiding cancelled ones by default', async function(assert) {
@@ -257,12 +258,14 @@ module('Acceptance | rides', function(hooks) {
       rate: 26,
       foodExpenses: 5555,
       reportNotes: 'Some report notes?',
+      complete: true,
     });
     this.server.create('ride', {
       distance: 0,
       carExpenses: 1010,
       rate: 26,
       foodExpenses: 5555,
+      complete: true,
     });
 
     await page.visit();

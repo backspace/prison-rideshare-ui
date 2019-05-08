@@ -8,7 +8,7 @@ export default function() {
 
   this.namespace = '/api';
 
-  this.get('/rides', function({ rides }, { queryParams }) {
+  this.get('/rides', function({ rides }, { queryParams, requestHeaders }) {
     if (queryParams['filter[name]']) {
       // FIXME this is a mess, no better way???
       const nameFilter = queryParams['filter[name]'];
@@ -20,8 +20,10 @@ export default function() {
       return {
         data: matchingRides.map(ride => this.serialize(ride)['data']),
       };
-    } else {
+    } else if (requestHeaders.Authorization) {
       return rides.all();
+    } else {
+      return rides.where({ complete: false });
     }
   });
   this.get('/rides/:id');

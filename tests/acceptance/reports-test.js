@@ -19,7 +19,7 @@ module('Acceptance | reports', function(hooks) {
       name: 'Remand Centre',
     });
 
-    const edwardRide = this.server.create('ride', {
+    this.server.create('ride', {
       name: 'Edward',
       start: new Date(2016, 11, 27, 17, 0),
       end: new Date(2016, 11, 27, 19, 0),
@@ -40,20 +40,21 @@ module('Acceptance | reports', function(hooks) {
       overridable: true,
     });
 
-    this.server.create('ride', { enabled: false });
-
     this.server.create('ride', {
       name: 'Assata',
       distance: 100,
+      complete: true,
     });
 
-    this.server.create('ride', { combinedWith: edwardRide });
+    this.server.patch('/rides/:id', function({ rides }, { params: { id } }) {
+      let ride = rides.find(id);
+      let attrs = this.normalizedRequestAttrs('ride');
 
-    // This ride should not display because it’s in the future.
-    this.server.create('ride', {
-      name: 'Future',
-      start: new Date(new Date().getTime() + 1000 * 60 * 60 * 24),
-      end: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 + 1000),
+      ride.update(attrs);
+      ride.complete = true;
+      ride.save();
+
+      return ride;
     });
   });
 
@@ -97,15 +98,8 @@ module('Acceptance | reports', function(hooks) {
   });
 
   test('a fallback shows when no rides need a report', async function(assert) {
+    this.server.db.rides.remove();
     await page.visit();
-
-    await page.distance.fillIn(75);
-    await page.rides[1].choose();
-    await page.submitButton.click();
-
-    await page.distance.fillIn(75);
-    await page.rides[0].choose();
-    await page.submitButton.click();
 
     assert.ok(
       page.noRides.isVisible,

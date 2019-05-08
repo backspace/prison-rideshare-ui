@@ -22,4 +22,7 @@ export default Factory.extend({
   end() {
     return new Date(2016, 11, 26, 22, 0);
   },
+  complete() {
+    return false;
+  },
 });

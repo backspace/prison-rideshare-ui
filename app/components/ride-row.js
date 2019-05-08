@@ -168,6 +168,7 @@ export default Component.extend({
       this.set('ride.reportNotes', null);
       this.set('ride.foodExpenses', 0);
       this.set('ride.carExpenses', 0);
+      this.set('ride.complete', false);
 
       this.get('ride').save();
     },
