@@ -1,4 +1,4 @@
-import { mapBy, gt, not, or } from '@ember/object/computed';
+import { mapBy, gt } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
@@ -12,6 +12,8 @@ import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
 
 export default DS.Model.extend({
   enabled: DS.attr('boolean', { defaultValue: true }),
+  complete: DS.attr('boolean', { defaultValue: false }),
+
   cancellationReason: DS.attr(),
 
   combinedWith: DS.belongsTo('ride', { inverse: 'children' }),
@@ -123,9 +125,6 @@ export default DS.Model.extend({
 
   distanceExists: gt('distance', 0),
   carExpensesExist: gt('carExpenses', 0),
-
-  complete: or('distanceExists', 'carExpensesExist'),
-  notComplete: not('complete'),
 
   cancelled: computed('enabled', {
     get() {
