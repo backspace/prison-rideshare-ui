@@ -4,6 +4,7 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 export default Controller.extend({
   session: service(),
+  store: service(),
   toasts: service(),
 
   editingRide: undefined,
@@ -26,6 +27,10 @@ export default Controller.extend({
           .then(
             () => {
               this.get('toasts').show('Your report was saved');
+
+              // Remove the ride from the store before reloading from the server
+              this.get('store').unloadRecord(this.get('editingRide'));
+
               this.set('editingRide', undefined);
               this.set('rideProxy.content', undefined);
               this.transitionToRoute('application');

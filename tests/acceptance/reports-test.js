@@ -95,6 +95,15 @@ module('Acceptance | reports', function(hooks) {
     assert.equal(currentURL(), '/reports/new');
 
     assert.equal(shared.toast.text, 'Your report was saved');
+    assert.equal(
+      page.rides.length,
+      1,
+      'expected the reported-on ride to have disappeared'
+    );
+    assert.equal(
+      page.rides[0].label,
+      'Tue, Dec 27 at 5:00p to Fort Leavenworth'
+    );
   });
 
   test('a fallback shows when no rides need a report', async function(assert) {
