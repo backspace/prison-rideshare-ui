@@ -331,3 +331,7 @@ md-toast {
   transform: translateY(-2px);
   font-size: 60%;
 }
+
+md-option[aria-current] {
+  font-weight: bold;
+}
