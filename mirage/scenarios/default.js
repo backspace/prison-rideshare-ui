@@ -1,4 +1,4 @@
-import { faker } from 'ember-cli-mirage';
+import faker from 'faker';
 
 import RidesController from 'prison-rideshare-ui/controllers/rides';
 

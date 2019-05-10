@@ -1,5 +1,5 @@
 import { setupApplicationTest as qunitSetup } from 'ember-qunit';
-import setupMirage from 'ember-cli-mirage/test-support/setup-mirage';
+import { setupMirage } from 'ember-cli-mirage/test-support';
 
 function setupApplicationTest(hooks) {
   qunitSetup(hooks);
