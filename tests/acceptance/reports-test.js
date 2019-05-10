@@ -1,5 +1,5 @@
 import { currentURL } from '@ember/test-helpers';
-import { module, skip, test } from 'qunit';
+import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
@@ -75,8 +75,8 @@ module('Acceptance | reports', function(hooks) {
       'Tue, Dec 27 at 5:00p to Fort Leavenworth'
     );
 
-    await page.distance.fillIn(75);
     await page.rides[0].choose();
+    await page.distance.fillIn(75);
     await page.foodExpenses.fillIn(25.5);
     await page.carExpenses.fillIn(52.05);
     await page.notes.fillIn('These r the notes');
@@ -125,56 +125,7 @@ module('Acceptance | reports', function(hooks) {
     assert.ok(page.noSession.isVisible);
   });
 
-  test('submitting a report clears the form', async function(assert) {
-    await page.visit();
-
-    await page.distance.fillIn(75);
-    await page.rides[0].choose();
-    await page.foodExpenses.fillIn(25.5);
-    await page.notes.fillIn('These r the notes');
-
-    await page.submitButton.click();
-
-    assert.equal(currentURL(), '/reports/new');
-    assert.equal(
-      page.distance.value,
-      '',
-      'expected the distance field to be empty'
-    );
-    assert.equal(
-      page.foodExpenses.value,
-      '',
-      'expected the food expenses to have been cleared'
-    );
-    assert.equal(page.notes.value, '', 'expected the notes to be empty');
-  });
-
-  test('partially completing a report and changing the ride doesn’t erase the values', async function(assert) {
-    const longReport = 'This is a very long report I would be sad to lose.';
-
-    await page.visit();
-
-    await page.notes.fillIn(longReport);
-
-    await page.rides[0].choose();
-
-    assert.equal(page.notes.value, longReport);
-
-    await page.rides[1].choose();
-
-    assert.equal(page.notes.value, longReport);
-  });
-
-  skip('submitting a report without choosing a ride displays an error', async function(assert) {
-    await page.visit();
-    await page.notes.fillIn('I cannot find my ride');
-    await page.submitButton.click();
-
-    assert.equal(shared.toast.text, 'Please choose a ride');
-    assert.equal(page.notes.value, 'I cannot find my ride');
-  });
-
-  skip('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', async function(assert) {
+  test('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', async function(assert) {
     await page.visit();
     await page.rides[1].choose();
 
@@ -188,7 +139,19 @@ module('Acceptance | reports', function(hooks) {
     );
   });
 
-  skip('a failure to save keeps the values and displays an error', async function(assert) {
+  test('unsaved changes are discarded when the selected ride changes', async function(assert) {
+    await page.visit();
+
+    await page.rides[0].choose();
+    await page.distance.fillIn(75);
+
+    await page.rides[1].choose();
+    await page.rides[0].choose();
+
+    assert.equal(page.distance.value, '');
+  });
+
+  test('a failure to save keeps the values and displays an error', async function(assert) {
     this.server.patch(
       '/rides/:id',
       () => {
@@ -199,8 +162,8 @@ module('Acceptance | reports', function(hooks) {
 
     await page.visit();
 
-    await page.distance.fillIn(75);
     await page.rides[0].choose();
+    await page.distance.fillIn(75);
 
     await page.submitButton.click();
 

@@ -13,7 +13,7 @@
         {{#paper-form onSubmit=(action 'submit') as |form|}}
           <div class='layout layout-sm-column'>
             {{#paper-radio-group
-              groupValue=(readonly rideProxy.content)
+              groupValue=(readonly editingRide)
               onChange=(action 'setRide') as |group|}}
               {{#each (sort-by 'start' model) as |ride|}}
                 {{#group.radio value=ride}}
@@ -25,56 +25,58 @@
             {{/paper-radio-group}}
           </div>
 
-          <div class='layout-column'>
-            {{form.input class='distance'
-                        type='number'
-                        label='Distance in kilometres'
-                        value=rideProxy.distance
-                        errors=rideProxy.validationErrors.distance
-                        isTouched=(readonly rideProxy.validationErrors.distance.length)
-                        onChange=(action (mut rideProxy.distance))}}
-          </div>
-          {{#if rideProxy.donatable}}
-            <div class='layout layout-sm-column'>
-              {{#paper-checkbox
-                value=rideProxy.donation
-                onChange=(action (mut rideProxy.donation))}}Donate your gas reimbursement{{/paper-checkbox}}
-            </div>
-          {{/if}}
-          <div class='layout-column'>
-            {{form.input class='food-expenses'
-                        type='number'
-                        label='Food expenses if wanting reimbursement'
-                        value=rideProxy.foodExpensesDollars
-                        onChange=(action (mut rideProxy.foodExpensesDollars))}}
-          </div>
-          {{#if rideProxy.overridable}}
+          {{#if editingRide}}
             <div class='layout-column'>
-              {{form.input class='car-expenses'
+              {{form.input class='distance'
                           type='number'
-                          label='Car expenses'
-                          value=rideProxy.carExpensesDollars
-                          onChange=(action (mut rideProxy.carExpensesDollars))}}
+                          label='Distance in kilometres'
+                          value=editingRide.distance
+                          errors=editingRide.validationErrors.distance
+                          isTouched=(readonly editingRide.validationErrors.distance.length)
+                          onChange=(action (mut editingRide.distance))}}
+            </div>
+            {{#if editingRide.donatable}}
+              <div class='layout layout-sm-column'>
+                {{#paper-checkbox
+                  value=editingRide.donation
+                  onChange=(action (mut editingRide.donation))}}Donate your gas reimbursement{{/paper-checkbox}}
+              </div>
+            {{/if}}
+            <div class='layout-column'>
+              {{form.input class='food-expenses'
+                          type='number'
+                          label='Food expenses if wanting reimbursement'
+                          value=editingRide.foodExpensesDollars
+                          onChange=(action (mut editingRide.foodExpensesDollars))}}
+            </div>
+            {{#if editingRide.overridable}}
+              <div class='layout-column'>
+                {{form.input class='car-expenses'
+                            type='number'
+                            label='Car expenses'
+                            value=editingRide.carExpensesDollars
+                            onChange=(action (mut editingRide.carExpensesDollars))}}
+              </div>
+            {{/if}}
+            <div class='layout-column'>
+              {{#form.input class='report-notes'
+                          textarea=true
+                          label='Notes'
+                          value=editingRide.reportNotes
+                          onChange=(action (mut editingRide.reportNotes)) as |textHelper|}}
+                {{#unless textHelper.hasValue}}
+                  <div class="hint">Anything unusual, like paying the driver for gas instead of car owner.</div>
+                {{/unless}}
+              {{/form.input}}
+            </div>
+
+            <div class="layout-row">
+              {{#paper-button class='submit'
+                              raised=true primary=true
+                              onClick=(action 'submit')}}Save{{/paper-button}}
+                              {{! FIXME simplify if/when form yields radio-group?}}
             </div>
           {{/if}}
-          <div class='layout-column'>
-            {{#form.input class='report-notes'
-                        textarea=true
-                        label='Notes'
-                        value=rideProxy.reportNotes
-                        onChange=(action (mut rideProxy.reportNotes)) as |textHelper|}}
-              {{#unless textHelper.hasValue}}
-                <div class="hint">Anything unusual, like paying the driver for gas instead of car owner.</div>
-              {{/unless}}
-            {{/form.input}}
-          </div>
-
-          <div class="layout-row">
-            {{#paper-button class='submit'
-                            raised=true primary=true
-                            onClick=(action 'submit')}}Save{{/paper-button}}
-                            {{! FIXME simplify if/when form yields radio-group?}}
-          </div>
         {{/paper-form}}
       </div>
     {{else}}
