@@ -15,7 +15,7 @@
     cursor: pointer;
 
     &.committed-to {
-      background-color: color($primary);
+      background-color: paper-color($primary);
     }
   }
 

@@ -62,7 +62,7 @@ md-toolbar {
   .count {
     border-radius: 10px;
     background: white;
-    color: color($color-indigo, '600');
+    color: paper-color($color-indigo, '600');
     font-size: 50%;
     text-align: center;
     width: 12px;
@@ -75,7 +75,7 @@ md-toolbar {
 
 md-sidenav {
   width: 150px;
-  background-color: color($color-indigo, '600');
+  background-color: paper-color($color-indigo, '600');
 
   md-content.md-default-theme, md-list {
     background: transparent;
@@ -98,11 +98,11 @@ md-sidenav {
     color: white;
 
     &:hover {
-      background-color: color($color-indigo, '200');
+      background-color: paper-color($color-indigo, '200');
     }
 
     &.active {
-      background-color: color($color-indigo, '400');
+      background-color: paper-color($color-indigo, '400');
     }
   }
 
@@ -115,7 +115,7 @@ md-sidenav {
     .count {
       border-radius: 10px;
       background: white;
-      color: color($color-indigo, '600');
+      color: paper-color($color-indigo, '600');
       font-size: 50%;
       text-align: center;
       width: 10px;
@@ -155,7 +155,7 @@ md-sidenav {
   }
 
   &.overlaps {
-    background-color: color($color-pink, '100');
+    background-color: paper-color($color-pink, '100');
   }
 
   md-input-container {
@@ -178,7 +178,7 @@ md-sidenav {
 }
 
 tr.overlap {
-  background-color: color($color-pink, '100');
+  background-color: paper-color($color-pink, '100');
 }
 
 .search {
