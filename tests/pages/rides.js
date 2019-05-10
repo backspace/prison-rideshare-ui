@@ -117,6 +117,18 @@ export default create({
       text: text('.name'),
       click: clickable(),
       clear: clickable('.remove-container button'),
+
+      clickSelect: clickable('md-select'),
+
+      select: {
+        scope: 'md-select',
+        type: triggerable('keydown'),
+        enter: triggerable('keydown', '.ember-power-select-options', {
+          testContainer: 'html',
+          resetScope: true,
+          eventProperties: { keyCode: 13 },
+        }),
+      },
     },
 
     isOverridable: isVisible('md-icon[md-font-icon=directions_bus]'),

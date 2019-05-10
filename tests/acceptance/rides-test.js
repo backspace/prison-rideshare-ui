@@ -461,7 +461,9 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(lastRide.carOwnerId, sun.id);
 
     await page.rides[0].carOwner.clear();
-    await selectChoose('.car-owner md-input-container', 'Lito');
+    await page.rides[0].carOwner.select.click();
+    await page.rides[0].carOwner.select.type({ key: 'l' });
+    await page.rides[0].carOwner.select.enter();
 
     assert.equal(page.rides[0].carOwner.text, 'Lito');
 
