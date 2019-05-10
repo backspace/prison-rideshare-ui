@@ -24,7 +24,7 @@
             class='institution'
             placeholder="Institution"
             selected=ride.institution
-            matcher=(action 'matchInstitution')
+            searchField='name'
             options=institutions
             onChange=(action (mut ride.institution))
             as |institution|}}

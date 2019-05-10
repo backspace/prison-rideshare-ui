@@ -1,4 +1,4 @@
-import { computed, get } from '@ember/object';
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
@@ -67,15 +67,6 @@ export default Component.extend({
         this.set('ride.address', ride.get('address'));
         this.set('ride.contact', ride.get('contact'));
       }
-    },
-
-    matchInstitution(option, searchTerm) {
-      const name = get(option, 'name');
-      const result = (name || '')
-        .toLowerCase()
-        .startsWith(searchTerm.toLowerCase());
-
-      return result ? 1 : -1;
     },
   },
 });
