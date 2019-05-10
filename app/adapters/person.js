@@ -9,7 +9,7 @@ export default ApplicationAdapter.extend({
     return this.get('router.currentRouteName') === 'calendar';
   }),
 
-  headers: computed(function() {
+  get headers() {
     if (this.get('onCalendar')) {
       const personToken = localStorage.getItem('person-token');
       return {
@@ -18,7 +18,7 @@ export default ApplicationAdapter.extend({
     } else {
       return {};
     }
-  }).volatile(),
+  },
 
   urlForUpdateRecord(id, modelName, snapshot) {
     if (this.get('onCalendar')) {
