@@ -8,6 +8,7 @@ export default PhoenixSocket.extend({
   session: service('session'),
 
   init() {
+    this._super(...arguments);
     this.set('present', A());
     this.connect();
   },
