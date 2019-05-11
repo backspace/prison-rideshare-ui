@@ -63,8 +63,8 @@
             {{/paper-item}}
             {{paper-divider}}
           {{/if}}
-          {{#paper-item}}
-            <span onclick={{action 'logout'}} class='session'>Log out {{session.currentUser.email}}</span>
+          {{#paper-item onClick=(action 'logout')}}
+            <span class='session'>Log out {{session.currentUser.email}}</span>
           {{/paper-item}}
         {{else}}
           {{#paper-item}}
