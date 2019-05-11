@@ -10,7 +10,7 @@ export default Route.extend(ApplicationRouteMixin, {
   userSocket: service(),
   toasts: service(),
   overlaps: service(),
-  // poll: service(),
+  poll: service(),
 
   beforeModel() {
     return this._loadCurrentUser();
@@ -18,12 +18,12 @@ export default Route.extend(ApplicationRouteMixin, {
 
   afterModel() {
     this._super(...arguments);
-    // if (!Ember.testing) {
-    //   this.get('poll').start({
-    //     idle_timeout: 10000,
-    //     interval: 10000,
-    //   });
-    // }
+    if (!Ember.testing) {
+      this.get('poll').start({
+        idle_timeout: 10000,
+        interval: 10000,
+      });
+    }
   },
 
   title(tokens) {

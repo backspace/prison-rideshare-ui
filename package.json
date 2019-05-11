@@ -49,6 +49,7 @@
     "ember-cli-poll": "^0.1.0",
     "ember-cli-sass": "^8.0.1",
     "ember-cli-sentry": "^4.1.0",
+    "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-template-lint": "^1.0.0-beta.1",
     "ember-cli-uglify": "^2.1.0",

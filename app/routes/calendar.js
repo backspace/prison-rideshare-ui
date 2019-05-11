@@ -1,13 +1,13 @@
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
-// import { inject as service } from '@ember/service';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import Ember from 'ember';
 import fetch from 'fetch';
 import config from '../config/environment';
 
 export default Route.extend({
-  // poll: service(),
+  poll: service(),
 
   // FIXME is it possible to get the token from elsewhere than the transition object?
   model({ month }, { queryParams }) {
@@ -56,19 +56,19 @@ export default Route.extend({
   afterModel() {
     const url = this.store.adapterFor('application').buildURL('slot');
 
-    // if (!Ember.testing) {
-    //   this.get('poll').setup({
-    //     name: 'slotsPoll',
-    //     resource_name: 'slots',
-    //     url,
-    //   });
-    // }
+    if (!Ember.testing) {
+      this.get('poll').setup({
+        name: 'slotsPoll',
+        resource_name: 'slots',
+        url,
+      });
+    }
   },
 
   actions: {
     willTransition(transition) {
       this._super(transition);
-      // this.get('poll').removePoll('slotsPoll');
+      this.get('poll').removePoll('slotsPoll');
     },
   },
 });
