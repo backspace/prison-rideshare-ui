@@ -2,10 +2,10 @@
 {{/toolbar-header}}
 
 <div class='admin-calendar'>
-  {{#power-calendar center=monthMoment daysComponent='calendar-days' onCenterChange=(action (mut month) value="date") as |calendar|}}
-    <nav class="ember-power-calendar-nav">
+  {{#power-calendar center=monthMoment daysComponent='calendar-days' onCenterChange=(action (mut month) value='date') as |calendar|}}
+    <nav class='ember-power-calendar-nav'>
       {{link-to '‹' 'admin-calendar' previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
-      <div class="ember-power-calendar-nav-title">
+      <div class='ember-power-calendar-nav-title'>
         {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize commitmentCount 'commitment'}}
       </div>
       {{link-to '›' 'admin-calendar' nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}

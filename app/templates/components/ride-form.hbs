@@ -12,7 +12,7 @@
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout-column'>
         {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated') as |textHelper|}}
-          <div class="hint">“friday from 2 to 4” or “tomorrow 11am to noon”</div>
+          <div class='hint'>“friday from 2 to 4” or “tomorrow 11am to noon”</div>
         {{/form.input}}
       </div>
       <div class='layout-row layout-xs-column'>
@@ -22,7 +22,7 @@
         <div class='flex'>
           {{#paper-select
             class='institution'
-            placeholder="Institution"
+            placeholder='Institution'
             selected=ride.institution
             searchField='name'
             options=institutions

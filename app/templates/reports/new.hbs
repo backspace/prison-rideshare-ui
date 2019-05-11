@@ -65,12 +65,12 @@
                           value=editingRide.reportNotes
                           onChange=(action (mut editingRide.reportNotes)) as |textHelper|}}
                 {{#unless textHelper.hasValue}}
-                  <div class="hint">Anything unusual, like paying the driver for gas instead of car owner.</div>
+                  <div class='hint'>Anything unusual, like paying the driver for gas instead of car owner.</div>
                 {{/unless}}
               {{/form.input}}
             </div>
 
-            <div class="layout-row">
+            <div class='layout-row'>
               {{#paper-button class='submit'
                               raised=true primary=true
                               onClick=(action 'submit')}}Save{{/paper-button}}
