@@ -11,7 +11,7 @@
     <h2 class='md-title'>{{if ride.isNew 'Record' 'Edit'}} a ride request</h2>
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout-column'>
-        {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated') as |textHelper|}}
+        {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated')}}
           <div class='hint'>“friday from 2 to 4” or “tomorrow 11am to noon”</div>
         {{/form.input}}
       </div>
