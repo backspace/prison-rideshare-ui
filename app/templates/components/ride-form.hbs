@@ -35,7 +35,9 @@
           {{#paper-checkbox
             class='overridable'
             value=ride.overridable
-            onChange=(action (mut ride.overridable))}}Sunshine House van?{{/paper-checkbox}}
+            onChange=(action (mut ride.overridable))}}
+            Sunshine House van?
+          {{/paper-checkbox}}
         </div>
       </div>
       <div class='layout-row layout-xs-column medium-row'>
@@ -101,7 +103,9 @@
           {{#paper-checkbox
             class='first-time'
             value=ride.firstTime
-            onChange=(action (mut ride.firstTime))}}First time?{{/paper-checkbox}}
+            onChange=(action (mut ride.firstTime))}}
+            First time?
+          {{/paper-checkbox}}
         </div>
       </div>
       {{#if ride.firstTime}}

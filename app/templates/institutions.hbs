@@ -1,7 +1,7 @@
 {{#toolbar-header title='Institutions'}}
-{{#paper-button mini=true aria-label='New institution' title='New institution' class='new' onClick=(action 'newInstitution')}}
-  {{paper-icon 'add'}}
-{{/paper-button}}
+  {{#paper-button mini=true aria-label='New institution' title='New institution' class='new' onClick=(action 'newInstitution')}}
+    {{paper-icon 'add'}}
+  {{/paper-button}}
 {{/toolbar-header}}
 
 {{#paper-data-table sortProp='name' sortDir='asc' as |table|}}
@@ -32,27 +32,29 @@
 {{/paper-data-table}}
 
 {{#if editingInstitution}}
-{{#paper-dialog clickOutsideToClose=true
-                onClose=(action 'cancelInstitution')}}
+  {{#paper-dialog clickOutsideToClose=true
+                  onClose=(action 'cancelInstitution')}}
 
-  {{#paper-dialog-content}}
-    <h2 class='md-title'>{{if editingInstitution.isNew 'New' 'Edit'}} institution</h2>
-    {{#paper-form onSubmit=saveInstitution as |form|}}
-      <div class='layout layout-sm-column'>
-        {{form.input class='name' label='Name' autofocus=true value=editingInstitution.name onChange=(action (mut editingInstitution.name)) errors=editingInstitution.validationErrors.name isTouched=(readonly editingInstitution.validationErrors.name.length)}}
-      </div>
-      <div class='layout layout-sm-column'>
-        {{#paper-checkbox
-          value=editingInstitution.far
-          onChange=(action (mut editingInstitution.far))}}Far?{{/paper-checkbox}}
-      </div>
-    {{/paper-form}}
-  {{/paper-dialog-content}}
+    {{#paper-dialog-content}}
+      <h2 class='md-title'>{{if editingInstitution.isNew 'New' 'Edit'}} institution</h2>
+      {{#paper-form onSubmit=saveInstitution as |form|}}
+        <div class='layout layout-sm-column'>
+          {{form.input class='name' label='Name' autofocus=true value=editingInstitution.name onChange=(action (mut editingInstitution.name)) errors=editingInstitution.validationErrors.name isTouched=(readonly editingInstitution.validationErrors.name.length)}}
+        </div>
+        <div class='layout layout-sm-column'>
+          {{#paper-checkbox
+            value=editingInstitution.far
+            onChange=(action (mut editingInstitution.far))}}
+            Far?
+          {{/paper-checkbox}}
+        </div>
+      {{/paper-form}}
+    {{/paper-dialog-content}}
 
-  {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=(action 'cancelInstitution')}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=(action 'saveInstitution')}}Save{{/paper-button}}
-  {{/paper-dialog-actions}}
+    {{#paper-dialog-actions class='layout-row'}}
+      {{#paper-button class='cancel' onClick=(action 'cancelInstitution')}}Cancel{{/paper-button}}
+      {{#paper-button class='submit' primary=true onClick=(action 'saveInstitution')}}Save{{/paper-button}}
+    {{/paper-dialog-actions}}
 
-{{/paper-dialog}}
+  {{/paper-dialog}}
 {{/if}}

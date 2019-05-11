@@ -8,7 +8,7 @@
     {{#head.column}}Total{{/head.column}}
     {{head.column}}
   {{/table.head}}
-    {{#each model as |debt|}}
+  {{#each model as |debt|}}
     {{#table.body class='debt' as |body|}}
       {{#body.row class='person' as |row|}}
         {{#row.cell class='name'}}{{debt.person.name}}{{/row.cell}}
@@ -50,6 +50,6 @@
           {{/if}}
         {{/each}}
       {{/each}}
-      {{/table.body}}
-    {{/each}}
+    {{/table.body}}
+  {{/each}}
 {{/paper-data-table}}

@@ -39,7 +39,9 @@
               <div class='layout layout-sm-column'>
                 {{#paper-checkbox
                   value=editingRide.donation
-                  onChange=(action (mut editingRide.donation))}}Donate your gas reimbursement{{/paper-checkbox}}
+                  onChange=(action (mut editingRide.donation))}}
+                  Donate your gas reimbursement
+                {{/paper-checkbox}}
               </div>
             {{/if}}
             <div class='layout-column'>
@@ -73,8 +75,10 @@
             <div class='layout-row'>
               {{#paper-button class='submit'
                               raised=true primary=true
-                              onClick=(action 'submit')}}Save{{/paper-button}}
-                              {{! FIXME simplify if/when form yields radio-group?}}
+                              onClick=(action 'submit')}}
+                Save
+              {{/paper-button}}
+              {{! FIXME simplify if/when form yields radio-group?}}
             </div>
           {{/if}}
         {{/paper-form}}
