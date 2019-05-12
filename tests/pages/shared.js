@@ -1,10 +1,11 @@
-import { create, text } from 'ember-cli-page-object';
+import { clickable, create, text } from 'ember-cli-page-object';
 
 export default create({
   title: text('title:nth-of-type(2)', { testContainer: 'html' }),
 
   session: {
     scope: '.site-nav-container .session',
+    click: clickable('button'),
   },
 
   toast: {
