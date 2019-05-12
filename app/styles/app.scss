@@ -88,7 +88,7 @@ md-sidenav {
     align-items: stretch;
   }
 
-  md-list-item a, md-list-item .session {
+  md-list-item a, md-list-item.session .md-button {
     display: flex;
     align-items: center;
     padding-left: 16px;
@@ -96,6 +96,7 @@ md-sidenav {
 
     text-decoration: none;
     color: white;
+    white-space: nowrap;
 
     &:hover {
       background-color: paper-color($color-indigo, '200');
@@ -103,6 +104,10 @@ md-sidenav {
 
     &.active {
       background-color: paper-color($color-indigo, '400');
+    }
+
+    .md-list-item-inner {
+      align-items: center;
     }
   }
 
