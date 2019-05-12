@@ -118,8 +118,6 @@ export default create({
       click: clickable(),
       clear: clickable('.remove-container button'),
 
-      clickSelect: clickable('md-select'),
-
       select: {
         scope: 'md-select',
         type: triggerable('keydown'),
