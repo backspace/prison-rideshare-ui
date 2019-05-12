@@ -11,8 +11,8 @@
     <h2 class='md-title'>{{if ride.isNew 'Record' 'Edit'}} a ride request</h2>
     {{#paper-form onSubmit=save as |form|}}
       <div class='layout-column'>
-        {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated') as |textHelper|}}
-          <div class="hint">“friday from 2 to 4” or “tomorrow 11am to noon”</div>
+        {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated')}}
+          <div class='hint'>“friday from 2 to 4” or “tomorrow 11am to noon”</div>
         {{/form.input}}
       </div>
       <div class='layout-row layout-xs-column'>
@@ -22,9 +22,9 @@
         <div class='flex'>
           {{#paper-select
             class='institution'
-            placeholder="Institution"
+            placeholder='Institution'
             selected=ride.institution
-            matcher=(action 'matchInstitution')
+            searchField='name'
             options=institutions
             onChange=(action (mut ride.institution))
             as |institution|}}
@@ -35,7 +35,9 @@
           {{#paper-checkbox
             class='overridable'
             value=ride.overridable
-            onChange=(action (mut ride.overridable))}}Sunshine House van?{{/paper-checkbox}}
+            onChange=(action (mut ride.overridable))}}
+            Sunshine House van?
+          {{/paper-checkbox}}
         </div>
       </div>
       <div class='layout-row layout-xs-column medium-row'>
@@ -101,7 +103,9 @@
           {{#paper-checkbox
             class='first-time'
             value=ride.firstTime
-            onChange=(action (mut ride.firstTime))}}First time?{{/paper-checkbox}}
+            onChange=(action (mut ride.firstTime))}}
+            First time?
+          {{/paper-checkbox}}
         </div>
       </div>
       {{#if ride.firstTime}}

@@ -39,7 +39,7 @@ module('Unit | Utility | reimbursement collection', function() {
   });
 
   test('it generates a clipboard string for car expenses', function(assert) {
-    const result = new ReimbursementCollection({
+    const result = ReimbursementCollection.create({
       person,
       reimbursements: [carReimbursement],
     });
@@ -50,7 +50,7 @@ module('Unit | Utility | reimbursement collection', function() {
   });
 
   test('it generates a clipboard string for car expense donation', function(assert) {
-    const result = new ReimbursementCollection({
+    const result = ReimbursementCollection.create({
       person,
       reimbursements: [carReimbursement, otherCarReimbursement],
       donations: true,
@@ -62,7 +62,7 @@ module('Unit | Utility | reimbursement collection', function() {
   });
 
   test('it generates a clipboard string for car and food expenses', function(assert) {
-    const result = new ReimbursementCollection({
+    const result = ReimbursementCollection.create({
       person,
       reimbursements: [foodReimbursement, carReimbursement],
     });
@@ -73,7 +73,7 @@ module('Unit | Utility | reimbursement collection', function() {
   });
 
   test('it generates a clipboard string for food expenses', function(assert) {
-    const result = new ReimbursementCollection({
+    const result = ReimbursementCollection.create({
       person,
       reimbursements: [foodReimbursement, otherFoodReimbursement],
     });

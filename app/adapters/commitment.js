@@ -9,7 +9,7 @@ export default ApplicationAdapter.extend({
     return this.get('router.currentRouteName') === 'admin-calendar';
   }),
 
-  headers: computed(function() {
+  get headers() {
     if (this.get('onAdminCalendar')) {
       const token = this.get('session.data.authenticated.access_token');
       return {
@@ -21,5 +21,5 @@ export default ApplicationAdapter.extend({
         Authorization: `Person Bearer ${personToken}`,
       };
     }
-  }).volatile(),
+  },
 });

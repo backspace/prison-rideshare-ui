@@ -1,7 +1,7 @@
 {{#paper-toolbar as |toolbar|}}
   {{#toolbar.tools}}
     {{#paper-button iconButton=true onClick=(action 'toggleSidebar') class='hide-gt-sm'}}
-      {{paper-icon "menu"}}
+      {{paper-icon 'menu'}}
     {{/paper-button}}
     {{#if session.currentUser.admin}}
       {{#if sidebar.notificationCount}}
@@ -9,7 +9,7 @@
       {{/if}}
     {{/if}}
     <h2>{{title}}</h2>
-    {{#paper-chips readOnly=true content=chips as |item|}}<span title='{{item.title}}'>{{item.label}}</span>{{/paper-chips}}
+    {{#paper-chips readOnly=true content=chips as |item|}}<span title={{item.title}}>{{item.label}}</span>{{/paper-chips}}
     <span class='flex'></span>
     {{yield}}
   {{/toolbar.tools}}

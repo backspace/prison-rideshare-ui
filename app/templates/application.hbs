@@ -3,8 +3,8 @@
 
 {{paper-toaster}}
 
-{{#paper-sidenav-container class="site-nav-container"}}
-  {{#paper-sidenav lockedOpen="gt-sm"
+{{#paper-sidenav-container class='site-nav-container'}}
+  {{#paper-sidenav lockedOpen='gt-sm'
     open=sidebar.open onToggle=(action (mut sidebar.open))}}
 
     {{#paper-content}}
@@ -20,10 +20,12 @@
             {{#link-to 'debts'}}<span>Debts</span>{{/link-to}}
           {{/paper-item}}
           {{#paper-item}}
-            {{#link-to 'rides'}}<span class='rides'>
-              <span>Rides</span>
-              {{#if overlaps.count}}<span class='count' title='How many unfilled rides have overlapping calendar commitments'>{{overlaps.count}}</span>{{/if}}
-            </span>{{/link-to}}
+            {{#link-to 'rides'}}
+              <span class='rides'>
+                <span>Rides</span>
+                {{#if overlaps.count}}<span class='count' title='How many unfilled rides have overlapping calendar commitments'>{{overlaps.count}}</span>{{/if}}
+              </span>
+            {{/link-to}}
           {{/paper-item}}
           {{#paper-item}}
             {{#link-to 'institutions'}}<span>Institutions</span>{{/link-to}}
@@ -44,21 +46,25 @@
         {{#if session.isAuthenticated}}
           {{#if session.currentUser.admin}}
             {{#paper-item}}
-              {{#link-to 'log'}}<span class='log'>
-                <span>Log</span>
-                {{#if sidebar.unreadCount}}<span class='count' title='How many unread posts you have'>{{sidebar.unreadCount}}</span>{{/if}}
-              </span>{{/link-to}}
+              {{#link-to 'log'}}
+                <span class='log'>
+                  <span>Log</span>
+                  {{#if sidebar.unreadCount}}<span class='count' title='How many unread posts you have'>{{sidebar.unreadCount}}</span>{{/if}}
+                </span>
+              {{/link-to}}
             {{/paper-item}}
             {{#paper-item}}
-              {{#link-to 'users'}}<span class='users'>
-                <span>Users</span>
-                {{#if sidebar.userCount}}<span class='count' title='How many users are connected'>{{sidebar.userCount}}</span>{{/if}}
-              </span>{{/link-to}}
+              {{#link-to 'users'}}
+                <span class='users'>
+                  <span>Users</span>
+                  {{#if sidebar.userCount}}<span class='count' title='How many users are connected'>{{sidebar.userCount}}</span>{{/if}}
+                </span>
+              {{/link-to}}
             {{/paper-item}}
             {{paper-divider}}
           {{/if}}
-          {{#paper-item}}
-            <span onclick={{action 'logout'}} class='session'>Log out {{session.currentUser.email}}</span>
+          {{#paper-item onClick=(action 'logout') class='session'}}
+            Log out {{session.currentUser.email}}
           {{/paper-item}}
         {{else}}
           {{#paper-item}}
