@@ -64,7 +64,9 @@ export default Service.extend({
         { people: {}, slots: {} }
       );
 
+      // TODO remove side effects
       commitments.forEach(commitment => {
+        /* eslint-disable ember/no-side-effects */
         set(
           commitment,
           'person',
