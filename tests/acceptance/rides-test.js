@@ -462,7 +462,7 @@ module('Acceptance | rides', function(hooks) {
 
     await page.rides[0].carOwner.clear();
     await page.rides[0].carOwner.select.click();
-    await page.rides[0].carOwner.select.type({ key: 'l' });
+    await page.rides[0].carOwner.select.type({ key: 'L' });
     await page.rides[0].carOwner.select.enter();
 
     assert.equal(page.rides[0].carOwner.text, 'Lito');
