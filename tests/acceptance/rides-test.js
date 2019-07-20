@@ -67,6 +67,8 @@ module('Acceptance | rides', function(hooks) {
     chelseaRide.createChild({
       combinedWith: chelseaRide,
       name: 'Visitor',
+      start: new Date(2016, 11, 25, 10, 10),
+      end: new Date(2016, 11, 25, 12, 10),
     });
 
     await page.visit();
