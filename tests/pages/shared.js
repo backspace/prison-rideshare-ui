@@ -21,7 +21,7 @@ export default create({
     scope: '.log .count',
   },
 
-  overlapCount: {
+  ridesBadge: {
     scope: '.rides .count',
   },
 });

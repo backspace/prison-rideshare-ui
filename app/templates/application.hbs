@@ -23,7 +23,7 @@
             {{#link-to 'rides'}}
               <span class='rides'>
                 <span>Rides</span>
-                {{#if overlaps.count}}<span class='count' title='How many unfilled rides have overlapping calendar commitments'>{{overlaps.count}}</span>{{/if}}
+                {{#if ridesBadgeCount}}<span class='count' title='How many rides require attention'>{{ridesBadgeCount}}</span>{{/if}}
               </span>
             {{/link-to}}
           {{/paper-item}}

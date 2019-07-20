@@ -56,7 +56,7 @@
 {{/body.row}}
 
 {{#each commitments as |commitment|}}
-  {{#body.row class='overlap' as |row|}}
+  {{#body.row class='overlap highlighted' as |row|}}
     {{row.cell}}
     {{#row.cell colspan=3}}
       {{paper-icon 'date range'}}
@@ -73,6 +73,20 @@
 
   {{/body.row}}
 {{/each}}
+
+{{#if ride.requiresConfirmation}}
+  {{#body.row class='confirmation-notification highlighted' as |row|}}
+    {{row.cell}}
+    {{#row.cell colspan=3}}
+      {{#if mediumIcon}}{{paper-icon mediumIcon title=mediumIconTitle}} {{/if}}<span>Contact visitor to confirm receipt of ride request</span>
+    {{/row.cell}}
+    {{#row.cell colspan=3}}
+      {{#paper-button class='mark-confirmed' onClick=(action 'markConfirmed')}}
+        Mark as contacted
+      {{/paper-button}}
+    {{/row.cell}}
+  {{/body.row}}
+{{/if}}
 
 {{#if ride.requestNotes}}
   {{#body.row class='{{classAttribute}} notes' as |row|}}

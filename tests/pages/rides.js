@@ -56,7 +56,7 @@ export default create({
   rides: collection('tbody tr.ride', {
     enabled: hasClass('enabled'),
     isUncombinable: hasClass('uncombinable'),
-    isOverlapping: hasClass('overlaps'),
+    isHighlighted: hasClass('highlighted'),
 
     isDivider: hasClass('divider'),
 
@@ -174,6 +174,17 @@ export default create({
     ignore: clickable('.ignore'),
   }),
 
+  confirmationNotifications: collection('tr.confirmation-notification', {
+    text: text('.text'),
+    medium: {
+      scope: '.medium',
+      isTxt: isVisible('md-icon[md-font-icon=textsms]'),
+      isEmail: isVisible('md-icon[md-font-icon=email]'),
+      isPhone: isVisible('md-icon[md-font-icon=phone]'),
+    },
+    markConfirmed: clickable('.mark-confirmed'),
+  }),
+
   form: {
     testContainer: 'md-dialog',
 
@@ -192,6 +203,12 @@ export default create({
       txt: { scope: '.txt' },
       email: { scope: '.email' },
       phone: { scope: '.phone' },
+    },
+
+    requestConfirmed: {
+      scope: 'md-checkbox.request-confirmed',
+      checked: hasClass('md-checked'),
+      click: clickable(),
     },
 
     overridable: {

@@ -24,6 +24,7 @@ export default DS.Model.extend({
   }),
 
   medium: DS.attr(),
+  requestConfirmed: DS.attr(),
 
   name: DS.attr(),
 
@@ -136,6 +137,15 @@ export default DS.Model.extend({
       return value;
     },
   }),
+
+  requiresConfirmation: computed(
+    '{start,enabled,requestConfirmed}',
+    function() {
+      const now = new Date();
+
+      return this.start > now && this.enabled && !this.requestConfirmed;
+    }
+  ),
 
   allAnonymisedAddresses: computed(
     'address',

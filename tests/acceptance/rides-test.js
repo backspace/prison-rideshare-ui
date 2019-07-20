@@ -836,4 +836,63 @@ module('Acceptance | rides', function(hooks) {
       'expected the first past ride to have a divider above it'
     );
   });
+
+  test('uncancelled requests for the future that have not been confirmed are highlighted and noted in the sidebar', async function(assert) {
+    const week = 7 * 24 * 60 * 60 * 1000;
+    const nowMilliseconds = new Date().getTime();
+    const twoWeeksAgo = new Date(nowMilliseconds - week * 2);
+    const nextWeek = new Date(nowMilliseconds + week);
+
+    this.server.create('ride', {
+      start: twoWeeksAgo,
+      end: twoWeeksAgo,
+      requestConfirmed: false,
+    });
+
+    this.server.create('ride', {
+      start: nextWeek,
+      end: nextWeek,
+      medium: 'txt',
+      requestConfirmed: false,
+    });
+
+    this.server.create('ride', {
+      start: nextWeek,
+      end: nextWeek,
+      medium: 'phone',
+      requestConfirmed: false,
+    });
+
+    this.server.create('ride', {
+      start: nextWeek,
+      end: nextWeek,
+      enabled: false,
+      requestConfirmed: false,
+    });
+
+    await page.visit();
+    await page.head.cancelledSwitch.click();
+    await page.head.completedSwitch.click();
+
+    assert.equal(page.confirmationNotifications.length, 2);
+
+    assert.ok(page.rides[1].isHighlighted);
+    assert.ok(page.rides[2].isHighlighted);
+
+    assert.equal(shared.ridesBadge.text, '2');
+
+    await page.rides[2].edit();
+    await page.form.requestConfirmed.click();
+    await page.form.submit();
+
+    assert.equal(page.confirmationNotifications.length, 1);
+    assert.notOk(page.rides[2].isHighlighted);
+    assert.equal(shared.ridesBadge.text, '1');
+
+    await page.confirmationNotifications[0].markConfirmed();
+
+    assert.equal(page.confirmationNotifications.length, 0);
+    assert.notOk(page.rides[1].isHighlighted);
+    assert.ok(shared.ridesBadge.isHidden);
+  });
 });

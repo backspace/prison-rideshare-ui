@@ -14,14 +14,18 @@ const mediumIcon = {
 export default Component.extend({
   classAttribute: computed(
     'uncombinable',
-    'ride.{isCombined,isDivider,enabled}',
+    'ride.{isCombined,isDivider,enabled,requiresConfirmation}',
     'commitments.[]',
     function() {
       return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${
         this.get('uncombinable') ? 'uncombinable' : ''
       } ${this.get('ride.isCombined') ? 'combined' : ''} ${
         this.get('ride.isDivider') ? 'divider' : ''
-      } ${this.get('commitments.length') ? 'overlaps' : ''}`;
+      } ${
+        this.get('ride.requiresConfirmation') || this.get('commitments.length')
+          ? 'highlighted'
+          : ''
+      }`;
     }
   ),
 
@@ -143,6 +147,12 @@ export default Component.extend({
       }).then(() => {
         return this.get('overlaps').fetch();
       });
+    },
+
+    markConfirmed() {
+      let ride = this.get('ride');
+      ride.set('requestConfirmed', true);
+      return ride.save();
     },
 
     match(option, searchTerm) {

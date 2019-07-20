@@ -27,4 +27,5 @@ export default Factory.extend({
   complete() {
     return false;
   },
+  requestConfirmed: true,
 });

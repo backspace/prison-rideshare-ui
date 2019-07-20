@@ -55,6 +55,16 @@
           </div>
         {{/paper-radio-group}}
       </div>
+      <div class='layout-row layout-xs-column medium-row'>
+        <div class='flex'>
+          {{#paper-checkbox
+            class='request-confirmed'
+            value=ride.requestConfirmed
+            onChange=(action (mut ride.requestConfirmed))}}
+            Confirmed receipt of request with visitor?
+          {{/paper-checkbox}}
+        </div>
+      </div>
 
       <h3 class='md-title'>Visitor details</h3>
 

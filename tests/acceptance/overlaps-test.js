@@ -33,10 +33,10 @@ module('Acceptance | overlaps', function(hooks) {
 
     await page.visit();
 
-    assert.equal(shared.overlapCount.text, '1');
+    assert.equal(shared.ridesBadge.text, '1');
 
     assert.ok(
-      page.rides[0].isOverlapping,
+      page.rides[0].isHighlighted,
       'expected the overlapping ride to be highlighted'
     );
     assert.equal(
@@ -57,9 +57,9 @@ module('Acceptance | overlaps', function(hooks) {
     assert.equal(serverRide.driverId, person.id);
     assert.equal(serverRide.carOwnerId, person.id);
 
-    assert.ok(shared.overlapCount.isHidden);
+    assert.ok(shared.ridesBadge.isHidden);
     assert.notOk(
-      page.rides[0].isOverlapping,
+      page.rides[0].isHighlighted,
       'expected the ride to no longer be overlapping'
     );
   });
@@ -87,9 +87,9 @@ module('Acceptance | overlaps', function(hooks) {
 
     await page.form.submit();
 
-    assert.equal(shared.overlapCount.text, '1');
+    assert.equal(shared.ridesBadge.text, '1');
     assert.ok(
-      page.rides[0].isOverlapping,
+      page.rides[0].isHighlighted,
       'expected the overlapping ride to be highlighted'
     );
   });
@@ -120,9 +120,9 @@ module('Acceptance | overlaps', function(hooks) {
     await page.visit();
     await page.overlaps[0].ignore();
 
-    assert.ok(shared.overlapCount.isHidden);
+    assert.ok(shared.ridesBadge.isHidden);
     assert.notOk(
-      page.rides[0].isOverlapping,
+      page.rides[0].isHighlighted,
       'expected the ride to no longer be overlapping'
     );
   });
@@ -130,6 +130,6 @@ module('Acceptance | overlaps', function(hooks) {
   test('no badge is displayed when there are no overlaps', async function(assert) {
     await page.visit();
 
-    assert.ok(shared.overlapCount.isHidden);
+    assert.ok(shared.ridesBadge.isHidden);
   });
 });
