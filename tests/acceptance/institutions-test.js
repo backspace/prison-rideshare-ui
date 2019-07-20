@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -19,6 +20,8 @@ module('Acceptance | institutions', function(hooks) {
   test('institutions can be listed and edited', async function(assert) {
     await page.visit();
 
+    percySnapshot(assert);
+
     assert.equal(shared.title, 'Institutions · Prison Rideshare');
 
     assert.equal(
@@ -32,6 +35,9 @@ module('Acceptance | institutions', function(hooks) {
     assert.ok(page.institutions[1].isFar);
 
     await page.institutions[1].edit();
+
+    percySnapshot(assert);
+
     await page.form.nameField.fillIn('Morlner Rordge');
     await page.form.cancel();
 

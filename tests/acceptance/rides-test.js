@@ -404,6 +404,8 @@ module('Acceptance | rides', function(hooks) {
     // FIXME not really here, but keyboard input for this is broken, and hovering
     await selectChoose('md-input-container.institution', 'Rockwood');
 
+    percySnapshot(assert);
+
     await page.form.submit();
 
     const ride = page.rides[0];

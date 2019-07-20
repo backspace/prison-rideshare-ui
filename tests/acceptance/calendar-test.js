@@ -3,6 +3,7 @@ import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import Mirage from 'ember-cli-mirage';
 import { authenticateSession } from 'ember-simple-auth/test-support';
+import { percySnapshot } from 'ember-percy';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -121,6 +122,7 @@ module('Acceptance | calendar', function(hooks) {
       2,
       'expected the commitment to have been deleted on the server'
     );
+    percySnapshot(assert);
   });
 
   test('slots can be committed to', async function(assert) {
@@ -386,6 +388,7 @@ module('Acceptance | calendar', function(hooks) {
       'expected the submit button to be highlighted when the record is dirty'
     );
 
+    percySnapshot(assert);
     await page.person.submitButton.click();
 
     const [person] = this.server.db.people;
@@ -546,6 +549,8 @@ module('Acceptance | calendar', function(hooks) {
       'jorts@jants.ca',
       'expected the contact information to be revealed'
     );
+
+    percySnapshot(assert);
 
     await page.nextMonth.click();
 

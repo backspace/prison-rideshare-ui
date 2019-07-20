@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
@@ -32,6 +33,8 @@ module('Acceptance | overlaps', function(hooks) {
     this.firstRide.save();
 
     await page.visit();
+
+    percySnapshot(assert);
 
     assert.equal(shared.ridesBadge.text, '1');
 

@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { selectChoose } from 'ember-power-select/test-support/helpers';
@@ -84,6 +85,8 @@ module('Acceptance | people', function(hooks) {
 
     assert.ok(page.people[2].copyButton.isVisible);
     assert.equal(page.people[2].copyButton.clipboardText, '91 Albert');
+
+    percySnapshot(assert);
   });
 
   test('people can be edited, cancelled edits are discarded', async function(assert) {
@@ -92,6 +95,9 @@ module('Acceptance | people', function(hooks) {
     await page.head.inactiveSwitch.click();
 
     await page.people[2].edit();
+
+    percySnapshot(assert);
+
     await page.form.nameField.fill('Billiam');
     await page.form.cancel();
 

@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { currentURL } from '@ember/test-helpers';
+import { percySnapshot } from 'ember-percy';
 import Mirage from 'ember-cli-mirage';
 
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
@@ -83,6 +84,8 @@ module('Acceptance | reset password', function(hooks) {
     await resetPage.visit({ token: 'hey' });
     await resetPage.fillPassword('x');
     await resetPage.submit();
+
+    percySnapshot(assert);
 
     assert.equal(shared.toast.text, 'Password confirmation did not match');
   });
