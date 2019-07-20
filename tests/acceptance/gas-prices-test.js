@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -36,6 +37,8 @@ module('Acceptance | reports', function(hooks) {
 
   test('it lists gas prices and reïmbursement rates', async function(assert) {
     await page.visit();
+
+    percySnapshot(assert);
 
     assert.equal(shared.title, 'Gas prices · Prison Rideshare');
 

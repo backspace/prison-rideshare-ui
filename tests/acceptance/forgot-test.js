@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import forgotPage from 'prison-rideshare-ui/tests/pages/forgot';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -20,6 +21,9 @@ module('Acceptance | forgot', function(hooks) {
     });
 
     await forgotPage.visit();
+
+    percySnapshot(assert);
+
     await forgotPage.fillEmail('hello');
     await forgotPage.submit();
 

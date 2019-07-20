@@ -1,6 +1,7 @@
 import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -81,6 +82,8 @@ module('Acceptance | reports', function(hooks) {
     await page.carExpenses.fillIn(52.05);
     await page.notes.fillIn('These r the notes');
     await page.donation.click();
+
+    percySnapshot(assert);
 
     await page.submitButton.click();
 

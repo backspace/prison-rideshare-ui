@@ -1,11 +1,11 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-import moment from 'moment';
 import Mirage from 'ember-cli-mirage';
 
 module('Acceptance | overlaps', function(hooks) {
@@ -16,8 +16,11 @@ module('Acceptance | overlaps', function(hooks) {
     authenticateSession({ access_token: 'abcdef' });
 
     this.firstRide = this.server.create('ride', {
-      start: moment().add(1, 'week'),
-      end: moment().add(1, 'week'),
+      name: 'Visitor',
+      contact: '555-1919',
+      address: '91 alb',
+      start: new Date(2117, 11, 4, 17, 0),
+      end: new Date(2117, 11, 4, 30),
     });
   });
 
@@ -32,6 +35,8 @@ module('Acceptance | overlaps', function(hooks) {
     this.firstRide.save();
 
     await page.visit();
+
+    percySnapshot(assert);
 
     assert.equal(shared.ridesBadge.text, '1');
 

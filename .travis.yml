@@ -26,6 +26,10 @@ before_install:
 install:
   - npm install
 
+before_script:
+  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then echo "Enabling Percy" && export PERCY_ENABLE=1; else export PERCY_ENABLE=0; fi
+  - echo $PERCY_ENABLE
+
 script:
   - npm run lint:hbs
   - npm run lint:js

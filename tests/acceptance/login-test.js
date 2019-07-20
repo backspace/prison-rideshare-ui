@@ -1,6 +1,7 @@
 import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -88,6 +89,8 @@ module('Acceptance | login', function(hooks) {
     await page.visit();
     await page.fillEmail('x');
     await page.submit();
+
+    percySnapshot(assert);
 
     assert.equal(currentURL(), '/login');
     assert.equal(page.error, 'There was an error logging you in.');

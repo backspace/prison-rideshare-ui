@@ -1,6 +1,7 @@
 import { find } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { selectChoose } from 'ember-power-select/test-support/helpers';
@@ -61,14 +62,18 @@ module('Acceptance | rides', function(hooks) {
       end: new Date(2016, 11, 25, 12, 0),
       passengers: 1,
       contact: '5145551212',
+      address: '421 osborne',
     });
 
     chelseaRide.createChild({
       combinedWith: chelseaRide,
       name: 'Visitor',
+      start: new Date(2016, 11, 25, 10, 10),
+      end: new Date(2016, 11, 25, 12, 10),
     });
 
     await page.visit();
+    percySnapshot(assert);
 
     assert.equal(shared.title, 'Rides · Prison Rideshare');
 
@@ -401,6 +406,8 @@ module('Acceptance | rides', function(hooks) {
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
     await selectChoose('md-input-container.institution', 'Rockwood');
+
+    percySnapshot(assert);
 
     await page.form.submit();
 

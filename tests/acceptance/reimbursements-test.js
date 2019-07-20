@@ -1,5 +1,6 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -199,6 +200,8 @@ module('Acceptance | reimbursements', function(hooks) {
       carProcessed.isDonation,
       'expected the car expense to have been donated'
     );
+
+    percySnapshot(assert);
   });
 
   test('process reimbursements', async function(assert) {

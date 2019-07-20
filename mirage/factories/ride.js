@@ -1,6 +1,7 @@
 import { Factory } from 'ember-cli-mirage';
 
 import faker from 'faker';
+faker.seed(1919);
 
 export default Factory.extend({
   name() {
@@ -14,9 +15,8 @@ export default Factory.extend({
       ? faker.internet.email()
       : faker.phone.phoneNumber();
   },
-  passengers() {
-    return faker.random.arrayElement([1, 1, 1, 1, 1, 2, 3]);
-  },
+
+  passengers: 1,
 
   start(i) {
     return new Date(2016, 11, 26, 20, 30 + i);

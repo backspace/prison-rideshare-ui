@@ -1,4 +1,5 @@
 import faker from 'faker';
+faker.seed(1919);
 
 import RidesController from 'prison-rideshare-ui/controllers/rides';
 

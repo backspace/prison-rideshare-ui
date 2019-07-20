@@ -1,4 +1,4 @@
-# Prison Rideshare UI [![Build Status](https://travis-ci.org/backspace/prison-rideshare-ui.svg?branch=primary)](https://travis-ci.org/backspace/prison-rideshare-ui) [![Coverage Status](https://coveralls.io/repos/github/backspace/prison-rideshare-ui/badge.svg?branch=primary)](https://coveralls.io/github/backspace/prison-rideshare-ui?branch=primary)
+# Prison Rideshare UI [![Build Status](https://travis-ci.org/backspace/prison-rideshare-ui.svg?branch=primary)](https://travis-ci.org/backspace/prison-rideshare-ui) [![Coverage Status](https://coveralls.io/repos/github/backspace/prison-rideshare-ui/badge.svg?branch=primary)](https://coveralls.io/github/backspace/prison-rideshare-ui?branch=primary) [![This project is using Percy.io for visual regression testing.](https://percy.io/static/images/percy-badge.svg)](https://percy.io/Bar-None/prison-rideshare-ui)
 
 This is an Ember front-end for the [prison rideshare API](https://github.com/backspace/prison-rideshare-api). Visit the [sandbox](https://sandbox.barnonewpg.org/login)!
 

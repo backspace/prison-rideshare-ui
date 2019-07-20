@@ -76,6 +76,13 @@ module.exports = function(environment) {
     ENV.DS.host = undefined;
 
     ENV.toastDuration = false;
+
+    ENV.percy = {
+      breakpointsConfig: {
+        desktop: 1280,
+      },
+      defaultBreakpoints: ['desktop'],
+    };
   }
 
   if (environment === 'production') {

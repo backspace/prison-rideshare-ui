@@ -2,6 +2,7 @@ import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import Mirage from 'ember-cli-mirage';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -73,6 +74,8 @@ module('Acceptance | registration', function(hooks) {
     await page.fillPasswordConfirmation('aaaaaaaaa');
 
     await page.submit();
+
+    percySnapshot(assert);
 
     assert.equal(currentURL(), '/register');
     assert.equal(page.error, 'Password confirmation did not match');
