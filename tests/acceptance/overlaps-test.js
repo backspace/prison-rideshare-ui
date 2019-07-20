@@ -17,8 +17,11 @@ module('Acceptance | overlaps', function(hooks) {
     authenticateSession({ access_token: 'abcdef' });
 
     this.firstRide = this.server.create('ride', {
-      start: moment().add(1, 'week'),
-      end: moment().add(1, 'week'),
+      name: 'Visitor',
+      contact: '555-1919',
+      address: '91 alb',
+      start: new Date(2117, 11, 4, 17, 0),
+      end: new Date(2117, 11, 4, 30),
     });
   });
 

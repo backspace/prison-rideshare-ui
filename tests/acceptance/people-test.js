@@ -37,6 +37,7 @@ module('Acceptance | people', function(hooks) {
       name: 'Will',
       active: false,
       address: '91 Albert',
+      email: 'will@sense8',
     });
 
     this.server.create('ride');
