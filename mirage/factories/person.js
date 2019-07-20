@@ -1,6 +1,7 @@
 import { Factory } from 'ember-cli-mirage';
 
 import faker from 'faker';
+faker.seed(1919);
 
 export default Factory.extend({
   name() {
