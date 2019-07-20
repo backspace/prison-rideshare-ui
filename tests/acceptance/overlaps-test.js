@@ -6,7 +6,6 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-import moment from 'moment';
 import Mirage from 'ember-cli-mirage';
 
 module('Acceptance | overlaps', function(hooks) {
