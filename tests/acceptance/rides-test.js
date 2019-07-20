@@ -1,6 +1,7 @@
 import { find } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { selectChoose } from 'ember-power-select/test-support/helpers';
@@ -69,6 +70,7 @@ module('Acceptance | rides', function(hooks) {
     });
 
     await page.visit();
+    percySnapshot(assert);
 
     assert.equal(shared.title, 'Rides · Prison Rideshare');
 

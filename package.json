@@ -68,6 +68,7 @@
     "ember-mobiledoc-editor": "^0.5.15",
     "ember-moment": "^7.8.1",
     "ember-paper": "backspace/ember-paper#backdrop-guard",
+    "ember-percy": "^1.5.0",
     "ember-phoenix": "^1.0.3",
     "ember-power-calendar": "^0.13.2",
     "ember-power-calendar-moment": "^0.1.7",
