@@ -62,6 +62,7 @@ module('Acceptance | rides', function(hooks) {
       end: new Date(2016, 11, 25, 12, 0),
       passengers: 1,
       contact: '5145551212',
+      address: '421 osborne',
     });
 
     chelseaRide.createChild({

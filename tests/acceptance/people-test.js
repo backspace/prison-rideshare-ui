@@ -16,6 +16,7 @@ module('Acceptance | people', function(hooks) {
     const sun = this.server.create('person', {
       name: 'Sun',
       email: 'sun@sense8',
+      mobile: '1919',
       landline: '111',
       notes: 'notes?',
       medium: 'email',
@@ -38,6 +39,7 @@ module('Acceptance | people', function(hooks) {
       active: false,
       address: '91 Albert',
       email: 'will@sense8',
+      mobile: '2019',
     });
 
     this.server.create('ride');
