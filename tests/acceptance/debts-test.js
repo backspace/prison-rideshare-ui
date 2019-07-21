@@ -10,7 +10,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 module('Acceptance | debts', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     const sun = this.server.create('person', { name: 'Sun' });
     const kala = this.server.create('person', { name: 'Kala' });
     const will = this.server.create('person', { name: 'Will' });
@@ -72,7 +72,7 @@ module('Acceptance | debts', function(hooks) {
     secondDebt.rides = [willRide];
     secondDebt.save();
 
-    authenticateSession(this.application);
+    await authenticateSession(this.application);
   });
 
   test('debts are listed', async function(assert) {

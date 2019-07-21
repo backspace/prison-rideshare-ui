@@ -11,9 +11,9 @@ import Mirage from 'ember-cli-mirage';
 module('Acceptance | overlaps', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     this.server.create('user', { admin: true });
-    authenticateSession({ access_token: 'abcdef' });
+    await authenticateSession({ access_token: 'abcdef' });
 
     this.firstRide = this.server.create('ride', {
       name: 'Visitor',

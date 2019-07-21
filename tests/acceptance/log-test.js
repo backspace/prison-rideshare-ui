@@ -83,7 +83,7 @@ module('Acceptance | log', function(hooks) {
   });
 
   test('a post can be created', async function(assert) {
-    authenticateSession({ access_token: 'abcdef' });
+    await authenticateSession({ access_token: 'abcdef' });
 
     await page.visit();
 
@@ -101,7 +101,7 @@ module('Acceptance | log', function(hooks) {
   });
 
   test('post validation errors are displayed', async function(assert) {
-    authenticateSession({ access_token: 'abcdef' });
+    await authenticateSession({ access_token: 'abcdef' });
 
     this.server.post(
       '/posts',
@@ -126,7 +126,7 @@ module('Acceptance | log', function(hooks) {
   });
 
   test('posts can be edited, cancelled edits are discarded', async function(assert) {
-    authenticateSession({ access_token: 'abcdef' });
+    await authenticateSession({ access_token: 'abcdef' });
 
     await page.visit();
 
@@ -159,7 +159,7 @@ module('Acceptance | log', function(hooks) {
   });
 
   test('posts can be deleted', async function(assert) {
-    authenticateSession({ access_token: 'abcdef' });
+    await authenticateSession({ access_token: 'abcdef' });
 
     await page.visit();
 

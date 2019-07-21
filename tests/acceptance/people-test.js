@@ -12,7 +12,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 module('Acceptance | people', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     const sun = this.server.create('person', {
       name: 'Sun',
       email: 'sun@sense8',
@@ -44,7 +44,7 @@ module('Acceptance | people', function(hooks) {
 
     this.server.create('ride');
 
-    authenticateSession(this.application);
+    await authenticateSession(this.application);
   });
 
   test('people are listed, with inactive people hidden by default', async function(assert) {
