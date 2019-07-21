@@ -14,8 +14,8 @@ const format = 'YYYY-MM-DD';
 module('Acceptance | statistics', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
-    authenticateSession();
+  hooks.beforeEach(async function() {
+    await authenticateSession();
   });
 
   test('has convenience buttons for timespans', async function(assert) {

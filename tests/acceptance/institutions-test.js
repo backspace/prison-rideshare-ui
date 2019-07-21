@@ -10,11 +10,11 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 module('Acceptance | institutions', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     this.server.create('institution', { name: 'Milner Ridge', far: true });
     this.server.create('institution', { name: 'Headingley', far: false });
 
-    authenticateSession(this.application);
+    await authenticateSession(this.application);
   });
 
   test('institutions can be listed and edited', async function(assert) {

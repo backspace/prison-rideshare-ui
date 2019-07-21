@@ -10,7 +10,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 module('Acceptance | reimbursements', function(hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(async function() {
     const sun = this.server.create('person', { name: 'Sun' });
     const kala = this.server.create('person', { name: 'Kala' });
     const will = this.server.create('person', { name: 'Will' });
@@ -99,7 +99,7 @@ module('Acceptance | reimbursements', function(hooks) {
       carOwner: will,
     });
 
-    authenticateSession(this.application);
+    await authenticateSession(this.application);
   });
 
   test('list reimbursements and optionally show processed ones', async function(assert) {

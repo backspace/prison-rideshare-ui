@@ -120,7 +120,7 @@ module('Acceptance | reports', function(hooks) {
   });
 
   test('the report interface is hidden when a user is logged in', async function(assert) {
-    authenticateSession(this.application);
+    await authenticateSession(this.application);
 
     await page.visit();
 
