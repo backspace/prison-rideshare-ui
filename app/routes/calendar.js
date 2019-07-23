@@ -3,6 +3,7 @@ import RSVP from 'rsvp';
 import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import Ember from 'ember';
+import { get } from '@ember/object';
 import fetch from 'fetch';
 import config from '../config/environment';
 
@@ -37,7 +38,9 @@ export default Route.extend({
           return response.json();
         }
 
-        throw new Error('We were unable to log you in with that token.');
+        return response.json().then(errorJson => {
+          throw errorJson;
+        });
       })
       .then(({ access_token }) => {
         localStorage.setItem('person-token', access_token);
@@ -46,8 +49,14 @@ export default Route.extend({
           token: access_token,
         });
       })
-      .catch(() => {
-        throw new Error('We were unable to log you in with that token.');
+      .catch(error => {
+        const detail = get(error, 'errors.firstObject.detail');
+
+        if (detail) {
+          throw new Error(detail);
+        } else {
+          throw new Error('We were unable to log you in with that token.');
+        }
       })
       .then(person => {
         return RSVP.hash({

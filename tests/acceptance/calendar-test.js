@@ -320,6 +320,28 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(page.error, 'We were unable to log you in with that token.');
   });
 
+  test('visiting with a rejected magic token shows an error including details', async function(assert) {
+    this.server.post('/people/token', function() {
+      return new Mirage.Response(
+        401,
+        {},
+        {
+          errors: [
+            {
+              status: 401,
+              title: 'Unauthorized',
+              detail: 'A detail',
+            },
+          ],
+        }
+      );
+    });
+
+    await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
+
+    assert.equal(page.error, 'A detail');
+  });
+
   test('the person can edit their details', async function(assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
