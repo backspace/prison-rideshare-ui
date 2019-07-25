@@ -152,6 +152,9 @@ module('Acceptance | rides', function(hooks) {
 
     assert.equal(page.form.timespanResult.value, 'Mon Dec 26 2016 8:30p — 10');
 
+    await page.form.timespan.fillIn('Dec 26 2300 from 9a to 11:30');
+    assert.notOk(page.form.timespanResult.hasWarning);
+
     await page.form.cancel();
 
     assert.ok(page.rides[0].enabled, 'expected the other ride to be enabled');
@@ -389,6 +392,8 @@ module('Acceptance | rides', function(hooks) {
     );
 
     await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
+
+    assert.ok(page.form.timespanResult.hasWarning);
 
     await page.form.overridable.click();
 

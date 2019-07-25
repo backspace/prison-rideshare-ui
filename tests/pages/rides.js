@@ -188,14 +188,16 @@ export default create({
   form: {
     testContainer: 'md-dialog',
 
-    notice: text('.warning'),
+    notice: text('.editing-warning'),
 
     timespan: {
       scope: '.timespan textarea',
     },
 
     timespanResult: {
-      scope: '.timespan-result input',
+      scope: '.timespan-result',
+      value: value('input'),
+      hasWarning: isVisible('.timespan-warning'),
     },
 
     medium: {

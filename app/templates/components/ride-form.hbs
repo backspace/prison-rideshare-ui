@@ -1,10 +1,10 @@
 {{#paper-dialog onClose=cancel fullscreen=true}}
 
   {{#paper-dialog-content}}
-    {{#if warning}}
-      {{#paper-card class='warning' as |card|}}
+    {{#if editingWarning}}
+      {{#paper-card class='editing-warning' as |card|}}
         {{#card.content}}
-          {{warning}}
+          {{editingWarning}}
         {{/card.content}}
       {{/paper-card}}
     {{/if}}
@@ -15,8 +15,19 @@
           <div class='hint'>“friday from 2 to 4” or “tomorrow 11am to noon”</div>
         {{/form.input}}
       </div>
-      <div class='layout-row layout-xs-column'>
-        {{form.input class='timespan-result flex-100' label='Ride times' value=rideTimes disabled=true onChange=null}}
+      <div class='timespan-result'>
+        {{#if timespanWarning}}
+          <div class='layout-row'>
+            {{#paper-card class='flex-100 timespan-warning' as |card|}}
+              {{#card.content}}
+                {{paper-icon 'warning'}} This request is in the past
+              {{/card.content}}
+            {{/paper-card}}
+          </div>
+        {{/if}}
+        <div class='layout-row'>
+          {{form.input class='flex-100' label='Ride times' value=rideTimes disabled=true onChange=null}}
+        </div>
       </div>
       <div class='layout-row layout-xs-column layout-align-center-center'>
         <div class='flex'>
