@@ -1,37 +1,62 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
+import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | people', {
-  beforeEach() {
-    const sun = server.create('person', {name: 'Sun', email: 'sun@sense8', landline: '111', notes: 'notes?', medium: 'email'});
+module('Acceptance | people', function(hooks) {
+  setupApplicationTest(hooks);
 
-    server.create('ride', {
-      start: new Date(2017, 2, 22),
-      driver: sun
+  hooks.beforeEach(async function() {
+    const sun = this.server.create('person', {
+      name: 'Sun',
+      email: 'sun@sense8',
+      mobile: '1919',
+      landline: '111',
+      notes: 'notes?',
+      medium: 'email',
     });
 
-    server.create('person', {name: 'Kala', email: 'kala@sense8', mobile: '111', medium: 'mobile'});
-    server.create('person', {name: 'Will', active: false});
+    this.server.create('ride', {
+      start: new Date(2017, 2, 22),
+      driver: sun,
+    });
 
-    server.create('ride');
+    this.server.create('person', {
+      name: 'Kala',
+      email: 'kala@sense8',
+      mobile: '111',
+      medium: 'mobile',
+    });
 
-    authenticateSession(this.application);
-  }
-});
+    this.server.create('person', {
+      name: 'Will',
+      active: false,
+      address: '91 Albert',
+      email: 'will@sense8',
+      mobile: '2019',
+    });
 
-test('people are listed, with inactive people hidden by default', function(assert) {
-  page.visit();
+    this.server.create('ride');
 
-  andThen(() => {
-    assert.equal(page.people.length, 2, 'expected the inactive person to be hidden');
+    await authenticateSession(this.application);
+  });
 
-    page.people[1].as(sun => {
+  test('people are listed, with inactive people hidden by default', async function(assert) {
+    await page.visit();
+
+    assert.equal(
+      page.people.length,
+      2,
+      'expected the inactive person to be hidden'
+    );
+
+    await page.people[1].as(sun => {
       assert.equal(sun.name, 'Sun');
       assert.equal(sun.email.text, 'sun@sense8');
       assert.equal(sun.email.href, 'mailto:sun@sense8');
@@ -40,145 +65,172 @@ test('people are listed, with inactive people hidden by default', function(asser
       assert.equal(sun.landline.href, 'tel:111');
       assert.equal(sun.lastRide.text, 'March 22, 2017');
       assert.equal(sun.notes.text, 'notes?');
+      assert.notOk(sun.copyButton.isVisible);
     });
 
-    assert.ok(page.people[0].mobile.isPreferred, 'expected Kala to prefer mobile');
-    assert.equal(page.people[0].lastRide.text, '', 'expected someone with no rides to have a blank last ride');
+    assert.ok(
+      page.people[0].mobile.isPreferred,
+      'expected Kala to prefer mobile'
+    );
+    assert.equal(
+      page.people[0].lastRide.text,
+      '',
+      'expected someone with no rides to have a blank last ride'
+    );
+
+    await page.head.inactiveSwitch.click();
+
+    assert.equal(
+      page.people.length,
+      3,
+      'expected the inactive person to be shown after the switch is flipped'
+    );
+
+    assert.ok(page.people[2].copyButton.isVisible);
+    assert.equal(page.people[2].copyButton.clipboardText, '91 Albert');
+
+    percySnapshot(assert);
   });
 
-  page.head.inactiveSwitch.click();
+  test('people can be edited, cancelled edits are discarded', async function(assert) {
+    await page.visit();
 
-  andThen(() => {
-    assert.equal(page.people.length, 3, 'expected the inactive person to be shown after the switch is flipped');
-  });
-});
+    await page.head.inactiveSwitch.click();
 
-test('people can be edited, cancelled edits are discarded', function(assert) {
-  page.visit();
+    await page.people[2].edit();
 
-  page.head.inactiveSwitch.click();
+    percySnapshot(assert);
 
-  page.people[2].edit();
-  page.form.nameField.fill('Billiam');
-  page.form.cancel();
+    await page.form.nameField.fill('Billiam');
+    await page.form.cancel();
 
-  andThen(() => {
     assert.equal(shared.title, 'Drivers · Prison Rideshare');
 
     assert.equal(page.people[2].name, 'Will');
 
-    const serverPeople = server.db.people;
-    const will = serverPeople[serverPeople.length - 1];
+    let serverPeople = this.server.db.people;
+    let will = serverPeople[serverPeople.length - 1];
 
     assert.equal(will.name, 'Will');
-  });
 
-  page.people[2].edit();
-  page.form.nameField.fill('William');
+    await page.people[2].edit();
 
-  page.form.email.field.fillIn('will@sense8');
-  page.form.email.desiredMedium.click();
+    assert.equal(page.form.address.field.value, '91 Albert');
 
-  page.form.mobile.field.fillIn('111');
-  page.form.mobile.desiredMedium.click();
+    await page.form.nameField.fill('William');
 
-  page.form.notes.field.fillIn('notes.');
-  page.form.submit();
+    await page.form.email.field.fillIn('will@sense8');
+    await page.form.email.desiredMedium.click();
 
-  andThen(() => {
+    await page.form.mobile.field.fillIn('111');
+    await page.form.mobile.desiredMedium.click();
+
+    await page.form.notes.field.fillIn('notes.');
+    await page.form.submit();
+
     assert.equal(page.people[2].name, 'William');
 
-    const serverPeople = server.db.people;
-    const will = serverPeople[serverPeople.length - 1];
+    serverPeople = this.server.db.people;
+    will = serverPeople[serverPeople.length - 1];
 
     assert.equal(will.name, 'William');
     assert.equal(will.email, 'will@sense8');
     assert.equal(will.medium, 'mobile');
   });
-});
 
-test('a person can be created and chosen for a ride', function(assert) {
-  ridesPage.visit();
-  ridesPage.rides[0].driver.click();
+  test('a person can be created and chosen for a ride', async function(assert) {
+    await ridesPage.visit();
+    await ridesPage.rides[0].driver.click();
 
-  page.visit();
+    await page.visit();
 
-  page.newPerson();
+    await page.newPerson();
 
-  andThen(() => assert.equal(page.people.length, '2', 'expected the new person to not yet be listed'));
+    await page.form.nameField.fill('Capheus');
+    await page.form.submit();
 
-  page.form.nameField.fill('Capheus');
-  page.form.submit();
-
-  andThen(() => {
-    assert.equal(page.people.length, '3', 'expected the new person to have been added to the list');
+    assert.equal(
+      page.people.length,
+      '3',
+      'expected the new person to have been added to the list'
+    );
     assert.equal(page.people[0].name, 'Capheus');
 
-    const [,,,capheus] = server.db.people;
+    const [, , , capheus] = this.server.db.people;
     assert.equal(capheus.name, 'Capheus');
-  });
 
-  ridesPage.visit();
-  ridesPage.rides[0].driver.click();
-  selectChoose('.driver md-input-container', 'Capheus');
+    await ridesPage.visit();
+    await ridesPage.rides[0].driver.click();
+    await selectChoose('.driver md-input-container', 'Capheus');
 
-  andThen(() => {
     assert.equal(ridesPage.rides[0].driver.text, 'Capheus');
   });
-});
 
-test('people can be made inactive and active', function(assert) {
-  page.visit();
+  test('people can be made inactive and active', async function(assert) {
+    await page.visit();
 
-  page.people[1].activeSwitch.click();
+    await page.people[1].activeSwitch.click();
 
-  andThen(() => {
-    assert.equal(page.people.length, 1, 'expected the person made inactive to have disappeared');
+    assert.equal(
+      page.people.length,
+      1,
+      'expected the person made inactive to have disappeared'
+    );
 
-    const [sun] = server.db.people;
-    assert.notOk(sun.active, 'expected Sun to have been made inactive on the server');
+    let [sun] = this.server.db.people;
+    assert.notOk(
+      sun.active,
+      'expected Sun to have been made inactive on the server'
+    );
+
+    await page.head.inactiveSwitch.click();
+    await page.people[1].activeSwitch.click();
+
+    [sun] = this.server.db.people;
+    assert.ok(
+      sun.active,
+      'expected Sun to have been made active on the server'
+    );
+
+    this.server.patch('/people/:id', {}, 422);
+
+    // FIXME test that inactive people aren’t shown in the ride-person popup
+
+    await page.people[1].activeSwitch.click();
+
+    assert.equal(
+      shared.toast.text,
+      'There was an error saving the active status of Sun'
+    );
   });
 
-  page.head.inactiveSwitch.click();
-  page.people[1].activeSwitch.click();
+  test('person validation errors are displayed', async function(assert) {
+    this.server.post(
+      '/people',
+      {
+        errors: [
+          {
+            source: {
+              pointer: '/data/attributes/name',
+            },
+            detail: "Name can't be blank",
+          },
+          {
+            source: {
+              pointer: '/data/attributes/email',
+            },
+            detail: "Email can't be blank",
+          },
+        ],
+      },
+      422
+    );
 
-  andThen(() => {
-    const [sun] = server.db.people;
-    assert.ok(sun.active, 'expected Sun to have been made active on the server');
+    await page.visit();
+    await page.newPerson();
+    await page.form.submit();
 
-    server.patch('/people/:id', {}, 422);
-  });
-
-  // FIXME test that inactive people aren’t shown in the ride-person popup
-
-  page.people[1].activeSwitch.click();
-
-  andThen(() => {
-    assert.equal(shared.toast.text, 'There was an error saving the active status of Sun');
-  });
-});
-
-test('person validation errors are displayed', function(assert) {
-  server.post('/people', {
-      errors: [{
-        'source': {
-          'pointer': '/data/attributes/name'
-        },
-        'detail': 'Name can\'t be blank'
-      },{
-        source: {
-          pointer: '/data/attributes/email'
-        },
-        detail: 'Email can\'t be blank'
-      }]
-    }, 422);
-
-  page.visit();
-  page.newPerson();
-  page.form.submit();
-
-  andThen(() => {
-    assert.equal(page.form.nameError.text, 'Name can\'t be blank');
-    assert.equal(page.form.email.error.text, 'Email can\'t be blank');
+    assert.equal(page.form.nameError.text, "Name can't be blank");
+    assert.equal(page.form.email.error.text, "Email can't be blank");
   });
 });

@@ -1,4 +1,4 @@
-{{#power-calendar center=month daysComponent='calendar-days' as |calendar|}}
+{{#power-calendar center=monthMoment daysComponent='calendar-days' as |calendar|}}
   {{#paper-card class='person-card' as |card|}}
     {{#card.content}}
       <header>
@@ -44,6 +44,17 @@
                   {{form.input type='email' label='Email' disabled=true value=person.email onChange=(action (mut person.email)) errors=person.validationErrors.email isTouched=(readonly person.validationErrors.email.length)}}
                   {{#group.radio value='email'}}preferred{{/group.radio}}
                 </div>
+              </div>
+            </div>
+            <div class='layout-row'>
+              <div class='layout-column flex-100'>
+                {{#form.input class='address'
+                             textarea=true
+                             label='Mailing address'
+                             value=person.address
+                             onChange=(action (mut person.address))}}
+                  <div class='hint'>To send you our quarterly newsletter and very occasionally, invitations or other such communications</div>
+                {{/form.input}}
               </div>
             </div>
             <div class='layout-row'>

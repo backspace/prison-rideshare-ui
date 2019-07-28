@@ -3,10 +3,12 @@ import {
   create,
   fillable,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
+  testContainer: 'md-dialog',
+
   visit: visitable('/login'),
 
   fillEmail: fillable('.email input'),

@@ -11,6 +11,8 @@ $primary: 'indigo';
 @import 'calendar';
 @import 'statistics';
 
+@import 'log';
+
 body {
   max-width: 100%;
   max-height: 100%;
@@ -56,11 +58,24 @@ md-toolbar {
       box-shadow: none;
     }
   }
+
+  .count {
+    border-radius: 10px;
+    background: white;
+    color: paper-color($color-indigo, '600');
+    font-size: 50%;
+    text-align: center;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: 10px;
+    left: 32px;
+  }
 }
 
 md-sidenav {
   width: 150px;
-  background-color: color($color-indigo, '600');
+  background-color: paper-color($color-indigo, '600');
 
   md-content.md-default-theme, md-list {
     background: transparent;
@@ -73,7 +88,7 @@ md-sidenav {
     align-items: stretch;
   }
 
-  md-list-item a, md-list-item .session {
+  md-list-item a, md-list-item.session .md-button {
     display: flex;
     align-items: center;
     padding-left: 16px;
@@ -81,17 +96,22 @@ md-sidenav {
 
     text-decoration: none;
     color: white;
+    white-space: nowrap;
 
     &:hover {
-      background-color: color($color-indigo, '200');
+      background-color: paper-color($color-indigo, '200');
     }
 
     &.active {
-      background-color: color($color-indigo, '400');
+      background-color: paper-color($color-indigo, '400');
+    }
+
+    .md-list-item-inner {
+      align-items: center;
     }
   }
 
-  .users {
+  .rides, .users, .log {
     display: flex;
     width: 100%;
     padding-right: 16px;
@@ -100,7 +120,7 @@ md-sidenav {
     .count {
       border-radius: 10px;
       background: white;
-      color: color($color-indigo, '600');
+      color: paper-color($color-indigo, '600');
       font-size: 50%;
       text-align: center;
       width: 10px;
@@ -139,6 +159,10 @@ md-sidenav {
     opacity: 0.5;
   }
 
+  &.overlaps {
+    background-color: paper-color($color-pink, '100');
+  }
+
   md-input-container {
     margin: 18px 0 0;
   }
@@ -158,6 +182,10 @@ md-sidenav {
   }
 }
 
+tr.highlighted {
+  background-color: paper-color($color-pink, '100');
+}
+
 .search {
   button {
     position: absolute;
@@ -172,8 +200,10 @@ md-sidenav {
 }
 
 .rides table {
-  .notes td, .report td {
-    border-top: 0;
+  .notes, .report, .overlap {
+    td {
+      border-top: 0;
+    }
   }
 
   .report .distance::after {
@@ -208,12 +238,6 @@ md-table-container.debts .person .name {
   line-height: 14px;
   transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
   color: grey;
-}
-
-.ember-load-indicator {
-  position: absolute;
-  width: 100%;
-  height: 100%;
 }
 
 .visitor-autocomplete-option {
@@ -294,7 +318,9 @@ md-table-container.reimbursements {
   .month {
     font-weight: bold;
   }
+}
 
+md-table-container {
   .copy-btn {
     border: 0;
     background: transparent;
@@ -309,4 +335,8 @@ md-toast {
   display: inline-block;
   transform: translateY(-2px);
   font-size: 60%;
+}
+
+md-option[aria-current] {
+  font-weight: bold;
 }

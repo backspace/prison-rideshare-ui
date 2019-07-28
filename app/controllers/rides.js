@@ -13,9 +13,12 @@ export default Controller.extend({
     sortDir: 'dir',
 
     search: {
-      replace: true
-    }
+      replace: true,
+    },
   },
+
+  overlapsService: service('overlaps'),
+  toasts: service(),
 
   peopleService: service('people'),
   people: alias('peopleService.all'),
@@ -31,66 +34,89 @@ export default Controller.extend({
 
   showCreation: false,
 
-  filteredRides: computed('showCompleted', 'showCancelled', 'model.@each.{complete,enabled,isCombined}', 'search', 'sortDir', function() {
-    const showCompleted = this.get('showCompleted'), showCancelled = this.get('showCancelled');
-    const search = this.get('search');
+  filteredRides: computed(
+    'showCompleted',
+    'showCancelled',
+    'model.@each.{complete,enabled,isCombined}',
+    'search',
+    'sortDir',
+    function() {
+      const showCompleted = this.get('showCompleted'),
+        showCancelled = this.get('showCancelled');
+      const search = this.get('search');
 
-    let rides = this.get('model').rejectBy('isCombined');
+      let rides = this.get('model').rejectBy('isCombined');
 
-    if (!showCompleted) {
-      rides = rides.filterBy('complete', false);
-    }
-
-    if (!showCancelled) {
-      rides = rides.filterBy('enabled');
-    }
-
-    if (search) {
-      rides = rides.filter(ride => ride.matches(search));
-    }
-
-    rides.setEach('isDivider', false);
-
-    const sorted = rides.sortBy('start');
-    const sortDir = this.get('sortDir');
-    const now = new Date();
-
-    if (sortDir === 'asc') {
-      const firstAfterNow = sorted.find(ride => ride.get('start') > now);
-
-      if (firstAfterNow) {
-        firstAfterNow.set('isDivider', true);
+      if (!showCompleted) {
+        rides = rides.filterBy('complete', false);
       }
-    } else {
-      const reversed = sorted.reverse();
-      const firstBeforeNow = reversed.find(ride => ride.get('start') < now);
 
-      if (firstBeforeNow) {
-        firstBeforeNow.set('isDivider', true);
+      if (!showCancelled) {
+        rides = rides.filterBy('enabled');
       }
-    }
 
-    return rides;
-  }),
+      if (search) {
+        rides = rides.filter(ride => ride.matches(search));
+      }
+
+      rides.setEach('isDivider', false);
+
+      const sorted = rides.sortBy('start');
+      const sortDir = this.get('sortDir');
+      const now = new Date();
+
+      if (sortDir === 'asc') {
+        const firstAfterNow = sorted.find(ride => ride.get('start') > now);
+
+        if (firstAfterNow) {
+          firstAfterNow.set('isDivider', true);
+        }
+      } else {
+        const reversed = sorted.reverse();
+        const firstBeforeNow = reversed.find(ride => ride.get('start') < now);
+
+        if (firstBeforeNow) {
+          firstBeforeNow.set('isDivider', true);
+        }
+      }
+
+      return rides;
+    }
+  ),
 
   actions: {
     newRide() {
-      this.set('editingRide', BufferedProxy.create({
-        content: this.store.createRecord('ride')
-      }));
+      this.set(
+        'editingRide',
+        BufferedProxy.create({
+          content: this.store.createRecord('ride'),
+        })
+      );
     },
 
     editRide(model) {
-      this.set('editingRide', BufferedProxy.create({
-        content: model
-      }));
+      this.set(
+        'editingRide',
+        BufferedProxy.create({
+          content: model,
+        })
+      );
     },
 
     submit(proxy) {
+      let buffer = proxy.buffer;
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingRide', undefined)).catch(() => {
-        // FIXME what is to be done?
-      });
+
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingRide', undefined))
+        .catch(() => {
+          this.get('toasts').show('There was an error saving this ride');
+          proxy.content.rollbackAttributes();
+          proxy.setProperties(buffer);
+        })
+        .then(() => this.get('overlapsService').fetch());
     },
 
     cancel() {
@@ -105,9 +131,12 @@ export default Controller.extend({
     },
 
     editCancellation(ride) {
-      this.set('editingCancellation', BufferedProxy.create({
-        content: ride
-      }));
+      this.set(
+        'editingCancellation',
+        BufferedProxy.create({
+          content: ride,
+        })
+      );
 
       if (ride.get('enabled')) {
         this.set('editingCancellation.cancelled', true);
@@ -115,8 +144,18 @@ export default Controller.extend({
     },
 
     submitCancellation(proxy) {
+      let buffer = proxy.buffer;
       proxy.applyBufferedChanges();
-      return proxy.get('content').save().then(() => this.set('editingCancellation'), undefined);
+
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingCancellation'), undefined)
+        .catch(() => {
+          this.get('toasts').show('There was an error cancelling this ride');
+          proxy.content.rollbackAttributes();
+          proxy.setProperties(buffer);
+        });
     },
 
     cancelCancellation() {
@@ -147,6 +186,6 @@ export default Controller.extend({
 
     clearSearch() {
       this.set('search', undefined);
-    }
-  }
+    },
+  },
 });

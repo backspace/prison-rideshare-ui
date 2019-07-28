@@ -1,4 +1,4 @@
-import { computed, get } from '@ember/object';
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
@@ -13,7 +13,7 @@ export default Component.extend({
   institutions: alias('institutionsService.all'),
   store: service('store'),
 
-  warning: computed('ride.{cancellationReason,complete}', function() {
+  editingWarning: computed('ride.{cancellationReason,complete}', function() {
     const reason = this.get('ride.cancellationReason');
     const complete = this.get('ride.complete');
 
@@ -24,6 +24,13 @@ export default Component.extend({
     } else {
       return false;
     }
+  }),
+
+  timespanWarning: computed('ride.{start,end}', function() {
+    const start = this.get('ride.start');
+    const end = this.get('ride.end');
+
+    return start && end && start < new Date();
   }),
 
   rideTimes: computed('ride.{start,end}', function() {
@@ -54,9 +61,11 @@ export default Component.extend({
     },
 
     searchRides(name) {
-      return this.get('store').query('ride', {'filter[name]': name}).then(rides => {
-        return deduplicateVisitorSuggestions(rides);
-      });
+      return this.get('store')
+        .query('ride', { 'filter[name]': name })
+        .then(rides => {
+          return deduplicateVisitorSuggestions(rides);
+        });
     },
 
     autocompleteSelectionChanged(ride) {
@@ -66,12 +75,5 @@ export default Component.extend({
         this.set('ride.contact', ride.get('contact'));
       }
     },
-
-    matchInstitution(option, searchTerm) {
-      const name = get(option, 'name');
-      const result = (name || '').toLowerCase().startsWith(searchTerm.toLowerCase());
-
-      return result ? 1 : -1;
-    }
-  }
+  },
 });

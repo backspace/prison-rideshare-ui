@@ -17,19 +17,27 @@ export default Service.extend({
       const token = this.get('session.data.authenticated.access_token');
 
       if (!isEmpty(token)) {
-        fetch(`${(Ember.testing ? '' : config.DS.host)}/${config.DS.namespace.length > 0 ? `${config.DS.namespace}/` : ''}users/current`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`
+        fetch(
+          `${Ember.testing ? '' : config.DS.host}/${
+            config.DS.namespace.length > 0 ? `${config.DS.namespace}/` : ''
+          }users/current`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        }).then(raw => raw.json(), reject).then(data => {
-          const currentUser = this.get('store').push(data);
-          this.set('session.currentUser', currentUser);
-          resolve();
-        }).catch(reject);
+        )
+          .then(raw => raw.json(), reject)
+          .then(data => {
+            const currentUser = this.get('store').push(data);
+            this.set('session.currentUser', currentUser);
+            resolve();
+          })
+          .catch(reject);
       } else {
         resolve();
       }
     });
-  }
+  },
 });

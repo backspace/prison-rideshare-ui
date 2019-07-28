@@ -1,26 +1,32 @@
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import Controller from '@ember/controller';
+import Controller, { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
 
 export default Controller.extend({
+  overlaps: service(),
   sidebar: service(),
   session: service(),
+  store: service(),
   userSocket: service(),
 
-  userCount: computed('userSocket.present.length', function() {
-    const count = this.get('userSocket.present.length');
+  rides: controller(),
 
-    if (count > 1) {
-      return count;
-    } else {
-      return undefined;
+  ridesBadgeCount: computed(
+    'overlaps.count',
+    'rides.model.@each.requiresConfirmation',
+    function() {
+      let rides = this.get('rides.model') || [];
+      return (
+        this.get('overlaps.count') +
+        rides.filterBy('requiresConfirmation').length
+      );
     }
-  }),
+  ),
 
   actions: {
     logout() {
       this.get('session').invalidate();
       this.store.unloadAll();
-    }
-  }
+    },
+  },
 });

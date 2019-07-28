@@ -1,50 +1,86 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/statistics';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | statistics', {
-  beforeEach() {
-    authenticateSession(this.application);
+import moment from 'moment';
 
-    // FIXME this will stop working a year after this date…
-    // or not… what form, if any, should tests have?
-    server.create('ride', {
-      start: new Date(2017, 11, 25, 17, 0),
-      end: new Date(2017, 11, 25, 19, 0)
-    });
+const format = 'YYYY-MM-DD';
 
-    server.create('ride', {
-      start: new Date(2018, 1, 19, 17, 0),
-      end: new Date(2018, 1, 19, 19, 0)
-    });
-  }
-});
+module('Acceptance | statistics', function(hooks) {
+  setupApplicationTest(hooks);
 
-test('shows ride start times per day, with a default range of the past year', function(assert) {
-  page.visit();
-
-  andThen(() => {
-    assert.equal(shared.title, 'Statistics · Prison Rideshare');
-
-    // assert.equal(page.start.value, '2017-01-24', 'expected the start date to be a year ago');
-    // assert.equal(page.end.value, '2018-01-24', 'expected the end date to be today');
+  hooks.beforeEach(async function() {
+    await authenticateSession();
   });
 
-  // page.pastTwoWeeks.click();
-  //
-  // andThen(() => {
-  //   assert.equal(page.start.value, '2018-01-10', 'expected the start date to be two weeks ago');
-  //   assert.equal(page.end.value, '2018-01-24', 'expected the end date to be today');
-  // });
-  //
-  // page.pastYear.click();
-  //
-  // andThen(() => {
-  //   assert.equal(page.start.value, '2017-01-24', 'expected the start date to be a year ago');
-  //   assert.equal(page.end.value, '2018-01-24', 'expected the end date to be today');
-  // });
+  test('has convenience buttons for timespans', async function(assert) {
+    await page.visit();
+
+    assert.equal(shared.title, 'Statistics · Prison Rideshare');
+
+    assert.equal(
+      page.start.value,
+      moment()
+        .subtract(1, 'year')
+        .format(format),
+      'expected the start date to be a year ago'
+    );
+    assert.equal(
+      page.end.value,
+      moment().format(format),
+      'expected the end date to be today'
+    );
+
+    await page.pastTwoWeeks.click();
+
+    assert.equal(
+      page.start.value,
+      moment()
+        .subtract(2, 'weeks')
+        .format(format),
+      'expected the start date to be two weeks ago'
+    );
+    assert.equal(
+      page.end.value,
+      moment().format(format),
+      'expected the end date to be today'
+    );
+
+    await page.thisYear.click();
+
+    assert.equal(
+      page.start.value,
+      moment()
+        .startOf('year')
+        .format(format),
+      'expected the start date to be the beginning of this year'
+    );
+    assert.equal(
+      page.end.value,
+      moment().format(format),
+      'expected the end date to be today'
+    );
+
+    await page.pastYear.click();
+
+    assert.equal(
+      page.start.value,
+      moment()
+        .subtract(1, 'year')
+        .format(format),
+      'expected the start date to be a year ago'
+    );
+    assert.equal(
+      page.end.value,
+      moment().format(format),
+      'expected the end date to be today'
+    );
+
+    percySnapshot(assert);
+  });
 });

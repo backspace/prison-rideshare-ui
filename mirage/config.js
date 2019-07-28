@@ -1,29 +1,38 @@
-import config from 'prison-rideshare-ui/config/environment';
 import Mirage from 'ember-cli-mirage';
 import { isEmpty } from '@ember/utils';
 
 export default function() {
   this.passthrough('/write-coverage');
 
-  this.logging = config.mirageLogging;
+  this.logging = window.location.search.includes('mirage-logging=true');
 
   this.namespace = '/api';
 
-  this.get('/rides', function({rides}, {queryParams}) {
-    if (queryParams["filter[name]"]) {
+  this.get('/rides', function({ rides }, { queryParams, requestHeaders }) {
+    if (queryParams['filter[name]']) {
       // FIXME this is a mess, no better way???
-      const nameFilter = queryParams["filter[name]"];
-      const matchingRides = rides.all().models.filter(ride => (ride.name || '').toLowerCase().includes(nameFilter));
+      const nameFilter = queryParams['filter[name]'];
+      const matchingRides = rides
+        .all()
+        .models.filter(ride =>
+          (ride.name || '').toLowerCase().includes(nameFilter)
+        );
       return {
-        data: matchingRides.map(ride => this.serialize(ride)['data'])
-      }
-    } else {
+        data: matchingRides.map(ride => this.serialize(ride)['data']),
+      };
+    } else if (requestHeaders.Authorization) {
       return rides.all();
+    } else {
+      return rides.where({ complete: false });
     }
   });
   this.get('/rides/:id');
   this.post('/rides');
   this.patch('/rides/:id');
+
+  this.get('/rides/overlaps', function({ rides }) {
+    return rides.all().filter(ride => ride.commitments.length > 0);
+  });
 
   this.get('/institutions');
   this.post('/institutions');
@@ -39,22 +48,28 @@ export default function() {
   this.patch('/people/me', function({ people }, request) {
     if (request.requestHeaders.Authorization.startsWith('Person Bearer')) {
       const [, , accessToken] = request.requestHeaders.Authorization.split(' ');
-      const person = people.findBy({accessToken});
+      const person = people.findBy({ accessToken });
 
       if (person) {
-        const attrs = this.normalizedRequestAttrs();
+        const attrs = this.normalizedRequestAttrs('person');
 
         if (isEmpty(attrs.name)) {
-          return new Mirage.Response(422, {}, {
-            errors: [{
-              'source': {
-                'pointer': '/data/attributes/name'
-              },
-              'detail': 'Name can\'t be blank'
-            }]
-          });
+          return new Mirage.Response(
+            422,
+            {},
+            {
+              errors: [
+                {
+                  source: {
+                    pointer: '/data/attributes/name',
+                  },
+                  detail: "Name can't be blank",
+                },
+              ],
+            }
+          );
         } else {
-          return person.update(this.normalizedRequestAttrs());
+          return person.update(attrs);
         }
       }
     }
@@ -71,6 +86,28 @@ export default function() {
   this.get('/users');
   this.patch('/users/:id');
 
+  this.get('/posts');
+  this.post('/posts');
+  this.patch('/posts/:id');
+  this.delete('/posts/:id');
+
+  this.post('/posts/readings', function({ posts }) {
+    posts.all().update('unread', false);
+    return posts.all();
+  });
+
+  this.post('/posts/:id/readings', function({ posts }, { params: { id } }) {
+    let post = posts.find(id);
+    post.unread = false;
+    return post;
+  });
+
+  this.delete('/posts/:id/readings', function({ posts }, { params: { id } }) {
+    let post = posts.find(id);
+    post.unread = true;
+    return post;
+  });
+
   this.get('/users/current', ({ users }) => {
     return users.first();
   });
@@ -82,7 +119,7 @@ export default function() {
 
     if (authorizationHeader.startsWith('Person Bearer')) {
       const [, , accessToken] = authorizationHeader.split(' ');
-      const person = people.findBy({accessToken});
+      const person = people.findBy({ accessToken });
       const attrs = this.normalizedRequestAttrs();
 
       if (person && attrs.personId === person.id) {
@@ -100,25 +137,31 @@ export default function() {
 
   this.post('/people/token', function({ people }, { requestBody }) {
     const bodyParams = parseQueryString(requestBody);
-    const person = people.findBy({magicToken: bodyParams.token});
+    const person = people.findBy({ magicToken: bodyParams.token });
 
     if (bodyParams.grant_type === 'magic' && person) {
       return {
-        access_token: person.accessToken
+        access_token: person.accessToken,
       };
     } else {
-      return new Mirage.Response(401, {}, {
-        errors: [{
-          status: 401,
-          title: 'Unauthorized'
-        }]
-      });
+      return new Mirage.Response(
+        401,
+        {},
+        {
+          errors: [
+            {
+              status: 401,
+              title: 'Unauthorized',
+            },
+          ],
+        }
+      );
     }
   });
 
   this.get('/people/me', function({ people }, { queryParams }) {
     const accessToken = queryParams.token;
-    const person = people.findBy({accessToken});
+    const person = people.findBy({ accessToken });
 
     return person;
   });
@@ -128,10 +171,10 @@ export default function() {
 
 function parseQueryString(query) {
   var obj = {},
-    qPos = query.indexOf("?"),
+    qPos = query.indexOf('?'),
     tokens = query.substr(qPos + 1).split('&'),
     i = tokens.length - 1;
-  if (qPos !== -1 || query.indexOf("=") !== -1) {
+  if (qPos !== -1 || query.indexOf('=') !== -1) {
     for (; i >= 0; i--) {
       var s = tokens[i].split('=');
       obj[unescape(s[0])] = s.hasOwnProperty(1) ? unescape(s[1]) : null;

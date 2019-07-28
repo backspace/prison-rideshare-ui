@@ -1,0 +1,23 @@
+{{#paper-dialog}}
+  {{#paper-toolbar}}
+    {{#paper-toolbar-tools}}
+      <h2 class='md-title'>Forgot password</h2>
+    {{/paper-toolbar-tools}}
+  {{/paper-toolbar}}
+  {{#paper-form onSubmit=(action 'submit') as |form|}}
+    {{#paper-dialog-content}}
+      <div class='layout layout-row'>
+        {{form.input class='email' type='email' label='Email' autofocus=true value=email onChange=(action (mut email))}}
+      </div>
+      {{#if error}}
+        <div class='error'>FIXME</div>
+      {{/if}}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class='layout-row'}}
+      <div class='layout layout-row'>
+        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'submit')}}Send reset email{{/form.submit-button}}
+      </div>
+    {{/paper-dialog-actions}}
+  {{/paper-form}}
+{{/paper-dialog}}

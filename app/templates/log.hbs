@@ -1,0 +1,160 @@
+{{#toolbar-header title='Log'}}
+  {{#paper-button
+    mini=true
+    aria-label='New post'
+    title='New post'
+    class='new'
+    onClick=(action 'newPost')
+  }}
+    {{paper-icon 'note_add'}}
+  {{/paper-button}}
+{{/toolbar-header}}
+
+{{#paper-content}}
+  {{#paper-data-table class='posts' as |table|}}
+    {{#table.head as |head|}}
+      {{#head.column}}Meta{{/head.column}}
+      {{#head.column}}Content{{/head.column}}
+      {{#head.column}}
+        {{#if (filter-by 'unread' model)}}
+          {{#paper-button
+            aria-label='Mark all read'
+            title='Mark all read'
+            class='markAllRead'
+            onClick=(action 'markAllRead')
+          }}
+            Mark all read{{paper-icon 'done_all'}}
+          {{/paper-button}}
+        {{/if}}
+      {{/head.column}}
+    {{/table.head}}
+    {{#table.body as |body|}}
+      {{#each (sort-by 'insertedAt:desc' model) as |post|}}
+        {{#unless post.isNew}}
+          {{#body.row as |row|}}
+            {{#row.cell class='meta'}}
+              <span class='date'>
+                {{moment-format post.insertedAt 'ddd MMM D YYYY h:mma'}}
+              </span>
+              <br>
+              <span class='poster'>
+                {{post.poster.email}}
+              </span>
+            {{/row.cell}}
+            {{#row.cell class='content'}}
+              {{render-mobiledoc mobiledoc=post.bodyJson}}
+            {{/row.cell}}
+            {{#row.cell class='controls'}}
+              {{#if post.unread}}
+                {{#paper-button
+                  aria-label='Mark read'
+                  title='Mark read'
+                  class='markRead'
+                  onClick=(action 'markRead' post)
+                }}
+                  Mark read{{paper-icon 'done'}}
+                {{/paper-button}}
+              {{else}}
+                {{#paper-button
+                  aria-label='Mark unread'
+                  title='Mark unread'
+                  class='markUnread'
+                  onClick=(action 'markUnread' post)
+                }}
+                  Mark unread{{paper-icon 'autorenew'}}
+                {{/paper-button}}
+              {{/if}}
+              {{#if (eq session.currentUser.id post.poster.id)}}
+                {{#paper-button
+                  iconButton=true
+                  aria-label='Edit post'
+                  title='Edit post'
+                  class='edit'
+                  onClick=(action 'editPost' post)
+                }}
+                  {{paper-icon 'mode edit'}}
+                {{/paper-button}}
+                {{#if (eq deletingPost post)}}
+                  Delete this post?
+                  {{#paper-button
+                    class='delete-confirm'
+                    warn=true
+                    aria-label='Delete post'
+                    title='Delete post'
+                    onClick=(action 'deletePost')
+                  }}
+                    Yes
+                  {{/paper-button}}
+                  {{#paper-button
+                    class='delete-cancel'
+                    aria-label='Don’t delete report'
+                    title='Don’t delete report'
+                    onClick=(action (mut deletingPost))
+                  }}
+                    No
+                  {{/paper-button}}
+                {{else}}
+                  {{#paper-button
+                    iconButton=true
+                    aria-label='Delete post'
+                    title='Delete post'
+                    class='delete'
+                    onClick=(action (mut deletingPost) post)
+                  }}
+                    {{paper-icon 'delete'}}
+                  {{/paper-button}}
+                {{/if}}
+              {{/if}}
+            {{/row.cell}}
+          {{/body.row}}
+        {{/unless}}
+      {{/each}}
+    {{/table.body}}
+  {{/paper-data-table}}
+{{/paper-content}}
+
+{{#if editingPost}}
+  {{#paper-dialog
+    clickOutsideToClose=true
+    fullscreen=true
+    onClose=(action 'cancelPost')
+  }}
+    {{#paper-form onSubmit=savePost}}
+      {{#paper-dialog-content}}
+        <h2 class='md-title'>
+          {{if editingPost.isNew 'New' 'Edit'}}
+          post
+        </h2>
+        <div class='layout layout-sm-column content'>
+          {{#mobiledoc-editor
+            mobiledoc=editingPost.bodyJson
+            autofocus=true
+            on-change=(action (mut editingPost.bodyJson)) as |editor|
+          }}
+            {{mobiledoc-toolbar editor=editor}}
+          {{/mobiledoc-editor}}
+          {{#if editingPost.validationErrors.body}}
+            <div class='md-input-messages-animation md-auto-hide'>
+              {{#each editingPost.validationErrors.body as |error|}}
+                <div
+                  class='paper-input-error ng-enter ng-enter-active md-input-message-animation'
+                >
+                  {{error}}
+                </div>
+              {{/each}}
+            </div>
+          {{/if}}
+        </div>
+      {{/paper-dialog-content}}
+      {{#paper-dialog-actions class='layout-row'}}
+        {{#paper-button class='cancel' onClick=(action 'cancelPost')}}
+          Cancel
+        {{/paper-button}}
+        {{#paper-button class='submit' primary=true onClick=(action 'savePost')
+        }}
+          Save
+        {{/paper-button}}
+      {{/paper-dialog-actions}}
+    {{/paper-form}}
+  {{/paper-dialog}}
+{{/if}}

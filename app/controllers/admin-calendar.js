@@ -24,15 +24,27 @@ export default CalendarController.extend({
   toasts: service(),
 
   previousMonth: computed('month', function() {
-    return moment(this.get('month')).add(-1, 'M').format(format);
+    return moment(this.get('month'))
+      .add(-1, 'M')
+      .format(format);
   }),
 
   nextMonth: computed('month', function() {
-    return moment(this.get('month')).add(1, 'M').format(format);
+    return moment(this.get('month'))
+      .add(1, 'M')
+      .format(format);
   }),
 
   monthString: computed('month', function() {
     return moment(this.get('month')).format(format);
+  }),
+
+  monthMoment: computed('month', function() {
+    return moment(this.get('month'));
+  }),
+
+  title: computed('month', function() {
+    return `${moment(this.get('month')).format('MMMM YYYY')} calendar`;
   }),
 
   init() {
@@ -42,11 +54,19 @@ export default CalendarController.extend({
 
   remainingPeople: setDiff('activePeople', 'people'),
 
-  viewingSlotPeopleIds: mapBy('viewingSlot.commitments', 'person.id'),
-  uncommittedPeople: computed('activePeople.[]', 'viewingSlotPeopleIds.[]', function() {
-    const alreadyCommittedPeople = this.get('viewingSlotPeopleIds');
-    return this.get('activePeople').reject(person => alreadyCommittedPeople.includes(person.id));
-  }),
+  viewingSlotPeople: mapBy('viewingSlot.commitments', 'person'),
+  viewingSlotPeopleIds: mapBy('viewingSlotPeople', 'id'),
+
+  uncommittedPeople: computed(
+    'activePeople.[]',
+    'viewingSlotPeopleIds.[]',
+    function() {
+      const alreadyCommittedPeople = this.get('viewingSlotPeopleIds');
+      return this.get('activePeople').reject(person =>
+        alreadyCommittedPeople.includes(person.id)
+      );
+    }
+  ),
 
   actions: {
     addPerson(person) {
@@ -63,38 +83,55 @@ export default CalendarController.extend({
 
     createCommitment(person) {
       const slot = this.get('viewingSlot');
-      const commitment = this.store.createRecord('commitment', {slot: this.get('viewingSlot'), person: person});
-
-      commitment.save().then(() => {
-        this.get('toasts').show(`Committed ${person.get('name')} to drive on ${moment(slot.get('start')).format('MMMM D')}`);
-      }).catch(error => {
-        const errorDetail = get(error, 'errors.firstObject.detail');
-        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+      const commitment = this.store.createRecord('commitment', {
+        slot: this.get('viewingSlot'),
+        person: person,
       });
+
+      commitment
+        .save()
+        .then(() => {
+          this.get('toasts').show(
+            `Committed ${person.get('name')} to drive on ${moment(
+              slot.get('start')
+            ).format('MMMM D')}`
+          );
+        })
+        .catch(error => {
+          const errorDetail = get(error, 'errors.firstObject.detail');
+          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+        });
     },
 
     deleteCommitment(commitment) {
       let name = commitment.get('person.name');
       let date = moment(commitment.get('slot.start')).format('MMMM D');
 
-      commitment.destroyRecord().then(() => {
-        this.get('toasts').show(`Deleted ${name}’s commitment on ${date}`);
-      }).catch(error => {
-        const errorDetail = get(error, 'errors.firstObject.detail');
-        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
-      });
+      commitment
+        .destroyRecord()
+        .then(() => {
+          this.get('toasts').show(`Deleted ${name}’s commitment on ${date}`);
+        })
+        .catch(error => {
+          const errorDetail = get(error, 'errors.firstObject.detail');
+          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+        });
     },
 
     email() {
       const token = this.get('session.data.authenticated.access_token');
 
       this.get('people').forEach(person => {
-        const url = `${person.store.adapterFor('person').buildURL('person', person.id)}/calendar-email/${this.get('monthString')}`;
+        const url = `${person.store
+          .adapterFor('person')
+          .buildURL('person', person.id)}/calendar-email/${this.get(
+          'monthString'
+        )}`;
         fetch(url, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }).then(() => {
           this.get('toasts').show(`Sent to ${person.get('name')}`);
           this.get('people').removeObject(person);
@@ -106,30 +143,39 @@ export default CalendarController.extend({
       const token = this.get('session.data.authenticated.access_token');
 
       const personLinkRequests = this.get('people').reduce((hash, person) => {
-        const url = `${person.store.adapterFor('person').buildURL('person', person.id)}/calendar-link/${this.get('monthString')}`;
+        const url = `${person.store
+          .adapterFor('person')
+          .buildURL('person', person.id)}/calendar-link/${this.get(
+          'monthString'
+        )}`;
 
         hash[person.get('email')] = fetch(url, {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         return hash;
       }, {});
 
-      RSVP.hash(personLinkRequests).then(linkFetches => {
-        return RSVP.hash(Object.keys(linkFetches).reduce((hash, email) => {
-          hash[email] = linkFetches[email].text();
-          return hash;
-        }, {}));
-      }).then(links => {
-        this.set('links', links);
-        this.set('linksError', undefined);
-      }).catch(e => {
-        this.set('links', undefined);
-        this.set('linksError', e);
-      });
-    }
-  }
+      RSVP.hash(personLinkRequests)
+        .then(linkFetches => {
+          return RSVP.hash(
+            Object.keys(linkFetches).reduce((hash, email) => {
+              hash[email] = linkFetches[email].text();
+              return hash;
+            }, {})
+          );
+        })
+        .then(links => {
+          this.set('links', links);
+          this.set('linksError', undefined);
+        })
+        .catch(e => {
+          this.set('links', undefined);
+          this.set('linksError', e);
+        });
+    },
+  },
 });

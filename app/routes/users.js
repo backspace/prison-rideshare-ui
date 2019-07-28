@@ -6,5 +6,5 @@ export default Route.extend(AuthenticatedRoute, {
     return this.get('store').findAll('user');
   },
 
-  titleToken: 'Users'
+  titleToken: 'Users',
 });

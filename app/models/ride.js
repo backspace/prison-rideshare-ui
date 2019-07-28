@@ -1,4 +1,4 @@
-import { mapBy, gt, not } from '@ember/object/computed';
+import { mapBy, gt } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 
@@ -11,17 +11,20 @@ import difference from 'ember-cpm/macros/difference';
 import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
 
 export default DS.Model.extend({
-  enabled: DS.attr('boolean', {defaultValue: true}),
+  enabled: DS.attr('boolean', { defaultValue: true }),
+  complete: DS.attr('boolean', { defaultValue: false }),
+
   cancellationReason: DS.attr(),
 
-  combinedWith: DS.belongsTo('ride', {inverse: 'children'}),
-  children: DS.hasMany('ride', {inverse: 'combinedWith'}),
+  combinedWith: DS.belongsTo('ride', { inverse: 'children' }),
+  children: DS.hasMany('ride', { inverse: 'combinedWith' }),
 
   isCombined: computed('combinedWith.id', function() {
     return this.belongsTo('combinedWith').id();
   }),
 
   medium: DS.attr(),
+  requestConfirmed: DS.attr(),
 
   name: DS.attr(),
   visitor: DS.belongsTo('person'),
@@ -31,13 +34,13 @@ export default DS.Model.extend({
 
   address: DS.attr(),
   contact: DS.attr(),
-  passengers: DS.attr({defaultValue: 1}),
+  passengers: DS.attr({ defaultValue: 1 }),
   firstTime: DS.attr('boolean'),
 
   validationErrors: computed('errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
 
-    return attributes._keys.list.reduce((response, key) => {
+    return Array.from(attributes.keys()).reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];
       response[key] = errors.mapBy('message');
       return response;
@@ -48,7 +51,7 @@ export default DS.Model.extend({
   end: DS.attr('date'),
   insertedAt: DS.attr('date'),
 
-  rideTimes: computed('start', 'end', function () {
+  rideTimes: computed('start', 'end', function() {
     const start = this.get('start');
     const end = this.get('end');
 
@@ -65,12 +68,14 @@ export default DS.Model.extend({
 
   reportNotes: DS.attr(),
 
+  overridable: DS.attr('boolean'),
+
   reimbursements: DS.hasMany(),
 
-  foodExpenses: DS.attr({defaultValue: 0}),
+  foodExpenses: DS.attr({ defaultValue: 0 }),
   foodExpensesDollars: dollars('foodExpenses'),
 
-  carExpenses: DS.attr({defaultValue: 0}),
+  carExpenses: DS.attr({ defaultValue: 0 }),
   carExpensesDollars: dollars('carExpenses'),
 
   totalExpenses: sum('foodExpenses', 'carExpenses'),
@@ -81,17 +86,33 @@ export default DS.Model.extend({
 
   reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: sum('reimbursementFoodExpenses'),
-  outstandingFoodExpenses: difference('foodExpenses', 'reimbursementFoodExpensesSum'),
+  outstandingFoodExpenses: difference(
+    'foodExpenses',
+    'reimbursementFoodExpensesSum'
+  ),
 
   reimbursementCarExpenses: mapBy('reimbursements', 'carExpenses'),
   reimbursementCarExpensesSum: sum('reimbursementCarExpenses'),
-  outstandingCarExpenses: difference('carExpenses', 'reimbursementCarExpensesSum'),
+  outstandingCarExpenses: difference(
+    'carExpenses',
+    'reimbursementCarExpensesSum'
+  ),
 
-  reimbursementExpensesSum: computed('reimbursementFoodExpensesSum.[]', 'reimbursementCarExpensesSum.[]', function() {
-    return this.get('reimbursementFoodExpensesSum') + this.get('reimbursementCarExpensesSum');
-  }),
+  reimbursementExpensesSum: computed(
+    'reimbursementFoodExpensesSum.[]',
+    'reimbursementCarExpensesSum.[]',
+    function() {
+      return (
+        this.get('reimbursementFoodExpensesSum') +
+        this.get('reimbursementCarExpensesSum')
+      );
+    }
+  ),
 
-  outstandingTotalExpenses: sum('outstandingFoodExpenses', 'outstandingCarExpenses'),
+  outstandingTotalExpenses: sum(
+    'outstandingFoodExpenses',
+    'outstandingCarExpenses'
+  ),
 
   namePlusPassengers: computed('visitor.name', 'passengers', function() {
     const name = this.get('visitor.name');
@@ -104,8 +125,8 @@ export default DS.Model.extend({
     }
   }),
 
-  complete: gt('distance', 0),
-  notComplete: not('complete'),
+  distanceExists: gt('distance', 0),
+  carExpensesExist: gt('carExpenses', 0),
 
   cancelled: computed('enabled', {
     get() {
@@ -115,25 +136,63 @@ export default DS.Model.extend({
     set(key, value) {
       this.set('enabled', !value);
       return value;
+    },
+  }),
+
+  requiresConfirmation: computed(
+    '{start,enabled,requestConfirmed}',
+    function() {
+      const now = new Date();
+      return this.start > now && this.enabled && !this.requestConfirmed;
     }
-  }),
+  ),
 
-  allAnonymisedAddresses: computed('address', 'children.@each.address', function() {
-    return [this.get('address')].concat(this.get('children').mapBy('address')).map(address => anonymiseAddress(address)).join(', ');
-  }),
+  allAnonymisedAddresses: computed(
+    'address',
+    'children.@each.address',
+    function() {
+      return [this.get('address')]
+        .concat(this.get('children').mapBy('address'))
+        .map(address => anonymiseAddress(address))
+        .join(', ');
+    }
+  ),
 
-  allPassengers: computed('passengers', 'children.@each.passengers', function() {
-    return this.get('children').mapBy('passengers').reduce((sum, count) => count + sum, this.get('passengers'));
-  }),
+  allPassengers: computed(
+    'passengers',
+    'children.@each.passengers',
+    function() {
+      return this.get('children')
+        .mapBy('passengers')
+        .reduce((sum, count) => count + sum, this.get('passengers'));
+    }
+  ),
 
-  matchString: computed('institution.name', 'driver.name', 'carOwner.name', 'visitor.name', 'address', function() {
-    return `${this.getWithDefault('institution.name', '')} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault('carOwner.name', '')} ${this.getWithDefault('visitor.name', '')} ${this.getWithDefault('address')}`.toLowerCase();
-  }),
+  matchString: computed(
+    'institution.name',
+    'driver.name',
+    'carOwner.name',
+    'visitor.name',
+    'address',
+    function() {
+      return `${this.getWithDefault(
+        'institution.name',
+        ''
+      )} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault(
+        'carOwner.name',
+        ''
+      )} ${this.getWithDefault('visitor.name', '')} ${this.getWithDefault(
+        'address'
+      )}`.toLowerCase();
+    }
+  ),
 
   matches(casedQuery) {
     const query = casedQuery.toLowerCase();
     const matchString = this.get('matchString');
 
-    return (query.match(/\S+/g) || []).every(queryTerm => matchString.includes(queryTerm));
-  }
+    return (query.match(/\S+/g) || []).every(queryTerm =>
+      matchString.includes(queryTerm)
+    );
+  },
 });

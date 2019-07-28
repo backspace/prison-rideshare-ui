@@ -8,7 +8,8 @@ export default Route.extend(ApplicationRouteMixin, {
   session: service(),
   account: service(),
   userSocket: service(),
-  flashMessages: service(),
+  toasts: service(),
+  overlaps: service(),
   poll: service(),
 
   beforeModel() {
@@ -20,7 +21,7 @@ export default Route.extend(ApplicationRouteMixin, {
     if (!Ember.testing) {
       this.get('poll').start({
         idle_timeout: 10000,
-        interval: 10000
+        interval: 10000,
       });
     }
   },
@@ -32,13 +33,16 @@ export default Route.extend(ApplicationRouteMixin, {
   sessionAuthenticated() {
     this._super(...arguments);
     this.get('userSocket').connect();
+    this.get('overlaps').fetch();
     this._loadCurrentUser();
   },
 
   _loadCurrentUser() {
-    return this.get('account').loadCurrentUser().catch(() => {
-      this.get('flashMessages').warning('Please log in');
-      this.get('session').invalidate();
-    });
-  }
+    return this.get('account')
+      .loadCurrentUser()
+      .catch(() => {
+        this.get('toasts').show('Please log in');
+        this.get('session').invalidate();
+      });
+  },
 });

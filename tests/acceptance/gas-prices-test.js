@@ -1,45 +1,52 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | reports', {
-  beforeEach() {
-    server.create('gas-price', {
+module('Acceptance | reports', function(hooks) {
+  setupApplicationTest(hooks);
+
+  hooks.beforeEach(function() {
+    this.server.create('gas-price', {
       price: 100,
       closeRate: 96,
       farRate: 69,
-      insertedAt: new Date(2018, 6, 6, 14)
+      insertedAt: new Date(2018, 6, 6, 14),
     });
 
-    server.create('gas-price', {
+    this.server.create('gas-price', {
       price: 101,
       closeRate: 84,
       farRate: 48,
-      insertedAt: new Date(2018, 6, 7, 14)
+      insertedAt: new Date(2018, 6, 7, 14),
     });
 
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-    server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
-  }
-});
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+    this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
+  });
 
-test('it lists gas prices and reïmbursement rates', function(assert) {
-  page.visit();
+  test('it lists gas prices and reïmbursement rates', async function(assert) {
+    await page.visit();
 
-  andThen(function() {
+    percySnapshot(assert);
+
     assert.equal(shared.title, 'Gas prices · Prison Rideshare');
 
-    assert.equal(page.gasPrices.length, 10, 'expected ten gas prices to be listed');
+    assert.equal(
+      page.gasPrices.length,
+      10,
+      'expected ten gas prices to be listed'
+    );
 
     page.gasPrices[0].as(latest => {
       assert.equal(latest.date, 'Sat, Jul 7');

@@ -4,6 +4,6 @@ export default Controller.extend({
   actions: {
     reimburse(debt) {
       return debt.destroyRecord();
-    }
-  }
+    },
+  },
 });

@@ -10,13 +10,15 @@ export default Controller.extend({
 
       const user = this.get('model');
 
-      this.get('session').authenticate(
-        'authenticator:application',
-        user.get('email'),
-        user.get('password')
-      ).catch(error => {
-        this.set('error', error);
-      })
-    }
-  }
+      this.get('session')
+        .authenticate(
+          'authenticator:application',
+          user.get('email'),
+          user.get('password')
+        )
+        .catch(error => {
+          this.set('error', error);
+        });
+    },
+  },
 });

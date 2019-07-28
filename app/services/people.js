@@ -12,9 +12,9 @@ export default Service.extend({
 
   all: computed('findAll.@each.name', function() {
     return DS.PromiseArray.create({
-      promise: this.get('findAll').then(people => people.sortBy('name'))
+      promise: this.get('findAll').then(people => people.sortBy('name')),
     });
   }),
 
-  active: filterBy('all', 'active')
+  active: filterBy('all', 'active'),
 });

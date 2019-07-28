@@ -1,68 +1,73 @@
-import { test } from 'qunit';
-import moduleForAcceptance from 'prison-rideshare-ui/tests/helpers/module-for-acceptance';
+import { module, test } from 'qunit';
+import { setupApplicationTest } from '../helpers/application-tests';
+import { percySnapshot } from 'ember-percy';
 
-import { authenticateSession } from 'prison-rideshare-ui/tests/helpers/ember-simple-auth';
+import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/institutions';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-moduleForAcceptance('Acceptance | institutions', {
-  beforeEach() {
-    server.create('institution', {name: 'Milner Ridge', far: true});
-    server.create('institution', {name: 'Headingley', far: false});
+module('Acceptance | institutions', function(hooks) {
+  setupApplicationTest(hooks);
 
-    authenticateSession(this.application);
-  }
-});
+  hooks.beforeEach(async function() {
+    this.server.create('institution', { name: 'Milner Ridge', far: true });
+    this.server.create('institution', { name: 'Headingley', far: false });
 
-test('institutions can be listed and edited', function(assert) {
-  page.visit();
+    await authenticateSession(this.application);
+  });
 
-  andThen(() => {
+  test('institutions can be listed and edited', async function(assert) {
+    await page.visit();
+
+    percySnapshot(assert);
+
     assert.equal(shared.title, 'Institutions · Prison Rideshare');
 
-    assert.equal(page.institutions.length, 2, 'expected two institutions to be listed');
+    assert.equal(
+      page.institutions.length,
+      2,
+      'expected two institutions to be listed'
+    );
     assert.equal(page.institutions[0].name, 'Headingley');
     assert.notOk(page.institutions[0].isFar);
     assert.equal(page.institutions[1].name, 'Milner Ridge');
     assert.ok(page.institutions[1].isFar);
-  });
 
-  page.institutions[1].edit();
-  page.form.nameField.fillIn('Morlner Rordge');
-  page.form.cancel();
+    await page.institutions[1].edit();
 
-  andThen(() => {
-    const [milnerRidge] = server.db.institutions;
+    await page.form.nameField.fillIn('Morlner Rordge');
+    await page.form.cancel();
+
+    let [milnerRidge] = this.server.db.institutions;
 
     assert.equal(milnerRidge.name, 'Milner Ridge');
     assert.equal(page.institutions[1].name, 'Milner Ridge');
-  });
 
-  page.institutions[1].edit();
-  page.form.nameField.fillIn('Marlner Rardge');
-  page.form.farField.click();
-  page.form.submit();
+    await page.institutions[1].edit();
+    await page.form.nameField.fillIn('Marlner Rardge');
+    await page.form.farField.click();
+    await page.form.submit();
 
-  andThen(() => {
-    const [milnerRidge] = server.db.institutions;
+    [milnerRidge] = this.server.db.institutions;
 
     assert.equal(milnerRidge.name, 'Marlner Rardge');
     assert.notOk(milnerRidge.far);
   });
-});
 
-test('institutions can be created', function(assert) {
-  page.visit();
+  test('institutions can be created', async function(assert) {
+    await page.visit();
 
-  page.newInstitution();
+    await page.newInstitution();
 
-  page.form.nameField.fillIn('Remand Centre');
-  page.form.farField.click();
-  page.form.submit();
+    await page.form.nameField.fillIn('Remand Centre');
+    await page.form.farField.click();
 
-  andThen(() => {
-    const [, , remand] = server.db.institutions;
+    percySnapshot(assert);
+
+    await page.form.submit();
+
+    const [, , remand] = this.server.db.institutions;
     assert.equal(remand.name, 'Remand Centre');
     assert.ok(remand.far);
   });

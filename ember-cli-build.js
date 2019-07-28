@@ -2,26 +2,32 @@
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
+const nodeSass = require('node-sass');
+
 module.exports = function(defaults) {
   const deployTarget = process.env.DEPLOY_TARGET;
 
   let fingerprint = {};
 
   if (deployTarget) {
-    const s3Bucket = require('./config/deploy')(process.env.DEPLOY_TARGET).s3.bucket;
+    const s3Bucket = require('./config/deploy')(process.env.DEPLOY_TARGET).s3
+      .bucket;
 
-    fingerprint.prepend = `//${s3Bucket}.s3.amazonaws.com/`
+    fingerprint.prepend = `//${s3Bucket}.s3.amazonaws.com/`;
   }
 
   let app = new EmberApp(defaults, {
     fingerprint,
     sourcemaps: {
-      enabled: true
+      enabled: true,
     },
     emberHighCharts: {
       includeHighCharts: true,
-      includeModules: ['heatmap']
-    }
+      includeModules: ['heatmap'],
+    },
+    sassOptions: {
+      implementation: nodeSass,
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

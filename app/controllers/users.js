@@ -8,6 +8,6 @@ export default Controller.extend({
     updateUserAdmin(user, admin) {
       user.set('admin', admin);
       user.save();
-    }
-  }
+    },
+  },
 });

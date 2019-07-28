@@ -9,7 +9,7 @@ const Router = EmberRouter.extend({
 
   setTitle(title) {
     this.get('headData').set('title', title);
-  }
+  },
 });
 
 Router.map(function() {
@@ -26,9 +26,13 @@ Router.map(function() {
   this.route('gas-prices');
 
   this.route('users');
+  this.route('log');
 
   this.route('login');
   this.route('register');
+
+  this.route('forgot');
+  this.route('reset', { path: '/reset/:token' });
 
   this.route('admin-calendar', { path: '/admin-calendar/:month' });
   this.route('calendar', { path: '/calendar/:month' });

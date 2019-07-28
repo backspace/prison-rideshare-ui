@@ -8,12 +8,29 @@
         {{/card.content}}
       {{/paper-card}}
     {{/if}}
+
     <h2 class='md-title'>Cancel a ride</h2>
+
     {{#paper-form onSubmit=save as |form|}}
+      <div class='layout layout-sm-column'>
+        {{#each-in shortcutReasonToIcon as |reason icon|}}
+          {{#paper-button raised=true
+                          class='shortcut'
+                          onClick=(action 'cancelViaShortcut' reason)}}
+            {{paper-icon icon}}
+            {{reason}}
+          {{/paper-button}}
+        {{/each-in}}
+      </div>
+
+      <hr>
+
       <div class='layout layout-sm-column'>
         {{#paper-checkbox
           value=ride.cancelled
-          onChange=(action 'cancelledChanged')}}Cancelled?{{/paper-checkbox}}
+          onChange=(action 'cancelledChanged')}}
+          Cancelled?
+        {{/paper-checkbox}}
       </div>
 
       <div class='layout layout-sm-column'>

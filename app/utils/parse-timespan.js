@@ -2,8 +2,14 @@ import chrono from 'chrono-node';
 
 const assumeEndDay = new chrono.Refiner();
 assumeEndDay.refine = function(text, results) {
-  results.forEach(({start, end}) => {
-    if (start && end && !end.isCertain('meridiem') && start.isCertain('meridiem') && start.get('meridiem') === 1) {
+  results.forEach(({ start, end }) => {
+    if (
+      start &&
+      end &&
+      !end.isCertain('meridiem') &&
+      start.isCertain('meridiem') &&
+      start.get('meridiem') === 1
+    ) {
       end.assign('meridiem', 1);
       end.assign('year', start.get('year'));
       end.assign('month', start.get('month'));
@@ -13,11 +19,11 @@ assumeEndDay.refine = function(text, results) {
   });
 
   return results;
-}
+};
 
 const assumePM = new chrono.Refiner();
 assumePM.refine = function(text, results) {
-  results.forEach(({start, end}) => {
+  results.forEach(({ start, end }) => {
     if (start && !start.isCertain('meridiem')) {
       start.assign('meridiem', 1);
       start.assign('hour', start.get('hour') + 12);
@@ -30,13 +36,15 @@ assumePM.refine = function(text, results) {
   });
 
   return results;
-}
+};
 
 const chronoInstance = new chrono.Chrono();
 chronoInstance.refiners.push(assumeEndDay);
 chronoInstance.refiners.push(assumePM);
 
 export default function parseTimespan(value) {
-  const [parsed] = chronoInstance.parse(value, new Date(), {forwardDatesOnly: true});
+  const [parsed] = chronoInstance.parse(value, new Date(), {
+    forwardDatesOnly: true,
+  });
   return parsed;
 }

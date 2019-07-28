@@ -8,7 +8,7 @@ export default Service.extend({
   show(message) {
     this.get('paperToaster').show(message, {
       duration: config.toastDuration,
-      position: 'top right'
+      position: 'top right',
     });
-  }
+  },
 });

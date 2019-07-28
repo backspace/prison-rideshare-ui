@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 
 export default Component.extend({
+  session: service(),
   sidebar: service(),
   sidebarOpen: alias('sidebar.open'),
 
@@ -11,10 +12,13 @@ export default Component.extend({
     const hostname = window.location.hostname;
 
     if (hostname.indexOf('sandbox') > -1) {
-      return [{
-        label: 'Sandbox',
-        title: 'All data on this instance is erased daily. If some type of example data would be useful for you, let Buck know.'
-      }];
+      return [
+        {
+          label: 'Sandbox',
+          title:
+            'All data on this instance is erased daily. If some type of example data would be useful for you, let Buck know.',
+        },
+      ];
     } else {
       return [];
     }
@@ -23,6 +27,6 @@ export default Component.extend({
   actions: {
     toggleSidebar() {
       this.toggleProperty('sidebarOpen');
-    }
-  }
+    },
+  },
 });

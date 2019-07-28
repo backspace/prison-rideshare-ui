@@ -2,8 +2,8 @@ import DS from 'ember-data';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
 export default DS.Model.extend({
-  foodExpenses: DS.attr('number', {defaultValue: 0}),
-  carExpenses: DS.attr('number', {defaultValue: 0}),
+  foodExpenses: DS.attr('number', { defaultValue: 0 }),
+  carExpenses: DS.attr('number', { defaultValue: 0 }),
 
   person: DS.belongsTo(),
   donation: DS.attr('boolean'),
@@ -14,5 +14,5 @@ export default DS.Model.extend({
 
   ride: DS.belongsTo(),
 
-  insertedAt: DS.attr('date')
+  insertedAt: DS.attr('date'),
 });

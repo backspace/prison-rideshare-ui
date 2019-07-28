@@ -29,6 +29,9 @@
     {{else}}
       <span class='driver'>{{ride-person ride=ride property='driver' onChange=(action 'setDriver')}}</span>
       <span class='car-owner'>{{ride-person ride=ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
+      {{#if ride.overridable}}
+        {{paper-icon 'directions_bus' title='driver can override car expenses (van-driving, probably)'}}
+      {{/if}}
       {{#if (or (not ride.children) rideToCombine)}}
         {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
           {{paper-icon 'merge type'}}
@@ -37,18 +40,54 @@
     {{/if}}
   {{/row.cell}}
   {{#row.cell}}
-    <span class='cancellation'>{{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
-      {{#if ride.enabled}}
-        {{paper-icon 'highlight off'}}
-      {{else}}
-        {{paper-icon cancellationIcon}}
-      {{/if}}
-    {{/paper-button}}</span>
+    <span class='cancellation'>
+      {{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
+        {{#if ride.enabled}}
+          {{paper-icon 'highlight off'}}
+        {{else}}
+          {{paper-icon cancellationIcon}}
+        {{/if}}
+      {{/paper-button}}
+    </span>
     {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action editRide ride)}}
       {{paper-icon 'mode edit'}}
     {{/paper-button}}
   {{/row.cell}}
 {{/body.row}}
+
+{{#each commitments as |commitment|}}
+  {{#body.row class='overlap highlighted' as |row|}}
+    {{row.cell}}
+    {{#row.cell colspan=3}}
+      {{paper-icon 'date range'}}
+      <span class='text'>{{commitment.person.name}} committed to slot {{commitment.timespan}}</span>
+    {{/row.cell}}
+    {{#row.cell colspan=3}}
+      {{#paper-button class='assign' onClick=(action 'assignFromCommitment' commitment)}}
+        Assign
+      {{/paper-button}}
+      {{#paper-button class='ignore' onClick=(action 'ignoreCommitment' commitment)}}
+        Ignore
+      {{/paper-button}}
+    {{/row.cell}}
+
+  {{/body.row}}
+{{/each}}
+
+{{#if ride.requiresConfirmation}}
+  {{#body.row class='confirmation-notification highlighted' as |row|}}
+    {{row.cell}}
+    {{#row.cell colspan=3}}
+      {{#if mediumIcon}}{{paper-icon mediumIcon title=mediumIconTitle}} {{/if}}<span>Contact visitor to confirm receipt of ride request</span>
+    {{/row.cell}}
+    {{#row.cell colspan=3}}
+      {{#paper-button class='mark-confirmed' onClick=(action 'markConfirmed')}}
+        Mark as contacted
+      {{/paper-button}}
+    {{/row.cell}}
+  {{/body.row}}
+{{/if}}
+
 {{#if ride.requestNotes}}
   {{#body.row class='{{classAttribute}} notes' as |row|}}
     {{row.cell}}
@@ -60,7 +99,11 @@
     {{row.cell}}
     {{#row.cell colspan=6}}
       {{paper-icon 'map'}}<span class='distance'>{{ride.distance}}</span>
-      {{#if ride.rate}}{{paper-icon 'local gas station'}}<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>{{/if}}
+      {{#if ride.carExpenses}}
+        {{paper-icon 'local gas station'}}
+        <span class='car-expenses'>{{ride.carExpensesDollars}}</span>
+        {{#if (and ride.rate (not ride.overridable))}}(<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>){{/if}}
+      {{/if}}
       {{#if ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{ride.foodExpensesDollars}}</span>{{/if}}
       {{#if ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{ride.reportNotes}}</span>{{/if}}
       {{#if clearing}}

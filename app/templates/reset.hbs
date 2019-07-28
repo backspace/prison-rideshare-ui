@@ -1,0 +1,26 @@
+{{#paper-dialog}}
+  {{#paper-toolbar}}
+    {{#paper-toolbar-tools}}
+      <h2 class='md-title'>Reset password</h2>
+    {{/paper-toolbar-tools}}
+  {{/paper-toolbar}}
+  {{#paper-form onSubmit=(action 'submit') as |form|}}
+    {{#paper-dialog-content}}
+      <div class='layout layout-row'>
+        {{form.input class='password' type='password' label='Password' autofocus=true value=password onChange=(action (mut password))}}
+      </div>
+      <div class='layout layout-row'>
+        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=passwordConfirmation onChange=(action (mut passwordConfirmation))}}
+      </div>
+      {{#if error}}
+        <div class='error'>FIXME</div>
+      {{/if}}
+    {{/paper-dialog-content}}
+
+    {{#paper-dialog-actions class='layout-row'}}
+      <div class='layout layout-row'>
+        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'submit')}}Update password{{/form.submit-button}}
+      </div>
+    {{/paper-dialog-actions}}
+  {{/paper-form}}
+{{/paper-dialog}}

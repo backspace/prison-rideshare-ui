@@ -1,41 +1,55 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { find, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('linked-contact', 'Integration | Component | linked contact', {
-  integration: true
-});
+module('Integration | Component | linked contact', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('it just renders the string when nothing is detected', function(assert) {
-  this.set('value', 'hello');
-  this.render(hbs`{{linked-contact contact=value}}`);
-  assert.equal(this.$('span')[0].innerHTML.trim(), 'hello');
-});
+  test('it just renders the string when nothing is detected', async function(assert) {
+    this.set('value', 'hello');
+    await render(hbs`{{linked-contact contact=value}}`);
+    assert.equal(find('span').innerHTML.trim(), 'hello');
+  });
 
-test('it extracts a phone number', function(assert) {
-  this.set('value', 'hello 212-986-8227 what');
-  this.render(hbs`{{linked-contact contact=value}}`);
-  assert.equal(this.$('span')[0].innerHTML.trim(), `hello <a href="tel:212-986-8227">212-986-8227</a> what`);
-});
+  test('it extracts a phone number', async function(assert) {
+    this.set('value', 'hello 212-986-8227 what');
+    await render(hbs`{{linked-contact contact=value}}`);
+    assert.equal(
+      find('span').innerHTML.trim(),
+      `hello <a href="tel:212-986-8227">212-986-8227</a> what`
+    );
+  });
 
-test('it extracts a phone number without dashes', function(assert) {
-  this.set('value', 'hello 2129868227 what');
-  this.render(hbs`{{linked-contact contact=value}}`);
-  assert.equal(this.$('span')[0].innerHTML.trim(), `hello <a href="tel:2129868227">2129868227</a> what`);
-});
+  test('it extracts a phone number without dashes', async function(assert) {
+    this.set('value', 'hello 2129868227 what');
+    await render(hbs`{{linked-contact contact=value}}`);
+    assert.equal(
+      find('span').innerHTML.trim(),
+      `hello <a href="tel:2129868227">2129868227</a> what`
+    );
+  });
 
-test('it extracts a phone number with spaces', function(assert) {
-  this.set('value', 'hello 212 986 8227 what');
-  this.render(hbs`{{linked-contact contact=value}}`);
-  assert.equal(this.$('span')[0].innerHTML.trim(), `hello <a href="tel:212 986 8227">212 986 8227</a> what`);
-});
+  test('it extracts a phone number with spaces', async function(assert) {
+    this.set('value', 'hello 212 986 8227 what');
+    await render(hbs`{{linked-contact contact=value}}`);
+    assert.equal(
+      find('span').innerHTML.trim(),
+      `hello <a href="tel:212 986 8227">212 986 8227</a> what`
+    );
+  });
 
-test('it extracts a phone number with brackets', function(assert) {
-  this.set('value', 'hello (212) 986 8227 what');
-  this.render(hbs`{{linked-contact contact=value}}`);
-  assert.equal(this.$('span')[0].innerHTML.trim(), `hello <a href="tel:(212) 986 8227">(212) 986 8227</a> what`);
-});
+  test('it extracts a phone number with brackets', async function(assert) {
+    this.set('value', 'hello (212) 986 8227 what');
+    await render(hbs`{{linked-contact contact=value}}`);
+    assert.equal(
+      find('span').innerHTML.trim(),
+      `hello <a href="tel:(212) 986 8227">(212) 986 8227</a> what`
+    );
+  });
 
-test('it ignores an undefined contact value', function(assert) {
-  this.render(hbs`{{linked-contact}}`);
-  assert.equal(this.$('span')[0].innerHTML.trim(), '');
+  test('it ignores an undefined contact value', async function(assert) {
+    await render(hbs`{{linked-contact}}`);
+    assert.equal(find('span').innerHTML.trim(), '');
+  });
 });

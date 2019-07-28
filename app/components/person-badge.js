@@ -8,6 +8,6 @@ export default Component.extend({
   actions: {
     toggleContact() {
       this.toggleProperty('showContact');
-    }
-  }
+    },
+  },
 });

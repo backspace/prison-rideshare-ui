@@ -7,7 +7,7 @@ import {
   hasClass,
   text,
   triggerable,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -18,15 +18,19 @@ export default create({
     inactiveSwitch: {
       scope: '.paper-switch.inactive',
       enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
-    }
+      click: triggerable('keypress', '.md-container', {
+        eventProperties: { keyCode: 13 },
+      }),
+    },
   },
 
   people: collection('tbody tr.person', {
     activeSwitch: {
       scope: '.paper-switch',
       enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', { eventProperties: { keyCode: 13 } })
+      click: triggerable('keypress', '.md-container', {
+        eventProperties: { keyCode: 13 },
+      }),
     },
 
     name: text('.name'),
@@ -50,61 +54,75 @@ export default create({
     },
 
     lastRide: {
-      scope: '.last-ride'
+      scope: '.last-ride',
     },
 
     notes: {
-      scope: '.notes'
+      scope: '.notes',
     },
 
-    edit: clickable('button.edit')
+    copyButton: {
+      scope: '.copy-btn',
+      clipboardText: attribute('data-clipboard-text'),
+    },
+
+    edit: clickable('button.edit'),
   }),
 
   form: {
+    testContainer: 'md-dialog',
+
     nameField: {
       scope: '.name input',
-      fill: fillable()
+      fill: fillable(),
     },
 
     nameError: {
-      scope: '.name .paper-input-error'
+      scope: '.name .paper-input-error',
     },
 
     // TODO rule of three?
     email: {
       scope: '.email',
       field: {
-        scope: 'input'
+        scope: 'input',
       },
       desiredMedium: {
-        scope: 'md-radio-button'
+        scope: 'md-radio-button',
       },
       error: {
-        scope: '.paper-input-error'
-      }
+        scope: '.paper-input-error',
+      },
     },
 
     mobile: {
       scope: '.mobile',
       field: {
-        scope: 'input'
+        scope: 'input',
       },
       desiredMedium: {
-        scope: 'md-radio-button'
+        scope: 'md-radio-button',
       },
       error: {
-        scope: '.paper-input-error'
-      }
+        scope: '.paper-input-error',
+      },
+    },
+
+    address: {
+      scope: '.address',
+      field: {
+        scope: 'textarea',
+      },
     },
 
     notes: {
       scope: '.notes',
       field: {
-        scope: 'textarea'
-      }
+        scope: 'textarea',
+      },
     },
 
     submit: clickable('button.submit'),
-    cancel: clickable('button.cancel')
-  }
+    cancel: clickable('button.cancel'),
+  },
 });

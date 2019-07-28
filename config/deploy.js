@@ -2,31 +2,31 @@ var VALID_DEPLOY_TARGETS = [
   'production',
   'sandbox',
   'pull-request-production',
-  'pull-request-sandbox'
+  'pull-request-sandbox',
 ];
 
 module.exports = function(deployTarget) {
   var ENV = {
     build: {
-      environment: 'production'
+      environment: 'production',
     },
     redis: {
       allowOverwrite: true,
       host: 'localhost',
-      password: process.env.REDIS_PASSWORD
+      password: process.env.REDIS_PASSWORD,
     },
     s3: {
       bucket: `prison-rideshare-${deployTarget}`,
       region: 'us-east-1',
       accessKeyId: process.env.AWS_KEY,
-      secretAccessKey: process.env.AWS_SECRET
+      secretAccessKey: process.env.AWS_SECRET,
     },
     'ssh-tunnel': {
       username: 'ubuntu',
       host: 'corepoint.chromatin.ca',
       privateKeyPath: '.travis/deploy-lightning.key',
-      dstPort: 6699
-    }
+      dstPort: 6699,
+    },
   };
   if (VALID_DEPLOY_TARGETS.indexOf(deployTarget) === -1) {
     throw new Error('Invalid deployTarget ' + deployTarget);
@@ -39,4 +39,4 @@ module.exports = function(deployTarget) {
   }
 
   return ENV;
-}
+};

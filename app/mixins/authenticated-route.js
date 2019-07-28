@@ -8,5 +8,5 @@ export default Mixin.create({
     if (!this.get('session.isAuthenticated')) {
       this.transitionTo('login');
     }
-  }
+  },
 });

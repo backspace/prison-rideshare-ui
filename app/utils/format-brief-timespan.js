@@ -13,7 +13,7 @@ moment.updateLocale('en', {
     } else {
       return isLower ? 'a' : 'A';
     }
-  }
+  },
 });
 
 export default function formatTimespan(start, end) {

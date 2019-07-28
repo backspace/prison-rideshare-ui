@@ -1,10 +1,15 @@
 {{#paper-toolbar as |toolbar|}}
   {{#toolbar.tools}}
     {{#paper-button iconButton=true onClick=(action 'toggleSidebar') class='hide-gt-sm'}}
-      {{paper-icon "menu"}}
+      {{paper-icon 'menu'}}
     {{/paper-button}}
+    {{#if session.currentUser.admin}}
+      {{#if sidebar.notificationCount}}
+        <span class='count hide-gt-sm' title='Check on {{pluralize sidebar.notificationCount 'notification'}}'>{{sidebar.notificationCount}}</span>
+      {{/if}}
+    {{/if}}
     <h2>{{title}}</h2>
-    {{#paper-chips readOnly=true content=chips as |item|}}<span title='{{item.title}}'>{{item.label}}</span>{{/paper-chips}}
+    {{#paper-chips readOnly=true content=chips as |item|}}<span title={{item.title}}>{{item.label}}</span>{{/paper-chips}}
     <span class='flex'></span>
     {{yield}}
   {{/toolbar.tools}}

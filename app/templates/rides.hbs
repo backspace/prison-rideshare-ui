@@ -5,25 +5,25 @@
 {{/toolbar-header}}
 
 <div class='switch-container layout-row layout-align-start-center'>
-    {{#paper-input
-      class='search'
-      type='search'
-      icon='search'
-      placeholder='Institution, driver, visitor, address'
-      value=search
-      onChange=(action (mut search)) as |input|}}
-      {{#if input.hasValue}}
-        {{#paper-button icon=true aria-label='Clear search' title='Clear search' onClick=(action 'clearSearch')}}
-          {{paper-icon 'clear' size=14}}
-        {{/paper-button}}
-      {{/if}}
-    {{/paper-input}}
-    {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
-      Reported-on
-    {{/paper-switch}}
-    {{#paper-switch class='cancelled' value=showCancelled onChange=(action (mut showCancelled))}}
-      Cancelled
-    {{/paper-switch}}
+  {{#paper-input
+    class='search'
+    type='search'
+    icon='search'
+    placeholder='Institution, driver, visitor, address'
+    value=search
+    onChange=(action (mut search)) as |input|}}
+    {{#if input.hasValue}}
+      {{#paper-button icon=true aria-label='Clear search' title='Clear search' onClick=(action 'clearSearch')}}
+        {{paper-icon 'clear' size=14}}
+      {{/paper-button}}
+    {{/if}}
+  {{/paper-input}}
+  {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
+    Reported-on
+  {{/paper-switch}}
+  {{#paper-switch class='cancelled' value=showCancelled onChange=(action (mut showCancelled))}}
+    Cancelled
+  {{/paper-switch}}
 </div>
 
 {{#paper-content class='layout-column flex no-overflow-scroll'}}
@@ -48,6 +48,7 @@
       {{else}}
         {{#body.row class='no-matches' as |row|}}
           {{#row.cell colspan=6}}
+            {{! template-lint-disable no-html-comments }}
             No rides matched your criteria. 😭 <!-- FIXME WTF! Without this, the institutions select in the dialogue has no options? {{filteredRides.length}} -->
           {{/row.cell}}
         {{/body.row}}
@@ -57,14 +58,14 @@
 
 
   {{#if editingRide}}
-  {{ride-form ride=editingRide
-              cancel=(action 'cancel' editingRide)
-              save=(action 'submit' editingRide)}}
+    {{ride-form ride=editingRide
+                cancel=(action 'cancel' editingRide)
+                save=(action 'submit' editingRide)}}
   {{/if}}
 
   {{#if editingCancellation}}
-  {{cancellation-form ride=editingCancellation
-                      save=(action 'submitCancellation' editingCancellation)
-                      cancel=(action 'cancelCancellation' editingCancellation)}}
+    {{cancellation-form ride=editingCancellation
+                        save=(action 'submitCancellation' editingCancellation)
+                        cancel=(action 'cancelCancellation' editingCancellation)}}
   {{/if}}
 {{/paper-content}}

@@ -4,7 +4,7 @@ import {
   create,
   is,
   text,
-  visitable
+  visitable,
 } from 'ember-cli-page-object';
 
 export default create({
@@ -12,21 +12,23 @@ export default create({
 
   rides: collection('md-radio-button', {
     label: text('.md-label > span'),
-    choose: clickable()
+    choose: clickable(),
   }),
 
   noRides: { scope: '.no-rides' },
+  noSession: { scope: '.no-session' },
 
   distance: { scope: '.distance input' },
+  carExpenses: { scope: '.car-expenses input' },
   foodExpenses: { scope: '.food-expenses input' },
   notes: { scope: '.report-notes textarea' },
   donation: {
-    scope: 'md-checkbox'
+    scope: 'md-checkbox',
   },
 
   submitButton: {
     scope: 'button.submit',
     disabled: is('[disabled]'),
-    click: clickable()
-  }
+    click: clickable(),
+  },
 });
