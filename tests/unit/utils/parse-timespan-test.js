@@ -72,4 +72,23 @@ module('Unit | Utility | parse timespan', function(hooks) {
     );
     assert.notOk(parsed.end);
   });
+
+  test('it assumes future dates unless fully specified', function(assert) {
+    window.chronokinesis.travel(new Date(1570925744254));
+    // Saturday 2019-10-12 19:15
+
+    assertParsing(
+      assert,
+      'thursday from 7 to 9',
+      '2019-10-17 19:00',
+      '2019-10-17 21:00'
+    );
+
+    assertParsing(
+      assert,
+      'oct 10 2019 from 1 to 4',
+      '2019-10-10 13:00',
+      '2019-10-10 16:00'
+    );
+  });
 });
