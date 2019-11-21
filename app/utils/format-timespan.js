@@ -40,6 +40,13 @@ export default function formatTimespan(start, end, date = true) {
     endTime += 'a';
   }
 
+  let startDateString = moment(start).format('YYYY-MM-DD');
+  let endDateString = moment(end).format('YYYY-MM-DD');
+
+  if (startDateString !== endDateString) {
+    endTime = `ddd ${endTime}`;
+  }
+
   return `${date ? `${moment(start).format(startDate)} ` : ''}${moment(
     start
   ).format(startTime)} — ${moment(end).format(endTime)}`;
