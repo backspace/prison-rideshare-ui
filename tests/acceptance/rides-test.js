@@ -593,6 +593,12 @@ module('Acceptance | rides', function(hooks) {
             },
             detail: "Name can't be blank",
           },
+          {
+            source: {
+              pointer: '/data/attributes/institution',
+            },
+            detail: "Institution can't be blank",
+          },
         ],
       },
       422
@@ -604,6 +610,7 @@ module('Acceptance | rides', function(hooks) {
     await page.form.submit();
 
     assert.equal(page.form.nameError.text, "Name can't be blank");
+    assert.equal(page.form.institutionError.text, "Institution can't be blank");
   });
 
   test('rides can be combined and uncombined, cancelling a parent ride shows a warning', async function(assert) {

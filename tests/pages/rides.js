@@ -238,6 +238,10 @@ export default create({
       scope: 'md-autocomplete .paper-input-error',
     },
 
+    institutionError: {
+      scope: '.institution .paper-input-error',
+    },
+
     address: {
       scope: '.address input',
     },

@@ -38,6 +38,8 @@
             searchField='name'
             options=institutions
             onChange=(action (mut ride.institution))
+            errors=ride.validationErrors.institution
+            isTouched=(readonly ride.validationErrors.institution.length)
             as |institution|}}
             {{institution.name}}
           {{/paper-select}}
