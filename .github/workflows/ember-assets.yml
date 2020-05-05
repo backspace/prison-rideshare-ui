@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v2-beta
       with:
         fetch-depth: 0
-    - uses: simplabs/ember-asset-size-action@v1
+    - uses: backspace/ember-asset-size-action-nonfork@primary
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        working-directory: "."
