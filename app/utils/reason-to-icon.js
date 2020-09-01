@@ -3,6 +3,7 @@ const reasonToIcon = {
   visitor: 'perm identity',
   'no car': 'directions car',
   'driver not found': 'assignment ind',
+  'at capacity': 'assignment ind',
   weather: 'cloud',
   transfer: 'shuffle',
   error: 'error',
