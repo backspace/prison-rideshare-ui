@@ -15,6 +15,7 @@ module('Acceptance | users', function(hooks) {
     this.admin = this.server.create('user', {
       email: 'abc@def.com',
       admin: true,
+      lastSeenAt: new Date(2018, 6, 6, 14),
     });
 
     this.nonAdmin = this.server.create('user', {
@@ -44,6 +45,7 @@ module('Acceptance | users', function(hooks) {
     assert.equal(page.users.length, 2, 'expected two users');
 
     assert.equal(page.users[0].email, 'abc@def.com');
+    assert.equal(page.users[0].lastSeenAt, 'Jul 6 2018');
     assert.ok(page.users[0].adminCheckbox.checked);
     assert.ok(page.users[0].adminCheckbox.isDisabled);
 

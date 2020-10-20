@@ -11,6 +11,8 @@ export default DS.Model.extend({
 
   admin: DS.attr('boolean'),
 
+  lastSeenAt: DS.attr('date'),
+
   isPresent: computed('presenceCount', function() {
     return this.get('presenceCount') > 0;
   }),
