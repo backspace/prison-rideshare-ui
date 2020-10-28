@@ -27,6 +27,7 @@ export default DS.Model.extend({
   requestConfirmed: DS.attr(),
 
   name: DS.attr(),
+  visitor: DS.belongsTo('person'),
 
   institution: DS.belongsTo(),
   rate: DS.attr('number'),
@@ -115,8 +116,8 @@ export default DS.Model.extend({
     'outstandingCarExpenses'
   ),
 
-  namePlusPassengers: computed('name', 'passengers', function() {
-    const name = this.get('name');
+  namePlusPassengers: computed('visitor.name', 'passengers', function() {
+    const name = this.get('visitor.name');
     const passengers = this.get('passengers');
 
     if (passengers > 1) {
@@ -144,7 +145,6 @@ export default DS.Model.extend({
     '{start,enabled,requestConfirmed}',
     function() {
       const now = new Date();
-
       return this.start > now && this.enabled && !this.requestConfirmed;
     }
   ),
@@ -174,7 +174,7 @@ export default DS.Model.extend({
     'institution.name',
     'driver.name',
     'carOwner.name',
-    'name',
+    'visitor.name',
     'address',
     function() {
       return `${this.getWithDefault(
@@ -183,7 +183,7 @@ export default DS.Model.extend({
       )} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault(
         'carOwner.name',
         ''
-      )} ${this.getWithDefault('name', '')} ${this.getWithDefault(
+      )} ${this.getWithDefault('visitor.name', '')} ${this.getWithDefault(
         'address'
       )}`.toLowerCase();
     }

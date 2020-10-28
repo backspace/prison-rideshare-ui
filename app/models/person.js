@@ -18,6 +18,8 @@ export default DS.Model.extend({
 
   reimbursements: DS.hasMany(),
 
+  visitings: DS.hasMany('ride', { inverse: 'visitor' }),
+
   drivings: DS.hasMany('ride', { inverse: 'driver' }),
   carOwnings: DS.hasMany('ride', { inverse: 'carOwner' }),
 

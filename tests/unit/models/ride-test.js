@@ -7,6 +7,7 @@ module('Unit | Model | ride', function(hooks) {
 
   test('it determines whether it matches a search query', function(assert) {
     let rockwood;
+    let visitor;
     let chelsea, edward;
 
     let rockwoodRide;
@@ -15,6 +16,10 @@ module('Unit | Model | ride', function(hooks) {
       rockwood = this.owner
         .lookup('service:store')
         .createRecord('institution', { name: 'Rockwood' });
+
+      visitor = this.owner
+        .lookup('service:store')
+        .createRecord('person', { name: 'jORTLE' });
 
       chelsea = this.owner
         .lookup('service:store')
@@ -29,7 +34,7 @@ module('Unit | Model | ride', function(hooks) {
           driver: chelsea,
           carOwner: edward,
 
-          name: 'jORTLE',
+          visitor,
           address: '91 Albert',
         })
       );

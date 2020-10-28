@@ -82,30 +82,36 @@
       <h3 class='md-title'>Visitor details</h3>
 
       <div class='layout-row layout-xs-column'>
-        <div class='flex'>
-          {{#form.autocomplete
-            label='Name'
-            selected=ride
-            onSelectionChange=(action 'autocompleteSelectionChanged')
-            onSearchTextChange=(action (mut ride.name))
-            search=(action 'searchRides')
-            searchField='name'
-            labelPath='name'
-            searchText=(readonly ride.name)
+        <div class='flex visitor-container'>
+          {{#if ride.visitor}}
+            <span class='ride-person'>
+              {{person-badge person=ride.visitor clear=(action 'clearVisitor')}}
+            </span>
+          {{else}}
+            {{#form.autocomplete
+              label='Visitor'
+              selected=ride.visitor
+              onSelectionChange=(action 'autocompleteSelectionChanged')
+              onSearchTextChange=(action (mut searchText))
+              search=(action 'searchVisitors')
+              searchField='visitor.name'
+              labelPath='visitor.name'
+              searchText=(readonly ride.visitor.name)
 
-            errors=ride.validationErrors.name isTouched=(readonly ride.validationErrors.name.length)
-            as |ride autocomplete|}}
-            <div class='visitor-autocomplete-option'>
-              <span class='name'>
-                {{paper-autocomplete-highlight
-                  label=ride.name
-                  searchText=autocomplete.searchText
-                  flags='i'}}
-              </span>
-              <address>{{ride.address}}</address>
-              <span class='contact'>{{ride.contact}}</span>
-            </div>
-          {{/form.autocomplete}}
+              errors=ride.validationErrors.visitor isTouched=(readonly ride.validationErrors.visitor.length)
+              as |ride autocomplete|}}
+              <div class='visitor-autocomplete-option'>
+                <span class='name'>
+                  {{paper-autocomplete-highlight
+                    label=ride.visitor.name
+                    searchText=autocomplete.searchText
+                    flags='i'}}
+                </span>
+                <address>{{ride.address}}</address>
+                <span class='contact'>{{ride.contact}}</span>
+              </div>
+            {{/form.autocomplete}}
+          {{/if}}
         </div>
       </div>
       <div class='layout-row layout-xs-column'>
