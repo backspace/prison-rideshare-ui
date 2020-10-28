@@ -113,7 +113,6 @@ export default Controller.extend({
         .then(() => this.set('editingRide', undefined))
         .catch(() => {
           this.get('toasts').show('There was an error saving this ride');
-          proxy.content.rollbackAttributes();
           proxy.setProperties(buffer);
         })
         .then(() => this.get('overlapsService').fetch());
@@ -124,6 +123,8 @@ export default Controller.extend({
 
       if (model.get('isNew')) {
         model.destroyRecord();
+      } else {
+        model.rollbackAttributes();
       }
 
       this.get('editingRide').discardBufferedChanges();

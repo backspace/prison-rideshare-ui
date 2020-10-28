@@ -14,6 +14,7 @@ export default create({
 
   users: collection('tbody tr.user', {
     email: text('.email'),
+    lastSeenAt: text('.last-seen'),
     isPresent: isVisible('.present md-icon'),
     presenceCount: text('.present .count'),
 

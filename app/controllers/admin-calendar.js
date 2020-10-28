@@ -169,7 +169,10 @@ export default CalendarController.extend({
           );
         })
         .then(links => {
-          this.set('links', links);
+          const linkObjects = Object.keys(links).map(email => {
+            return { email, link: links[email] };
+          });
+          this.set('links', linkObjects);
           this.set('linksError', undefined);
         })
         .catch(e => {

@@ -34,7 +34,7 @@ module('Acceptance | debts', function(hooks) {
       carExpenses: 0,
 
       start: new Date(2016, 11, 26, 10, 15),
-      end: new Date(2016, 11, 25, 12, 0),
+      end: new Date(2016, 11, 26, 12, 0),
     });
 
     const willRide = this.server.create('ride', {

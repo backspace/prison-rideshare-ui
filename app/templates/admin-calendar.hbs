@@ -51,9 +51,9 @@
     {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
     {{#if links}}
       <ul>
-        {{#each-in links as |email link|}}
-          <li>{{email}}: <a href={{link}}>link</a></li>
-        {{/each-in}}
+        {{#each links as |emailAndLink|}}
+          <li>{{emailAndLink.email}}: <a href={{emailAndLink.link}}>link</a></li>
+        {{/each}}
       </ul>
     {{/if}}
     {{#if linksError}}

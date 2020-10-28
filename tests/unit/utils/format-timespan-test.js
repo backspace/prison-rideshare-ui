@@ -23,5 +23,12 @@ module('Unit | Utility | format timespan', function() {
     );
 
     assert.equal(sameDayDifferentMeridiem, 'Sun Jun 27 2010 10:22a — 7p');
+
+    const differentDay = formatTimespan(
+      new Date(2010, 5, 27, 10, 22, 0),
+      new Date(2010, 5, 29, 19, 0, 0)
+    );
+
+    assert.equal(differentDay, 'Sun Jun 27 2010 10:22a — Tue 7p');
   });
 });

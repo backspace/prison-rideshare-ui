@@ -3,6 +3,7 @@
 {{#paper-data-table as |table|}}
   {{#table.head as |head|}}
     {{#head.column}}Email{{/head.column}}
+    {{#head.column}}Last seen{{/head.column}}
     {{#head.column}}Present{{/head.column}}
     {{#head.column}}Admin?{{/head.column}}
   {{/table.head}}
@@ -10,6 +11,7 @@
     {{#each model as |user|}}
       {{#body.row class='user' as |row|}}
         {{#row.cell class='email'}}{{user.email}}{{/row.cell}}
+        {{#row.cell class='last-seen'}}{{moment-format user.lastSeenAt 'MMM D YYYY'}}{{/row.cell}}
         {{#row.cell class='present'}}
           {{#if user.isPresent}}
             {{paper-icon 'done'}}

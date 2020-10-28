@@ -44,7 +44,7 @@ chronoInstance.refiners.push(assumePM);
 
 export default function parseTimespan(value) {
   const [parsed] = chronoInstance.parse(value, new Date(), {
-    forwardDatesOnly: true,
+    forwardDate: true,
   });
   return parsed;
 }
