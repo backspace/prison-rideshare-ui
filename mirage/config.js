@@ -20,6 +20,16 @@ export default function() {
       return {
         data: matchingRides.map(ride => this.serialize(ride)['data']),
       };
+    } else if (queryParams['filter[visitor]']) {
+      const visitorFilter = queryParams['filter[visitor]'];
+      const matchingRides = rides
+        .all()
+        .models.filter(ride =>
+          (ride.visitor.name || '').toLowerCase().includes(visitorFilter)
+        );
+      return {
+        data: matchingRides.map(ride => this.serialize(ride)['data']),
+      };
     } else if (requestHeaders.Authorization) {
       return rides.all();
     } else {

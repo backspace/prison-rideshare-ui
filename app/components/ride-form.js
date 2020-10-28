@@ -1,6 +1,7 @@
 import { computed } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import { alias, oneWay } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
+import { isPresent } from '@ember/utils';
 import Component from '@ember/component';
 
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
@@ -12,6 +13,8 @@ export default Component.extend({
   institutionsService: service('institutions'),
   institutions: alias('institutionsService.all'),
   store: service('store'),
+
+  visitorSearchText: oneWay('ride.visitor.name'),
 
   editingWarning: computed('ride.{cancellationReason,complete}', function() {
     const reason = this.get('ride.cancellationReason');
@@ -68,9 +71,28 @@ export default Component.extend({
         });
     },
 
+    searchVisitors() {
+      if (isPresent(this.searchText)) {
+        return this.get('store')
+          .query('ride', { 'filter[visitor]': this.searchText })
+          .then(rides => {
+            return rides;
+          })
+          .catch(err => {
+            // FIXME what to do
+            // eslint-disable-next-line no-console
+            console.log('error???', err);
+          });
+      }
+    },
+
+    clearVisitor() {
+      this.set('ride.visitor', undefined);
+    },
+
     autocompleteSelectionChanged(ride) {
       if (ride) {
-        this.set('ride.name', ride.get('name'));
+        this.set('ride.visitor', ride.get('visitor'));
         this.set('ride.address', ride.get('address'));
         this.set('ride.contact', ride.get('contact'));
       }

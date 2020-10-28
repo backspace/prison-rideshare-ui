@@ -219,10 +219,10 @@ export default create({
       click: clickable(),
     },
 
-    name: {
-      scope: 'md-autocomplete',
+    visitor: {
+      scope: '.visitor-container',
 
-      fillIn: fillable('input'),
+      fillIn: fillable('md-autocomplete input'),
 
       suggestions: collection('.ember-power-select-option', {
         testContainer: '.ember-power-select-options',
@@ -232,6 +232,9 @@ export default create({
         address: text('address'),
         contact: text('.contact'),
       }),
+
+      value: text('.ride-person .name'),
+      clear: clickable('.ride-person .remove-container button'),
     },
 
     nameError: {
