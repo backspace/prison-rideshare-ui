@@ -92,7 +92,7 @@ export default Component.extend({
     },
     // FIXME this was in the theme but caused all legends to have a gradient?
     colorAxis: {
-      maxColor: '#60042E',
+      maxColor: '#bfc932',
       minColor: '#ffffff',
     },
     plotOptions: {

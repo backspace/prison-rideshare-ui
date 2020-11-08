@@ -2,13 +2,13 @@ import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import moment from 'moment';
 
-// Sunset theme adapted from here: https://github.com/highcharts/highcharts/blob/master/js/themes/sunset.js
+// Material Design colours
 const theme = {
-  colors: ['#FDD089', '#FF7F79', '#A0446E', '#251535'],
+  colors: ['#f4fc66', '#bfc932', '#8b9800', '#5d4037'],
 
   plotOptions: {
     map: {
-      nullColor: '#fefefc',
+      nullColor: '#5d4037',
     },
   },
 

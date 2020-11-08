@@ -1,6 +1,8 @@
 @import 'color-palette';
 
-$primary: 'indigo';
+$primary: 'teal';
+$accent: 'lime';
+$warn: 'pink';
 
 @import 'ember-paper';
 @import 'paper-data-table';
@@ -62,7 +64,7 @@ md-toolbar {
   .count {
     border-radius: 10px;
     background: white;
-    color: paper-color($color-indigo, '600');
+    color: paper-color($color-teal, '600');
     font-size: 50%;
     text-align: center;
     width: 12px;
@@ -75,7 +77,7 @@ md-toolbar {
 
 md-sidenav {
   width: 150px;
-  background-color: paper-color($color-indigo, '600');
+  background-color: paper-color($color-teal, '600');
 
   md-content.md-default-theme, md-list {
     background: transparent;
@@ -99,11 +101,11 @@ md-sidenav {
     white-space: nowrap;
 
     &:hover {
-      background-color: paper-color($color-indigo, '200');
+      background-color: paper-color($color-teal, '200');
     }
 
     &.active {
-      background-color: paper-color($color-indigo, '400');
+      background-color: paper-color($color-teal, '400');
     }
 
     .md-list-item-inner {
@@ -120,7 +122,7 @@ md-sidenav {
     .count {
       border-radius: 10px;
       background: white;
-      color: paper-color($color-indigo, '600');
+      color: paper-color($color-teal, '600');
       font-size: 50%;
       text-align: center;
       width: 10px;
@@ -160,7 +162,7 @@ md-sidenav {
   }
 
   &.overlaps {
-    background-color: paper-color($color-pink, '100');
+    background-color: paper-color($color-teal, '100');
   }
 
   md-input-container {
@@ -183,7 +185,7 @@ md-sidenav {
 }
 
 tr.highlighted {
-  background-color: paper-color($color-pink, '100');
+  background-color: paper-color($color-teal, '100');
 }
 
 .search {
