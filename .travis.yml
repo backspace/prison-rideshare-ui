@@ -15,6 +15,7 @@ env:
     - JOBS=1
     - COVERAGE=true
     - MIRAGE_LOGGING=false
+    - PERCY_ENABLE=0
 
 addons:
   firefox: latest
@@ -24,10 +25,6 @@ before_install:
 
 install:
   - npm install
-
-before_script:
-  - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then export PERCY_ENABLE=0; else echo "Enabling Percy" && export PERCY_ENABLE=1; fi
-  - echo $PERCY_ENABLE
 
 script:
   - npm run lint:hbs
