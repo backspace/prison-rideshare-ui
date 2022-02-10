@@ -85,7 +85,7 @@
     "faker": "^4.1.0",
     "highcharts": "^6.0.4",
     "loader.js": "^4.7.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "paper-data-table": "^0.1.5",
     "prettier": "^1.17.1",
     "qunit-dom": "^0.8.4"
