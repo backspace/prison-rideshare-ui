@@ -133,6 +133,8 @@ export default create({
       isDisabled: getter(function() {
         return this.disabledAttribute === 'disabled';
       }),
+
+      isHidden: hasClass('hidden'),
     }),
   }),
 

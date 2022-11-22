@@ -1,4 +1,4 @@
-<div class='slot'>
+<div class='slot {{if hidden 'hidden'}}'>
   {{#if count}}
     <span class='hours'>{{timespan}}</span>
     <button class='count {{if (gt slot.commitments.length 0) 'committed-to'}}' onClick={{action setViewingSlot slot}}>{{capacity}}</button>

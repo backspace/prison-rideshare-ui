@@ -148,7 +148,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('full slots show as full and can’t be committed to', async function(assert) {
+  test('full slots are hidden', async function(assert) {
     this.server.post('/commitments', function() {
       assert.ok(false, 'expected no commitment to be created for a full slot');
     });
@@ -159,15 +159,8 @@ module('Acceptance | calendar', function(hooks) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     assert.ok(
-      page.days[9].slots[1].isDisabled,
-      'expected the full slot to be disabled'
-    );
-
-    await page.days[9].slots[1].click();
-
-    assert.notOk(
-      page.days[9].slots[1].isCommittedTo,
-      'expected the slot to not be committed-to'
+      page.days[9].slots[1].isHidden,
+      'expected the full slot to be hidden'
     );
   });
 

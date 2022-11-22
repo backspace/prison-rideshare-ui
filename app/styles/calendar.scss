@@ -21,6 +21,10 @@
 
   .slot {
     transform: scale(0.7);
+
+    &.hidden {
+      display: none;
+    }
   }
 
   .ember-power-calendar-weekdays, .ember-power-calendar-weekday {

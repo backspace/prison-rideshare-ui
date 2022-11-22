@@ -29,6 +29,10 @@ export default Component.extend({
     );
   }),
 
+  hidden: computed('slot.isNotFull', function() {
+    return !this.get('slot.isNotFull');
+  }),
+
   disabled: computed('slot.{isNotFull,start}', 'toggle.isRunning', function() {
     const isNotFull = this.get('slot.isNotFull');
     const start = this.get('slot.start');
