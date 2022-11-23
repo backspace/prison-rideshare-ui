@@ -38,6 +38,10 @@
 
 .admin-calendar {
   display: flex;
+
+  .ember-power-calendar .slot.hidden {
+    display: block;
+  }
 }
 
 .person-card header {

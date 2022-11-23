@@ -59,6 +59,18 @@ module('Acceptance | calendar', function(hooks) {
     });
     committedSlot.createCommitment({ person });
 
+    const fullyCommittedSlot = this.server.create('slot', {
+      start: new Date(2117, 11, 14, 17, 30),
+      end: new Date(2117, 11, 14, 20),
+      count: 1,
+    });
+
+    fullyCommittedSlot.createCommitment({
+      person: this.server.create('person', {
+        name: 'Fully Committed Slot Person',
+      }),
+    });
+
     this.server.create('slot', {
       start: new Date(2017, 11, 10, 11),
       end: new Date(2017, 11, 10, 17),
@@ -119,7 +131,7 @@ module('Acceptance | calendar', function(hooks) {
     );
     assert.equal(
       this.server.db.commitments.length,
-      2,
+      3,
       'expected the commitment to have been deleted on the server'
     );
     percySnapshot(assert);
@@ -140,7 +152,7 @@ module('Acceptance | calendar', function(hooks) {
       'expected the slot to be newly committed-to'
     );
 
-    const [, , , commitment] = this.server.db.commitments;
+    const [, , , , commitment] = this.server.db.commitments;
     assert.equal(
       commitment.slotId,
       this.toCommitSlot.id,
@@ -219,7 +231,7 @@ module('Acceptance | calendar', function(hooks) {
     );
     assert.equal(
       this.server.db.commitments.length,
-      3,
+      4,
       'expected the commitment to still be on the server'
     );
   });
@@ -251,7 +263,7 @@ module('Acceptance | calendar', function(hooks) {
     );
     assert.equal(
       this.server.db.commitments.length,
-      3,
+      4,
       'expected the commitments to be unchanged on the server'
     );
   });
@@ -530,6 +542,11 @@ module('Acceptance | calendar', function(hooks) {
       'expected the checkbox to not display'
     );
 
+    assert.ok(
+      page.days[13].slots[0].isVisible,
+      'expected a full slot to show in admin mode'
+    );
+
     assert.equal(
       page.people.length,
       0,
@@ -577,7 +594,7 @@ module('Acceptance | calendar', function(hooks) {
 
     await page.previousMonth.click();
 
-    assert.equal(page.month, 'December 2117: 2 commitments');
+    assert.equal(page.month, 'December 2117: 3 commitments');
     assert.ok(
       currentURL().endsWith('2117-12'),
       'expected the path to have returned to the original month'
@@ -594,11 +611,15 @@ module('Acceptance | calendar', function(hooks) {
 
     assert.equal(
       page.peopleSearch.options.length,
-      2,
-      'expected two people to show for possible commitments'
+      3,
+      'expected three people to show for possible commitments'
     );
     assert.equal(page.peopleSearch.options[0].name, 'Also non-committal');
-    assert.equal(page.peopleSearch.options[1].name, 'Non-committal');
+    assert.equal(
+      page.peopleSearch.options[1].name,
+      'Fully Committed Slot Person'
+    );
+    assert.equal(page.peopleSearch.options[2].name, 'Non-committal');
 
     await page.peopleSearch.fillIn('also');
 
@@ -620,7 +641,7 @@ module('Acceptance | calendar', function(hooks) {
       'expected the slot to be newly committed-to'
     );
 
-    const [, , , commitment] = this.server.db.commitments;
+    const [, , , , commitment] = this.server.db.commitments;
     assert.equal(
       commitment.slotId,
       this.toCommitSlot.id,
@@ -631,7 +652,7 @@ module('Acceptance | calendar', function(hooks) {
 
     assert.equal(
       page.peopleSearch.options.length,
-      1,
+      2,
       'expected the now-commited person to not show in the search'
     );
   });
@@ -664,7 +685,7 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(shared.toast.text, 'Fail!');
     assert.equal(
       this.server.db.commitments.length,
-      3,
+      4,
       'expected no change on the server'
     );
   });
@@ -683,8 +704,8 @@ module('Acceptance | calendar', function(hooks) {
     );
     assert.equal(
       this.server.db.commitments.length,
-      2,
-      'expected there to be two commitments left on the server'
+      3,
+      'expected there to be three commitments left on the server'
     );
   });
 
@@ -715,7 +736,7 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(shared.toast.text, 'Fail!');
     assert.equal(
       this.server.db.commitments.length,
-      3,
+      4,
       'expected no change on the server'
     );
   });
