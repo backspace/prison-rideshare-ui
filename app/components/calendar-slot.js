@@ -29,8 +29,8 @@ export default Component.extend({
     );
   }),
 
-  hidden: computed('slot.isNotFull', function() {
-    return !this.get('slot.isNotFull');
+  hidden: computed('slot.isNotFull', 'isCommittedTo', function() {
+    return !this.get('slot.isNotFull') && !this.get('isCommittedTo');
   }),
 
   disabled: computed('slot.{isNotFull,start}', 'toggle.isRunning', function() {

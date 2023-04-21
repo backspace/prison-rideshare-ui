@@ -39,7 +39,7 @@ module('Acceptance | calendar', function(hooks) {
     const committedSlot = this.server.create('slot', {
       start: new Date(2117, 11, 4, 17, 30),
       end: new Date(2117, 11, 4, 20),
-      count: 3,
+      count: 1,
     });
 
     this.toCommitSlot = this.server.create('slot', {
@@ -160,7 +160,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('full slots are hidden', async function(assert) {
+  test('full and committed-to slots show as such and full slots from others are hidden', async function(assert) {
     this.server.post('/commitments', function() {
       assert.ok(false, 'expected no commitment to be created for a full slot');
     });
@@ -530,8 +530,8 @@ module('Acceptance | calendar', function(hooks) {
 
     assert.equal(
       page.days[3].slots[0].count.text,
-      '2/3',
-      'expected two people to show for the slot out of a maximum of three'
+      '2/1',
+      'expected two people to show for the slot out of a maximum of one'
     );
     assert.ok(
       page.days[3].slots[0].count.isCommittedTo,
