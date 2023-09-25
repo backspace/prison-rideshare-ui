@@ -1,4 +1,4 @@
-import { currentURL } from '@ember/test-helpers';
+import { currentURL, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import Mirage from 'ember-cli-mirage';
@@ -608,6 +608,7 @@ module('Acceptance | calendar', function(hooks) {
 
     await page.days[9].slots[1].count.click();
     await page.peopleSearch.fillIn('commit');
+    await waitUntil(() => page.peopleSearch.options.length === 3);
 
     assert.equal(
       page.peopleSearch.options.length,
@@ -622,6 +623,7 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(page.peopleSearch.options[2].name, 'Non-committal');
 
     await page.peopleSearch.fillIn('also');
+    await waitUntil(() => page.peopleSearch.options.length === 1);
 
     assert.equal(
       page.peopleSearch.options.length,
@@ -680,6 +682,7 @@ module('Acceptance | calendar', function(hooks) {
 
     await page.days[9].slots[1].count.click();
     await page.peopleSearch.fillIn('also');
+    await waitUntil(() => page.peopleSearch.options.length);
     await page.peopleSearch.options[0].click();
 
     assert.equal(shared.toast.text, 'Fail!');
