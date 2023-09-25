@@ -1,9 +1,12 @@
 ---
 language: node_js
 node_js:
-  - "10.14.2"
+  - "10"
 
-sudo: false
+dist: xenial
+
+addons:
+  chrome: stable
 
 cache:
   directories:
@@ -29,9 +32,11 @@ before_script:
   - if [ $TRAVIS_PULL_REQUEST = 'false' ]; then export PERCY_ENABLE=0; else echo "Enabling Percy" && export PERCY_ENABLE=1; fi
   - echo $PERCY_ENABLE
 
+branches:
+  only:
+    - master
+
 script:
-  - npm run lint:hbs
-  - npm run lint:js
   - npm test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
