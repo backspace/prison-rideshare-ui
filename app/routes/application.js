@@ -2,9 +2,7 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import Ember from 'ember';
 
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-
-export default Route.extend(ApplicationRouteMixin, {
+export default Route.extend({
   session: service(),
   account: service(),
   userSocket: service(),
