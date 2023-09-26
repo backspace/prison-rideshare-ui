@@ -1,35 +1,45 @@
-import DS from 'ember-data';
-import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import config from 'prison-rideshare-ui/config/environment';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
 
-export default DS.JSONAPIAdapter.extend(DataAdapterMixin, {
-  host: config.DS.host,
-  namespace: config.DS.namespace,
+export default class ApplicationAdapter extends JSONAPIAdapter {
+  @service session;
 
-  authorize(xhr) {
+  host = config.DS.host;
+  namespace = config.DS.namespace;
+
+  @computed('session.data.authenticated.access_token')
+  get headers() {
     let { access_token } = this.get('session.data.authenticated');
 
     if (access_token) {
-      xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
+      return {
+        Authorization: `Bearer ${access_token}`,
+      };
+    } else {
+      return {};
     }
-  },
+  }
 
   urlForCreateRecord(modelName) {
     switch (modelName) {
       case 'user':
       case 'users':
-        return this._super.apply(this, arguments).replace('users', 'register');
+        return super.urlForCreateRecord
+          .apply(this, arguments)
+          .replace('users', 'register');
       default:
-        return this._super(...arguments);
+        return super.urlForCreateRecord(...arguments);
     }
-  },
+  }
 
   urlForQueryRecord(query) {
     if (query.me) {
       delete query.me;
-      return `${this._super(...arguments)}/me`;
+      return `${super.urlForQueryRecord(...arguments)}/me`;
     }
 
-    return this._super(...arguments);
-  },
-});
+    return super.urlForQueryRecord(...arguments);
+  }
+}
