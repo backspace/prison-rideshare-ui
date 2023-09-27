@@ -8,7 +8,6 @@ export default Route.extend({
   userSocket: service(),
   toasts: service(),
   overlaps: service(),
-  poll: service(),
 
   beforeModel() {
     return this._loadCurrentUser();
@@ -17,10 +16,11 @@ export default Route.extend({
   afterModel() {
     this._super(...arguments);
     if (!Ember.testing) {
-      this.get('poll').start({
-        idle_timeout: 10000,
-        interval: 10000,
-      });
+      // FIXME restore polling
+      // this.get('poll').start({
+      //   idle_timeout: 10000,
+      //   interval: 10000,
+      // });
     }
   },
 

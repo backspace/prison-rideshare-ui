@@ -8,8 +8,6 @@ import fetch from 'fetch';
 import config from '../config/environment';
 
 export default Route.extend({
-  poll: service(),
-
   model(
     { month },
     {
@@ -71,18 +69,20 @@ export default Route.extend({
     const url = this.store.adapterFor('application').buildURL('slot');
 
     if (!Ember.testing) {
-      this.get('poll').setup({
-        name: 'slotsPoll',
-        resource_name: 'slots',
-        url,
-      });
+      // FIXME restore polling
+      // this.get('poll').setup({
+      //   name: 'slotsPoll',
+      //   resource_name: 'slots',
+      //   url,
+      // });
     }
   },
 
   actions: {
     willTransition(transition) {
       this._super(transition);
-      this.get('poll').removePoll('slotsPoll');
+      // FIXME restore polling
+      // this.get('poll').removePoll('slotsPoll');
     },
   },
 });
