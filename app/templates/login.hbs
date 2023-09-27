@@ -1,29 +1,59 @@
-{{#paper-dialog}}
-  {{#paper-toolbar}}
-    {{#paper-toolbar-tools}}
-      <h2 class='md-title'>Log in</h2>
-    {{/paper-toolbar-tools}}
-  {{/paper-toolbar}}
-  {{#paper-form onSubmit=(action 'login') as |form|}}
-    {{#paper-dialog-content}}
+<PaperDialog>
+  <PaperToolbar>
+    <PaperToolbarTools>
+      <h2 class='md-title'>
+        Log in
+      </h2>
+    </PaperToolbarTools>
+  </PaperToolbar>
+  <PaperForm @onSubmit={{action 'login'}} as |form|>
+    <PaperDialogContent>
       <div class='layout layout-row'>
-        {{form.input class='email' type='email' label='Email' autofocus=true value=this.model.email onChange=(action (mut this.model.email))}}
+        <form.input
+          @class='email'
+          @type='email'
+          @label='Email'
+          @autofocus={{true}}
+          @value={{this.model.email}}
+          @onChange={{action (mut this.model.email)}}
+        />
       </div>
       <div class='layout layout-row'>
-        {{#form.input class='password' type='password' label='Password' value=this.model.password onChange=(action (mut this.model.password))}}
-          <div class='hint'>{{link-to 'Forgot?' 'forgot'}}</div>
-        {{/form.input}}
+        <form.input
+          @class='password'
+          @type='password'
+          @label='Password'
+          @value={{this.model.password}}
+          @onChange={{action (mut this.model.password)}}
+        >
+          <div class='hint'>
+            <LinkTo @route='forgot'>
+              Forgot?
+            </LinkTo>
+          </div>
+        </form.input>
       </div>
       {{#if this.error}}
-        <div class='error'>There was an error logging you in.</div>
+        <div class='error'>
+          There was an error logging you in.
+        </div>
       {{/if}}
-    {{/paper-dialog-content}}
+    </PaperDialogContent>
 
-    {{#paper-dialog-actions class='layout-row'}}
+    <PaperDialogActions @class='layout-row'>
       <div class='layout layout-row'>
-        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'login')}}Log in{{/form.submit-button}}
-        {{#paper-button href='/register' class='flex-order--1'}}Register{{/paper-button}}
+        <form.submit-button
+          @class='submit'
+          @primary={{true}}
+          @raised={{true}}
+          @onClick={{action 'login'}}
+        >
+          Log in
+        </form.submit-button>
+        <PaperButton @href='/register' @class='flex-order--1'>
+          Register
+        </PaperButton>
       </div>
-    {{/paper-dialog-actions}}
-  {{/paper-form}}
-{{/paper-dialog}}
+    </PaperDialogActions>
+  </PaperForm>
+</PaperDialog>

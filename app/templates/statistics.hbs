@@ -1,51 +1,87 @@
-{{#paper-content class='layout-column flex'}}
-  {{#paper-card class='statistics-card' as |card|}}
-    {{#card.content}}
+<PaperContent @class='layout-column flex'>
+  <PaperCard @class='statistics-card' as |card|>
+    <card.content>
       <div class='inputs'>
-        {{paper-input
-          class='start'
-          type='date'
-          label='Chart data begins'
-          value=this.start
-          onChange=(action (mut this.start))}}
+        <PaperInput
+          @class='start'
+          @type='date'
+          @label='Chart data begins'
+          @value={{this.start}}
+          @onChange={{action (mut this.start)}}
+        />
 
-        {{paper-input
-          class='end'
-          type='date'
-          label='Chart data ends'
-          value=this.end
-          onChange=(action (mut this.end))}}
+        <PaperInput
+          @class='end'
+          @type='date'
+          @label='Chart data ends'
+          @value={{this.end}}
+          @onChange={{action (mut this.end)}}
+        />
       </div>
 
       <div class='buttons'>
-        {{paper-button class='past-year' label='Past year' onClick=(action 'setPastYear')}}
-        {{paper-button class='past-two-weeks' label='Past two weeks' onClick=(action 'setPastTwoWeeks')}}
-        {{paper-button class='this-year' label='This year' onClick=(action 'setThisYear')}}
+        <PaperButton
+          @class='past-year'
+          @label='Past year'
+          @onClick={{action 'setPastYear'}}
+        />
+        <PaperButton
+          @class='past-two-weeks'
+          @label='Past two weeks'
+          @onClick={{action 'setPastTwoWeeks'}}
+        />
+        <PaperButton
+          @class='this-year'
+          @label='This year'
+          @onClick={{action 'setThisYear'}}
+        />
       </div>
 
       <div class='radios'>
         Count
-        {{#paper-radio-group
-          groupValue=(readonly this.grouping)
-          onChange=(action (mut this.grouping)) as |group|}}
+        <PaperRadioGroup
+          @groupValue={{readonly this.grouping}}
+          @onChange={{action (mut this.grouping)}} as |group|
+        >
           <div class='flex'>
-            {{#group.radio value='rides'}}rides{{/group.radio}}
+            <group.radio @value='rides'>
+              rides
+            </group.radio>
           </div>
           <div class='flex'>
-            {{#group.radio value='passengers'}}passengers{{/group.radio}}
+            <group.radio @value='passengers'>
+              passengers
+            </group.radio>
           </div>
-        {{/paper-radio-group}}
+        </PaperRadioGroup>
       </div>
-    {{/card.content}}
-  {{/paper-card}}
+    </card.content>
+  </PaperCard>
 
-  {{requests-and-reimbursements-chart rides=this.rides theme=this.theme grouping=this.grouping}}
+  <RequestsAndReimbursementsChart
+    @rides={{this.rides}}
+    @theme={{this.theme}}
+    @grouping={{this.grouping}}
+  />
 
-  {{request-time-chart rides=this.rides theme=this.theme grouping=this.grouping}}
+  <RequestTimeChart
+    @rides={{this.rides}}
+    @theme={{this.theme}}
+    @grouping={{this.grouping}}
+  />
 
-  {{cancellation-chart rides=this.rides theme=this.theme grouping=this.grouping}}
+  <CancellationChart
+    @rides={{this.rides}}
+    @theme={{this.theme}}
+    @grouping={{this.grouping}}
+  />
 
   <div>
-    {{#copy-button clipboardText=this.clipboardText title=this.copyButtonTitle}}{{paper-icon 'content copy'}} Copy for report{{/copy-button}}
+    <CopyButton
+      @clipboardText={{this.clipboardText}}
+      @title={{this.copyButtonTitle}}
+    >
+      {{paper-icon 'content copy'}} Copy for report
+    </CopyButton>
   </div>
-{{/paper-content}}
+</PaperContent>

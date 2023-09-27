@@ -1,61 +1,69 @@
-{{#paper-dialog onClose=this.cancel clickOutsideToClose=true}}
-
-  {{#paper-dialog-content}}
+<PaperDialog @onClose={{this.cancel}} @clickOutsideToClose={{true}}>
+  <PaperDialogContent>
     {{#if this.ride.children}}
-      {{#paper-card as |card|}}
-        {{#card.content}}
+      <PaperCard as |card|>
+        <card.content>
           Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.
-        {{/card.content}}
-      {{/paper-card}}
+        </card.content>
+      </PaperCard>
     {{/if}}
 
-    <h2 class='md-title'>Cancel a ride</h2>
+    <h2 class='md-title'>
+      Cancel a ride
+    </h2>
 
-    {{#paper-form onSubmit=this.save as |form|}}
+    <PaperForm @onSubmit={{this.save}} as |form|>
       <div class='layout layout-sm-column'>
         {{#each-in this.shortcutReasonToIcon as |reason icon|}}
-          {{#paper-button raised=true
-                          class='shortcut'
-                          onClick=(action 'cancelViaShortcut' reason)}}
+          <PaperButton
+            @raised={{true}}
+            @class='shortcut'
+            @onClick={{action 'cancelViaShortcut' reason}}
+          >
             {{paper-icon icon}}
             {{reason}}
-          {{/paper-button}}
+          </PaperButton>
         {{/each-in}}
       </div>
 
       <hr>
 
       <div class='layout layout-sm-column'>
-        {{#paper-checkbox
-          value=this.ride.cancelled
-          onChange=(action 'cancelledChanged')}}
+        <PaperCheckbox
+          @value={{this.ride.cancelled}}
+          @onChange={{action 'cancelledChanged'}}
+        >
           Cancelled?
-        {{/paper-checkbox}}
+        </PaperCheckbox>
       </div>
 
       <div class='layout layout-sm-column'>
-        {{#paper-select
-          class='reason'
-          placeholder='Reason'
-          selected=this.ride.cancellationReason
-          options=this.reasons
-          onChange=(action (mut this.ride.cancellationReason))
-          as |reason|}}
+        <PaperSelect
+          @class='reason'
+          @placeholder='Reason'
+          @selected={{this.ride.cancellationReason}}
+          @options={{this.reasons}}
+          @onChange={{action (mut this.ride.cancellationReason)}} as |reason|
+        >
           {{reason}}
-        {{/paper-select}}
+        </PaperSelect>
       </div>
 
-      {{form.input class='other'
-                   label='Other reason'
-                   value=this.ride.cancellationReason
-                   onChange=(action (mut this.ride.cancellationReason))}}
+      <form.input
+        @class='other'
+        @label='Other reason'
+        @value={{this.ride.cancellationReason}}
+        @onChange={{action (mut this.ride.cancellationReason)}}
+      />
+    </PaperForm>
+  </PaperDialogContent>
 
-    {{/paper-form}}
-  {{/paper-dialog-content}}
-
-  {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=this.cancel}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=this.save}}Save{{/paper-button}}
-  {{/paper-dialog-actions}}
-
-{{/paper-dialog}}
+  <PaperDialogActions @class='layout-row'>
+    <PaperButton @class='cancel' @onClick={{this.cancel}}>
+      Cancel
+    </PaperButton>
+    <PaperButton @class='submit' @primary={{true}} @onClick={{this.save}}>
+      Save
+    </PaperButton>
+  </PaperDialogActions>
+</PaperDialog>

@@ -1,26 +1,50 @@
-{{#paper-dialog}}
-  {{#paper-toolbar}}
-    {{#paper-toolbar-tools}}
-      <h2 class='md-title'>Reset password</h2>
-    {{/paper-toolbar-tools}}
-  {{/paper-toolbar}}
-  {{#paper-form onSubmit=(action 'submit') as |form|}}
-    {{#paper-dialog-content}}
+<PaperDialog>
+  <PaperToolbar>
+    <PaperToolbarTools>
+      <h2 class='md-title'>
+        Reset password
+      </h2>
+    </PaperToolbarTools>
+  </PaperToolbar>
+  <PaperForm @onSubmit={{action 'submit'}} as |form|>
+    <PaperDialogContent>
       <div class='layout layout-row'>
-        {{form.input class='password' type='password' label='Password' autofocus=true value=this.password onChange=(action (mut this.password))}}
+        <form.input
+          @class='password'
+          @type='password'
+          @label='Password'
+          @autofocus={{true}}
+          @value={{this.password}}
+          @onChange={{action (mut this.password)}}
+        />
       </div>
       <div class='layout layout-row'>
-        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=this.passwordConfirmation onChange=(action (mut this.passwordConfirmation))}}
+        <form.input
+          @class='password-confirmation'
+          @type='password'
+          @label='Password confirmation'
+          @value={{this.passwordConfirmation}}
+          @onChange={{action (mut this.passwordConfirmation)}}
+        />
       </div>
       {{#if this.error}}
-        <div class='error'>FIXME</div>
+        <div class='error'>
+          FIXME
+        </div>
       {{/if}}
-    {{/paper-dialog-content}}
+    </PaperDialogContent>
 
-    {{#paper-dialog-actions class='layout-row'}}
+    <PaperDialogActions @class='layout-row'>
       <div class='layout layout-row'>
-        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'submit')}}Update password{{/form.submit-button}}
+        <form.submit-button
+          @class='submit'
+          @primary={{true}}
+          @raised={{true}}
+          @onClick={{action 'submit'}}
+        >
+          Update password
+        </form.submit-button>
       </div>
-    {{/paper-dialog-actions}}
-  {{/paper-form}}
-{{/paper-dialog}}
+    </PaperDialogActions>
+  </PaperForm>
+</PaperDialog>

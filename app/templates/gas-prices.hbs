@@ -1,28 +1,46 @@
-{{toolbar-header title='Gas prices and reimbursement rates'}}
+<ToolbarHeader @title='Gas prices and reimbursement rates' />
 
-{{#paper-content}}
-  {{#paper-card as |card|}}
-    {{#card.content}}
-      <p>Ride reimbursement rates are calculated from the day’s average gas price, fetched from winnipeggasprices.com.</p>
-    {{/card.content}}
-  {{/paper-card}}
+<PaperContent>
+  <PaperCard as |card|>
+    <card.content>
+      <p>
+        Ride reimbursement rates are calculated from the day’s average gas price, fetched from winnipeggasprices.com.
+      </p>
+    </card.content>
+  </PaperCard>
 
-  {{#paper-data-table class='gas-prices' as |table|}}
-    {{#table.head as |head|}}
-      {{#head.column}}Date{{/head.column}}
-      {{#head.column}}Gas price{{/head.column}}
-      {{#head.column}}Far institution rate{{/head.column}}
-      {{#head.column}}Close institution rate{{/head.column}}
-    {{/table.head}}
-    {{#table.body as |body|}}
+  <PaperDataTable @class='gas-prices' as |table|>
+    <table.head as |head|>
+      <head.column>
+        Date
+      </head.column>
+      <head.column>
+        Gas price
+      </head.column>
+      <head.column>
+        Far institution rate
+      </head.column>
+      <head.column>
+        Close institution rate
+      </head.column>
+    </table.head>
+    <table.body as |body|>
       {{#each (take 10 (sort-by 'insertedAt:desc' this.model)) as |gasPrice|}}
-        {{#body.row as |row|}}
-          {{#row.cell class='date'}}{{moment-format gasPrice.insertedAt 'ddd, MMM D'}}{{/row.cell}}
-          {{#row.cell class='price'}}{{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub>L</sub></span>{{/row.cell}}
-          {{#row.cell class='far'}}{{gasPrice.farRate}}{{reimbursement-unit}}{{/row.cell}}
-          {{#row.cell class='close'}}{{gasPrice.closeRate}}{{reimbursement-unit}}{{/row.cell}}
-        {{/body.row}}
+        <body.row as |row|>
+          <row.cell @class='date'>
+            {{moment-format gasPrice.insertedAt 'ddd, MMM D'}}
+          </row.cell>
+          <row.cell @class='price'>
+            {{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub>L</sub></span>
+          </row.cell>
+          <row.cell @class='far'>
+            {{gasPrice.farRate}}<ReimbursementUnit />
+          </row.cell>
+          <row.cell @class='close'>
+            {{gasPrice.closeRate}}<ReimbursementUnit />
+          </row.cell>
+        </body.row>
       {{/each}}
-    {{/table.body}}
-  {{/paper-data-table}}
-{{/paper-content}}
+    </table.body>
+  </PaperDataTable>
+</PaperContent>

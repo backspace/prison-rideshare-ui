@@ -1,10 +1,23 @@
-{{high-charts content=this.data chartOptions=this.options theme=this.theme callback=(action 'afterRenderCallback')}}
+<HighCharts
+  @content={{this.data}}
+  @chartOptions={{this.options}}
+  @theme={{this.theme}}
+  @callback={{action 'afterRenderCallback'}}
+/>
 
 {{#if this.rendered}}
-  {{#ember-wormhole to='grouping-weeks'}}
-    {{paper-button label='Weeks' primary=(eq this.grouping 'weeks') onClick=(action (mut this.grouping) 'weeks')}}
-  {{/ember-wormhole}}
-  {{#ember-wormhole to='grouping-months'}}
-    {{paper-button label='Months' primary=(eq this.grouping 'months') onClick=(action (mut this.grouping) 'months')}}
-  {{/ember-wormhole}}
+  <EmberWormhole @to='grouping-weeks'>
+    <PaperButton
+      @label='Weeks'
+      @primary={{eq this.grouping 'weeks'}}
+      @onClick={{action (mut this.grouping) 'weeks'}}
+    />
+  </EmberWormhole>
+  <EmberWormhole @to='grouping-months'>
+    <PaperButton
+      @label='Months'
+      @primary={{eq this.grouping 'months'}}
+      @onClick={{action (mut this.grouping) 'months'}}
+    />
+  </EmberWormhole>
 {{/if}}

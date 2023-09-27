@@ -1,32 +1,64 @@
-{{#paper-dialog}}
-  {{#paper-toolbar}}
-    {{#paper-toolbar-tools}}
-      <h2 class='md-title'>Register</h2>
-    {{/paper-toolbar-tools}}
-  {{/paper-toolbar}}
-  {{#paper-form onSubmit=(action 'register') as |form|}}
-    {{#paper-dialog-content}}
+<PaperDialog>
+  <PaperToolbar>
+    <PaperToolbarTools>
+      <h2 class='md-title'>
+        Register
+      </h2>
+    </PaperToolbarTools>
+  </PaperToolbar>
+  <PaperForm @onSubmit={{action 'register'}} as |form|>
+    <PaperDialogContent>
       {{#if this.error}}
-        {{#paper-card class='error' as |card|}}
-          {{#card.content}}{{this.error}}{{/card.content}}
-        {{/paper-card}}
+        <PaperCard @class='error' as |card|>
+          <card.content>
+            {{this.error}}
+          </card.content>
+        </PaperCard>
       {{/if}}
       <div class='layout layout-row'>
-        {{form.input class='email' type='email' label='Email' autofocus=true value=this.model.email onChange=(action (mut this.model.email))}}
+        <form.input
+          @class='email'
+          @type='email'
+          @label='Email'
+          @autofocus={{true}}
+          @value={{this.model.email}}
+          @onChange={{action (mut this.model.email)}}
+        />
       </div>
       <div class='layout layout-row'>
-        {{form.input class='password' type='password' label='Password' value=this.model.password onChange=(action (mut this.model.password))}}
+        <form.input
+          @class='password'
+          @type='password'
+          @label='Password'
+          @value={{this.model.password}}
+          @onChange={{action (mut this.model.password)}}
+        />
       </div>
       <div class='layout layout-row'>
-        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=this.model.passwordConfirmation onChange=(action (mut this.model.passwordConfirmation))}}
+        <form.input
+          @class='password-confirmation'
+          @type='password'
+          @label='Password confirmation'
+          @value={{this.model.passwordConfirmation}}
+          @onChange={{action (mut this.model.passwordConfirmation)}}
+        />
       </div>
-    {{/paper-dialog-content}}
+    </PaperDialogContent>
 
-    {{#paper-dialog-actions class='layout-row'}}
+    <PaperDialogActions @class='layout-row'>
       <div class='layout layout-row'>
-        {{#form.submit-button class='submit' primary=true raised=true onClick=(action 'register')}}Register{{/form.submit-button}}
-        {{#paper-button href='/login' class='flex-order--1'}}Log in{{/paper-button}}
+        <form.submit-button
+          @class='submit'
+          @primary={{true}}
+          @raised={{true}}
+          @onClick={{action 'register'}}
+        >
+          Register
+        </form.submit-button>
+        <PaperButton @href='/login' @class='flex-order--1'>
+          Log in
+        </PaperButton>
       </div>
-    {{/paper-dialog-actions}}
-  {{/paper-form}}
-{{/paper-dialog}}
+    </PaperDialogActions>
+  </PaperForm>
+</PaperDialog>

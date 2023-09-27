@@ -1,58 +1,107 @@
-{{#toolbar-header title=this.title}}
-{{/toolbar-header}}
+<ToolbarHeader @title={{this.title}} />
 
 <div class='admin-calendar'>
-  {{#power-calendar center=this.monthMoment daysComponent='calendar-days' onCenterChange=(action (mut this.month) value='date') as |calendar|}}
+  <PowerCalendar
+    @center={{this.monthMoment}}
+    @daysComponent='calendar-days'
+    @onCenterChange={{action (mut this.month) value='date'}} as |calendar|
+  >
     <nav class='ember-power-calendar-nav'>
-      {{link-to '‹' 'admin-calendar' this.previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
+      <LinkTo
+        @route='admin-calendar'
+        @model={{this.previousMonth}}
+        class='ember-power-calendar-nav-control previous-month'
+        @tagName='button'
+      >
+        ‹
+      </LinkTo>
       <div class='ember-power-calendar-nav-title'>
-        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize this.commitmentCount 'commitment'}}
+        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize
+          this.commitmentCount
+          'commitment'
+        }}
       </div>
-      {{link-to '›' 'admin-calendar' this.nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}
+      <LinkTo
+        @route='admin-calendar'
+        @model={{this.nextMonth}}
+        class='ember-power-calendar-nav-control next-month'
+        @tagName='button'
+      >
+        ›
+      </LinkTo>
     </nav>
 
-    {{#calendar.days showDaysAround=false as |day|}}
-      {{calendar-day day=day slots=this.slots count=true setViewingSlot=(action (mut this.viewingSlot))}}
-    {{/calendar.days}}
-  {{/power-calendar}}
+    <calendar.days @showDaysAround={{false}} as |day|>
+      <CalendarDay
+        @day={{day}}
+        @slots={{this.slots}}
+        @count={{true}}
+        @setViewingSlot={{action (mut this.viewingSlot)}}
+      />
+    </calendar.days>
+  </PowerCalendar>
 
   <section>
     {{#if this.viewingSlot}}
       <div class='viewing-slot'>
-        <h3 class='hours'>{{moment-format this.viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format this.viewingSlot.end 'h:mma'}}</h3>
-        {{#paper-chips
-          removeItem=(action 'deleteCommitment')
-          addItem=(action 'createCommitment')
-          placeholder='Commit someone to this slot'
-          content=this.viewingSlot.commitments
-          options=this.uncommittedPeople
-          class='commitments'
-          searchField='name' as |person_or_commitment|}}
+        <h3 class='hours'>
+          {{moment-format this.viewingSlot.start 'dddd, MMMM D, h:mma'
+          }}–{{moment-format this.viewingSlot.end 'h:mma'}}
+        </h3>
+        <PaperChips
+          @removeItem={{action 'deleteCommitment'}}
+          @addItem={{action 'createCommitment'}}
+          @placeholder='Commit someone to this slot'
+          @content={{this.viewingSlot.commitments}}
+          @options={{this.uncommittedPeople}}
+          @class='commitments'
+          @searchField='name' as |person_or_commitment|
+        >
           {{#if person_or_commitment.name}}
-            {{person-badge person=person_or_commitment}}
+            <PersonBadge @person={{person_or_commitment}} />
           {{else}}
-            {{person-badge person=person_or_commitment.person}}
+            <PersonBadge @person={{person_or_commitment.person}} />
           {{/if}}
-        {{/paper-chips}}
+        </PaperChips>
       </div>
     {{/if}}
-    <h2>Temporary email interface</h2>
-    {{paper-button label='Add all active people' raised=true onClick=(action 'addAllActive')}}
-    {{#paper-chips
-      removeItem=(action 'removePerson')
-      addItem=(action 'addPerson')
-      placeholder='Add a person to email'
-      content=this.people
-      options=this.remainingPeople
-      searchField='name' as |person|}}
+    <h2>
+      Temporary email interface
+    </h2>
+    <PaperButton
+      @label='Add all active people'
+      @raised={{true}}
+      @onClick={{action 'addAllActive'}}
+    />
+    <PaperChips
+      @removeItem={{action 'removePerson'}}
+      @addItem={{action 'addPerson'}}
+      @placeholder='Add a person to email'
+      @content={{this.people}}
+      @options={{this.remainingPeople}}
+      @searchField='name' as |person|
+    >
       {{person.name}}
-    {{/paper-chips}}
-    {{#paper-button primary=(gt this.people.length 0) raised=(gt this.people.length 0) onClick=(action 'email')}}Email {{this.monthString}} calendar link{{/paper-button}}
-    {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
+    </PaperChips>
+    <PaperButton
+      @primary={{gt this.people.length 0}}
+      @raised={{gt this.people.length 0}}
+      @onClick={{action 'email'}}
+    >
+      Email {{this.monthString}} calendar link
+    </PaperButton>
+    <PaperButton @onClick={{action 'fetchLinks'}}>
+      View calendar links
+    </PaperButton>
     {{#if this.links}}
       <ul>
         {{#each this.links as |emailAndLink|}}
-          <li>{{emailAndLink.email}}: <a href={{emailAndLink.link}}>link</a></li>
+          <li>
+            {{emailAndLink.email}}:
+            <a href={{emailAndLink.link}}>
+              link
+            </a>
+          </li>
         {{/each}}
       </ul>
     {{/if}}

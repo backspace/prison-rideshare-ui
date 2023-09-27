@@ -1,23 +1,59 @@
-{{#body.row class='person' as |row|}}
-  {{#row.cell}}
-    {{paper-switch value=this.person.active onChange=(action 'toggleActiveness')}}
-  {{/row.cell}}
-  {{#row.cell class='name'}}{{this.person.name}}{{/row.cell}}
-  {{#row.cell class=this.emailClass}}<a href='mailto:{{this.person.email}}'>{{this.person.email}}</a>{{/row.cell}}
-  {{#row.cell class=this.mobileClass}}{{#if this.person.mobile}}<a href='tel:{{this.person.mobile}}'>{{this.person.mobile}}</a>{{/if}}{{/row.cell}}
-  {{#row.cell class=this.landlineClass}}{{#if this.person.landline}}<a href='tel:{{this.person.landline}}'>{{this.person.landline}}</a>{{/if}}{{/row.cell}}
-  {{#row.cell}}
-    {{#if this.person.address}}
-      {{#copy-button clipboardText=this.person.address success=(action 'copied')}}
-        {{paper-icon 'content copy'}}
-      {{/copy-button}}
+<@body.row class='person' as |row|>
+  <row.cell>
+    <PaperSwitch
+      @value={{this.person.active}}
+      @onChange={{action 'toggleActiveness'}}
+    />
+  </row.cell>
+  <row.cell class='name'>
+    {{this.person.name}}
+  </row.cell>
+  <row.cell class={{this.emailClass}}>
+    <a href='mailto:{{this.person.email}}'>
+      {{this.person.email}}
+    </a>
+  </row.cell>
+  <row.cell class={{this.mobileClass}}>
+    {{#if this.person.mobile}}
+      <a href='tel:{{this.person.mobile}}'>
+        {{this.person.mobile}}
+      </a>
     {{/if}}
-  {{/row.cell}}
-  {{#row.cell class='last-ride'}}{{#if this.person.lastRide}}{{moment-format this.person.lastRide.start 'MMMM D, YYYY'}}{{/if}}{{/row.cell}}
-  {{#row.cell class='notes'}}{{this.person.notes}}{{/row.cell}}
-  {{#row.cell}}
-    {{#paper-button iconButton=true aria-label='Edit person' title='Edit person' class='edit' onClick=(action this.editPerson this.person)}}
+  </row.cell>
+  <row.cell class={{this.landlineClass}}>
+    {{#if this.person.landline}}
+      <a href='tel:{{this.person.landline}}'>
+        {{this.person.landline}}
+      </a>
+    {{/if}}
+  </row.cell>
+  <row.cell>
+    {{#if this.person.address}}
+      <CopyButton
+        @clipboardText={{this.person.address}}
+        @success={{action 'copied'}}
+      >
+        {{paper-icon 'content copy'}}
+      </CopyButton>
+    {{/if}}
+  </row.cell>
+  <row.cell class='last-ride'>
+    {{#if this.person.lastRide}}
+      {{moment-format this.person.lastRide.start 'MMMM D, YYYY'}}
+    {{/if}}
+  </row.cell>
+  <row.cell class='notes'>
+    {{this.person.notes}}
+  </row.cell>
+  <row.cell>
+    <PaperButton
+      @iconButton={{true}}
+      @aria-label='Edit person'
+      @title='Edit person'
+      class='edit'
+      @onClick={{action this.editPerson this.person}}
+    >
       {{paper-icon 'mode edit'}}
-    {{/paper-button}}
-  {{/row.cell}}
-{{/body.row}}
+    </PaperButton>
+  </row.cell>
+</@body.row>
