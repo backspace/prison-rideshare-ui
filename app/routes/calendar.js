@@ -6,6 +6,9 @@ import Ember from 'ember';
 import { get } from '@ember/object';
 import fetch from 'fetch';
 import config from '../config/environment';
+import { pollTask, runTask } from 'ember-lifeline';
+
+export const POLL_TOKEN = 'calendar_poll';
 
 export default Route.extend({
   model(
@@ -66,23 +69,11 @@ export default Route.extend({
   },
 
   afterModel() {
-    const url = this.store.adapterFor('application').buildURL('slot');
-
-    if (!Ember.testing) {
-      // FIXME restore polling
-      // this.get('poll').setup({
-      //   name: 'slotsPoll',
-      //   resource_name: 'slots',
-      //   url,
-      // });
-    }
+    pollTask(this, 'poll', POLL_TOKEN);
   },
 
-  actions: {
-    willTransition(transition) {
-      this._super(transition);
-      // FIXME restore polling
-      // this.get('poll').removePoll('slotsPoll');
-    },
+  poll(next) {
+    this.store.findAll('slot');
+    runTask(this, next, Ember.testing ? 10 : 10000);
   },
 });

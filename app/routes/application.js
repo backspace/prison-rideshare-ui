@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import Ember from 'ember';
 
 export default Route.extend({
   session: service(),
@@ -11,17 +10,6 @@ export default Route.extend({
 
   beforeModel() {
     return this._loadCurrentUser();
-  },
-
-  afterModel() {
-    this._super(...arguments);
-    if (!Ember.testing) {
-      // FIXME restore polling
-      // this.get('poll').start({
-      //   idle_timeout: 10000,
-      //   interval: 10000,
-      // });
-    }
   },
 
   title(tokens) {
