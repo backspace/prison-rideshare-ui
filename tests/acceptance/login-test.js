@@ -72,9 +72,7 @@ module('Acceptance | login', function(hooks) {
     await page.fillPassword('x');
     await page.submit();
 
-    assert.equal(shared.toast.text, 'Please log in');
-    // TODO this redirects to /reports/new but asserting that fails…
-    // Also, invalidating the session means this toast won’t even survive.
+    assert.equal(currentURL(), '/reports/new');
   });
 
   test('a failed login shows an error', async function(assert) {

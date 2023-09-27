@@ -19,6 +19,7 @@ export default Route.extend(AuthenticatedRoute, {
         } else {
           this.transitionTo('reports.new');
         }
-      });
+      })
+      .catch(() => this.transitionTo('reports.new'));
   },
 });
