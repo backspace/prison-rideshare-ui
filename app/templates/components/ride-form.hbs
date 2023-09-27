@@ -1,22 +1,22 @@
-{{#paper-dialog onClose=cancel fullscreen=true}}
+{{#paper-dialog onClose=this.cancel fullscreen=true}}
 
   {{#paper-dialog-content}}
-    {{#if editingWarning}}
+    {{#if this.editingWarning}}
       {{#paper-card class='editing-warning' as |card|}}
         {{#card.content}}
-          {{editingWarning}}
+          {{this.editingWarning}}
         {{/card.content}}
       {{/paper-card}}
     {{/if}}
-    <h2 class='md-title'>{{if ride.isNew 'Record' 'Edit'}} a ride request</h2>
-    {{#paper-form onSubmit=save as |form|}}
+    <h2 class='md-title'>{{if this.ride.isNew 'Record' 'Edit'}} a ride request</h2>
+    {{#paper-form onSubmit=this.save as |form|}}
       <div class='layout-column'>
-        {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=ride.timespan onChange=(action 'timespanUpdated')}}
+        {{#form.input class='timespan' label='Timespan' autofocus=true textarea=true value=this.ride.timespan onChange=(action 'timespanUpdated')}}
           <div class='hint'>“friday from 2 to 4” or “tomorrow 11am to noon”</div>
         {{/form.input}}
       </div>
       <div class='timespan-result'>
-        {{#if timespanWarning}}
+        {{#if this.timespanWarning}}
           <div class='layout-row'>
             {{#paper-card class='flex-100 timespan-warning' as |card|}}
               {{#card.content}}
@@ -26,7 +26,7 @@
           </div>
         {{/if}}
         <div class='layout-row'>
-          {{form.input class='flex-100' label='Ride times' value=rideTimes disabled=true onChange=null}}
+          {{form.input class='flex-100' label='Ride times' value=this.rideTimes disabled=true onChange=null}}
         </div>
       </div>
       <div class='layout-row layout-xs-column layout-align-center-center'>
@@ -34,12 +34,12 @@
           {{#paper-select
             class='institution'
             placeholder='Institution'
-            selected=ride.institution
+            selected=this.ride.institution
             searchField='name'
-            options=institutions
-            onChange=(action (mut ride.institution))
-            errors=ride.validationErrors.institution
-            isTouched=(readonly ride.validationErrors.institution.length)
+            options=this.institutions
+            onChange=(action (mut this.ride.institution))
+            errors=this.ride.validationErrors.institution
+            isTouched=(readonly this.ride.validationErrors.institution.length)
             as |institution|}}
             {{institution.name}}
           {{/paper-select}}
@@ -47,16 +47,16 @@
         <div class='flex'>
           {{#paper-checkbox
             class='overridable'
-            value=ride.overridable
-            onChange=(action (mut ride.overridable))}}
+            value=this.ride.overridable
+            onChange=(action (mut this.ride.overridable))}}
             Sunshine House van?
           {{/paper-checkbox}}
         </div>
       </div>
       <div class='layout-row layout-xs-column medium-row'>
         {{#paper-radio-group
-          groupValue=(readonly ride.medium)
-          onChange=(action (mut ride.medium)) as |group|}}
+          groupValue=(readonly this.ride.medium)
+          onChange=(action (mut this.ride.medium)) as |group|}}
           <div class='flex' title='ride was requested via txt'>
             {{#group.radio value='txt' class='txt'}}{{paper-icon 'textsms'}}{{/group.radio}}
           </div>
@@ -72,8 +72,8 @@
         <div class='flex'>
           {{#paper-checkbox
             class='request-confirmed'
-            value=ride.requestConfirmed
-            onChange=(action (mut ride.requestConfirmed))}}
+            value=this.ride.requestConfirmed
+            onChange=(action (mut this.ride.requestConfirmed))}}
             Confirmed receipt of request with visitor?
           {{/paper-checkbox}}
         </div>
@@ -85,15 +85,15 @@
         <div class='flex'>
           {{#form.autocomplete
             label='Name'
-            selected=ride
+            selected=this.ride
             onSelectionChange=(action 'autocompleteSelectionChanged')
-            onSearchTextChange=(action (mut ride.name))
+            onSearchTextChange=(action (mut this.ride.name))
             search=(action 'searchRides')
             searchField='name'
             labelPath='name'
-            searchText=(readonly ride.name)
-
-            errors=ride.validationErrors.name isTouched=(readonly ride.validationErrors.name.length)
+            searchText=(readonly this.ride.name)
+            errors=this.ride.validationErrors.name
+            isTouched=(readonly this.ride.validationErrors.name.length)
             as |ride autocomplete|}}
             <div class='visitor-autocomplete-option'>
               <span class='name'>
@@ -110,28 +110,28 @@
       </div>
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
-          {{form.input class='address' label='Address' value=ride.address onChange=(action (mut ride.address)) errors=ride.validationErrors.address isTouched=(readonly ride.validationErrors.address.length)}}
+          {{form.input class='address' label='Address' value=this.ride.address onChange=(action (mut this.ride.address)) errors=this.ride.validationErrors.address isTouched=(readonly this.ride.validationErrors.address.length)}}
         </div>
       </div>
       <div class='layout-row layout-xs-column'>
         <div class='flex'>
-          {{form.input class='contact' label='Contact' value=ride.contact onChange=(action (mut ride.contact)) errors=ride.validationErrors.contact isTouched=(readonly ride.validationErrors.contact.length)}}
+          {{form.input class='contact' label='Contact' value=this.ride.contact onChange=(action (mut this.ride.contact)) errors=this.ride.validationErrors.contact isTouched=(readonly this.ride.validationErrors.contact.length)}}
         </div>
       </div>
       <div class='layout-row layout-xs-column layout-align-center-center'>
         <div class='flex'>
-          {{form.input class='passengers' label='Passengers' value=ride.passengers onChange=(action (mut ride.passengers)) errors=ride.validationErrors.passengers isTouched=(readonly ride.validationErrors.passengers.length)}}
+          {{form.input class='passengers' label='Passengers' value=this.ride.passengers onChange=(action (mut this.ride.passengers)) errors=this.ride.validationErrors.passengers isTouched=(readonly this.ride.validationErrors.passengers.length)}}
         </div>
         <div class='flex'>
           {{#paper-checkbox
             class='first-time'
-            value=ride.firstTime
-            onChange=(action (mut ride.firstTime))}}
+            value=this.ride.firstTime
+            onChange=(action (mut this.ride.firstTime))}}
             First time?
           {{/paper-checkbox}}
         </div>
       </div>
-      {{#if ride.firstTime}}
+      {{#if this.ride.firstTime}}
         {{#paper-card class='first-time-points' as |card|}}
           {{#card.content}}
             Some notes for first-time riders:
@@ -149,15 +149,15 @@
         {{form.input class='request-notes'
                      textarea=true
                      label='Notes'
-                     value=ride.requestNotes
-                     onChange=(action (mut ride.requestNotes))}}
+                     value=this.ride.requestNotes
+                     onChange=(action (mut this.ride.requestNotes))}}
       </div>
     {{/paper-form}}
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=cancel}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=save}}Save{{/paper-button}}
+    {{#paper-button class='cancel' onClick=this.cancel}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=this.save}}Save{{/paper-button}}
   {{/paper-dialog-actions}}
 
 {{/paper-dialog}}

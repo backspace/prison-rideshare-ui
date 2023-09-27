@@ -15,7 +15,7 @@
       {{#head.column}}Close institution rate{{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
-      {{#each (take 10 (sort-by 'insertedAt:desc' model)) as |gasPrice|}}
+      {{#each (take 10 (sort-by 'insertedAt:desc' this.model)) as |gasPrice|}}
         {{#body.row as |row|}}
           {{#row.cell class='date'}}{{moment-format gasPrice.insertedAt 'ddd, MMM D'}}{{/row.cell}}
           {{#row.cell class='price'}}{{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub>L</sub></span>{{/row.cell}}

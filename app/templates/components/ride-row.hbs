@@ -1,39 +1,39 @@
-{{#body.row class=classAttribute as |row|}}
-  {{#if showCreation}}
-    {{#row.cell class='creation'}}{{creation}}{{/row.cell}}
+{{#body.row class=this.classAttribute as |row|}}
+  {{#if this.showCreation}}
+    {{#row.cell class='creation'}}{{this.creation}}{{/row.cell}}
   {{/if}}
   {{#row.cell class='date-cell' onClick=(action 'toggleCreation')}}
-    {{#if ride.isDivider}}
+    {{#if this.ride.isDivider}}
       {{scroll-to}}
     {{/if}}
-    <span class='date'>{{ride.rideTimes}}</span>
-    {{#if showCreation}}
+    <span class='date'>{{this.ride.rideTimes}}</span>
+    {{#if this.showCreation}}
       {{paper-icon 'alarm off' size=14}}
     {{else}}
       {{paper-icon 'add alarm' size=14}}
     {{/if}}
   {{/row.cell}}
-  {{#row.cell class='institution'}}{{ride.institution.name}}{{/row.cell}}
+  {{#row.cell class='institution'}}{{this.ride.institution.name}}{{/row.cell}}
   {{#row.cell class='name-and-contact'}}
-    <span class='name'>{{ride.namePlusPassengers}}</span>{{#if ride.firstTime}} {{paper-icon 'announcement' size=10 title='first time rider'}}{{/if}}
-    <div class='medium-and-contact'>{{#if mediumIcon}}{{paper-icon mediumIcon size=10 title=mediumIconTitle}} {{/if}}<span class='contact'>{{linked-contact contact=ride.contact}}</span></div>
+    <span class='name'>{{this.ride.namePlusPassengers}}</span>{{#if this.ride.firstTime}} {{paper-icon 'announcement' size=10 title='first time rider'}}{{/if}}
+    <div class='medium-and-contact'>{{#if this.mediumIcon}}{{paper-icon this.mediumIcon size=10 title=this.mediumIconTitle}} {{/if}}<span class='contact'>{{linked-contact contact=this.ride.contact}}</span></div>
   {{/row.cell}}
-  {{#row.cell class='address'}}{{ride.address}}{{/row.cell}}
+  {{#row.cell class='address'}}{{this.ride.address}}{{/row.cell}}
   {{#row.cell class='driver-and-car-owner'}}
-    {{#if combined}}
-      {{#if (not rideToCombine)}}
-        {{#paper-button class='combine' iconButton=true aria-label='Uncombine this ride' title='Uncombine this ride' onClick=(action uncombineRide ride)}}
+    {{#if this.combined}}
+      {{#if (not this.rideToCombine)}}
+        {{#paper-button class='combine' iconButton=true aria-label='Uncombine this ride' title='Uncombine this ride' onClick=(action this.uncombineRide this.ride)}}
           {{paper-icon 'call split'}}
         {{/paper-button}}
       {{/if}}
     {{else}}
-      <span class='driver'>{{ride-person ride=ride property='driver' onChange=(action 'setDriver')}}</span>
-      <span class='car-owner'>{{ride-person ride=ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
-      {{#if ride.overridable}}
+      <span class='driver'>{{ride-person ride=this.ride property='driver' onChange=(action 'setDriver')}}</span>
+      <span class='car-owner'>{{ride-person ride=this.ride property='carOwner' onChange=(action 'setCarOwner')}}</span>
+      {{#if this.ride.overridable}}
         {{paper-icon 'directions_bus' title='driver can override car expenses (van-driving, probably)'}}
       {{/if}}
-      {{#if (or (not ride.children) rideToCombine)}}
-        {{#paper-button class='combine' iconButton=true raised=(eq ride.id rideToCombine.id) aria-label=combineButtonLabel title=combineButtonLabel onClick=(action combineRide ride)}}
+      {{#if (or (not this.ride.children) this.rideToCombine)}}
+        {{#paper-button class='combine' iconButton=true raised=(eq this.ride.id this.rideToCombine.id) aria-label=this.combineButtonLabel title=this.combineButtonLabel onClick=(action this.combineRide this.ride)}}
           {{paper-icon 'merge type'}}
         {{/paper-button}}
       {{/if}}
@@ -41,21 +41,21 @@
   {{/row.cell}}
   {{#row.cell}}
     <span class='cancellation'>
-      {{#paper-button iconButton=true aria-label=cancellationButtonLabel title=cancellationButtonLabel onClick=(action editCancellation ride)}}
-        {{#if ride.enabled}}
+      {{#paper-button iconButton=true aria-label=this.cancellationButtonLabel title=this.cancellationButtonLabel onClick=(action this.editCancellation this.ride)}}
+        {{#if this.ride.enabled}}
           {{paper-icon 'highlight off'}}
         {{else}}
-          {{paper-icon cancellationIcon}}
+          {{paper-icon this.cancellationIcon}}
         {{/if}}
       {{/paper-button}}
     </span>
-    {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action editRide ride)}}
+    {{#paper-button iconButton=true aria-label='Edit ride' title='Edit ride' class='edit' onClick=(action this.editRide this.ride)}}
       {{paper-icon 'mode edit'}}
     {{/paper-button}}
   {{/row.cell}}
 {{/body.row}}
 
-{{#each commitments as |commitment|}}
+{{#each this.commitments as |commitment|}}
   {{#body.row class='overlap highlighted' as |row|}}
     {{row.cell}}
     {{#row.cell colspan=3}}
@@ -74,11 +74,11 @@
   {{/body.row}}
 {{/each}}
 
-{{#if ride.requiresConfirmation}}
+{{#if this.ride.requiresConfirmation}}
   {{#body.row class='confirmation-notification highlighted' as |row|}}
     {{row.cell}}
     {{#row.cell colspan=3}}
-      {{#if mediumIcon}}{{paper-icon mediumIcon title=mediumIconTitle}} {{/if}}<span>Contact visitor to confirm receipt of ride request</span>
+      {{#if this.mediumIcon}}{{paper-icon this.mediumIcon title=this.mediumIconTitle}} {{/if}}<span>Contact visitor to confirm receipt of ride request</span>
     {{/row.cell}}
     {{#row.cell colspan=3}}
       {{#paper-button class='mark-confirmed' onClick=(action 'markConfirmed')}}
@@ -88,30 +88,30 @@
   {{/body.row}}
 {{/if}}
 
-{{#if ride.requestNotes}}
+{{#if this.ride.requestNotes}}
   {{#body.row class='{{classAttribute}} notes' as |row|}}
     {{row.cell}}
-    {{#row.cell class='notes' colspan=6}}{{ride.requestNotes}}{{/row.cell}}
+    {{#row.cell class='notes' colspan=6}}{{this.ride.requestNotes}}{{/row.cell}}
   {{/body.row}}
 {{/if}}
-{{#if ride.complete}}
+{{#if this.ride.complete}}
   {{#body.row class='report' as |row|}}
     {{row.cell}}
     {{#row.cell colspan=6}}
-      {{paper-icon 'map'}}<span class='distance'>{{ride.distance}}</span>
-      {{#if ride.carExpenses}}
+      {{paper-icon 'map'}}<span class='distance'>{{this.ride.distance}}</span>
+      {{#if this.ride.carExpenses}}
         {{paper-icon 'local gas station'}}
-        <span class='car-expenses'>{{ride.carExpensesDollars}}</span>
-        {{#if (and ride.rate (not ride.overridable))}}(<span class='rate'>{{ride.rate}}{{reimbursement-unit}}</span>){{/if}}
+        <span class='car-expenses'>{{this.ride.carExpensesDollars}}</span>
+        {{#if (and this.ride.rate (not this.ride.overridable))}}(<span class='rate'>{{this.ride.rate}}{{reimbursement-unit}}</span>){{/if}}
       {{/if}}
-      {{#if ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{ride.foodExpensesDollars}}</span>{{/if}}
-      {{#if ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{ride.reportNotes}}</span>{{/if}}
-      {{#if clearing}}
+      {{#if this.ride.foodExpenses}}{{paper-icon 'local cafe'}}<span class='food-expenses'>{{this.ride.foodExpensesDollars}}</span>{{/if}}
+      {{#if this.ride.reportNotes}}{{paper-icon 'note'}}<span class='notes'>{{this.ride.reportNotes}}</span>{{/if}}
+      {{#if this.clearing}}
         Clear this report?
         {{#paper-button class='clear-confirm' warn=true aria-label='Clear report' title='Clear report' onClick=(action 'clearReport')}}
           Yes
         {{/paper-button}}
-        {{#paper-button class='clear-cancel' aria-label='Don’t clear report' title='Don’t clear report' onClick=(action (mut clearing) false)}}
+        {{#paper-button class='clear-cancel' aria-label='Don’t clear report' title='Don’t clear report' onClick=(action (mut this.clearing) false)}}
           No
         {{/paper-button}}
       {{else}}

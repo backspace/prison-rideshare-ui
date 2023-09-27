@@ -1,12 +1,12 @@
-{{#if person}}
+{{#if this.person}}
   <span class='ride-person'>
-    {{person-badge person=person property=property clear=(action 'clear')}}
+    {{person-badge person=this.person property=this.property clear=(action 'clear')}}
   </span>
 {{else}}
   {{#paper-select
-    selected=person
-    options=people
-    onChange=onChange
+    selected=this.person
+    options=this.people
+    onChange=this.onChange
     allowClear=true
     searchField='name'
     as |person|}}

@@ -1,7 +1,7 @@
-{{#paper-dialog onClose=cancel clickOutsideToClose=true}}
+{{#paper-dialog onClose=this.cancel clickOutsideToClose=true}}
 
   {{#paper-dialog-content}}
-    {{#if ride.children}}
+    {{#if this.ride.children}}
       {{#paper-card as |card|}}
         {{#card.content}}
           Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.
@@ -11,9 +11,9 @@
 
     <h2 class='md-title'>Cancel a ride</h2>
 
-    {{#paper-form onSubmit=save as |form|}}
+    {{#paper-form onSubmit=this.save as |form|}}
       <div class='layout layout-sm-column'>
-        {{#each-in shortcutReasonToIcon as |reason icon|}}
+        {{#each-in this.shortcutReasonToIcon as |reason icon|}}
           {{#paper-button raised=true
                           class='shortcut'
                           onClick=(action 'cancelViaShortcut' reason)}}
@@ -27,7 +27,7 @@
 
       <div class='layout layout-sm-column'>
         {{#paper-checkbox
-          value=ride.cancelled
+          value=this.ride.cancelled
           onChange=(action 'cancelledChanged')}}
           Cancelled?
         {{/paper-checkbox}}
@@ -37,9 +37,9 @@
         {{#paper-select
           class='reason'
           placeholder='Reason'
-          selected=ride.cancellationReason
-          options=reasons
-          onChange=(action (mut ride.cancellationReason))
+          selected=this.ride.cancellationReason
+          options=this.reasons
+          onChange=(action (mut this.ride.cancellationReason))
           as |reason|}}
           {{reason}}
         {{/paper-select}}
@@ -47,15 +47,15 @@
 
       {{form.input class='other'
                    label='Other reason'
-                   value=ride.cancellationReason
-                   onChange=(action (mut ride.cancellationReason))}}
+                   value=this.ride.cancellationReason
+                   onChange=(action (mut this.ride.cancellationReason))}}
 
     {{/paper-form}}
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=cancel}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=save}}Save{{/paper-button}}
+    {{#paper-button class='cancel' onClick=this.cancel}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=this.save}}Save{{/paper-button}}
   {{/paper-dialog-actions}}
 
 {{/paper-dialog}}

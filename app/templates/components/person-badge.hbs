@@ -1,33 +1,33 @@
 {{! template-lint-disable no-invalid-interactive }}
 <div class='name-container' onclick={{action 'toggleContact'}}>
-  {{#if (eq property 'driver')}}
+  {{#if (eq this.property 'driver')}}
     {{paper-icon 'person' size=14 title='driver'}}
-  {{else if (eq property 'carOwner')}}
+  {{else if (eq this.property 'carOwner')}}
     {{paper-icon 'local gas station' size=14 title='car owner'}}
   {{/if}}
-  <span class='name'>{{person.name}}</span>
-  {{#if clear}}
+  <span class='name'>{{this.person.name}}</span>
+  {{#if this.clear}}
     <span class='remove-container'>
-      <button onclick={{action clear}} type='button'>
+      <button onclick={{action this.clear}} type='button'>
         {{paper-icon icon='clear' size=14 title='remove'}}
         <span class='md-visually-hidden'> Remove </span>
       </button>
     </span>
   {{/if}}
 </div>
-{{#if showContact}}
+{{#if this.showContact}}
   <div class='contact-container'>
-    {{#if person.email}}
-      <a href='mailto:{{person.email}}'>{{paper-icon 'email' size=14 title='email address'}} <span class='email'>{{person.email}}</span></a>
+    {{#if this.person.email}}
+      <a href='mailto:{{this.person.email}}'>{{paper-icon 'email' size=14 title='email address'}} <span class='email'>{{this.person.email}}</span></a>
     {{/if}}
-    {{#if person.mobile}}
-      <a href='tel:{{person.mobile}}'>{{paper-icon 'smartphone' size=14 title='mobile phone number'}} <span class='mobile'>{{person.mobile}}</span></a>
+    {{#if this.person.mobile}}
+      <a href='tel:{{this.person.mobile}}'>{{paper-icon 'smartphone' size=14 title='mobile phone number'}} <span class='mobile'>{{this.person.mobile}}</span></a>
     {{/if}}
-    {{#if person.landline}}
-      <a href='tel:{{person.landline}}'>{{paper-icon 'phone' size=14 title='landline number'}} <span class='landline'>{{person.landline}}</span></a>
+    {{#if this.person.landline}}
+      <a href='tel:{{this.person.landline}}'>{{paper-icon 'phone' size=14 title='landline number'}} <span class='landline'>{{this.person.landline}}</span></a>
     {{/if}}
-    {{#if person.selfNotes}}
-      {{paper-icon 'notes' size=14 title='notes about self'}} <span class='self-notes'>{{person.selfNotes}}</span>
+    {{#if this.person.selfNotes}}
+      {{paper-icon 'notes' size=14 title='notes about self'}} <span class='self-notes'>{{this.person.selfNotes}}</span>
     {{/if}}
   </div>
 {{/if}}

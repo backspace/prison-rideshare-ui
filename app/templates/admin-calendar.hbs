@@ -1,31 +1,31 @@
-{{#toolbar-header title=title}}
+{{#toolbar-header title=this.title}}
 {{/toolbar-header}}
 
 <div class='admin-calendar'>
-  {{#power-calendar center=monthMoment daysComponent='calendar-days' onCenterChange=(action (mut month) value='date') as |calendar|}}
+  {{#power-calendar center=this.monthMoment daysComponent='calendar-days' onCenterChange=(action (mut this.month) value='date') as |calendar|}}
     <nav class='ember-power-calendar-nav'>
-      {{link-to '‹' 'admin-calendar' previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
+      {{link-to '‹' 'admin-calendar' this.previousMonth class='ember-power-calendar-nav-control previous-month' tagName='button'}}
       <div class='ember-power-calendar-nav-title'>
-        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize commitmentCount 'commitment'}}
+        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize this.commitmentCount 'commitment'}}
       </div>
-      {{link-to '›' 'admin-calendar' nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}
+      {{link-to '›' 'admin-calendar' this.nextMonth class='ember-power-calendar-nav-control next-month' tagName='button'}}
     </nav>
 
     {{#calendar.days showDaysAround=false as |day|}}
-      {{calendar-day day=day slots=slots count=true setViewingSlot=(action (mut viewingSlot))}}
+      {{calendar-day day=day slots=this.slots count=true setViewingSlot=(action (mut this.viewingSlot))}}
     {{/calendar.days}}
   {{/power-calendar}}
 
   <section>
-    {{#if viewingSlot}}
+    {{#if this.viewingSlot}}
       <div class='viewing-slot'>
-        <h3 class='hours'>{{moment-format viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format viewingSlot.end 'h:mma'}}</h3>
+        <h3 class='hours'>{{moment-format this.viewingSlot.start 'dddd, MMMM D, h:mma'}}–{{moment-format this.viewingSlot.end 'h:mma'}}</h3>
         {{#paper-chips
           removeItem=(action 'deleteCommitment')
           addItem=(action 'createCommitment')
           placeholder='Commit someone to this slot'
-          content=viewingSlot.commitments
-          options=uncommittedPeople
+          content=this.viewingSlot.commitments
+          options=this.uncommittedPeople
           class='commitments'
           searchField='name' as |person_or_commitment|}}
           {{#if person_or_commitment.name}}
@@ -42,22 +42,22 @@
       removeItem=(action 'removePerson')
       addItem=(action 'addPerson')
       placeholder='Add a person to email'
-      content=people
-      options=remainingPeople
+      content=this.people
+      options=this.remainingPeople
       searchField='name' as |person|}}
       {{person.name}}
     {{/paper-chips}}
-    {{#paper-button primary=(gt people.length 0) raised=(gt people.length 0) onClick=(action 'email')}}Email {{monthString}} calendar link{{/paper-button}}
+    {{#paper-button primary=(gt this.people.length 0) raised=(gt this.people.length 0) onClick=(action 'email')}}Email {{this.monthString}} calendar link{{/paper-button}}
     {{#paper-button onClick=(action 'fetchLinks')}}View calendar links{{/paper-button}}
-    {{#if links}}
+    {{#if this.links}}
       <ul>
-        {{#each links as |emailAndLink|}}
+        {{#each this.links as |emailAndLink|}}
           <li>{{emailAndLink.email}}: <a href={{emailAndLink.link}}>link</a></li>
         {{/each}}
       </ul>
     {{/if}}
-    {{#if linksError}}
-      There was an error loading calendar links: {{linksError}}
+    {{#if this.linksError}}
+      There was an error loading calendar links: {{this.linksError}}
     {{/if}}
   </section>
 </div>

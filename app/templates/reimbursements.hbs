@@ -1,7 +1,7 @@
 {{toolbar-header title='Reimbursements'}}
 
 {{#paper-content}}
-  {{#if monthReimbursementCollections}}
+  {{#if this.monthReimbursementCollections}}
     {{#paper-data-table class='reimbursements layout-row' as |table|}}
       {{#table.head as |head|}}
         {{#head.column}}Person{{/head.column}}
@@ -11,7 +11,7 @@
         {{head.column}}
       {{/table.head}}
       {{#table.body as |body|}}
-        {{#each monthReimbursementCollections as |monthReimbursementCollection|}}
+        {{#each this.monthReimbursementCollections as |monthReimbursementCollection|}}
           {{#body.row as |row|}}
             {{#row.cell class='month' colspan=4}}{{monthReimbursementCollection.monthName}}{{/row.cell}}
             {{#row.cell}}
@@ -54,10 +54,10 @@
       {{/table.body}}
     {{/paper-data-table}}
   {{/if}}
-  {{#paper-switch class='processed layout-row' value=showProcessed onChange=(action (mut showProcessed))}}
+  {{#paper-switch class='processed layout-row' value=this.showProcessed onChange=(action (mut this.showProcessed))}}
     Show processed reimbursements
   {{/paper-switch}}
-  {{#if showProcessed}}
+  {{#if this.showProcessed}}
     {{#paper-data-table class='layout-row' as |table|}}
       {{#table.head as |head|}}
         {{#head.column}}Date{{/head.column}}
@@ -67,7 +67,7 @@
         {{#head.column}}Donation?{{/head.column}}
       {{/table.head}}
       {{#table.body as |body|}}
-        {{#each processedReimbursements as |reimbursement|}}
+        {{#each this.processedReimbursements as |reimbursement|}}
           {{#body.row class='reimbursement' as |row|}}
             {{#row.cell class='date'}}{{moment-format reimbursement.insertedAt 'YYYY-MM-DD'}}{{/row.cell}}
             {{#row.cell class='name'}}{{reimbursement.person.name}}{{/row.cell}}
@@ -88,8 +88,8 @@
     {{/paper-data-table}}
   {{/if}}
 {{/paper-content}}
-{{#if editingReimbursement}}
-  {{reimbursement-form reimbursement=editingReimbursement
+{{#if this.editingReimbursement}}
+  {{reimbursement-form reimbursement=this.editingReimbursement
                        cancel=(action 'cancel')
                        save=(action 'submit')}}
 {{/if}}

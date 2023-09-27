@@ -1,22 +1,22 @@
 {{#paper-dialog clickOutsideToClose=true
-                onClose=cancel}}
+                onClose=this.cancel}}
 
   {{#paper-dialog-content}}
-    <h2 class='md-title'>{{if reimbursement.isNew 'Create' 'Edit'}} a reimbursement</h2>
-    {{#paper-form onSubmit=save as |form|}}
+    <h2 class='md-title'>{{if this.reimbursement.isNew 'Create' 'Edit'}} a reimbursement</h2>
+    {{#paper-form onSubmit=this.save as |form|}}
       <div class='layout layout-sm-column'>
-        {{form.input class='amount' label='Amount' type='number' autofocus=true value=reimbursement.amountDollars onChange=(action (mut reimbursement.amountDollars))}}
+        {{form.input class='amount' label='Amount' type='number' autofocus=true value=this.reimbursement.amountDollars onChange=(action (mut this.reimbursement.amountDollars))}}
       </div>
 
       <div class='layout layout-sm-column'>
-        {{#paper-checkbox value=reimbursement.donation onChange=(action (mut reimbursement.donation))}}Donation?{{/paper-checkbox}}
+        {{#paper-checkbox value=this.reimbursement.donation onChange=(action (mut this.reimbursement.donation))}}Donation?{{/paper-checkbox}}
       </div>
     {{/paper-form}}
   {{/paper-dialog-content}}
 
   {{#paper-dialog-actions class='layout-row'}}
-    {{#paper-button class='cancel' onClick=cancel}}Cancel{{/paper-button}}
-    {{#paper-button class='submit' primary=true onClick=save}}Save{{/paper-button}}
+    {{#paper-button class='cancel' onClick=this.cancel}}Cancel{{/paper-button}}
+    {{#paper-button class='submit' primary=true onClick=this.save}}Save{{/paper-button}}
   {{/paper-dialog-actions}}
 
 {{/paper-dialog}}

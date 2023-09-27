@@ -7,9 +7,9 @@
   {{#paper-form onSubmit=(action 'submit') as |form|}}
     {{#paper-dialog-content}}
       <div class='layout layout-row'>
-        {{form.input class='email' type='email' label='Email' autofocus=true value=email onChange=(action (mut email))}}
+        {{form.input class='email' type='email' label='Email' autofocus=true value=this.email onChange=(action (mut this.email))}}
       </div>
-      {{#if error}}
+      {{#if this.error}}
         <div class='error'>FIXME</div>
       {{/if}}
     {{/paper-dialog-content}}

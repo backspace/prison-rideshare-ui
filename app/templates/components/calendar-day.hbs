@@ -1,5 +1,5 @@
-<div class='day'>{{day.number}}</div>
+<div class='day'>{{this.day.number}}</div>
 
-{{#each daySlots as |slot|}}
-  {{calendar-slot slot=slot person=person count=count setViewingSlot=setViewingSlot}}
+{{#each this.daySlots as |slot|}}
+  {{calendar-slot slot=slot person=this.person count=this.count setViewingSlot=this.setViewingSlot}}
 {{/each}}

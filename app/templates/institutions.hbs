@@ -11,7 +11,7 @@
     {{head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
-    {{#each (sort-by table.sortDesc model) as |institution|}}
+    {{#each (sort-by table.sortDesc this.model) as |institution|}}
       {{#unless institution.isNew}}
         {{#body.row class='institution' as |row|}}
           {{#row.cell class='name'}}{{institution.name}}{{/row.cell}}
@@ -31,20 +31,20 @@
   {{/table.body}}
 {{/paper-data-table}}
 
-{{#if editingInstitution}}
+{{#if this.editingInstitution}}
   {{#paper-dialog clickOutsideToClose=true
                   onClose=(action 'cancelInstitution')}}
 
     {{#paper-dialog-content}}
-      <h2 class='md-title'>{{if editingInstitution.isNew 'New' 'Edit'}} institution</h2>
-      {{#paper-form onSubmit=saveInstitution as |form|}}
+      <h2 class='md-title'>{{if this.editingInstitution.isNew 'New' 'Edit'}} institution</h2>
+      {{#paper-form onSubmit=this.saveInstitution as |form|}}
         <div class='layout layout-sm-column'>
-          {{form.input class='name' label='Name' autofocus=true value=editingInstitution.name onChange=(action (mut editingInstitution.name)) errors=editingInstitution.validationErrors.name isTouched=(readonly editingInstitution.validationErrors.name.length)}}
+          {{form.input class='name' label='Name' autofocus=true value=this.editingInstitution.name onChange=(action (mut this.editingInstitution.name)) errors=this.editingInstitution.validationErrors.name isTouched=(readonly this.editingInstitution.validationErrors.name.length)}}
         </div>
         <div class='layout layout-sm-column'>
           {{#paper-checkbox
-            value=editingInstitution.far
-            onChange=(action (mut editingInstitution.far))}}
+            value=this.editingInstitution.far
+            onChange=(action (mut this.editingInstitution.far))}}
             Far?
           {{/paper-checkbox}}
         </div>

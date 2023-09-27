@@ -7,12 +7,12 @@
   {{#paper-form onSubmit=(action 'submit') as |form|}}
     {{#paper-dialog-content}}
       <div class='layout layout-row'>
-        {{form.input class='password' type='password' label='Password' autofocus=true value=password onChange=(action (mut password))}}
+        {{form.input class='password' type='password' label='Password' autofocus=true value=this.password onChange=(action (mut this.password))}}
       </div>
       <div class='layout layout-row'>
-        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=passwordConfirmation onChange=(action (mut passwordConfirmation))}}
+        {{form.input class='password-confirmation' type='password' label='Password confirmation' value=this.passwordConfirmation onChange=(action (mut this.passwordConfirmation))}}
       </div>
-      {{#if error}}
+      {{#if this.error}}
         <div class='error'>FIXME</div>
       {{/if}}
     {{/paper-dialog-content}}

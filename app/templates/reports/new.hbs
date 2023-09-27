@@ -1,21 +1,21 @@
 {{toolbar-header title='Record ride details'}}
 
 {{#paper-content class='layout-column'}}
-  {{#if session.isAuthenticated}}
+  {{#if this.session.isAuthenticated}}
     {{#paper-card class='no-session' as |card|}}
       {{#card.content}}
         The ability to submit reports while logged in is indefinitely unavailable for annoying technical reasons. Please use another browser or a private/incognito window to submit your reports in the interim. ☹️
       {{/card.content}}
     {{/paper-card}}
   {{else}}
-    {{#if model}}
+    {{#if this.model}}
       <div class='form-container'>
         {{#paper-form onSubmit=(action 'submit') as |form|}}
           <div class='layout layout-sm-column'>
             {{#paper-radio-group
-              groupValue=(readonly editingRide)
+              groupValue=(readonly this.editingRide)
               onChange=(action 'setRide') as |group|}}
-              {{#each (sort-by 'start' model) as |ride|}}
+              {{#each (sort-by 'start' this.model) as |ride|}}
                 {{#group.radio value=ride}}
                   {{#if ride.initials}}{{ride.initials}}: {{/if}}
                   {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{ride.institution.name}}
@@ -25,21 +25,21 @@
             {{/paper-radio-group}}
           </div>
 
-          {{#if editingRide}}
+          {{#if this.editingRide}}
             <div class='layout-column'>
               {{form.input class='distance'
                           type='number'
                           label='Distance in kilometres'
-                          value=editingRide.distance
-                          errors=editingRide.validationErrors.distance
-                          isTouched=(readonly editingRide.validationErrors.distance.length)
-                          onChange=(action (mut editingRide.distance))}}
+                          value=this.editingRide.distance
+                          errors=this.editingRide.validationErrors.distance
+                          isTouched=(readonly this.editingRide.validationErrors.distance.length)
+                          onChange=(action (mut this.editingRide.distance))}}
             </div>
-            {{#if editingRide.donatable}}
+            {{#if this.editingRide.donatable}}
               <div class='layout layout-sm-column'>
                 {{#paper-checkbox
-                  value=editingRide.donation
-                  onChange=(action (mut editingRide.donation))}}
+                  value=this.editingRide.donation
+                  onChange=(action (mut this.editingRide.donation))}}
                   Donate your gas reimbursement
                 {{/paper-checkbox}}
               </div>
@@ -48,24 +48,24 @@
               {{form.input class='food-expenses'
                           type='number'
                           label='Food expenses if wanting reimbursement'
-                          value=editingRide.foodExpensesDollars
-                          onChange=(action (mut editingRide.foodExpensesDollars))}}
+                          value=this.editingRide.foodExpensesDollars
+                          onChange=(action (mut this.editingRide.foodExpensesDollars))}}
             </div>
-            {{#if editingRide.overridable}}
+            {{#if this.editingRide.overridable}}
               <div class='layout-column'>
                 {{form.input class='car-expenses'
                             type='number'
                             label='Car expenses'
-                            value=editingRide.carExpensesDollars
-                            onChange=(action (mut editingRide.carExpensesDollars))}}
+                            value=this.editingRide.carExpensesDollars
+                            onChange=(action (mut this.editingRide.carExpensesDollars))}}
               </div>
             {{/if}}
             <div class='layout-column'>
               {{#form.input class='report-notes'
                           textarea=true
                           label='Notes'
-                          value=editingRide.reportNotes
-                          onChange=(action (mut editingRide.reportNotes)) as |textHelper|}}
+                          value=this.editingRide.reportNotes
+                          onChange=(action (mut this.editingRide.reportNotes)) as |textHelper|}}
                 {{#unless textHelper.hasValue}}
                   <div class='hint'>Anything unusual, like paying the driver for gas instead of car owner.</div>
                 {{/unless}}

@@ -16,7 +16,7 @@
       {{#head.column}}Meta{{/head.column}}
       {{#head.column}}Content{{/head.column}}
       {{#head.column}}
-        {{#if (filter-by 'unread' model)}}
+        {{#if (filter-by 'unread' this.model)}}
           {{#paper-button
             aria-label='Mark all read'
             title='Mark all read'
@@ -29,7 +29,7 @@
       {{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
-      {{#each (sort-by 'insertedAt:desc' model) as |post|}}
+      {{#each (sort-by 'insertedAt:desc' this.model) as |post|}}
         {{#unless post.isNew}}
           {{#body.row as |row|}}
             {{#row.cell class='meta'}}
@@ -64,7 +64,7 @@
                   Mark unread{{paper-icon 'autorenew'}}
                 {{/paper-button}}
               {{/if}}
-              {{#if (eq session.currentUser.id post.poster.id)}}
+              {{#if (eq this.session.currentUser.id post.poster.id)}}
                 {{#paper-button
                   iconButton=true
                   aria-label='Edit post'
@@ -74,7 +74,7 @@
                 }}
                   {{paper-icon 'mode edit'}}
                 {{/paper-button}}
-                {{#if (eq deletingPost post)}}
+                {{#if (eq this.deletingPost post)}}
                   Delete this post?
                   {{#paper-button
                     class='delete-confirm'
@@ -89,7 +89,7 @@
                     class='delete-cancel'
                     aria-label='Don’t delete report'
                     title='Don’t delete report'
-                    onClick=(action (mut deletingPost))
+                    onClick=(action (mut this.deletingPost))
                   }}
                     No
                   {{/paper-button}}
@@ -99,7 +99,7 @@
                     aria-label='Delete post'
                     title='Delete post'
                     class='delete'
-                    onClick=(action (mut deletingPost) post)
+                    onClick=(action (mut this.deletingPost) post)
                   }}
                     {{paper-icon 'delete'}}
                   {{/paper-button}}
@@ -113,29 +113,29 @@
   {{/paper-data-table}}
 {{/paper-content}}
 
-{{#if editingPost}}
+{{#if this.editingPost}}
   {{#paper-dialog
     clickOutsideToClose=true
     fullscreen=true
     onClose=(action 'cancelPost')
   }}
-    {{#paper-form onSubmit=savePost}}
+    {{#paper-form onSubmit=this.savePost}}
       {{#paper-dialog-content}}
         <h2 class='md-title'>
-          {{if editingPost.isNew 'New' 'Edit'}}
+          {{if this.editingPost.isNew 'New' 'Edit'}}
           post
         </h2>
         <div class='layout layout-sm-column content'>
           {{#mobiledoc-editor
-            mobiledoc=editingPost.bodyJson
+            mobiledoc=this.editingPost.bodyJson
             autofocus=true
-            on-change=(action (mut editingPost.bodyJson)) as |editor|
+            on-change=(action (mut this.editingPost.bodyJson)) as |editor|
           }}
             {{mobiledoc-toolbar editor=editor}}
           {{/mobiledoc-editor}}
-          {{#if editingPost.validationErrors.body}}
+          {{#if this.editingPost.validationErrors.body}}
             <div class='md-input-messages-animation md-auto-hide'>
-              {{#each editingPost.validationErrors.body as |error|}}
+              {{#each this.editingPost.validationErrors.body as |error|}}
                 <div
                   class='paper-input-error ng-enter ng-enter-active md-input-message-animation'
                 >

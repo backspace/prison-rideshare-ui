@@ -5,11 +5,12 @@
 
 {{#paper-sidenav-container class='site-nav-container'}}
   {{#paper-sidenav lockedOpen='gt-sm'
-    open=sidebar.open onToggle=(action (mut sidebar.open))}}
+    open=this.sidebar.open
+    onToggle=(action (mut this.sidebar.open))}}
 
     {{#paper-content}}
       {{#paper-list}}
-        {{#if session.currentUser.admin}}
+        {{#if this.session.currentUser.admin}}
           {{#paper-item}}
             {{#link-to 'drivers'}}<span>Drivers</span>{{/link-to}}
           {{/paper-item}}
@@ -23,7 +24,7 @@
             {{#link-to 'rides'}}
               <span class='rides'>
                 <span>Rides</span>
-                {{#if ridesBadgeCount}}<span class='count' title='How many rides require attention'>{{ridesBadgeCount}}</span>{{/if}}
+                {{#if this.ridesBadgeCount}}<span class='count' title='How many rides require attention'>{{this.ridesBadgeCount}}</span>{{/if}}
               </span>
             {{/link-to}}
           {{/paper-item}}
@@ -43,13 +44,13 @@
         {{#paper-item}}
           {{#link-to 'gas-prices'}}<span>Gas prices</span>{{/link-to}}
         {{/paper-item}}
-        {{#if session.isAuthenticated}}
-          {{#if session.currentUser.admin}}
+        {{#if this.session.isAuthenticated}}
+          {{#if this.session.currentUser.admin}}
             {{#paper-item}}
               {{#link-to 'log'}}
                 <span class='log'>
                   <span>Log</span>
-                  {{#if sidebar.unreadCount}}<span class='count' title='How many unread posts you have'>{{sidebar.unreadCount}}</span>{{/if}}
+                  {{#if this.sidebar.unreadCount}}<span class='count' title='How many unread posts you have'>{{this.sidebar.unreadCount}}</span>{{/if}}
                 </span>
               {{/link-to}}
             {{/paper-item}}
@@ -57,14 +58,14 @@
               {{#link-to 'users'}}
                 <span class='users'>
                   <span>Users</span>
-                  {{#if sidebar.userCount}}<span class='count' title='How many users are connected'>{{sidebar.userCount}}</span>{{/if}}
+                  {{#if this.sidebar.userCount}}<span class='count' title='How many users are connected'>{{this.sidebar.userCount}}</span>{{/if}}
                 </span>
               {{/link-to}}
             {{/paper-item}}
             {{paper-divider}}
           {{/if}}
           {{#paper-item onClick=(action 'logout') class='session'}}
-            Log out {{session.currentUser.email}}
+            Log out {{this.session.currentUser.email}}
           {{/paper-item}}
         {{else}}
           {{#paper-item}}

@@ -1,47 +1,47 @@
-{{#power-calendar center=monthMoment daysComponent='calendar-days' as |calendar|}}
+{{#power-calendar center=this.monthMoment daysComponent='calendar-days' as |calendar|}}
   {{#paper-card class='person-card' as |card|}}
     {{#card.content}}
       <header>
-        <div class='person-session'>Logged in as {{person.email}}</div>
-        {{#if showPerson}}
+        <div class='person-session'>Logged in as {{this.person.email}}</div>
+        {{#if this.showPerson}}
           <div>
-            {{#paper-button class='cancel' onClick='cancel' disabled=savePerson.isRunning}}Cancel{{/paper-button}}
-            {{#paper-button class='submit' primary=person.hasDirtyAttributes raised=person.hasDirtyAttributes onClick=(perform savePerson) disabled=savePerson.isRunning}}
-              {{if savePerson.isRunning '…' 'Save'}}
+            {{#paper-button class='cancel' onClick='cancel' disabled=this.savePerson.isRunning}}Cancel{{/paper-button}}
+            {{#paper-button class='submit' primary=this.person.hasDirtyAttributes raised=this.person.hasDirtyAttributes onClick=(perform this.savePerson) disabled=this.savePerson.isRunning}}
+              {{if this.savePerson.isRunning '…' 'Save'}}
             {{/paper-button}}
           </div>
         {{else}}
-          {{paper-button class='toggle' label='Edit communication details' onClick=(action (mut showPerson) (not showPerson))}}
+          {{paper-button class='toggle' label='Edit communication details' onClick=(action (mut this.showPerson) (not this.showPerson))}}
         {{/if}}
       </header>
-      {{#if showPerson}}
-        {{#paper-form onSubmit=save as |form|}}
+      {{#if this.showPerson}}
+        {{#paper-form onSubmit=this.save as |form|}}
           {{#paper-radio-group
-            groupValue=(readonly person.medium)
-            onChange=(action (mut person.medium)) as |group|}}
+            groupValue=(readonly this.person.medium)
+            onChange=(action (mut this.person.medium)) as |group|}}
             <div class='layout-row'>
               <div class='layout-column flex-50'>
-                {{form.input class='name' label='Name' autofocus=true value=person.name onChange=(action (mut person.name)) errors=person.validationErrors.name isTouched=(readonly person.validationErrors.name.length)}}
+                {{form.input class='name' label='Name' autofocus=true value=this.person.name onChange=(action (mut this.person.name)) errors=this.person.validationErrors.name isTouched=(readonly this.person.validationErrors.name.length)}}
               </div>
               <div class='layout-column flex-50'>
-                {{#paper-switch value=person.active onChange=(action (mut person.active) (not person.active))}}Available for rides{{/paper-switch}}
+                {{#paper-switch value=this.person.active onChange=(action (mut this.person.active) (not this.person.active))}}Available for rides{{/paper-switch}}
               </div>
             </div>
             <div class='layout-row'>
               <div class='layout-column flex-50'>
                 <div class='layout-row text-radio mobile'>
-                  {{form.input type='mobile' label='Mobile' value=person.mobile onChange=(action (mut person.mobile)) errors=person.validationErrors.mobile isTouched=(readonly person.validationErrors.mobile.length)}}
+                  {{form.input type='mobile' label='Mobile' value=this.person.mobile onChange=(action (mut this.person.mobile)) errors=this.person.validationErrors.mobile isTouched=(readonly this.person.validationErrors.mobile.length)}}
                   {{#group.radio value='mobile'}}preferred{{/group.radio}}
                 </div>
                 <div class='layout-row text-radio landline'>
-                  {{form.input type='mobile' label='Landline' value=person.landline onChange=(action (mut person.landline)) errors=person.validationErrors.landline isTouched=(readonly person.validationErrors.landline.length)}}
+                  {{form.input type='mobile' label='Landline' value=this.person.landline onChange=(action (mut this.person.landline)) errors=this.person.validationErrors.landline isTouched=(readonly this.person.validationErrors.landline.length)}}
                   {{#group.radio value='landline'}}preferred{{/group.radio}}
                 </div>
               </div>
               <div class='layout-column email flex-50'>
                 <div class='layout-row text-radio'>
                   {{#paper-tooltip}}Email us if you need to change this{{/paper-tooltip}}
-                  {{form.input type='email' label='Email' disabled=true value=person.email onChange=(action (mut person.email)) errors=person.validationErrors.email isTouched=(readonly person.validationErrors.email.length)}}
+                  {{form.input type='email' label='Email' disabled=true value=this.person.email onChange=(action (mut this.person.email)) errors=this.person.validationErrors.email isTouched=(readonly this.person.validationErrors.email.length)}}
                   {{#group.radio value='email'}}preferred{{/group.radio}}
                 </div>
               </div>
@@ -51,8 +51,8 @@
                 {{#form.input class='address'
                              textarea=true
                              label='Mailing address'
-                             value=person.address
-                             onChange=(action (mut person.address))}}
+                             value=this.person.address
+                             onChange=(action (mut this.person.address))}}
                   <div class='hint'>To send you our quarterly newsletter and very occasionally, invitations or other such communications</div>
                 {{/form.input}}
               </div>
@@ -62,8 +62,8 @@
                 {{#form.input class='self-notes'
                              textarea=true
                              label='Notes'
-                             value=person.selfNotes
-                             onChange=(action (mut person.selfNotes))}}
+                             value=this.person.selfNotes
+                             onChange=(action (mut this.person.selfNotes))}}
                   <div class='hint'>Vehicle capacity, institutions you don’t want to drive to, etc</div>
                 {{/form.input}}
               </div>
@@ -79,13 +79,13 @@
       <p>Let us know in advance when you can take people to visit their loved ones. Click a time slot below to commit. If you can’t commit anymore, click the slot again.</p>
       <p>Use the button above to access a form to change your communication preferences.</p>
 
-      <p class='subscription'>You can subscribe to a live-updating calendar that shows what times you’ve committed to as well as rides assigned to you. On Apple platforms, tap <a href={{webcalSubscriptionUrl}}>here</a> to subscribe; on other platforms, you’ll have to copy <a href={{httpSubscriptionUrl}}>this URL</a> into a calendar subscription field. Please be careful with these links, as they show contact information for riders. If they’re ever exposed, let us know and we can change the secret token.</p>
+      <p class='subscription'>You can subscribe to a live-updating calendar that shows what times you’ve committed to as well as rides assigned to you. On Apple platforms, tap <a href={{this.webcalSubscriptionUrl}}>here</a> to subscribe; on other platforms, you’ll have to copy <a href={{this.httpSubscriptionUrl}}>this URL</a> into a calendar subscription field. Please be careful with these links, as they show contact information for riders. If they’re ever exposed, let us know and we can change the secret token.</p>
     {{/card.content}}
   {{/paper-card}}
 
   {{calendar.nav}}
 
   {{#calendar.days showDaysAround=false as |day|}}
-    {{calendar-day day=day slots=slots person=person}}
+    {{calendar-day day=day slots=this.slots person=this.person}}
   {{/calendar.days}}
 {{/power-calendar}}

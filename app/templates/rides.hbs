@@ -10,26 +10,26 @@
     type='search'
     icon='search'
     placeholder='Institution, driver, visitor, address'
-    value=search
-    onChange=(action (mut search)) as |input|}}
+    value=this.search
+    onChange=(action (mut this.search)) as |input|}}
     {{#if input.hasValue}}
       {{#paper-button icon=true aria-label='Clear search' title='Clear search' onClick=(action 'clearSearch')}}
         {{paper-icon 'clear' size=14}}
       {{/paper-button}}
     {{/if}}
   {{/paper-input}}
-  {{#paper-switch class='completed' value=showCompleted onChange=(action (mut showCompleted))}}
+  {{#paper-switch class='completed' value=this.showCompleted onChange=(action (mut this.showCompleted))}}
     Reported-on
   {{/paper-switch}}
-  {{#paper-switch class='cancelled' value=showCancelled onChange=(action (mut showCancelled))}}
+  {{#paper-switch class='cancelled' value=this.showCancelled onChange=(action (mut this.showCancelled))}}
     Cancelled
   {{/paper-switch}}
 </div>
 
 {{#paper-content class='layout-column flex no-overflow-scroll'}}
-  {{#paper-data-table sortProp=sortProp sortDir=sortDir class='rides' as |table|}}
+  {{#paper-data-table sortProp=this.sortProp sortDir=this.sortDir class='rides' as |table|}}
     {{#table.head as |head|}}
-      {{#if showCreation}}
+      {{#if this.showCreation}}
         {{#head.column}}Created{{/head.column}}
       {{/if}}
       {{#head.column sortProp='start' class='date'}}Date{{/head.column}}
@@ -40,10 +40,10 @@
       {{#head.column}}{{/head.column}}
     {{/table.head}}
     {{#table.body as |body|}}
-      {{#each (filter-by 'id' (sort-by table.sortDesc filteredRides)) as |ride|}}
-        {{ride-row body=body ride=ride showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+      {{#each (filter-by 'id' (sort-by table.sortDesc this.filteredRides)) as |ride|}}
+        {{ride-row body=body ride=ride showCreation=this.showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=this.people rideToCombine=this.rideToCombine}}
         {{#each ride.children as |child|}}
-          {{ride-row body=body ride=child combined=true showCreation=showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=people rideToCombine=rideToCombine}}
+          {{ride-row body=body ride=child combined=true showCreation=this.showCreation editCancellation=(action 'editCancellation') editRide=(action 'editRide') combineRide=(action 'combineRide') uncombineRide=(action 'uncombineRide') people=this.people rideToCombine=this.rideToCombine}}
         {{/each}}
       {{else}}
         {{#body.row class='no-matches' as |row|}}
@@ -57,15 +57,15 @@
   {{/paper-data-table}}
 
 
-  {{#if editingRide}}
-    {{ride-form ride=editingRide
-                cancel=(action 'cancel' editingRide)
-                save=(action 'submit' editingRide)}}
+  {{#if this.editingRide}}
+    {{ride-form ride=this.editingRide
+                cancel=(action 'cancel' this.editingRide)
+                save=(action 'submit' this.editingRide)}}
   {{/if}}
 
-  {{#if editingCancellation}}
-    {{cancellation-form ride=editingCancellation
-                        save=(action 'submitCancellation' editingCancellation)
-                        cancel=(action 'cancelCancellation' editingCancellation)}}
+  {{#if this.editingCancellation}}
+    {{cancellation-form ride=this.editingCancellation
+                        save=(action 'submitCancellation' this.editingCancellation)
+                        cancel=(action 'cancelCancellation' this.editingCancellation)}}
   {{/if}}
 {{/paper-content}}

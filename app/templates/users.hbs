@@ -8,7 +8,7 @@
     {{#head.column}}Admin?{{/head.column}}
   {{/table.head}}
   {{#table.body as |body|}}
-    {{#each model as |user|}}
+    {{#each this.model as |user|}}
       {{#body.row class='user' as |row|}}
         {{#row.cell class='email'}}{{user.email}}{{/row.cell}}
         {{#row.cell class='last-seen'}}{{moment-format user.lastSeenAt 'MMM D YYYY'}}{{/row.cell}}
@@ -18,7 +18,7 @@
           {{/if}}
         {{/row.cell}}
         {{#row.cell}}
-          {{paper-checkbox value=user.admin disabled=(eq user session.currentUser) onChange=(action 'updateUserAdmin' user)}}
+          {{paper-checkbox value=user.admin disabled=(eq user this.session.currentUser) onChange=(action 'updateUserAdmin' user)}}
         {{/row.cell}}
       {{/body.row}}
     {{/each}}

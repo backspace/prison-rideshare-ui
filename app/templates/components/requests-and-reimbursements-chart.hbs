@@ -1,10 +1,10 @@
-{{high-charts content=data chartOptions=options theme=theme callback=(action 'afterRenderCallback')}}
+{{high-charts content=this.data chartOptions=this.options theme=this.theme callback=(action 'afterRenderCallback')}}
 
-{{#if rendered}}
+{{#if this.rendered}}
   {{#ember-wormhole to='grouping-weeks'}}
-    {{paper-button label='Weeks' primary=(eq grouping 'weeks') onClick=(action (mut grouping) 'weeks')}}
+    {{paper-button label='Weeks' primary=(eq this.grouping 'weeks') onClick=(action (mut this.grouping) 'weeks')}}
   {{/ember-wormhole}}
   {{#ember-wormhole to='grouping-months'}}
-    {{paper-button label='Months' primary=(eq grouping 'months') onClick=(action (mut grouping) 'months')}}
+    {{paper-button label='Months' primary=(eq this.grouping 'months') onClick=(action (mut this.grouping) 'months')}}
   {{/ember-wormhole}}
 {{/if}}
