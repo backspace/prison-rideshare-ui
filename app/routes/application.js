@@ -1,29 +1,15 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import Ember from 'ember';
 
-import ApplicationRouteMixin from 'ember-simple-auth/mixins/application-route-mixin';
-
-export default Route.extend(ApplicationRouteMixin, {
+export default Route.extend({
   session: service(),
   account: service(),
   userSocket: service(),
   toasts: service(),
   overlaps: service(),
-  poll: service(),
 
   beforeModel() {
     return this._loadCurrentUser();
-  },
-
-  afterModel() {
-    this._super(...arguments);
-    if (!Ember.testing) {
-      this.get('poll').start({
-        idle_timeout: 10000,
-        interval: 10000,
-      });
-    }
   },
 
   title(tokens) {

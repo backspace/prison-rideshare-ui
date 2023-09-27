@@ -4,9 +4,11 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import Mirage from 'ember-cli-mirage';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { percySnapshot } from 'ember-percy';
+import { pollTaskFor } from 'ember-lifeline/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { POLL_TOKEN } from 'prison-rideshare-ui/routes/calendar';
 
 module('Acceptance | calendar', function(hooks) {
   setupApplicationTest(hooks);
@@ -157,6 +159,22 @@ module('Acceptance | calendar', function(hooks) {
       commitment.slotId,
       this.toCommitSlot.id,
       'expected the server to have the newly-created commitment'
+    );
+  });
+
+  test('slots are polled so remote commitments show up', async function(assert) {
+    await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
+
+    assert.ok(page.days[9].slots[1].isVisible);
+
+    this.toCommitSlot.createCommitment();
+    this.toCommitSlot.createCommitment();
+
+    await pollTaskFor(POLL_TOKEN);
+
+    assert.ok(
+      page.days[9].slots[1].isHidden,
+      'expected the remotely-filled slot to have disappeared'
     );
   });
 

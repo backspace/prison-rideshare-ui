@@ -16,8 +16,17 @@ export default ApplicationAdapter.extend({
         Authorization: `Person Bearer ${personToken}`,
       };
     } else {
-      return {};
+      // FIXME this is duplicated from application adapter
+      let { access_token } = this.get('session.data.authenticated');
+
+      if (access_token) {
+        return {
+          Authorization: `Bearer ${access_token}`,
+        };
+      }
     }
+
+    return {};
   },
 
   urlForUpdateRecord(id, modelName, snapshot) {

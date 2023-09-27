@@ -173,7 +173,7 @@ module('Acceptance | log', function(hooks) {
 
 function stringToMobiledoc(string) {
   return JSON.stringify({
-    version: '0.3.1',
+    version: '0.3.2',
     atoms: [],
     cards: [],
     markups: [],

@@ -1,16 +1,17 @@
 import { inject as service } from '@ember/service';
 import EmberRouter from '@ember/routing/router';
-import config from './config/environment';
+import config from 'prison-rideshare-ui/config/environment';
 
-const Router = EmberRouter.extend({
-  location: config.locationType,
-  rootURL: config.rootURL,
-  headData: service(),
+export default class Router extends EmberRouter {
+  @service headData;
+
+  location = config.locationType;
+  rootURL = config.rootURL;
 
   setTitle(title) {
     this.get('headData').set('title', title);
-  },
-});
+  }
+}
 
 Router.map(function() {
   this.route('institutions');
@@ -41,5 +42,3 @@ Router.map(function() {
 
   this.route('not-found', { path: '/*wildcard' });
 });
-
-export default Router;

@@ -121,7 +121,7 @@ export default create({
       select: {
         scope: 'md-select',
         type: triggerable('keydown'),
-        enter: triggerable('keydown', '.ember-power-select-options', {
+        enter: triggerable('keydown', '.md-power-select-options', {
           testContainer: 'html',
           resetScope: true,
           eventProperties: { keyCode: 13 },
