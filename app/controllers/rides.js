@@ -41,11 +41,11 @@ export default Controller.extend({
     'search',
     'sortDir',
     function() {
-      const showCompleted = this.get('showCompleted'),
-        showCancelled = this.get('showCancelled');
-      const search = this.get('search');
+      const showCompleted = this.showCompleted,
+        showCancelled = this.showCancelled;
+      const search = this.search;
 
-      let rides = this.get('model').rejectBy('isCombined');
+      let rides = this.model.rejectBy('isCombined');
 
       if (!showCompleted) {
         rides = rides.filterBy('complete', false);
@@ -62,7 +62,7 @@ export default Controller.extend({
       rides.setEach('isDivider', false);
 
       const sorted = rides.sortBy('start');
-      const sortDir = this.get('sortDir');
+      const sortDir = this.sortDir;
       const now = new Date();
 
       if (sortDir === 'asc') {
@@ -112,10 +112,10 @@ export default Controller.extend({
         .save()
         .then(() => this.set('editingRide', undefined))
         .catch(() => {
-          this.get('toasts').show('There was an error saving this ride');
+          this.toasts.show('There was an error saving this ride');
           proxy.setProperties(buffer);
         })
-        .then(() => this.get('overlapsService').fetch());
+        .then(() => this.overlapsService.fetch());
     },
 
     cancel() {
@@ -127,7 +127,7 @@ export default Controller.extend({
         model.rollbackAttributes();
       }
 
-      this.get('editingRide').discardBufferedChanges();
+      this.editingRide.discardBufferedChanges();
       this.set('editingRide', undefined);
     },
 
@@ -153,20 +153,20 @@ export default Controller.extend({
         .save()
         .then(() => this.set('editingCancellation'), undefined)
         .catch(() => {
-          this.get('toasts').show('There was an error cancelling this ride');
+          this.toasts.show('There was an error cancelling this ride');
           proxy.content.rollbackAttributes();
           proxy.setProperties(buffer);
         });
     },
 
     cancelCancellation() {
-      this.get('editingCancellation').discardBufferedChanges();
+      this.editingCancellation.discardBufferedChanges();
       this.set('editingCancellation', undefined);
     },
 
     combineRide(ride) {
-      if (this.get('rideToCombine')) {
-        const rideToCombine = this.get('rideToCombine');
+      if (this.rideToCombine) {
+        const rideToCombine = this.rideToCombine;
 
         if (rideToCombine.id == ride.id) {
           this.set('rideToCombine', undefined);

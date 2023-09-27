@@ -27,20 +27,18 @@ export default Component.extend({
 
   actions: {
     copied() {
-      this.get('toasts').show('Copied address');
+      this.toasts.show('Copied address');
     },
 
     toggleActiveness(active) {
       this.set('person.active', active);
-      this.get('person')
-        .save()
-        .catch(() => {
-          this.get('toasts').show(
-            `There was an error saving the active status of ${this.get(
-              'person.name'
-            )}`
-          );
-        });
+      this.person.save().catch(() => {
+        this.toasts.show(
+          `There was an error saving the active status of ${this.get(
+            'person.name'
+          )}`
+        );
+      });
     },
   },
 });

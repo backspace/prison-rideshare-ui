@@ -21,7 +21,7 @@ export default Controller.extend({
     },
 
     savePerson() {
-      const proxy = this.get('editingPerson');
+      const proxy = this.editingPerson;
       proxy.applyBufferedChanges();
       return proxy
         .get('content')

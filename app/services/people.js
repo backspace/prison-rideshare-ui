@@ -7,12 +7,12 @@ export default Service.extend({
   store: service(),
 
   findAll: computed(function() {
-    return this.get('store').findAll('person');
+    return this.store.findAll('person');
   }),
 
   all: computed('findAll.@each.name', function() {
     return DS.PromiseArray.create({
-      promise: this.get('findAll').then(people => people.sortBy('name')),
+      promise: this.findAll.then(people => people.sortBy('name')),
     });
   }),
 

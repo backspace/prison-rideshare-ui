@@ -14,7 +14,7 @@ export default Component.extend({
     'property',
     'ride.{carOwner.id,driver.id}',
     function() {
-      return this.get('ride').get(this.get('property'));
+      return this.ride.get(this.property);
     }
   ),
 
@@ -22,8 +22,8 @@ export default Component.extend({
 
   actions: {
     clear() {
-      const ride = this.get('ride');
-      ride.set(this.get('property'), null);
+      const ride = this.ride;
+      ride.set(this.property, null);
       return ride.save();
     },
   },

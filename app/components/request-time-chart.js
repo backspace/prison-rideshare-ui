@@ -6,9 +6,9 @@ export default Component.extend({
   classNames: ['request-time-chart'],
 
   data: computed('rides.@each.start', 'grouping', function() {
-    const grouping = this.get('grouping');
+    const grouping = this.grouping;
 
-    const data = this.get('rides')
+    const data = this.rides
       .reduce((days, ride) => {
         const start = ride.get('start'),
           end = ride.get('end');

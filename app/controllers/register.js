@@ -9,12 +9,12 @@ export default Controller.extend({
     register(event) {
       event.preventDefault();
 
-      const user = this.get('model');
+      const user = this.model;
 
       return user
         .save()
         .then(() => {
-          return this.get('session').authenticate(
+          return this.session.authenticate(
             'authenticator:application',
             user.get('email'),
             user.get('password')

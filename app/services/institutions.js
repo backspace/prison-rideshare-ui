@@ -5,7 +5,7 @@ export default Service.extend({
   store: service(),
 
   all: computed(function() {
-    return this.get('store')
+    return this.store
       .findAll('institution')
       .then(institutions => institutions.sortBy('name'));
   }),

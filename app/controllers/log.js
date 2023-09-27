@@ -22,7 +22,7 @@ export default Controller.extend({
     },
 
     savePost() {
-      const proxy = this.get('editingPost');
+      const proxy = this.editingPost;
       proxy.applyBufferedChanges();
       return proxy
         .get('content')
@@ -42,7 +42,7 @@ export default Controller.extend({
     },
 
     deletePost() {
-      return this.get('deletingPost').destroyRecord();
+      return this.deletingPost.destroyRecord();
     },
 
     markAllRead() {

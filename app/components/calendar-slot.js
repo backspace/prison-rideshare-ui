@@ -13,13 +13,17 @@ export default Component.extend({
 
   isCommittedTo: reads('commitment'),
 
-  commitment: computed('slot.commitments.@each.person', 'person', function() {
-    const personId = this.get('person.id');
+  commitment: computed(
+    'person.id',
+    'slot.commitments.@each.person',
+    function() {
+      const personId = this.get('person.id');
 
-    return this.get('slot.commitments').find(
-      slot => slot.belongsTo('person').id() == personId
-    );
-  }),
+      return this.get('slot.commitments').find(
+        slot => slot.belongsTo('person').id() == personId
+      );
+    }
+  ),
 
   timespan: computed('slot.{start,end}', function() {
     return formatBriefTimespan(
@@ -30,24 +34,29 @@ export default Component.extend({
   }),
 
   hidden: computed('slot.isNotFull', 'isCommittedTo', function() {
-    return !this.get('slot.isNotFull') && !this.get('isCommittedTo');
+    return !this.get('slot.isNotFull') && !this.isCommittedTo;
   }),
 
-  disabled: computed('slot.{isNotFull,start}', 'toggle.isRunning', function() {
-    const isNotFull = this.get('slot.isNotFull');
-    const start = this.get('slot.start');
-    const toggleIsRunning = this.get('toggle.isRunning');
+  disabled: computed(
+    'isCommittedTo',
+    'slot.{isNotFull,start}',
+    'toggle.isRunning',
+    function() {
+      const isNotFull = this.get('slot.isNotFull');
+      const start = this.get('slot.start');
+      const toggleIsRunning = this.get('toggle.isRunning');
 
-    if (toggleIsRunning) {
-      return true;
-    } else if (start < new Date()) {
-      return true;
-    } else if (!isNotFull) {
-      return !this.get('isCommittedTo');
-    } else {
-      return false;
+      if (toggleIsRunning) {
+        return true;
+      } else if (start < new Date()) {
+        return true;
+      } else if (!isNotFull) {
+        return !this.isCommittedTo;
+      } else {
+        return false;
+      }
     }
-  }),
+  ),
 
   capacity: computed('slot.{count,commitments.length}', function() {
     const dividend = this.get('slot.commitments.length');
@@ -59,36 +68,36 @@ export default Component.extend({
   }),
 
   toggle: task(function*() {
-    if (this.get('isCommittedTo')) {
+    if (this.isCommittedTo) {
       try {
-        yield this.get('commitment').destroyRecord();
+        yield this.commitment.destroyRecord();
 
-        this.get('toasts').show(
+        this.toasts.show(
           `Cancelled your agreement to drive on ${moment(
             this.get('slot.start')
           ).format('MMMM D')}`
         );
       } catch (error) {
         const errorDetail = get(error, 'errors.firstObject.detail');
-        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+        this.toasts.show(errorDetail || 'Couldn’t save your change');
       }
     } else if (this.get('slot.isNotFull')) {
-      const newRecord = this.get('store').createRecord('commitment', {
-        slot: this.get('slot'),
-        person: this.get('person'),
+      const newRecord = this.store.createRecord('commitment', {
+        slot: this.slot,
+        person: this.person,
       });
 
       try {
         yield newRecord.save();
 
-        this.get('toasts').show(
+        this.toasts.show(
           `Thanks for agreeing to drive on ${moment(
             this.get('slot.start')
           ).format('MMMM D')}!`
         );
       } catch (error) {
         const errorDetail = get(error, 'errors.firstObject.detail');
-        this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+        this.toasts.show(errorDetail || 'Couldn’t save your change');
         newRecord.destroyRecord();
       }
     }

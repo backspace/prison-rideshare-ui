@@ -14,16 +14,24 @@ export default DS.Model.extend({
   descendingRides: sort('rides', 'descendingRideSort'),
   descendingRideSort: Object.freeze(['start:desc']),
 
-  ridesWithFoodExpenses: computed('rides.@each.driver', 'person', function() {
-    return this.get('rides').filterBy('driver.id', this.get('person.id'));
-  }),
+  ridesWithFoodExpenses: computed(
+    'person.id',
+    'rides.@each.driver',
+    function() {
+      return this.rides.filterBy('driver.id', this.get('person.id'));
+    }
+  ),
   rideFoodExpenses: mapBy('ridesWithFoodExpenses', 'outstandingFoodExpenses'),
   foodExpenses: sum('rideFoodExpenses'),
   foodExpensesDollars: dollars('foodExpenses'),
 
-  ridesWithCarExpenses: computed('rides.@each.carOwner', 'person', function() {
-    return this.get('rides').filterBy('carOwner.id', this.get('person.id'));
-  }),
+  ridesWithCarExpenses: computed(
+    'person.id',
+    'rides.@each.carOwner',
+    function() {
+      return this.rides.filterBy('carOwner.id', this.get('person.id'));
+    }
+  ),
   rideCarExpenses: mapBy('ridesWithCarExpenses', 'outstandingCarExpenses'),
   carExpenses: sum('rideCarExpenses'),
   carExpensesDollars: dollars('carExpenses'),

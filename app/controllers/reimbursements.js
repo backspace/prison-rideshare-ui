@@ -15,7 +15,7 @@ export default Controller.extend({
   unsortedFilteredReimbursements: computed(
     'reimbursements.@each.processed',
     function() {
-      return this.get('reimbursements').rejectBy('processed');
+      return this.reimbursements.rejectBy('processed');
     }
   ),
   filteredReimbursementsSorting: Object.freeze(['ride.start']),
@@ -36,7 +36,7 @@ export default Controller.extend({
   monthReimbursementCollections: computed(
     'filteredReimbursements.@each.person',
     function() {
-      const reimbursements = this.get('filteredReimbursements');
+      const reimbursements = this.filteredReimbursements;
       const monthNumberStringToMonthName = {};
 
       const monthToPersonIdToReimbursements = reimbursements.reduce(
@@ -154,13 +154,9 @@ const MonthReimbursementCollections = EmberObject.extend({
     'reimbursementCollections',
     'reimbursements'
   ),
-  reimbursementCollectionsWithReimbursements: computed(
-    'reimbursementCollectionsReimbursements.@each.length',
-    function() {
-      return this.get('reimbursementCollections').filterBy(
-        'reimbursements.length'
-      );
-    }
+  reimbursementCollectionsWithReimbursements: computed.filterBy(
+    'reimbursementCollections',
+    'reimbursements.length'
   ),
   reimbursementCollectionsClipboardText: mapBy(
     'reimbursementCollectionsWithReimbursements',
@@ -168,12 +164,12 @@ const MonthReimbursementCollections = EmberObject.extend({
   ),
 
   clipboardText: computed('reimbursementCollectionsClipboardText', function() {
-    return this.get('reimbursementCollectionsClipboardText').join('\n');
+    return this.reimbursementCollectionsClipboardText.join('\n');
   }),
 
   copyIconTitle: computed('clipboardText', function() {
-    return `This will copy the following to the clipboard:\n${this.get(
-      'clipboardText'
-    )}`;
+    return `This will copy the following to the clipboard:\n${
+      this.clipboardText
+    }`;
   }),
 });

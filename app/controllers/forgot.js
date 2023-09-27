@@ -11,9 +11,9 @@ export default Controller.extend({
     submit(event) {
       event.preventDefault();
 
-      let email = this.get('email');
+      let email = this.email;
 
-      let userAdapter = this.get('store').adapterFor('user');
+      let userAdapter = this.store.adapterFor('user');
       let resetUrl = `${userAdapter.buildURL('user')}/reset?email=${email}`;
 
       let query = fetch(resetUrl, {
@@ -21,7 +21,7 @@ export default Controller.extend({
       });
 
       query.then(() => {
-        this.get('toasts').show('Check your email');
+        this.toasts.show('Check your email');
       });
     },
   },

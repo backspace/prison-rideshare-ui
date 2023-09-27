@@ -5,7 +5,7 @@ export default DS.Model.extend({
   name: DS.attr(),
   far: DS.attr('boolean'),
 
-  validationErrors: computed('errors.[]', function() {
+  validationErrors: computed('constructor', 'errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
 
     return Array.from(attributes.keys()).reduce((response, key) => {

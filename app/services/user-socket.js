@@ -45,7 +45,7 @@ export default PhoenixSocket.extend({
   },
 
   _processJoins(keys) {
-    const present = this.get('present');
+    const present = this.present;
     keys
       .map(stringWithPrefix => this._parseUserString(stringWithPrefix))
       .forEach(joinId => {
@@ -56,7 +56,7 @@ export default PhoenixSocket.extend({
   },
 
   _processLeaves(keys) {
-    const present = this.get('present');
+    const present = this.present;
     keys
       .map(stringWithPrefix => this._parseUserString(stringWithPrefix))
       .forEach(leaveId => present.removeObject(leaveId));

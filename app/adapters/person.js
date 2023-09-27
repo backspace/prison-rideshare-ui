@@ -5,12 +5,10 @@ import { inject as service } from '@ember/service';
 export default ApplicationAdapter.extend({
   router: service(),
 
-  onCalendar: computed('router.currentRouteName', function() {
-    return this.get('router.currentRouteName') === 'calendar';
-  }),
+  onCalendar: computed.equal('router.currentRouteName', 'calendar'),
 
   get headers() {
-    if (this.get('onCalendar')) {
+    if (this.onCalendar) {
       const personToken = localStorage.getItem('person-token');
       return {
         Authorization: `Person Bearer ${personToken}`,
@@ -30,7 +28,7 @@ export default ApplicationAdapter.extend({
   },
 
   urlForUpdateRecord(id, modelName, snapshot) {
-    if (this.get('onCalendar')) {
+    if (this.onCalendar) {
       return this._super('me', modelName, snapshot);
     } else {
       return this._super(...arguments);

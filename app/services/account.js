@@ -30,7 +30,7 @@ export default Service.extend({
         )
           .then(raw => raw.json(), reject)
           .then(data => {
-            const currentUser = this.get('store').push(data);
+            const currentUser = this.store.push(data);
             this.set('session.currentUser', currentUser);
             resolve();
           })

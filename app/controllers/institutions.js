@@ -19,7 +19,7 @@ export default Controller.extend({
     },
 
     saveInstitution() {
-      const proxy = this.get('editingInstitution');
+      const proxy = this.editingInstitution;
       proxy.applyBufferedChanges();
       return proxy
         .get('content')

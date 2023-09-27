@@ -22,14 +22,12 @@ export default DS.Model.extend({
   carOwnings: DS.hasMany('ride', { inverse: 'carOwner' }),
 
   lastRide: computed('drivings.@each.start', function() {
-    return this.get('drivings')
-      .sortBy('start')
-      .get('lastObject');
+    return this.drivings.sortBy('start').get('lastObject');
   }),
 
   calendarSecret: DS.attr('string'),
 
-  validationErrors: computed('errors.[]', function() {
+  validationErrors: computed('constructor', 'errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
 
     return Array.from(attributes.keys()).reduce((response, key) => {

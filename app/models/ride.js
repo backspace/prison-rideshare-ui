@@ -36,7 +36,7 @@ export default DS.Model.extend({
   passengers: DS.attr({ defaultValue: 1 }),
   firstTime: DS.attr('boolean'),
 
-  validationErrors: computed('errors.[]', function() {
+  validationErrors: computed('constructor', 'errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
     const attributeKeys = Array.from(attributes.keys());
     attributeKeys.push('institution');
@@ -53,8 +53,8 @@ export default DS.Model.extend({
   insertedAt: DS.attr('date'),
 
   rideTimes: computed('start', 'end', function() {
-    const start = this.get('start');
-    const end = this.get('end');
+    const start = this.start;
+    const end = this.end;
 
     return formatTimespan(start, end);
   }),
@@ -104,8 +104,7 @@ export default DS.Model.extend({
     'reimbursementCarExpensesSum.[]',
     function() {
       return (
-        this.get('reimbursementFoodExpensesSum') +
-        this.get('reimbursementCarExpensesSum')
+        this.reimbursementFoodExpensesSum + this.reimbursementCarExpensesSum
       );
     }
   ),
@@ -116,8 +115,8 @@ export default DS.Model.extend({
   ),
 
   namePlusPassengers: computed('name', 'passengers', function() {
-    const name = this.get('name');
-    const passengers = this.get('passengers');
+    const name = this.name;
+    const passengers = this.passengers;
 
     if (passengers > 1) {
       return `${name} + ${passengers - 1}`;
@@ -131,7 +130,7 @@ export default DS.Model.extend({
 
   cancelled: computed('enabled', {
     get() {
-      return !this.get('enabled');
+      return !this.enabled;
     },
 
     set(key, value) {
@@ -153,8 +152,8 @@ export default DS.Model.extend({
     'address',
     'children.@each.address',
     function() {
-      return [this.get('address')]
-        .concat(this.get('children').mapBy('address'))
+      return [this.address]
+        .concat(this.children.mapBy('address'))
         .map(address => anonymiseAddress(address))
         .join(', ');
     }
@@ -164,9 +163,9 @@ export default DS.Model.extend({
     'passengers',
     'children.@each.passengers',
     function() {
-      return this.get('children')
+      return this.children
         .mapBy('passengers')
-        .reduce((sum, count) => count + sum, this.get('passengers'));
+        .reduce((sum, count) => count + sum, this.passengers);
     }
   ),
 
@@ -177,13 +176,15 @@ export default DS.Model.extend({
     'name',
     'address',
     function() {
-      return `${this.getWithDefault(
-        'institution.name',
-        ''
-      )} ${this.getWithDefault('driver.name', '')} ${this.getWithDefault(
-        'carOwner.name',
-        ''
-      )} ${this.getWithDefault('name', '')} ${this.getWithDefault(
+      return `${
+        this.get('institution.name') === undefined
+          ? ''
+          : this.get('institution.name')
+      } ${
+        this.get('driver.name') === undefined ? '' : this.get('driver.name')
+      } ${
+        this.get('carOwner.name') === undefined ? '' : this.get('carOwner.name')
+      } ${this.name === undefined ? '' : this.name} ${this.getWithDefault(
         'address'
       )}`.toLowerCase();
     }
@@ -191,7 +192,7 @@ export default DS.Model.extend({
 
   matches(casedQuery) {
     const query = casedQuery.toLowerCase();
-    const matchString = this.get('matchString');
+    const matchString = this.matchString;
 
     return (query.match(/\S+/g) || []).every(queryTerm =>
       matchString.includes(queryTerm)

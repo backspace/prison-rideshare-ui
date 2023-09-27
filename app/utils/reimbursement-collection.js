@@ -18,51 +18,58 @@ export default EmberObject.extend({
   totalExpenses: sum('foodExpensesSum', 'carExpensesSum'),
   totalExpensesDollars: dollars('totalExpenses'),
 
-  clipboardText: computed('person.name', 'totalExpensesDollars', function() {
-    const name = this.get('person.name');
-    const total = this.get('totalExpensesDollars');
+  clipboardText: computed(
+    'clipboardDescriptionColumn',
+    'donations',
+    'person.name',
+    'totalExpensesDollars',
+    function() {
+      const name = this.get('person.name');
+      const total = this.totalExpensesDollars;
 
-    const today = new Date();
-    const dateString = `${today.getMonth() +
-      1}/${today.getDate()}/${today.getFullYear()}`;
+      const today = new Date();
+      const dateString = `${today.getMonth() +
+        1}/${today.getDate()}/${today.getFullYear()}`;
 
-    return (
-      `${dateString}\t` +
-      this.get('clipboardDescriptionColumn') +
-      '\t' +
-      `${name}\t` +
-      `-$${total}\t` +
-      `${this.get('donations') ? `$${total}` : ''}\t` +
-      '\t' +
-      `${this.get('donations') ? '(donated)' : ''}`
-    );
-  }),
+      return (
+        `${dateString}\t` +
+        this.clipboardDescriptionColumn +
+        '\t' +
+        `${name}\t` +
+        `-$${total}\t` +
+        `${this.donations ? `$${total}` : ''}\t` +
+        '\t' +
+        `${this.donations ? '(donated)' : ''}`
+      );
+    }
+  ),
 
   copyIconTitle: computed('clipboardText', function() {
-    return `This will copy the following to the clipboard: ${this.get(
-      'clipboardText'
-    )}`;
+    return `This will copy the following to the clipboard: ${
+      this.clipboardText
+    }`;
   }),
 
   clipboardDescriptionColumn: computed(
-    'monthName',
-    'foodExpensesSum',
     'carExpensesSum',
+    'clipboardDescriptionColumnMeal',
+    'foodExpensesSum',
+    'monthName',
     function() {
-      const food = this.get('foodExpensesSum');
-      const car = this.get('carExpensesSum');
+      const food = this.foodExpensesSum;
+      const car = this.carExpensesSum;
 
       let description;
 
       if (car && food) {
-        description = `mileage + ${this.get('clipboardDescriptionColumnMeal')}`;
+        description = `mileage + ${this.clipboardDescriptionColumnMeal}`;
       } else if (car) {
         description = 'mileage';
       } else {
-        description = this.get('clipboardDescriptionColumnMeal');
+        description = this.clipboardDescriptionColumnMeal;
       }
 
-      return `${this.get('monthName')} ${description}`;
+      return `${this.monthName} ${description}`;
     }
   ),
 

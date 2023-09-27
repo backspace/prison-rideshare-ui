@@ -8,9 +8,9 @@ export default Controller.extend({
     login(event) {
       event.preventDefault();
 
-      const user = this.get('model');
+      const user = this.model;
 
-      this.get('session')
+      this.session
         .authenticate(
           'authenticator:application',
           user.get('email'),

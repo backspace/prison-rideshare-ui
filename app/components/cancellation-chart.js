@@ -10,9 +10,9 @@ export default Component.extend({
     'rides.@each.cancellationReason',
     'grouping',
     function() {
-      const grouping = this.get('grouping');
+      const grouping = this.grouping;
 
-      return this.get('rides').reduce((reasonToCount, ride) => {
+      return this.rides.reduce((reasonToCount, ride) => {
         const rideAddition = grouping === 'rides' ? 1 : ride.get('passengers');
 
         let key;
@@ -43,7 +43,7 @@ export default Component.extend({
     }
   ),
   data: computed('reasonToCount', function() {
-    const reasonToCount = this.get('reasonToCount');
+    const reasonToCount = this.reasonToCount;
     return Object.keys(reasonToCount).map(key => {
       if (key === 'report complete' || key === 'report incomplete') {
         return {

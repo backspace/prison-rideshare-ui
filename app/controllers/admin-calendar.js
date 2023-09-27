@@ -24,27 +24,27 @@ export default CalendarController.extend({
   toasts: service(),
 
   previousMonth: computed('month', function() {
-    return moment(this.get('month'))
+    return moment(this.month)
       .add(-1, 'M')
       .format(format);
   }),
 
   nextMonth: computed('month', function() {
-    return moment(this.get('month'))
+    return moment(this.month)
       .add(1, 'M')
       .format(format);
   }),
 
   monthString: computed('month', function() {
-    return moment(this.get('month')).format(format);
+    return moment(this.month).format(format);
   }),
 
   monthMoment: computed('month', function() {
-    return moment(this.get('month'));
+    return moment(this.month);
   }),
 
   title: computed('month', function() {
-    return `${moment(this.get('month')).format('MMMM YYYY')} calendar`;
+    return `${moment(this.month).format('MMMM YYYY')} calendar`;
   }),
 
   init() {
@@ -61,8 +61,8 @@ export default CalendarController.extend({
     'activePeople.[]',
     'viewingSlotPeopleIds.[]',
     function() {
-      const alreadyCommittedPeople = this.get('viewingSlotPeopleIds');
-      return this.get('activePeople').reject(person =>
+      const alreadyCommittedPeople = this.viewingSlotPeopleIds;
+      return this.activePeople.reject(person =>
         alreadyCommittedPeople.includes(person.id)
       );
     }
@@ -70,28 +70,28 @@ export default CalendarController.extend({
 
   actions: {
     addPerson(person) {
-      this.get('people').pushObject(person);
+      this.people.pushObject(person);
     },
 
     addAllActive() {
-      this.get('people').addObjects(this.get('activePeople'));
+      this.people.addObjects(this.activePeople);
     },
 
     removePerson(person) {
-      this.get('people').removeObject(person);
+      this.people.removeObject(person);
     },
 
     createCommitment(person) {
-      const slot = this.get('viewingSlot');
+      const slot = this.viewingSlot;
       const commitment = this.store.createRecord('commitment', {
-        slot: this.get('viewingSlot'),
+        slot: this.viewingSlot,
         person: person,
       });
 
       commitment
         .save()
         .then(() => {
-          this.get('toasts').show(
+          this.toasts.show(
             `Committed ${person.get('name')} to drive on ${moment(
               slot.get('start')
             ).format('MMMM D')}`
@@ -99,7 +99,7 @@ export default CalendarController.extend({
         })
         .catch(error => {
           const errorDetail = get(error, 'errors.firstObject.detail');
-          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+          this.toasts.show(errorDetail || 'Couldn’t save your change');
         });
     },
 
@@ -110,31 +110,29 @@ export default CalendarController.extend({
       commitment
         .destroyRecord()
         .then(() => {
-          this.get('toasts').show(`Deleted ${name}’s commitment on ${date}`);
+          this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
         })
         .catch(error => {
           const errorDetail = get(error, 'errors.firstObject.detail');
-          this.get('toasts').show(errorDetail || 'Couldn’t save your change');
+          this.toasts.show(errorDetail || 'Couldn’t save your change');
         });
     },
 
     email() {
       const token = this.get('session.data.authenticated.access_token');
 
-      this.get('people').forEach(person => {
+      this.people.forEach(person => {
         const url = `${person.store
           .adapterFor('person')
-          .buildURL('person', person.id)}/calendar-email/${this.get(
-          'monthString'
-        )}`;
+          .buildURL('person', person.id)}/calendar-email/${this.monthString}`;
         fetch(url, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }).then(() => {
-          this.get('toasts').show(`Sent to ${person.get('name')}`);
-          this.get('people').removeObject(person);
+          this.toasts.show(`Sent to ${person.get('name')}`);
+          this.people.removeObject(person);
         });
       });
     },
@@ -142,12 +140,10 @@ export default CalendarController.extend({
     fetchLinks() {
       const token = this.get('session.data.authenticated.access_token');
 
-      const personLinkRequests = this.get('people').reduce((hash, person) => {
+      const personLinkRequests = this.people.reduce((hash, person) => {
         const url = `${person.store
           .adapterFor('person')
-          .buildURL('person', person.id)}/calendar-link/${this.get(
-          'monthString'
-        )}`;
+          .buildURL('person', person.id)}/calendar-link/${this.monthString}`;
 
         hash[person.get('email')] = fetch(url, {
           method: 'GET',

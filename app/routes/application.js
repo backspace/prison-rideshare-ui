@@ -18,17 +18,15 @@ export default Route.extend({
 
   sessionAuthenticated() {
     this._super(...arguments);
-    this.get('userSocket').connect();
-    this.get('overlaps').fetch();
+    this.userSocket.connect();
+    this.overlaps.fetch();
     this._loadCurrentUser();
   },
 
   _loadCurrentUser() {
-    return this.get('account')
-      .loadCurrentUser()
-      .catch(() => {
-        this.get('toasts').show('Please log in');
-        this.get('session').invalidate();
-      });
+    return this.account.loadCurrentUser().catch(() => {
+      this.toasts.show('Please log in');
+      this.session.invalidate();
+    });
   },
 });

@@ -12,11 +12,11 @@ export default Service.extend({
   init() {
     this._super(...arguments);
 
-    this.get('fetchOverlaps').perform();
+    this.fetchOverlaps.perform();
   },
 
   fetchOverlaps: task(function*() {
-    let rideAdapter = this.get('store').adapterFor('ride');
+    let rideAdapter = this.store.adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
     let token = this.get('session.data.authenticated.access_token');
 
@@ -38,7 +38,7 @@ export default Service.extend({
   }),
 
   rideIdsToCommitments: computed('overlaps.data.@each.id', function() {
-    let response = this.get('overlaps');
+    let response = this.overlaps;
 
     if (!response || !response.data) {
       return {};
@@ -98,10 +98,10 @@ export default Service.extend({
   }),
 
   commitmentsForRide(ride) {
-    return this.get('rideIdsToCommitments')[ride.get('id')] || [];
+    return this.rideIdsToCommitments[ride.get('id')] || [];
   },
 
   fetch() {
-    this.get('fetchOverlaps').perform();
+    this.fetchOverlaps.perform();
   },
 });

@@ -3,11 +3,11 @@ import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 export default Route.extend(AuthenticatedRoute, {
   model() {
-    return this.get('store').findAll('ride');
+    return this.store.findAll('ride');
   },
 
   afterModel() {
-    return this.get('store').findAll('reimbursement');
+    return this.store.findAll('reimbursement');
   },
 
   titleToken: 'Statistics',

@@ -15,11 +15,11 @@ export default Controller.extend({
   person: alias('model.person'),
 
   monthMoment: computed('month', function() {
-    return moment(this.get('month'));
+    return moment(this.month);
   }),
 
   httpSubscriptionUrl: computed('person.{id,calendarSecret}', function() {
-    const person = this.get('person');
+    const person = this.person;
 
     const base = person.store
       .adapterFor('person')
@@ -29,26 +29,26 @@ export default Controller.extend({
   }),
 
   webcalSubscriptionUrl: computed('httpSubscriptionUrl', function() {
-    return this.get('httpSubscriptionUrl')
+    return this.httpSubscriptionUrl
       .replace('https', 'webcal')
       .replace('http', 'webcal');
   }),
 
   savePerson: task(function*() {
     try {
-      yield this.get('person').save();
+      yield this.person.save();
 
-      this.get('toasts').show('Saved your details');
+      this.toasts.show('Saved your details');
       this.set('showPerson', false);
     } catch (e) {
-      this.get('toasts').show('Couldn’t save your details');
+      this.toasts.show('Couldn’t save your details');
     }
   }).drop(),
 
   actions: {
     cancel() {
       this.set('showPerson', false);
-      this.get('person').rollbackAttributes();
+      this.person.rollbackAttributes();
     },
   },
 });

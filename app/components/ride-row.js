@@ -18,7 +18,7 @@ export default Component.extend({
     'commitments.[]',
     function() {
       return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${
-        this.get('uncombinable') ? 'uncombinable' : ''
+        this.uncombinable ? 'uncombinable' : ''
       } ${this.get('ride.isCombined') ? 'combined' : ''} ${
         this.get('ride.isDivider') ? 'divider' : ''
       } ${
@@ -36,8 +36,8 @@ export default Component.extend({
   store: service(),
 
   // TODO this is unfortunate but without it ignoring doesn’t make the overlap immediately disappear
-  commitments: computed('overlaps.overlaps.data.@each.id', function() {
-    return this.get('overlaps').commitmentsForRide(this.get('ride'));
+  commitments: computed('overlaps.overlaps.data.@each.id', 'ride', function() {
+    return this.overlaps.commitmentsForRide(this.ride);
   }),
 
   clearing: false,
@@ -100,7 +100,7 @@ export default Component.extend({
 
   actions: {
     setDriver(driver) {
-      const ride = this.get('ride');
+      const ride = this.ride;
 
       ride.set('driver', driver);
 
@@ -113,18 +113,18 @@ export default Component.extend({
 
           return ride.save();
         })
-        .then(() => this.get('overlaps').fetch());
+        .then(() => this.overlaps.fetch());
     },
 
     setCarOwner(carOwner) {
-      const ride = this.get('ride');
+      const ride = this.ride;
 
       ride.set('carOwner', carOwner);
       return ride.save();
     },
 
     assignFromCommitment(commitmentJson) {
-      let person = this.get('store').peekRecord(
+      let person = this.store.peekRecord(
         'person',
         commitmentJson.relationships.person.data.id
       );
@@ -133,7 +133,7 @@ export default Component.extend({
     },
 
     ignoreCommitment(commitmentJson) {
-      let ride = this.get('ride');
+      let ride = this.ride;
       let url = `${ride.store
         .adapterFor('ride')
         .buildURL('ride', ride.id)}/ignore/${commitmentJson.id}`;
@@ -145,12 +145,12 @@ export default Component.extend({
           Authorization: `Bearer ${token}`,
         },
       }).then(() => {
-        return this.get('overlaps').fetch();
+        return this.overlaps.fetch();
       });
     },
 
     markConfirmed() {
-      let ride = this.get('ride');
+      let ride = this.ride;
       ride.set('requestConfirmed', true);
       return ride.save();
     },
@@ -180,7 +180,7 @@ export default Component.extend({
       this.set('ride.carExpenses', 0);
       this.set('ride.complete', false);
 
-      this.get('ride').save();
+      this.ride.save();
     },
   },
 });

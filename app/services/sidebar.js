@@ -25,13 +25,11 @@ export default Service.extend({
 
   postsRequest: computed(function() {
     return ObjectPromiseProxy.create({
-      promise: this.get('store')
-        .findAll('post')
-        .then(posts => {
-          return {
-            posts,
-          };
-        }),
+      promise: this.store.findAll('post').then(posts => {
+        return {
+          posts,
+        };
+      }),
     });
   }),
 
@@ -51,11 +49,7 @@ export default Service.extend({
     'overlaps.count',
     function() {
       // TODO this is untested
-      return (
-        this.get('userCount') +
-        this.get('unreadCount') +
-        this.get('overlaps.count')
-      );
+      return this.userCount + this.unreadCount + this.get('overlaps.count');
     }
   ),
 });

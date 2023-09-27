@@ -8,10 +8,10 @@ export default DS.Model.extend({
 
   bodyJson: computed('body', {
     get() {
-      let body = this.get('body');
+      let body = this.body;
 
       if (body) {
-        return JSON.parse(this.get('body'));
+        return JSON.parse(this.body);
       } else {
         return undefined;
       }
@@ -27,7 +27,7 @@ export default DS.Model.extend({
 
   insertedAt: DS.attr('date'),
 
-  validationErrors: computed('errors.[]', function() {
+  validationErrors: computed('constructor', 'errors.[]', function() {
     const attributes = get(this.constructor, 'attributes');
     return Array.from(attributes.keys()).reduce((response, key) => {
       const errors = this.get(`errors.${key}`) || [];

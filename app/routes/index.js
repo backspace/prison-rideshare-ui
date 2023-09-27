@@ -8,7 +8,7 @@ export default Route.extend(AuthenticatedRoute, {
 
   beforeModel() {
     // FIXME this is loading twice, also in application
-    return this.get('account')
+    return this.account
       .loadCurrentUser()
       .then(() => {
         if (

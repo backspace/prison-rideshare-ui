@@ -9,7 +9,7 @@ export default DS.Model.extend({
   commitments: DS.hasMany({ async: false }),
 
   isNotFull: computed('commitments.length', 'count', function() {
-    const count = this.get('count');
+    const count = this.count;
     const commitmentCount = this.get('commitments.length');
 
     return count === 0 || commitmentCount < count;

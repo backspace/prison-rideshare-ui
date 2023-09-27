@@ -25,7 +25,7 @@ export default Controller.extend({
 
   actions: {
     logout() {
-      this.get('session').invalidate();
+      this.session.invalidate();
       this.store.unloadAll();
     },
   },

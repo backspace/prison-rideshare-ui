@@ -6,7 +6,7 @@ export default Service.extend({
   paperToaster: service(),
 
   show(message) {
-    this.get('paperToaster').show(message, {
+    this.paperToaster.show(message, {
       duration: config.toastDuration,
       position: 'top right',
     });

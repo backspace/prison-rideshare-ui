@@ -13,12 +13,10 @@ export default DS.Model.extend({
 
   lastSeenAt: DS.attr('date'),
 
-  isPresent: computed('presenceCount', function() {
-    return this.get('presenceCount') > 0;
-  }),
+  isPresent: computed.gt('presenceCount', 0),
 
-  presenceCount: computed('userSocket.present.length', function() {
-    const myId = this.get('id');
+  presenceCount: computed('id', 'userSocket.present.length', function() {
+    const myId = this.id;
     return this.get('userSocket.present').filter(id => myId === id).length;
   }),
 });

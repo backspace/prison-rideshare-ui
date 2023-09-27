@@ -33,10 +33,10 @@ export default Controller.extend({
   theme,
 
   rides: computed('model.@each.start', 'start', 'end', function() {
-    const rangeStart = moment(this.get('start'));
-    const rangeEnd = moment(this.get('end'));
+    const rangeStart = moment(this.start);
+    const rangeEnd = moment(this.end);
 
-    return this.get('model').filter(ride => {
+    return this.model.filter(ride => {
       return (
         rangeStart.isBefore(ride.get('start')) &&
         rangeEnd.isAfter(ride.get('start'))
@@ -47,7 +47,7 @@ export default Controller.extend({
   clipboardText: computed('rides.length', function() {
     return (
       'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement\n' +
-      this.get('rides')
+      this.rides
         .rejectBy('cancelled')
         .filterBy('reimbursementExpensesSum')
         .filterBy('complete')
@@ -68,9 +68,9 @@ export default Controller.extend({
   }),
 
   copyButtonTitle: computed('clipboardText', function() {
-    return `This will copy the following to the clipboard:\n${this.get(
-      'clipboardText'
-    )}`;
+    return `This will copy the following to the clipboard:\n${
+      this.clipboardText
+    }`;
   }),
 
   actions: {
