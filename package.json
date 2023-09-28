@@ -88,21 +88,21 @@
     "faker": "^4.1.0",
     "highcharts": "^6.0.4",
     "loader.js": "^4.7.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^6.0.1",
     "npm-run-all": "^4.1.5",
     "paper-data-table": "^0.1.5",
     "prettier": "^1.17.1",
     "qunit-dom": "^1.2.0"
   },
   "engines": {
-    "node": "10.* || >= 12",
+    "node": "14.21.3",
     "npm": "6.14.18"
   },
   "ember": {
     "edition": "octane"
   },
   "volta": {
-    "node": "12.22.12",
+    "node": "14.21.3",
     "npm": "6.14.18"
   }
 }
