@@ -20,7 +20,6 @@ self.deprecationWorkflow.config = {
     // Is this comment still relevant?
     // Despite adding a setter for child-mixin#parentComponent, the warning still occurs, maybe because of https://github.com/miguelcobain/ember-paper/blob/faa243a68943ce8406b82f72d21ec64e2484c3b9/addon/templates/components/paper-radio-group.hbs#L10
     { handler: 'silence', matchId: 'computed-property.override' },
-    { handler: 'silence', matchId: 'ember-metal.computed-deep-each' },
     { handler: 'silence', matchId: 'ember-cli-page-object.is-property' },
   ],
 };
