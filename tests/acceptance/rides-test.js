@@ -541,6 +541,42 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(page.form.notes.value, 'Updated request notes?');
   });
 
+  test('ride times can be entered manually', async function(assert) {
+    this.server.create('institution', {
+      name: 'Rockwood',
+    });
+
+    await page.visit();
+    await page.newRide();
+
+    assert.ok(page.form.timespanStart.isHidden);
+    assert.ok(page.form.timespanEnd.isHidden);
+
+    await page.form.timespanOverrideButton.click();
+
+    assert.ok(page.form.timespanOverrideButton.isHidden);
+    assert.ok(page.form.timespanStart.isVisible);
+
+    await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
+
+    assert.equal(page.form.timespanStart.value, '2016-12-26T09:00');
+    assert.equal(page.form.timespanEnd.value, '2016-12-26T11:30');
+
+    await page.form.timespanStart.fillIn('2016-12-26T09:55');
+
+    await page.form.name.fillIn('Edward');
+    await page.form.address.fillIn('114 Spence');
+    await page.form.contact.fillIn('jants@example.com');
+
+    // FIXME not really here, but keyboard input for this is broken, and hovering
+    await selectChoose('md-input-container.institution', 'Rockwood');
+
+    await page.form.submit();
+
+    const ride = page.rides[0];
+    assert.equal(ride.date, 'Mon Dec 26 2016 9:55a — 11:30');
+  });
+
   test('matching visitors are suggested with some deduplication', async function(assert) {
     this.server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
     this.server.create('ride', { name: 'Pascal' });
@@ -600,6 +636,12 @@ module('Acceptance | rides', function(hooks) {
             },
             detail: "Institution can't be blank",
           },
+          {
+            source: {
+              pointer: '/data/attributes/end',
+            },
+            detail: 'End must be after start',
+          },
         ],
       },
       422
@@ -607,12 +649,14 @@ module('Acceptance | rides', function(hooks) {
 
     await page.visit();
     await page.newRide();
+    await page.form.timespanOverrideButton.click();
 
     await page.form.submit();
 
     assert.equal(page.form.nameError.text, "Name can't be blank");
     // PaperSelect stopped rendering errors! See #177
     //assert.equal(page.form.institutionError.text, "Institution can't be blank");
+    assert.equal(page.form.timespanEndError.text, 'End must be after start');
 
     this.server.post('/rides');
 

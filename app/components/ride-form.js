@@ -2,16 +2,21 @@ import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
+import moment from 'moment';
 
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
 
+const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
+
 export default Component.extend({
   institutionsService: service('institutions'),
   institutions: alias('institutionsService.all'),
   store: service('store'),
+
+  overrideTimespan: false,
 
   editingWarning: computed('ride.{cancellationReason,complete}', function() {
     const reason = this.get('ride.cancellationReason');
@@ -44,6 +49,14 @@ export default Component.extend({
     }
   }),
 
+  startTimeString: computed('ride.start', function() {
+    return moment(this.get('ride.start')).format(DATETIME_LOCAL_FORMAT);
+  }),
+
+  endTimeString: computed('ride.end', function() {
+    return moment(this.get('ride.end')).format(DATETIME_LOCAL_FORMAT);
+  }),
+
   actions: {
     timespanUpdated(value) {
       this.set('ride.timespan', value);
@@ -72,6 +85,20 @@ export default Component.extend({
         this.set('ride.address', ride.get('address'));
         this.set('ride.contact', ride.get('contact'));
       }
+    },
+
+    updateStartTime(value) {
+      this.set(
+        'ride.start',
+        new Date(moment(value, DATETIME_LOCAL_FORMAT).valueOf())
+      );
+    },
+
+    updateEndTime(value) {
+      this.set(
+        'ride.end',
+        new Date(moment(value, DATETIME_LOCAL_FORMAT).valueOf())
+      );
     },
   },
 });

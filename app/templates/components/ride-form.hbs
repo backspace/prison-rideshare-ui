@@ -35,16 +35,47 @@
             </PaperCard>
           </div>
         {{/if}}
-        <div class='layout-row'>
+        <div class='layout-row layout-xs-column layout-align-center-center'>
           <form.input
-            @class='flex-100'
             @label='Ride times'
             @value={{this.rideTimes}}
             @disabled={{true}}
             @onChange={{null}}
           />
+          {{#unless this.overrideTimespan}}
+            <PaperButton
+              data-test-timespan-override-button
+              {{on 'click' (fn (mut this.overrideTimespan) true)}}
+            >
+              Manual times
+            </PaperButton>
+          {{/unless}}
         </div>
       </div>
+      {{#if this.overrideTimespan}}
+        <div class='layout-row'>
+          <form.input
+            @type='datetime-local'
+            @label='Start time'
+            @value={{this.startTimeString}}
+            @onChange={{action 'updateStartTime'}}
+            @errors={{this.ride.validationErrors.start}}
+            @isTouched={{readonly this.ride.validationErrors.start.length}}
+            data-test-timespan-start
+          />
+        </div>
+        <div class='layout-row'>
+          <form.input
+            @type='datetime-local'
+            @label='End time'
+            @value={{this.endTimeString}}
+            @onChange={{action 'updateEndTime'}}
+            @errors={{this.ride.validationErrors.end}}
+            @isTouched={{readonly this.ride.validationErrors.end.length}}
+            data-test-timespan-end
+          />
+        </div>
+      {{/if}}
       <div class='layout-row layout-xs-column layout-align-center-center'>
         <div class='flex'>
           <PaperSelect

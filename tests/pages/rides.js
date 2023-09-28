@@ -200,6 +200,22 @@ export default create({
       hasWarning: isVisible('.timespan-warning'),
     },
 
+    timespanOverrideButton: {
+      scope: '[data-test-timespan-override-button]',
+    },
+
+    timespanStart: {
+      scope: '[data-test-timespan-start] input',
+    },
+
+    timespanEnd: {
+      scope: '[data-test-timespan-end] input',
+    },
+
+    timespanEndError: {
+      scope: '[data-test-timespan-end] .paper-input-error',
+    },
+
     medium: {
       scope: '.medium-row',
       txt: { scope: '.txt' },
