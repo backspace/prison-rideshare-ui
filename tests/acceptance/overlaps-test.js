@@ -8,10 +8,10 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 import Mirage from 'ember-cli-mirage';
 
-module('Acceptance | overlaps', function(hooks) {
+module('Acceptance | overlaps', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
 
@@ -24,7 +24,7 @@ module('Acceptance | overlaps', function(hooks) {
     });
   });
 
-  test('overlaps display a count badge in the sidebar and overlapping rides can be assigned to the driver', async function(assert) {
+  test('overlaps display a count badge in the sidebar and overlapping rides can be assigned to the driver', async function (assert) {
     let person = this.server.create('person', { name: 'Octavia Butler' });
     let slot = this.server.create('slot', {
       start: new Date(2117, 11, 4, 17, 30),
@@ -69,12 +69,12 @@ module('Acceptance | overlaps', function(hooks) {
     );
   });
 
-  test('creating a ride triggers a check for overlaps', async function(assert) {
+  test('creating a ride triggers a check for overlaps', async function (assert) {
     let person = this.server.create('person', { name: 'Octavia Butler' });
     let slot = this.server.create('slot');
     this.server.create('commitment', { slot, person });
 
-    this.server.post('/rides', function({ commitments, rides }) {
+    this.server.post('/rides', function ({ commitments, rides }) {
       let attrs = this.normalizedRequestAttrs();
       let ride = rides.create(attrs);
       ride.commitments = commitments.all();
@@ -89,6 +89,7 @@ module('Acceptance | overlaps', function(hooks) {
 
     await page.visit();
     await page.newRide();
+    await page.form.timespan.fillIn('yesterday at 1am to tomorrow at 11pm');
 
     await page.form.submit();
 
@@ -99,7 +100,7 @@ module('Acceptance | overlaps', function(hooks) {
     );
   });
 
-  test('an overlap can be ignored', async function(assert) {
+  test('an overlap can be ignored', async function (assert) {
     let person = this.server.create('person', { name: 'Octavia Butler' });
     let slot = this.server.create('slot', {
       start: new Date(2117, 11, 4, 17, 30),
@@ -132,7 +133,7 @@ module('Acceptance | overlaps', function(hooks) {
     );
   });
 
-  test('no badge is displayed when there are no overlaps', async function(assert) {
+  test('no badge is displayed when there are no overlaps', async function (assert) {
     await page.visit();
 
     assert.ok(shared.ridesBadge.isHidden);
