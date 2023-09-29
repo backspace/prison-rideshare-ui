@@ -184,7 +184,7 @@ export default DS.Model.extend({
         this.get('driver.name') === undefined ? '' : this.get('driver.name')
       } ${
         this.get('carOwner.name') === undefined ? '' : this.get('carOwner.name')
-      } ${this.name === undefined ? '' : this.name} ${this.getWithDefault(
+      } ${this.name === undefined ? '' : this.name} ${this.get(
         'address'
       )}`.toLowerCase();
     }

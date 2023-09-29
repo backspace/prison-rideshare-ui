@@ -150,21 +150,15 @@ export default Controller.extend({
 });
 
 const MonthReimbursementCollections = EmberObject.extend({
-  reimbursementCollectionsReimbursements: mapBy(
-    'reimbursementCollections',
-    'reimbursements'
-  ),
-  reimbursementCollectionsWithReimbursements: computed.filterBy(
-    'reimbursementCollections',
-    'reimbursements.length'
-  ),
-  reimbursementCollectionsClipboardText: mapBy(
-    'reimbursementCollectionsWithReimbursements',
-    'clipboardText'
-  ),
-
   clipboardText: computed('reimbursementCollectionsClipboardText', function() {
-    return this.reimbursementCollectionsClipboardText.join('\n');
+    return this.reimbursementCollections
+      .reduce(function(collections, collection) {
+        if (collection.reimbursements.length) {
+          collections.push(collection.clipboardText);
+        }
+        return collections;
+      }, [])
+      .join('\n');
   }),
 
   copyIconTitle: computed('clipboardText', function() {

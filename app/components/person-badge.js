@@ -7,7 +7,9 @@ export default Component.extend({
 
   actions: {
     toggleContact() {
-      this.toggleProperty('showContact');
+      if (!this.isDestroying && !this.isDestroyed) {
+        this.toggleProperty('showContact');
+      }
     },
   },
 });

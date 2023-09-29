@@ -11,18 +11,24 @@ module.exports = {
     },
   },
   plugins: ['ember', 'prettier'],
-  extends: ['eslint:recommended', 'plugin:ember/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended',
+    'plugin:prettier/recommended',
+  ],
   env: {
     browser: true,
   },
   rules: {
     'prettier/prettier': 'error',
+    browser: true,
   },
   overrides: [
     // node files
     {
       files: [
         '.eslintrc.js',
+        '.prettierrc.js',
         '.template-lintrc.js',
         '.prettierrc.js',
         'ember-cli-build.js',
