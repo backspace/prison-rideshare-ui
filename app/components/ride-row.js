@@ -3,7 +3,6 @@ import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import fetch from 'fetch';
-import moment from 'moment';
 
 const mediumIcon = {
   txt: 'textsms',
@@ -16,7 +15,7 @@ export default Component.extend({
     'uncombinable',
     'ride.{isCombined,isDivider,enabled,requiresConfirmation}',
     'commitments.[]',
-    function() {
+    function () {
       return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${
         this.uncombinable ? 'uncombinable' : ''
       } ${this.get('ride.isCombined') ? 'combined' : ''} ${
@@ -45,7 +44,7 @@ export default Component.extend({
   creation: computed('ride.insertedAt', function() {
     const insertedAt = this.get('ride.insertedAt');
 
-    return moment(insertedAt).format('ddd MMM D YYYY h:mma');
+    return this.moment.moment(insertedAt).format('ddd MMM D YYYY h:mma');
   }),
 
   cancellationIcon: computed('ride.cancellationReason', function() {

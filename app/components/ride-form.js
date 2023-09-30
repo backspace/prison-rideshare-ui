@@ -14,6 +14,7 @@ const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
 export default Component.extend({
   institutionsService: service('institutions'),
   institutions: alias('institutionsService.all'),
+  moment: service(),
   store: service('store'),
 
   overrideTimespan: false,
@@ -43,7 +44,7 @@ export default Component.extend({
       const start = this.get('ride.start');
       const end = this.get('ride.end');
 
-      return formatTimespan(start, end);
+      return formatTimespan(this.moment, start, end);
     } else {
       return undefined;
     }

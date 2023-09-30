@@ -8,6 +8,7 @@ import moment from 'moment';
 import { task } from 'ember-concurrency';
 
 export default Component.extend({
+  moment: service(),
   toasts: service(),
   store: service(),
 
@@ -27,6 +28,7 @@ export default Component.extend({
 
   timespan: computed('slot.{start,end}', function() {
     return formatBriefTimespan(
+      this.moment,
       this.get('slot.start'),
       this.get('slot.end'),
       false

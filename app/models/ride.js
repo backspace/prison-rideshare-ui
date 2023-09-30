@@ -1,5 +1,6 @@
 import { mapBy, gt } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
+import { inject as service } from '@ember/service';
 import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
@@ -11,6 +12,8 @@ import difference from 'ember-cpm/macros/difference';
 import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
 
 export default DS.Model.extend({
+  moment: service(),
+
   enabled: DS.attr('boolean', { defaultValue: true }),
   complete: DS.attr('boolean', { defaultValue: false }),
 
@@ -56,7 +59,7 @@ export default DS.Model.extend({
     const start = this.start;
     const end = this.end;
 
-    return formatTimespan(start, end);
+    return formatTimespan(this.moment, start, end);
   }),
 
   driver: DS.belongsTo('person'),

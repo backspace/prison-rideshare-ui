@@ -6,6 +6,7 @@ import { task } from 'ember-concurrency';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 
 export default Service.extend({
+  moment: service(),
   session: service(),
   store: service(),
 
@@ -85,6 +86,7 @@ export default Service.extend({
           commitment,
           'timespan',
           formatBriefTimespan(
+            this.moment,
             new Date(Date.parse(commitment.slot.start)),
             new Date(Date.parse(commitment.slot.end))
           )
