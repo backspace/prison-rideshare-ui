@@ -4,6 +4,7 @@ import { inject as service } from '@ember/service';
 
 export default Controller.extend({
   session: service(),
+  store: service(),
 
   actions: {
     newPost() {
