@@ -1,7 +1,10 @@
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { inject as service } from '@ember/service';
 
 export default Controller.extend({
+  store: service(),
+
   showInactive: false,
 
   actions: {

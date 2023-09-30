@@ -18,6 +18,7 @@ export default Controller.extend({
   },
 
   overlapsService: service('overlaps'),
+  store: service(),
   toasts: service(),
 
   peopleService: service('people'),
@@ -40,7 +41,7 @@ export default Controller.extend({
     'model.@each.{complete,enabled,isCombined}',
     'search',
     'sortDir',
-    function() {
+    function () {
       const showCompleted = this.showCompleted,
         showCancelled = this.showCancelled;
       const search = this.search;
@@ -56,7 +57,7 @@ export default Controller.extend({
       }
 
       if (search) {
-        rides = rides.filter(ride => ride.matches(search));
+        rides = rides.filter((ride) => ride.matches(search));
       }
 
       rides.setEach('isDivider', false);
@@ -66,14 +67,14 @@ export default Controller.extend({
       const now = new Date();
 
       if (sortDir === 'asc') {
-        const firstAfterNow = sorted.find(ride => ride.get('start') > now);
+        const firstAfterNow = sorted.find((ride) => ride.get('start') > now);
 
         if (firstAfterNow) {
           firstAfterNow.set('isDivider', true);
         }
       } else {
         const reversed = sorted.reverse();
-        const firstBeforeNow = reversed.find(ride => ride.get('start') < now);
+        const firstBeforeNow = reversed.find((ride) => ride.get('start') < now);
 
         if (firstBeforeNow) {
           firstBeforeNow.set('isDivider', true);

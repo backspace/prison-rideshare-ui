@@ -1,7 +1,10 @@
 import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
+import { inject as service } from '@ember/service';
 
 export default Route.extend(AuthenticatedRoute, {
+  store: service(),
+
   model() {
     // FIXME this formerly used the people service but it wasn’t getting new records…
     return this.store.findAll('person');

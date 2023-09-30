@@ -30,6 +30,7 @@ export default Component.extend({
 
   tagName: '',
 
+  moment: service(),
   overlaps: service(),
   session: service(),
   store: service(),

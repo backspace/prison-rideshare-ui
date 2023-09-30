@@ -9,7 +9,9 @@ export default Route.extend({
   overlaps: service(),
   moment: service(),
 
-  beforeModel() {
+  async beforeModel() {
+    await this.session.setup();
+
     this.moment.updateLocale('en', {
       meridiem(hours, minutes, isLower) {
         // Taken from https://github.com/moment/moment/blob/7785323888893428f08eb6d5dc5eb266d5bf2a11/src/lib/units/hour.js#L130

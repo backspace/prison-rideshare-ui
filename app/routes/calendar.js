@@ -11,6 +11,8 @@ import { pollTask, runTask } from 'ember-lifeline';
 export const POLL_TOKEN = 'calendar_poll';
 
 export default Route.extend({
+  store: service(),
+
   model(
     { month },
     {
@@ -34,12 +36,12 @@ export default Route.extend({
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     })
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         }
 
-        return response.json().then(errorJson => {
+        return response.json().then((errorJson) => {
           throw errorJson;
         });
       })
@@ -50,7 +52,7 @@ export default Route.extend({
           token: access_token,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         const detail = get(error, 'errors.firstObject.detail');
 
         if (detail) {
@@ -59,7 +61,7 @@ export default Route.extend({
           throw new Error('We were unable to log you in with that token.');
         }
       })
-      .then(person => {
+      .then((person) => {
         return RSVP.hash({
           slots: this.store.findAll('slot'),
           person,
