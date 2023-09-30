@@ -29,10 +29,7 @@
   </row.cell>
   <row.cell>
     {{#if this.person.address}}
-      <CopyButton
-        @clipboardText={{this.person.address}}
-        @success={{action 'copied'}}
-      >
+      <CopyButton @text={{this.person.address}} @onSuccess={{action 'copied'}}>
         {{paper-icon 'content copy'}}
       </CopyButton>
     {{/if}}

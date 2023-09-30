@@ -77,10 +77,7 @@
   />
 
   <div>
-    <CopyButton
-      @clipboardText={{this.clipboardText}}
-      @title={{this.copyButtonTitle}}
-    >
+    <CopyButton @text={{this.clipboardText}} title={{this.copyButtonTitle}}>
       {{paper-icon 'content copy'}} Copy for report
     </CopyButton>
   </div>

@@ -27,9 +27,7 @@
               {{monthReimbursementCollection.monthName}}
             </row.cell>
             <row.cell>
-              <CopyButton
-                @clipboardText={{monthReimbursementCollection.clipboardText}}
-              >
+              <CopyButton @text={{monthReimbursementCollection.clipboardText}}>
                 {{paper-icon
                   'content copy'
                   title=monthReimbursementCollection.copyIconTitle
@@ -64,9 +62,7 @@
                   {{reimbursementCollection.totalExpensesDollars}}
                 </row.cell>
                 <row.cell>
-                  <CopyButton
-                    @clipboardText={{reimbursementCollection.clipboardText}}
-                  >
+                  <CopyButton @text={{reimbursementCollection.clipboardText}}>
                     {{paper-icon
                       'content copy'
                       title=reimbursementCollection.copyIconTitle
