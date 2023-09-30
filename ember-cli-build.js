@@ -7,16 +7,19 @@ const nodeSass = require('node-sass');
 module.exports = function(defaults) {
   const deployTarget = process.env.DEPLOY_TARGET;
 
+  let autoImport = {};
   let fingerprint = {};
 
   if (deployTarget) {
     const s3Bucket = require('./config/deploy')(process.env.DEPLOY_TARGET).s3
       .bucket;
 
+    autoImport.publicAssetURL = `//${s3Bucket}.s3.amazonaws.com/assets/`;
     fingerprint.prepend = `//${s3Bucket}.s3.amazonaws.com/`;
   }
 
   let app = new EmberApp(defaults, {
+    autoImport,
     fingerprint,
     sourcemaps: {
       enabled: true,
