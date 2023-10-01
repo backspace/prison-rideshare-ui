@@ -2,10 +2,21 @@ import {
   clickable,
   collection,
   create,
-  is,
+  property,
   text,
   visitable,
 } from 'ember-cli-page-object';
+import { findOne } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
+
+function isDisabled(selector) {
+  return getter(function (pageObjectKey) {
+    return (
+      findOne(this, selector, { pageObjectKey }).getAttribute('disabled') ===
+      'disabled'
+    );
+  });
+}
 
 export default create({
   visit: visitable('/reports/new'),
@@ -28,7 +39,7 @@ export default create({
 
   submitButton: {
     scope: 'button.submit',
-    disabled: is('[disabled]'),
+    disabled: isDisabled(),
     click: clickable(),
   },
 });
