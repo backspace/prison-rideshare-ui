@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 faker.seed(1919);
 
 import RidesController from 'prison-rideshare-ui/controllers/rides';

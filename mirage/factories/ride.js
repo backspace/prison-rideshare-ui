@@ -1,19 +1,17 @@
 import { Factory } from 'ember-cli-mirage';
 
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 faker.seed(1919);
 
 export default Factory.extend({
   name() {
-    return faker.name.firstName();
+    return faker.person.firstName();
   },
   address() {
-    return faker.address.streetAddress();
+    return faker.location.streetAddress();
   },
   contact() {
-    return Math.random() < 0.2
-      ? faker.internet.email()
-      : faker.phone.phoneNumber();
+    return Math.random() < 0.2 ? faker.internet.email() : faker.phone.number();
   },
 
   passengers: 1,
