@@ -31,14 +31,14 @@
       </LinkTo>
     </nav>
 
-    <calendar.days @showDaysAround={{false}} as |day|>
+    <calendar.Days @showDaysAround={{false}} as |day|>
       <CalendarDay
         @day={{day}}
         @slots={{this.slots}}
         @count={{true}}
         @setViewingSlot={{action (mut this.viewingSlot)}}
       />
-    </calendar.days>
+    </calendar.Days>
   </PowerCalendar>
 
   <section>

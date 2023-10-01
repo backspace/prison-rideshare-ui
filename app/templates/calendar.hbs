@@ -180,9 +180,9 @@
     </card.content>
   </PaperCard>
 
-  {{calendar.nav}}
+  <calendar.Nav />
 
-  <calendar.days @showDaysAround={{false}} as |day|>
+  <calendar.Days @showDaysAround={{false}} as |day|>
     <CalendarDay @day={{day}} @slots={{this.slots}} @person={{this.person}} />
-  </calendar.days>
+  </calendar.Days>
 </PowerCalendar>
