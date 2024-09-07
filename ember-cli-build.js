@@ -18,6 +18,11 @@ module.exports = function (defaults) {
 
   let app = new EmberApp(defaults, {
     autoImport,
+    babel: {
+      plugins: [
+        require.resolve('ember-concurrency/async-arrow-task-transform'),
+      ],
+    },
     fingerprint,
     sourcemaps: {
       enabled: true,
