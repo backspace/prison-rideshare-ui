@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-get, ember/use-ember-data-rfc-395-imports, no-unused-vars */
 import { mapBy, gt } from '@ember/object/computed';
 import { computed, get } from '@ember/object';
 import { inject as service } from '@ember/service';

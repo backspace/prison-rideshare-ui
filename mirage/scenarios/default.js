@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-else-if */
 import { faker } from '@faker-js/faker';
 faker.seed(1919);
 

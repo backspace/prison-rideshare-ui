@@ -1,3 +1,4 @@
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-computed-properties-in-native-classes, ember/no-get */
 import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import config from 'prison-rideshare-ui/config/environment';
 import { computed } from '@ember/object';

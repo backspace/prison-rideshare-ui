@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-mixins */
 import { all } from 'rsvp';
 import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';

@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-get */
 import ApplicationAdapter from './application';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';

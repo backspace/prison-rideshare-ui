@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 import { discoverEmberDataModels } from 'ember-cli-mirage';
 import { createServer, Response } from 'miragejs';
 import { isEmpty } from '@ember/utils';

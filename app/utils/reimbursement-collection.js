@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-get */
 import { mapBy, filterBy } from '@ember/object/computed';
 import EmberObject, { computed } from '@ember/object';
 
