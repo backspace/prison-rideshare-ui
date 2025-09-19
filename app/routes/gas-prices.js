@@ -1,12 +1,15 @@
-import Route from '@ember/routing/route';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Route.extend({
-  store: service(),
+@classic
+export default class GasPricesRoute extends Route {
+  @service
+  store;
 
   model() {
     return this.store.findAll('gas-price');
-  },
+  }
 
-  titleToken: 'Gas prices',
-});
+  titleToken = 'Gas prices';
+}

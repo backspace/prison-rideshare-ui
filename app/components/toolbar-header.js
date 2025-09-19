@@ -1,14 +1,22 @@
-import { computed } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import classic from 'ember-classic-decorator';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 
-export default Component.extend({
-  session: service(),
-  sidebar: service(),
-  sidebarOpen: alias('sidebar.open'),
+@classic
+export default class ToolbarHeader extends Component {
+  @service
+  session;
 
-  chips: computed(function () {
+  @service
+  sidebar;
+
+  @alias('sidebar.open')
+  sidebarOpen;
+
+  @computed
+  get chips() {
     const hostname = window.location.hostname;
 
     if (hostname.indexOf('sandbox') > -1) {
@@ -22,11 +30,10 @@ export default Component.extend({
     } else {
       return [];
     }
-  }),
+  }
 
-  actions: {
-    toggleSidebar() {
-      this.toggleProperty('sidebarOpen');
-    },
-  },
-});
+  @action
+  toggleSidebar() {
+    this.toggleProperty('sidebarOpen');
+  }
+}

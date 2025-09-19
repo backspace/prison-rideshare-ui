@@ -1,12 +1,15 @@
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
+import { computed } from '@ember/object';
 import Ember from 'ember';
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 
-export default Component.extend({
-  tagName: 'span',
-
-  link: computed('contact', function () {
+@classic
+@tagName('span')
+export default class LinkedContact extends Component {
+  @computed('contact')
+  get link() {
     const phonePattern =
       /(\([0-9]{3}\)\s?|[0-9]{3}-?\s?)[0-9]{3}-?\s?[0-9]{4}/g;
     const contact = this.contact;
@@ -19,5 +22,5 @@ export default Component.extend({
         })
       );
     }
-  }),
-});
+  }
+}

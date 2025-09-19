@@ -1,13 +1,16 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  session: service(),
+@classic
+export default class UsersController extends Controller {
+  @service
+  session;
 
-  actions: {
-    updateUserAdmin(user, admin) {
-      user.set('admin', admin);
-      user.save();
-    },
-  },
-});
+  @action
+  updateUserAdmin(user, admin) {
+    user.set('admin', admin);
+    user.save();
+  }
+}

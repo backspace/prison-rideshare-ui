@@ -1,19 +1,29 @@
+import classic from 'ember-classic-decorator';
+import { computed } from '@ember/object';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
-import { computed } from '@ember/object';
 
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
-let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
-export default Service.extend({
-  overlaps: service(),
-  store: service(),
-  userSocket: service(),
+@classic
+class ObjectPromiseProxy extends ObjectProxy.extend(PromiseProxyMixin) {}
 
-  open: false,
+@classic
+export default class SidebarService extends Service {
+  @service
+  overlaps;
 
-  userCount: computed('userSocket.present.length', function () {
+  @service
+  store;
+
+  @service
+  userSocket;
+
+  open = false;
+
+  @computed('userSocket.present.length')
+  get userCount() {
     const count = this.get('userSocket.present.length');
 
     if (count > 1) {
@@ -21,9 +31,10 @@ export default Service.extend({
     } else {
       return 0;
     }
-  }),
+  }
 
-  postsRequest: computed(function () {
+  @computed
+  get postsRequest() {
     return ObjectPromiseProxy.create({
       promise: this.store.findAll('post').then((posts) => {
         return {
@@ -31,9 +42,10 @@ export default Service.extend({
         };
       }),
     });
-  }),
+  }
 
-  unreadCount: computed('postsRequest.posts.@each.unread', function () {
+  @computed('postsRequest.posts.@each.unread')
+  get unreadCount() {
     let posts = this.get('postsRequest.posts');
 
     if (posts) {
@@ -41,15 +53,11 @@ export default Service.extend({
     } else {
       return 0;
     }
-  }),
+  }
 
-  notificationCount: computed(
-    'userCount',
-    'unreadCount',
-    'overlaps.count',
-    function () {
-      // TODO this is untested
-      return this.userCount + this.unreadCount + this.get('overlaps.count');
-    }
-  ),
-});
+  @computed('userCount', 'unreadCount', 'overlaps.count')
+  get notificationCount() {
+    // TODO this is untested
+    return this.userCount + this.unreadCount + this.get('overlaps.count');
+  }
+}

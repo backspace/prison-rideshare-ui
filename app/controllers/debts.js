@@ -1,9 +1,11 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  actions: {
-    reimburse(debt) {
-      return debt.destroyRecord();
-    },
-  },
-});
+@classic
+export default class DebtsController extends Controller {
+  @action
+  reimburse(debt) {
+    return debt.destroyRecord();
+  }
+}

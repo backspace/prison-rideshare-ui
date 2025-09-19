@@ -1,48 +1,49 @@
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
+import Component from '@ember/component';
 
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 
 const reasons = Object.keys(reasonToIcon);
 
-export default Component.extend({
-  reasonToCount: computed(
-    'rides.@each.cancellationReason',
-    'grouping',
-    function () {
-      const grouping = this.grouping;
+@classic
+export default class CancellationChart extends Component {
+  @computed('rides.@each.cancellationReason', 'grouping')
+  get reasonToCount() {
+    const grouping = this.grouping;
 
-      return this.rides.reduce((reasonToCount, ride) => {
-        const rideAddition = grouping === 'rides' ? 1 : ride.get('passengers');
+    return this.rides.reduce((reasonToCount, ride) => {
+      const rideAddition = grouping === 'rides' ? 1 : ride.get('passengers');
 
-        let key;
+      let key;
 
-        if (ride.get('cancelled')) {
-          const reason = ride.get('cancellationReason');
-          if (reasons.includes(reason)) {
-            key = reason;
-          } else {
-            key = 'other';
-          }
+      if (ride.get('cancelled')) {
+        const reason = ride.get('cancellationReason');
+        if (reasons.includes(reason)) {
+          key = reason;
         } else {
-          if (ride.get('complete')) {
-            key = 'report complete';
-          } else {
-            key = 'report incomplete';
-          }
+          key = 'other';
         }
-
-        if (!reasonToCount[key]) {
-          reasonToCount[key] = 0;
+      } else {
+        if (ride.get('complete')) {
+          key = 'report complete';
+        } else {
+          key = 'report incomplete';
         }
+      }
 
-        reasonToCount[key] += rideAddition;
+      if (!reasonToCount[key]) {
+        reasonToCount[key] = 0;
+      }
 
-        return reasonToCount;
-      }, {});
-    }
-  ),
-  data: computed('reasonToCount', function () {
+      reasonToCount[key] += rideAddition;
+
+      return reasonToCount;
+    }, {});
+  }
+
+  @computed('reasonToCount')
+  get data() {
     const reasonToCount = this.reasonToCount;
     return Object.keys(reasonToCount).map((key) => {
       if (key === 'report complete' || key === 'report incomplete') {
@@ -57,8 +58,10 @@ export default Component.extend({
         };
       }
     });
-  }),
-  options: computed('reasonToCount', function () {
+  }
+
+  @computed('reasonToCount')
+  get options() {
     return {
       chart: {
         type: 'bar',
@@ -90,5 +93,5 @@ export default Component.extend({
         },
       },
     };
-  }),
-});
+  }
+}
