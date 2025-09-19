@@ -41,7 +41,7 @@
   </row.cell>
   <row.cell class='driver-and-car-owner'>
     {{#if this.combined}}
-      {{#if (not this.rideToCombine)}}
+      {{#unless this.rideToCombine}}
         <PaperButton
           class='combine'
           @iconButton={{true}}
@@ -51,7 +51,7 @@
         >
           {{paper-icon 'call split'}}
         </PaperButton>
-      {{/if}}
+      {{/unless}}
     {{else}}
       <span class='driver'>
         <RidePerson
