@@ -34,6 +34,10 @@
   .ember-power-calendar-day .day {
     text-align: center;
   }
+
+  .previous-month, .next-month {
+    text-decoration: none;
+  }
 }
 
 .admin-calendar {
