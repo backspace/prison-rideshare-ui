@@ -1,7 +1,7 @@
 import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import CalendarController from './calendar';
-import { setDiff, sum } from '@ember/object/computed';
+import { alias, mapBy, setDiff, sum } from '@ember/object/computed';
 import { A } from '@ember/array';
 import fetch from 'fetch';
 import moment from 'moment';
