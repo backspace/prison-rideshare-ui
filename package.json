@@ -102,6 +102,8 @@
     "prettier-plugin-ember-template-tag": "^1.1.0",
     "qunit": "^2.17.2",
     "qunit-dom": "^2.0.0",
+    "testem": "^3.10.1",
+    "testem-multi-reporter": "^1.2.0",
     "webpack": "^5.0.0"
   },
   "engines": {
