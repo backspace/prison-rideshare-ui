@@ -2,10 +2,10 @@ import EmberObject from '@ember/object';
 import { module, test } from 'qunit';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
-const ClassWithDollars = EmberObject.extend({
-  cents: undefined,
-  dollars: dollars('cents'),
-});
+class ClassWithDollars extends EmberObject {
+  cents = undefined;
+  dollars = dollars('cents');
+}
 
 module('Unit - dollars', function () {
   test('converts from cents to dollars', function (assert) {
