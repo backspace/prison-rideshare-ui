@@ -1,8 +1,13 @@
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 import { module, test } from 'qunit';
 import moment from 'moment';
+import momentAddLocaleShortMeridiemFormat from 'prison-rideshare-ui/utils/moment-add-locale-short-meridiem-format';
 
-module('Unit | Utility | format timespan', function () {
+module('Unit | Utility | format timespan', function (hooks) {
+  hooks.beforeEach(function () {
+    momentAddLocaleShortMeridiemFormat(moment);
+  });
+
   test('it makes timespans readable', function (assert) {
     const noMinutesSameMeridiem = formatTimespan(
       { moment },
@@ -10,7 +15,7 @@ module('Unit | Utility | format timespan', function () {
       new Date(2010, 5, 26, 15, 0, 0)
     );
 
-    assert.equal(noMinutesSameMeridiem, 'Sat Jun 26 2010 1pm — 3');
+    assert.equal(noMinutesSameMeridiem, 'Sat Jun 26 2010 1p — 3');
 
     const minutesSameMeridiem = formatTimespan(
       { moment },
@@ -18,7 +23,7 @@ module('Unit | Utility | format timespan', function () {
       new Date(2010, 5, 26, 16, 48, 0)
     );
 
-    assert.equal(minutesSameMeridiem, 'Sat Jun 26 2010 3:30pm — 4:48');
+    assert.equal(minutesSameMeridiem, 'Sat Jun 26 2010 3:30p — 4:48');
 
     const sameDayDifferentMeridiem = formatTimespan(
       { moment },
@@ -26,7 +31,7 @@ module('Unit | Utility | format timespan', function () {
       new Date(2010, 5, 27, 19, 0, 0)
     );
 
-    assert.equal(sameDayDifferentMeridiem, 'Sun Jun 27 2010 10:22am — 7pm');
+    assert.equal(sameDayDifferentMeridiem, 'Sun Jun 27 2010 10:22a — 7p');
 
     const differentDay = formatTimespan(
       { moment },
@@ -34,6 +39,6 @@ module('Unit | Utility | format timespan', function () {
       new Date(2010, 5, 29, 19, 0, 0)
     );
 
-    assert.equal(differentDay, 'Sun Jun 27 2010 10:22am — Tue 7pm');
+    assert.equal(differentDay, 'Sun Jun 27 2010 10:22a — Tue 7p');
   });
 });
