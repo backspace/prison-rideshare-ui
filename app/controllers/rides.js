@@ -104,7 +104,7 @@ export default Controller.extend({
       );
     },
 
-    submit(proxy) {
+    submitRide(proxy) {
       let buffer = proxy.buffer;
       proxy.applyBufferedChanges();
 

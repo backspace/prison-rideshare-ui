@@ -8,7 +8,7 @@ export default Controller.extend({
   toasts: service(),
 
   actions: {
-    submit(event) {
+    submitForgot(event) {
       event.preventDefault();
 
       let email = this.email;

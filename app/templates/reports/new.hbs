@@ -10,7 +10,7 @@
   {{else}}
     {{#if this.model}}
       <div class='form-container'>
-        <PaperForm @onSubmit={{action 'submit'}} as |form|>
+        <PaperForm @onSubmit={{action 'submitReport'}} as |form|>
           <div class='layout layout-sm-column'>
             <PaperRadioGroup
               @groupValue={{readonly this.editingRide}}
@@ -99,7 +99,7 @@
                 @class='submit'
                 @raised={{true}}
                 @primary={{true}}
-                @onClick={{action 'submit'}}
+                @onClick={{action 'submitReport'}}
               >
                 Save
               </PaperButton>

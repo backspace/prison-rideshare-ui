@@ -10,7 +10,7 @@ export default Controller.extend({
   toasts: service(),
 
   actions: {
-    submit(event) {
+    submitReset(event) {
       event.preventDefault();
 
       let userAdapter = this.store.adapterFor('user');
