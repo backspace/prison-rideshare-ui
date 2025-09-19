@@ -35,6 +35,8 @@ jobs:
         run: npm ci
       - name: Run Tests
         run: npm run test:ember
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
       - name: Publish test results
         uses: EnricoMi/publish-unit-test-result-action@170bf24d20d201b842d7a52403b73ed297e6645b # 2.18.0
