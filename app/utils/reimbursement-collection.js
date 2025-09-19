@@ -1,4 +1,5 @@
-import { mapBy, filterBy } from '@ember/object/computed';
+import classic from 'ember-classic-decorator';
+import { filterBy, mapBy } from '@ember/object/computed';
 import EmberObject, { computed } from '@ember/object';
 
 import sum from 'ember-cpm/macros/sum';
@@ -6,85 +7,100 @@ import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import moment from 'moment';
 
-export default EmberObject.extend({
-  foodExpenses: mapBy('reimbursements', 'foodExpenses'),
-  foodExpensesSum: sum('foodExpenses'),
-  foodExpensesDollars: dollars('foodExpensesSum'),
+@classic
+export default class ReimbursementCollection extends EmberObject {
+  @mapBy('reimbursements', 'foodExpenses')
+  foodExpenses;
 
-  carExpenses: mapBy('reimbursements', 'carExpenses'),
-  carExpensesSum: sum('carExpenses'),
-  carExpensesDollars: dollars('carExpensesSum'),
+  @sum('foodExpenses')
+  foodExpensesSum;
 
-  totalExpenses: sum('foodExpensesSum', 'carExpensesSum'),
-  totalExpensesDollars: dollars('totalExpenses'),
+  @dollars('foodExpensesSum')
+  foodExpensesDollars;
 
-  clipboardText: computed(
+  @mapBy('reimbursements', 'carExpenses')
+  carExpenses;
+
+  @sum('carExpenses')
+  carExpensesSum;
+
+  @dollars('carExpensesSum')
+  carExpensesDollars;
+
+  @sum('foodExpensesSum', 'carExpensesSum')
+  totalExpenses;
+
+  @dollars('totalExpenses')
+  totalExpensesDollars;
+
+  @computed(
     'clipboardDescriptionColumn',
     'donations',
     'person.name',
-    'totalExpensesDollars',
-    function () {
-      const name = this.get('person.name');
-      const total = this.totalExpensesDollars;
+    'totalExpensesDollars'
+  )
+  get clipboardText() {
+    const name = this.get('person.name');
+    const total = this.totalExpensesDollars;
 
-      const today = new Date();
-      const dateString = `${
-        today.getMonth() + 1
-      }/${today.getDate()}/${today.getFullYear()}`;
+    const today = new Date();
+    const dateString = `${
+      today.getMonth() + 1
+    }/${today.getDate()}/${today.getFullYear()}`;
 
-      return (
-        `${dateString}\t` +
-        this.clipboardDescriptionColumn +
-        '\t' +
-        `${name}\t` +
-        `-$${total}\t` +
-        `${this.donations ? `$${total}` : ''}\t` +
-        '\t' +
-        `${this.donations ? '(donated)' : ''}`
-      );
-    }
-  ),
+    return (
+      `${dateString}\t` +
+      this.clipboardDescriptionColumn +
+      '\t' +
+      `${name}\t` +
+      `-$${total}\t` +
+      `${this.donations ? `$${total}` : ''}\t` +
+      '\t' +
+      `${this.donations ? '(donated)' : ''}`
+    );
+  }
 
-  copyIconTitle: computed('clipboardText', function () {
+  @computed('clipboardText')
+  get copyIconTitle() {
     return `This will copy the following to the clipboard: ${this.clipboardText}`;
-  }),
+  }
 
-  clipboardDescriptionColumn: computed(
+  @computed(
     'carExpensesSum',
     'clipboardDescriptionColumnMeal',
     'foodExpensesSum',
-    'monthName',
-    function () {
-      const food = this.foodExpensesSum;
-      const car = this.carExpensesSum;
+    'monthName'
+  )
+  get clipboardDescriptionColumn() {
+    const food = this.foodExpensesSum;
+    const car = this.carExpensesSum;
 
-      let description;
+    let description;
 
-      if (car && food) {
-        description = `mileage + ${this.clipboardDescriptionColumnMeal}`;
-      } else if (car) {
-        description = 'mileage';
-      } else {
-        description = this.clipboardDescriptionColumnMeal;
-      }
-
-      return `${this.monthName} ${description}`;
+    if (car && food) {
+      description = `mileage + ${this.clipboardDescriptionColumnMeal}`;
+    } else if (car) {
+      description = 'mileage';
+    } else {
+      description = this.clipboardDescriptionColumnMeal;
     }
-  ),
 
-  clipboardDescriptionColumnMeal: computed(
-    'reimbursementsWithFoodExpenses.length',
-    function () {
-      const meals = this.get('reimbursementsWithFoodExpenses.length');
+    return `${this.monthName} ${description}`;
+  }
 
-      return `meal${meals > 1 ? ` × ${meals}` : ''}`;
-    }
-  ),
+  @computed('reimbursementsWithFoodExpenses.length')
+  get clipboardDescriptionColumnMeal() {
+    const meals = this.get('reimbursementsWithFoodExpenses.length');
 
-  reimbursementsWithFoodExpenses: filterBy('reimbursements', 'foodExpenses'),
+    return `meal${meals > 1 ? ` × ${meals}` : ''}`;
+  }
 
-  monthName: computed('reimbursements.firstObject.ride.start', function () {
+  @filterBy('reimbursements', 'foodExpenses')
+  reimbursementsWithFoodExpenses;
+
+  @computed('reimbursements.firstObject.ride.start')
+  get monthName() {
     const date = this.get('reimbursements.firstObject.ride.start');
     return moment(date).format('MMMM');
-  }),
-});
+  }
+}

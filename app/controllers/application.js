@@ -1,32 +1,40 @@
+import classic from 'ember-classic-decorator';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
-import { computed } from '@ember/object';
 
-export default Controller.extend({
-  overlaps: service(),
-  sidebar: service(),
-  session: service(),
-  store: service(),
-  userSocket: service(),
+@classic
+export default class ApplicationController extends Controller {
+  @service
+  overlaps;
 
-  rides: controller(),
+  @service
+  sidebar;
 
-  ridesBadgeCount: computed(
-    'overlaps.count',
-    'rides.model.@each.requiresConfirmation',
-    function () {
-      let rides = this.get('rides.model') || [];
-      return (
-        this.get('overlaps.count') +
-        rides.filterBy('requiresConfirmation').length
-      );
-    }
-  ),
+  @service
+  session;
 
-  actions: {
-    logout() {
-      this.session.invalidate();
-      this.store.unloadAll();
-    },
-  },
-});
+  @service
+  store;
+
+  @service
+  userSocket;
+
+  @controller
+  rides;
+
+  @computed('overlaps.count', 'rides.model.@each.requiresConfirmation')
+  get ridesBadgeCount() {
+    let rides = this.get('rides.model') || [];
+    return (
+      this.get('overlaps.count') +
+      rides.filterBy('requiresConfirmation').length
+    );
+  }
+
+  @action
+  logout() {
+    this.session.invalidate();
+    this.store.unloadAll();
+  }
+}

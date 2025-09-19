@@ -1,11 +1,14 @@
-import ApplicationAdapter from './application';
+import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import ApplicationAdapter from './application';
 
-export default ApplicationAdapter.extend({
-  router: service(),
+@classic
+export default class Commitment extends ApplicationAdapter {
+  @service
+  router;
 
-  onAdminCalendar: computed.equal('router.currentRouteName', 'admin-calendar'),
+  onAdminCalendar = computed.equal('router.currentRouteName', 'admin-calendar');
 
   get headers() {
     if (this.onAdminCalendar) {
@@ -19,5 +22,5 @@ export default ApplicationAdapter.extend({
         Authorization: `Person Bearer ${personToken}`,
       };
     }
-  },
-});
+  }
+}

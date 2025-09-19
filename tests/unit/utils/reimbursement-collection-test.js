@@ -12,12 +12,12 @@ module('Unit | Utility | reimbursement collection', function () {
     today.getMonth() + 1
   }/${today.getDate()}/${today.getFullYear()}`;
 
-  const FakeReimbursement = EmberObject.extend({
-    ride,
-    date: reimbursementDate,
-    carExpenses: 0,
-    foodExpenses: 0,
-  });
+  class FakeReimbursement extends EmberObject {
+    ride = ride;
+    date = reimbursementDate;
+    carExpenses = 0;
+    foodExpenses = 0;
+  }
 
   const foodReimbursement = FakeReimbursement.create({
     foodExpenses: 4400,

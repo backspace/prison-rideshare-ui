@@ -1,6 +1,8 @@
-import { computed, get } from '@ember/object';
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { tagName } from '@ember-decorators/component';
 import { inject as service } from '@ember/service';
+import { get, action, computed } from '@ember/object';
+import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import fetch from 'fetch';
 
@@ -10,71 +12,81 @@ const mediumIcon = {
   phone: 'phone',
 };
 
-export default Component.extend({
-  classAttribute: computed(
+@classic
+@tagName('')
+export default class RideRow extends Component {
+  @computed(
     'uncombinable',
     'ride.{isCombined,isDivider,enabled,requiresConfirmation}',
-    'commitments.[]',
-    function () {
-      return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${
-        this.uncombinable ? 'uncombinable' : ''
-      } ${this.get('ride.isCombined') ? 'combined' : ''} ${
-        this.get('ride.isDivider') ? 'divider' : ''
-      } ${
-        this.get('ride.requiresConfirmation') || this.get('commitments.length')
-          ? 'highlighted'
-          : ''
-      }`;
-    }
-  ),
+    'commitments.[]'
+  )
+  get classAttribute() {
+    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${
+      this.uncombinable ? 'uncombinable' : ''
+    } ${this.get('ride.isCombined') ? 'combined' : ''} ${
+      this.get('ride.isDivider') ? 'divider' : ''
+    } ${
+      this.get('ride.requiresConfirmation') || this.get('commitments.length')
+        ? 'highlighted'
+        : ''
+    }`;
+  }
 
-  tagName: '',
+  @service
+  moment;
 
-  moment: service(),
-  overlaps: service(),
-  session: service(),
-  store: service(),
+  @service
+  overlaps;
+
+  @service
+  session;
+
+  @service
+  store;
 
   // TODO this is unfortunate but without it ignoring doesn’t make the overlap immediately disappear
-  commitments: computed('overlaps.overlaps.data.@each.id', 'ride', function () {
+  @computed('overlaps.overlaps.data.@each.id', 'ride')
+  get commitments() {
     return this.overlaps.commitmentsForRide(this.ride);
-  }),
+  }
 
-  clearing: false,
+  clearing = false;
 
-  creation: computed('ride.insertedAt', function () {
+  @computed('ride.insertedAt')
+  get creation() {
     const insertedAt = this.get('ride.insertedAt');
 
     return this.moment.moment(insertedAt).format('ddd MMM D YYYY h:mma');
-  }),
+  }
 
-  cancellationIcon: computed('ride.cancellationReason', function () {
+  @computed('ride.cancellationReason')
+  get cancellationIcon() {
     const reason = this.get('ride.cancellationReason');
     const icon = reasonToIcon[reason];
 
     return icon || 'help';
-  }),
+  }
 
-  cancellationButtonLabel: computed(
-    'ride.{enabled,cancellationReason}',
-    function () {
-      if (this.get('ride.enabled')) {
-        return 'Cancel ride';
-      } else {
-        return `Edit cancellation: ${this.get('ride.cancellationReason')}`;
-      }
+  @computed('ride.{enabled,cancellationReason}')
+  get cancellationButtonLabel() {
+    if (this.get('ride.enabled')) {
+      return 'Cancel ride';
+    } else {
+      return `Edit cancellation: ${this.get('ride.cancellationReason')}`;
     }
-  ),
+  }
 
-  combineButtonLabel: computed('ride.id', 'rideToCombine.id', function () {
+  @computed('ride.id', 'rideToCombine.id')
+  get combineButtonLabel() {
     if (this.get('ride.id') == this.get('rideToCombine.id')) {
       return 'Cancel combining';
     } else {
       return 'Combine with another ride';
     }
-  }),
+  }
 
-  uncombinable: computed('rideToCombine.{id,start}', 'ride.start', function () {
+  @computed('rideToCombine.{id,start}', 'ride.start')
+  get uncombinable() {
     const sixHours = 1000 * 60 * 60 * 6;
     const rideToCombineStart = this.get('rideToCombine.start');
 
@@ -88,99 +100,108 @@ export default Component.extend({
         ) > sixHours
       );
     }
-  }),
+  }
 
-  mediumIcon: computed('ride.medium', function () {
+  @computed('ride.medium')
+  get mediumIcon() {
     return mediumIcon[this.get('ride.medium')];
-  }),
+  }
 
-  mediumIconTitle: computed('ride.medium', function () {
+  @computed('ride.medium')
+  get mediumIconTitle() {
     return `ride was requested via ${this.get('ride.medium')}`;
-  }),
+  }
 
-  actions: {
-    setDriver(driver) {
-      const ride = this.ride;
+  @action
+  setDriver(driver) {
+    const ride = this.ride;
 
-      ride.set('driver', driver);
+    ride.set('driver', driver);
 
-      return ride
-        .get('carOwner')
-        .then((carOwner) => {
-          if (!carOwner) {
-            ride.set('carOwner', driver);
-          }
+    return ride
+      .get('carOwner')
+      .then((carOwner) => {
+        if (!carOwner) {
+          ride.set('carOwner', driver);
+        }
 
-          return ride.save();
-        })
-        .then(() => this.overlaps.fetch());
-    },
+        return ride.save();
+      })
+      .then(() => this.overlaps.fetch());
+  }
 
-    setCarOwner(carOwner) {
-      const ride = this.ride;
+  @action
+  setCarOwner(carOwner) {
+    const ride = this.ride;
 
-      ride.set('carOwner', carOwner);
-      return ride.save();
-    },
+    ride.set('carOwner', carOwner);
+    return ride.save();
+  }
 
-    assignFromCommitment(commitmentJson) {
-      let person = this.store.peekRecord(
-        'person',
-        commitmentJson.relationships.person.data.id
-      );
+  @action
+  assignFromCommitment(commitmentJson) {
+    let person = this.store.peekRecord(
+      'person',
+      commitmentJson.relationships.person.data.id
+    );
 
-      this.send('setDriver', person);
-    },
+    this.send('setDriver', person);
+  }
 
-    ignoreCommitment(commitmentJson) {
-      let ride = this.ride;
-      let url = `${ride.store
-        .adapterFor('ride')
-        .buildURL('ride', ride.id)}/ignore/${commitmentJson.id}`;
-      let token = this.get('session.data.authenticated.access_token');
+  @action
+  ignoreCommitment(commitmentJson) {
+    let ride = this.ride;
+    let url = `${ride.store
+      .adapterFor('ride')
+      .buildURL('ride', ride.id)}/ignore/${commitmentJson.id}`;
+    let token = this.get('session.data.authenticated.access_token');
 
-      fetch(url, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then(() => {
-        return this.overlaps.fetch();
-      });
-    },
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(() => {
+      return this.overlaps.fetch();
+    });
+  }
 
-    markConfirmed() {
-      let ride = this.ride;
-      ride.set('requestConfirmed', true);
-      return ride.save();
-    },
+  @action
+  markConfirmed() {
+    let ride = this.ride;
+    ride.set('requestConfirmed', true);
+    return ride.save();
+  }
 
-    match(option, searchTerm) {
-      const name = option.name;
-      const result = (name || '')
-        .toLowerCase()
-        .startsWith(searchTerm.toLowerCase());
+  @action
+  match(option, searchTerm) {
+    const name = option.name;
+    const result = (name || '')
+      .toLowerCase()
+      .startsWith(searchTerm.toLowerCase());
 
-      return result ? 1 : -1;
-    },
+    return result ? 1 : -1;
+  }
 
-    toggleCreation() {
-      this.toggleProperty('showCreation');
-    },
+  @action
+  toggleCreation() {
+    this.toggleProperty('showCreation');
+  }
 
-    proposeClear() {
-      this.set('clearing', true);
-    },
+  @action
+  proposeClear() {
+    this.set('clearing', true);
+  }
 
-    clearReport() {
-      this.set('ride.donation', null);
-      this.set('ride.distance', null);
-      this.set('ride.reportNotes', null);
-      this.set('ride.foodExpenses', 0);
-      this.set('ride.carExpenses', 0);
-      this.set('ride.complete', false);
+  @action
+  clearReport() {
+    this.set('ride.donation', null);
+    this.set('ride.distance', null);
+    this.set('ride.reportNotes', null);
+    this.set('ride.foodExpenses', 0);
+    this.set('ride.carExpenses', 0);
+    this.set('ride.complete', false);
 
-      this.ride.save();
-    },
-  },
-});
+    this.ride.save();
+  }
+}

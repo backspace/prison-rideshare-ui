@@ -6,7 +6,7 @@
       </h2>
     </PaperToolbarTools>
   </PaperToolbar>
-  <PaperForm @onSubmit={{action 'submit'}} as |form|>
+  <PaperForm @onSubmit={{action 'submitReset'}} as |form|>
     <PaperDialogContent>
       <div class='layout layout-row'>
         <form.input
@@ -40,7 +40,7 @@
           @class='submit'
           @primary={{true}}
           @raised={{true}}
-          @onClick={{action 'submit'}}
+          @onClick={{action 'submitReset'}}
         >
           Update password
         </form.submit-button>

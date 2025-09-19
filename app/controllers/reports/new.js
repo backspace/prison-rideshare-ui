@@ -1,44 +1,52 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
-export default Controller.extend({
-  session: service(),
-  store: service(),
-  toasts: service(),
+@classic
+export default class NewController extends Controller {
+  @service
+  session;
 
-  editingRide: undefined,
+  @service
+  store;
 
-  actions: {
-    setRide(ride) {
-      if (this.editingRide) {
-        this.editingRide.rollbackAttributes();
-      }
+  @service
+  toasts;
 
-      this.set('editingRide', ride);
-    },
+  editingRide;
 
-    submit() {
-      let editingRide = this.editingRide;
+  @action
+  setRide(ride) {
+    if (this.editingRide) {
+      this.editingRide.rollbackAttributes();
+    }
 
-      if (editingRide) {
-        return editingRide.save().then(
-          () => {
-            this.toasts.show('Your report was saved');
+    this.set('editingRide', ride);
+  }
 
-            // Remove the ride from the store before reloading from the server
-            this.store.unloadRecord(this.editingRide);
+  @action
+  submitReport() {
+    let editingRide = this.editingRide;
 
-            this.set('editingRide', undefined);
-            this.transitionToRoute('application');
-            window.scrollTo(0, 0);
-          },
-          () => {
-            this.toasts.show('There was an error saving your report!');
-          }
-        );
-      } else {
-        this.toasts.show('Please choose a ride');
-      }
-    },
-  },
-});
+    if (editingRide) {
+      return editingRide.save().then(
+        () => {
+          this.toasts.show('Your report was saved');
+
+          // Remove the ride from the store before reloading from the server
+          this.store.unloadRecord(this.editingRide);
+
+          this.set('editingRide', undefined);
+          this.transitionToRoute('application');
+          window.scrollTo(0, 0);
+        },
+        () => {
+          this.toasts.show('There was an error saving your report!');
+        }
+      );
+    } else {
+      this.toasts.show('Please choose a ride');
+    }
+  }
+}
