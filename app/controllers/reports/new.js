@@ -18,7 +18,7 @@ export default Controller.extend({
       this.set('editingRide', ride);
     },
 
-    submit() {
+    submitReport() {
       let editingRide = this.editingRide;
 
       if (editingRide) {
