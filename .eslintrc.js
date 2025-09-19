@@ -21,7 +21,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
-    browser: true,
+    browser: 'error',
   },
   overrides: [
     // node files
