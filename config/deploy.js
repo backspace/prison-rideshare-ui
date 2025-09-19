@@ -14,6 +14,7 @@ module.exports = function(deployTarget) {
       allowOverwrite: true,
       host: 'localhost',
       password: process.env.REDIS_PASSWORD,
+      port: 6699,
     },
     s3: {
       bucket: `prison-rideshare-${deployTarget}`,
