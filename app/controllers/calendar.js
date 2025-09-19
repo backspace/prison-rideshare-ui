@@ -14,11 +14,11 @@ export default Controller.extend({
   slots: alias('model.slots'),
   person: alias('model.person'),
 
-  monthMoment: computed('month', function() {
+  monthMoment: computed('month', function () {
     return moment(this.month);
   }),
 
-  httpSubscriptionUrl: computed('person.{id,calendarSecret}', function() {
+  httpSubscriptionUrl: computed('person.{id,calendarSecret}', function () {
     const person = this.person;
 
     const base = person.store
@@ -28,13 +28,13 @@ export default Controller.extend({
     return `${base}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
   }),
 
-  webcalSubscriptionUrl: computed('httpSubscriptionUrl', function() {
+  webcalSubscriptionUrl: computed('httpSubscriptionUrl', function () {
     return this.httpSubscriptionUrl
       .replace('https', 'webcal')
       .replace('http', 'webcal');
   }),
 
-  savePerson: task(function*() {
+  savePerson: task(function* () {
     try {
       yield this.person.save();
 

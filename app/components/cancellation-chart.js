@@ -9,7 +9,7 @@ export default Component.extend({
   reasonToCount: computed(
     'rides.@each.cancellationReason',
     'grouping',
-    function() {
+    function () {
       const grouping = this.grouping;
 
       return this.rides.reduce((reasonToCount, ride) => {
@@ -42,9 +42,9 @@ export default Component.extend({
       }, {});
     }
   ),
-  data: computed('reasonToCount', function() {
+  data: computed('reasonToCount', function () {
     const reasonToCount = this.reasonToCount;
-    return Object.keys(reasonToCount).map(key => {
+    return Object.keys(reasonToCount).map((key) => {
       if (key === 'report complete' || key === 'report incomplete') {
         return {
           name: key,
@@ -58,7 +58,7 @@ export default Component.extend({
       }
     });
   }),
-  options: computed('reasonToCount', function() {
+  options: computed('reasonToCount', function () {
     return {
       chart: {
         type: 'bar',

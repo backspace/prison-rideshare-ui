@@ -23,13 +23,14 @@ export default EmberObject.extend({
     'donations',
     'person.name',
     'totalExpensesDollars',
-    function() {
+    function () {
       const name = this.get('person.name');
       const total = this.totalExpensesDollars;
 
       const today = new Date();
-      const dateString = `${today.getMonth() +
-        1}/${today.getDate()}/${today.getFullYear()}`;
+      const dateString = `${
+        today.getMonth() + 1
+      }/${today.getDate()}/${today.getFullYear()}`;
 
       return (
         `${dateString}\t` +
@@ -44,10 +45,8 @@ export default EmberObject.extend({
     }
   ),
 
-  copyIconTitle: computed('clipboardText', function() {
-    return `This will copy the following to the clipboard: ${
-      this.clipboardText
-    }`;
+  copyIconTitle: computed('clipboardText', function () {
+    return `This will copy the following to the clipboard: ${this.clipboardText}`;
   }),
 
   clipboardDescriptionColumn: computed(
@@ -55,7 +54,7 @@ export default EmberObject.extend({
     'clipboardDescriptionColumnMeal',
     'foodExpensesSum',
     'monthName',
-    function() {
+    function () {
       const food = this.foodExpensesSum;
       const car = this.carExpensesSum;
 
@@ -75,7 +74,7 @@ export default EmberObject.extend({
 
   clipboardDescriptionColumnMeal: computed(
     'reimbursementsWithFoodExpenses.length',
-    function() {
+    function () {
       const meals = this.get('reimbursementsWithFoodExpenses.length');
 
       return `meal${meals > 1 ? ` × ${meals}` : ''}`;
@@ -84,7 +83,7 @@ export default EmberObject.extend({
 
   reimbursementsWithFoodExpenses: filterBy('reimbursements', 'foodExpenses'),
 
-  monthName: computed('reimbursements.firstObject.ride.start', function() {
+  monthName: computed('reimbursements.firstObject.ride.start', function () {
     const date = this.get('reimbursements.firstObject.ride.start');
     return moment(date).format('MMMM');
   }),

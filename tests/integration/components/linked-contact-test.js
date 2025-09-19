@@ -3,16 +3,16 @@ import { setupRenderingTest } from 'ember-qunit';
 import { find, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-module('Integration | Component | linked contact', function(hooks) {
+module('Integration | Component | linked contact', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it just renders the string when nothing is detected', async function(assert) {
+  test('it just renders the string when nothing is detected', async function (assert) {
     this.set('value', 'hello');
     await render(hbs`{{linked-contact contact=value}}`);
     assert.equal(find('span').innerHTML.trim(), 'hello');
   });
 
-  test('it extracts a phone number', async function(assert) {
+  test('it extracts a phone number', async function (assert) {
     this.set('value', 'hello 212-986-8227 what');
     await render(hbs`{{linked-contact contact=value}}`);
     assert.equal(
@@ -21,7 +21,7 @@ module('Integration | Component | linked contact', function(hooks) {
     );
   });
 
-  test('it extracts a phone number without dashes', async function(assert) {
+  test('it extracts a phone number without dashes', async function (assert) {
     this.set('value', 'hello 2129868227 what');
     await render(hbs`{{linked-contact contact=value}}`);
     assert.equal(
@@ -30,7 +30,7 @@ module('Integration | Component | linked contact', function(hooks) {
     );
   });
 
-  test('it extracts a phone number with spaces', async function(assert) {
+  test('it extracts a phone number with spaces', async function (assert) {
     this.set('value', 'hello 212 986 8227 what');
     await render(hbs`{{linked-contact contact=value}}`);
     assert.equal(
@@ -39,7 +39,7 @@ module('Integration | Component | linked contact', function(hooks) {
     );
   });
 
-  test('it extracts a phone number with brackets', async function(assert) {
+  test('it extracts a phone number with brackets', async function (assert) {
     this.set('value', 'hello (212) 986 8227 what');
     await render(hbs`{{linked-contact contact=value}}`);
     assert.equal(
@@ -48,7 +48,7 @@ module('Integration | Component | linked contact', function(hooks) {
     );
   });
 
-  test('it ignores an undefined contact value', async function(assert) {
+  test('it ignores an undefined contact value', async function (assert) {
     await render(hbs`{{linked-contact}}`);
     assert.equal(find('span').innerHTML.trim(), '');
   });

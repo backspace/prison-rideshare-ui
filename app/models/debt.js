@@ -17,7 +17,7 @@ export default DS.Model.extend({
   ridesWithFoodExpenses: computed(
     'person.id',
     'rides.@each.driver',
-    function() {
+    function () {
       return this.rides.filterBy('driver.id', this.get('person.id'));
     }
   ),
@@ -28,7 +28,7 @@ export default DS.Model.extend({
   ridesWithCarExpenses: computed(
     'person.id',
     'rides.@each.carOwner',
-    function() {
+    function () {
       return this.rides.filterBy('carOwner.id', this.get('person.id'));
     }
   ),

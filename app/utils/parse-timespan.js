@@ -1,7 +1,7 @@
 import chrono from 'chrono-node';
 
 const assumeEndDay = new chrono.Refiner();
-assumeEndDay.refine = function(text, results) {
+assumeEndDay.refine = function (text, results) {
   results.forEach(({ start, end }) => {
     if (
       start &&
@@ -22,7 +22,7 @@ assumeEndDay.refine = function(text, results) {
 };
 
 const assumePM = new chrono.Refiner();
-assumePM.refine = function(text, results) {
+assumePM.refine = function (text, results) {
   results.forEach(({ start, end }) => {
     if (start && !start.isCertain('meridiem')) {
       start.assign('meridiem', 1);

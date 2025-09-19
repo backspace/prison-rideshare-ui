@@ -11,15 +11,15 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 import moment from 'moment';
 
-module('Acceptance | rides', function(hooks) {
+module('Acceptance | rides', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
   });
 
-  test('list existing rides with sortability, hiding cancelled ones by default', async function(assert) {
+  test('list existing rides with sortability, hiding cancelled ones by default', async function (assert) {
     const leavenworth = this.server.create('institution', {
       name: 'Fort Leavenworth',
     });
@@ -140,7 +140,7 @@ module('Acceptance | rides', function(hooks) {
 
     await page.rides[2].driver.reveal();
 
-    await page.rides[2].as(ride => {
+    await page.rides[2].as((ride) => {
       assert.equal(ride.driver.email, 'sun@sense8');
       assert.equal(ride.driver.landline, '111');
       assert.equal(ride.driver.selfNotes, 'Some important notes');
@@ -257,7 +257,7 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(shared.toast.text, 'There was an error cancelling this ride');
   });
 
-  test('completed rides can be shown and cleared', async function(assert) {
+  test('completed rides can be shown and cleared', async function (assert) {
     this.server.create('ride');
     this.server.create('ride');
     this.server.create('ride', {
@@ -349,7 +349,7 @@ module('Acceptance | rides', function(hooks) {
     );
   });
 
-  test('create and edit a ride', async function(assert) {
+  test('create and edit a ride', async function (assert) {
     const rockwood = this.server.create('institution', {
       name: 'Rockwood',
     });
@@ -541,7 +541,7 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(page.form.notes.value, 'Updated request notes?');
   });
 
-  test('ride times can be entered manually', async function(assert) {
+  test('ride times can be entered manually', async function (assert) {
     this.server.create('institution', {
       name: 'Rockwood',
     });
@@ -577,7 +577,7 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(ride.date, 'Mon Dec 26 2016 9:55a — 11:30');
   });
 
-  test('matching visitors are suggested with some deduplication', async function(assert) {
+  test('matching visitors are suggested with some deduplication', async function (assert) {
     this.server.create('ride', { name: 'Francine', contact: 'jorts@jants.ca' });
     this.server.create('ride', { name: 'Pascal' });
     this.server.create('ride', {
@@ -599,12 +599,12 @@ module('Acceptance | rides', function(hooks) {
 
     assert.equal(page.form.name.suggestions.length, 2);
 
-    await page.form.name.suggestions[0].as(francine => {
+    await page.form.name.suggestions[0].as((francine) => {
       assert.equal(francine.name, 'Francine');
       assert.equal(francine.contact, 'jorts@jants.ca');
     });
 
-    await page.form.name.suggestions[1].as(frank => {
+    await page.form.name.suggestions[1].as((frank) => {
       assert.equal(frank.name, 'frank');
       assert.equal(frank.address, '91 Albert St.');
       assert.equal(frank.contact, 'frank@jants.ca');
@@ -619,7 +619,7 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(page.form.address.value, '91 Albert St.');
   });
 
-  test('ride validation errors are displayed but can be recovered from', async function(assert) {
+  test('ride validation errors are displayed but can be recovered from', async function (assert) {
     this.server.post(
       '/rides',
       {
@@ -668,7 +668,7 @@ module('Acceptance | rides', function(hooks) {
     assert.equal(lastRide.name, 'Hello');
   });
 
-  test('rides can be combined and uncombined, cancelling a parent ride shows a warning', async function(assert) {
+  test('rides can be combined and uncombined, cancelling a parent ride shows a warning', async function (assert) {
     const today = new Date();
     const tomorrow = new Date(today.getTime() + 1000 * 60 * 60 * 24);
 
@@ -775,7 +775,7 @@ module('Acceptance | rides', function(hooks) {
     );
   });
 
-  test('rides can be filtered by various characteristics', async function(assert) {
+  test('rides can be filtered by various characteristics', async function (assert) {
     const stonyMountain = this.server.create('institution', {
       name: 'Stony Mountain',
     });
@@ -874,7 +874,7 @@ module('Acceptance | rides', function(hooks) {
     );
   });
 
-  test('a divider highlights past from present/future rides', async function(assert) {
+  test('a divider highlights past from present/future rides', async function (assert) {
     const week = 7 * 24 * 60 * 60 * 1000;
     const nowMilliseconds = new Date().getTime();
     const twoWeeksAgo = new Date(nowMilliseconds - week * 2);
@@ -911,7 +911,7 @@ module('Acceptance | rides', function(hooks) {
     );
   });
 
-  test('uncancelled requests for the future that have not been confirmed are highlighted and noted in the sidebar', async function(assert) {
+  test('uncancelled requests for the future that have not been confirmed are highlighted and noted in the sidebar', async function (assert) {
     const week = 7 * 24 * 60 * 60 * 1000;
     const nowMilliseconds = new Date().getTime();
     const twoWeeksAgo = new Date(nowMilliseconds - week * 2);

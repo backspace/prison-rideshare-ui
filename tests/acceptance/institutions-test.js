@@ -7,17 +7,17 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/institutions';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | institutions', function(hooks) {
+module('Acceptance | institutions', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     this.server.create('institution', { name: 'Milner Ridge', far: true });
     this.server.create('institution', { name: 'Headingley', far: false });
 
     await authenticateSession(this.application);
   });
 
-  test('institutions can be listed and edited', async function(assert) {
+  test('institutions can be listed and edited', async function (assert) {
     await page.visit();
 
     percySnapshot(assert);
@@ -55,7 +55,7 @@ module('Acceptance | institutions', function(hooks) {
     assert.notOk(milnerRidge.far);
   });
 
-  test('institutions can be created', async function(assert) {
+  test('institutions can be created', async function (assert) {
     await page.visit();
 
     await page.newInstitution();

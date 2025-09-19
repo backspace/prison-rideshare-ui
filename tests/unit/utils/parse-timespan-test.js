@@ -3,19 +3,19 @@ import { module, test } from 'qunit';
 
 import moment from 'moment';
 
-module('Unit | Utility | parse timespan', function(hooks) {
-  hooks.beforeEach(function() {
+module('Unit | Utility | parse timespan', function (hooks) {
+  hooks.beforeEach(function () {
     const afterMidnight = new Date(1506490200000);
     window.chronokinesis.travel(afterMidnight);
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     window.chronokinesis.reset();
   });
 
   const formatString = 'YYYY-MM-DD HH:mm';
 
-  const assertParsing = function(
+  const assertParsing = function (
     assert,
     timespanString,
     startString,
@@ -27,7 +27,7 @@ module('Unit | Utility | parse timespan', function(hooks) {
     assert.equal(moment(parsed.end.date()).format(formatString), endString);
   };
 
-  test('it parses a well-specified timespan', function(assert) {
+  test('it parses a well-specified timespan', function (assert) {
     assertParsing(
       assert,
       'september 27 2017 from 1pm to 3pm',
@@ -36,7 +36,7 @@ module('Unit | Utility | parse timespan', function(hooks) {
     );
   });
 
-  test('it assumes the end meridiem is the same as the start meridiem', function(assert) {
+  test('it assumes the end meridiem is the same as the start meridiem', function (assert) {
     assertParsing(
       assert,
       'september 27 2017 from 1pm to 3',
@@ -45,7 +45,7 @@ module('Unit | Utility | parse timespan', function(hooks) {
     );
   });
 
-  test('it allows the end meridiem to be overridden', function(assert) {
+  test('it allows the end meridiem to be overridden', function (assert) {
     assertParsing(
       assert,
       'september 27 2017 from 10am to 11pm',
@@ -54,7 +54,7 @@ module('Unit | Utility | parse timespan', function(hooks) {
     );
   });
 
-  test('it assumes PM if unspecified', function(assert) {
+  test('it assumes PM if unspecified', function (assert) {
     assertParsing(
       assert,
       'september 27 2017 from 630 to 9',
@@ -63,7 +63,7 @@ module('Unit | Utility | parse timespan', function(hooks) {
     );
   });
 
-  test('it assumes PM if unspecified even for start alone', function(assert) {
+  test('it assumes PM if unspecified even for start alone', function (assert) {
     const parsed = parseTimespan('september 27 2017 from 630');
 
     assert.equal(
@@ -73,7 +73,7 @@ module('Unit | Utility | parse timespan', function(hooks) {
     assert.notOk(parsed.end);
   });
 
-  test('it assumes future dates unless fully specified', function(assert) {
+  test('it assumes future dates unless fully specified', function (assert) {
     window.chronokinesis.travel(new Date(1570925744254));
     // Saturday 2019-10-12 19:15
 

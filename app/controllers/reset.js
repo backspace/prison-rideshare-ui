@@ -32,11 +32,11 @@ export default Controller.extend({
         },
       });
 
-      query.then(response => {
+      query.then((response) => {
         if (response.ok) {
           this.toasts.show('Changed your password, will now log you in');
 
-          response.json().then(json => {
+          response.json().then((json) => {
             let email = get(json, 'data.attributes.email');
 
             this.session.authenticate(
@@ -46,7 +46,7 @@ export default Controller.extend({
             );
           });
         } else {
-          response.json().then(json => {
+          response.json().then((json) => {
             let message = get(json, 'errors.firstObject.detail');
 
             this.toasts.show(message || 'An unknown error occurred');

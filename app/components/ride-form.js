@@ -19,7 +19,7 @@ export default Component.extend({
 
   overrideTimespan: false,
 
-  editingWarning: computed('ride.{cancellationReason,complete}', function() {
+  editingWarning: computed('ride.{cancellationReason,complete}', function () {
     const reason = this.get('ride.cancellationReason');
     const complete = this.get('ride.complete');
 
@@ -32,14 +32,14 @@ export default Component.extend({
     }
   }),
 
-  timespanWarning: computed('ride.{start,end}', function() {
+  timespanWarning: computed('ride.{start,end}', function () {
     const start = this.get('ride.start');
     const end = this.get('ride.end');
 
     return start && end && start < new Date();
   }),
 
-  rideTimes: computed('ride.{start,end}', function() {
+  rideTimes: computed('ride.{start,end}', function () {
     if (this.get('ride.start') && this.get('ride.end')) {
       const start = this.get('ride.start');
       const end = this.get('ride.end');
@@ -50,11 +50,11 @@ export default Component.extend({
     }
   }),
 
-  startTimeString: computed('ride.start', function() {
+  startTimeString: computed('ride.start', function () {
     return moment(this.get('ride.start')).format(DATETIME_LOCAL_FORMAT);
   }),
 
-  endTimeString: computed('ride.end', function() {
+  endTimeString: computed('ride.end', function () {
     return moment(this.get('ride.end')).format(DATETIME_LOCAL_FORMAT);
   }),
 
@@ -75,9 +75,11 @@ export default Component.extend({
     },
 
     searchRides(name) {
-      return this.store.query('ride', { 'filter[name]': name }).then(rides => {
-        return deduplicateVisitorSuggestions(rides);
-      });
+      return this.store
+        .query('ride', { 'filter[name]': name })
+        .then((rides) => {
+          return deduplicateVisitorSuggestions(rides);
+        });
     },
 
     autocompleteSelectionChanged(ride) {

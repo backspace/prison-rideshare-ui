@@ -2,10 +2,10 @@ import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { run } from '@ember/runloop';
 
-module('Unit | Model | ride', function(hooks) {
+module('Unit | Model | ride', function (hooks) {
   setupTest(hooks);
 
-  test('it determines whether it matches a search query', function(assert) {
+  test('it determines whether it matches a search query', function (assert) {
     let rockwood;
     let chelsea, edward;
 

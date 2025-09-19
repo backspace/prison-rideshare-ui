@@ -27,14 +27,18 @@ export default DS.Model.extend({
 
   insertedAt: DS.attr('date'),
 
-  validationErrors: computed('constructor', 'errors.[]', function() {
-    const attributes = get(this.constructor, 'attributes');
-    return Array.from(attributes.keys()).reduce((response, key) => {
-      const errors = this.get(`errors.${key}`) || [];
-      response[key] = errors.mapBy('message');
-      return response;
-    }, {});
-  }),
+  validationErrors: computed(
+    'constructor.attributes',
+    'errors.[]',
+    function () {
+      const attributes = this.constructor.attributes;
+      return Array.from(attributes.keys()).reduce((response, key) => {
+        const errors = this.get(`errors.${key}`) || [];
+        response[key] = errors.mapBy('message');
+        return response;
+      }, {});
+    }
+  ),
 
   markAllRead: resourceAction('readings', {
     method: 'POST',

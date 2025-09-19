@@ -5,10 +5,10 @@ import { percySnapshot } from 'ember-percy';
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | reports', function(hooks) {
+module('Acceptance | reports', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.server.create('gas-price', {
       price: 100,
       closeRate: 96,
@@ -35,7 +35,7 @@ module('Acceptance | reports', function(hooks) {
     this.server.create('gas-price', { insertedAt: new Date(2018, 6, 1, 14) });
   });
 
-  test('it lists gas prices and reïmbursement rates', async function(assert) {
+  test('it lists gas prices and reïmbursement rates', async function (assert) {
     await page.visit();
 
     percySnapshot(assert);
@@ -48,7 +48,7 @@ module('Acceptance | reports', function(hooks) {
       'expected ten gas prices to be listed'
     );
 
-    page.gasPrices[0].as(latest => {
+    page.gasPrices[0].as((latest) => {
       assert.equal(latest.date, 'Sat, Jul 7');
       assert.equal(latest.price, '101¢⁄L');
       assert.equal(latest.closeRate, '84¢⁄km');

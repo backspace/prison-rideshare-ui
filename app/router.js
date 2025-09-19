@@ -13,14 +13,14 @@ export default class Router extends EmberRouter {
   }
 }
 
-Router.map(function() {
+Router.map(function () {
   this.route('institutions');
   this.route('drivers');
   this.route('debts');
   this.route('reimbursements');
   this.route('rides');
 
-  this.route('reports', function() {
+  this.route('reports', function () {
     this.route('new');
   });
 

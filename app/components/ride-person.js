@@ -13,7 +13,7 @@ export default Component.extend({
     'ride',
     'property',
     'ride.{carOwner.id,driver.id}',
-    function() {
+    function () {
       return this.ride.get(this.property);
     }
   ),

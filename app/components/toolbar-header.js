@@ -8,7 +8,7 @@ export default Component.extend({
   sidebar: service(),
   sidebarOpen: alias('sidebar.open'),
 
-  chips: computed(function() {
+  chips: computed(function () {
     const hostname = window.location.hostname;
 
     if (hostname.indexOf('sandbox') > -1) {

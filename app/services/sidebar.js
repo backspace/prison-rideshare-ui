@@ -13,7 +13,7 @@ export default Service.extend({
 
   open: false,
 
-  userCount: computed('userSocket.present.length', function() {
+  userCount: computed('userSocket.present.length', function () {
     const count = this.get('userSocket.present.length');
 
     if (count > 1) {
@@ -23,9 +23,9 @@ export default Service.extend({
     }
   }),
 
-  postsRequest: computed(function() {
+  postsRequest: computed(function () {
     return ObjectPromiseProxy.create({
-      promise: this.store.findAll('post').then(posts => {
+      promise: this.store.findAll('post').then((posts) => {
         return {
           posts,
         };
@@ -33,7 +33,7 @@ export default Service.extend({
     });
   }),
 
-  unreadCount: computed('postsRequest.posts.@each.unread', function() {
+  unreadCount: computed('postsRequest.posts.@each.unread', function () {
     let posts = this.get('postsRequest.posts');
 
     if (posts) {
@@ -47,7 +47,7 @@ export default Service.extend({
     'userCount',
     'unreadCount',
     'overlaps.count',
-    function() {
+    function () {
       // TODO this is untested
       return this.userCount + this.unreadCount + this.get('overlaps.count');
     }

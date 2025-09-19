@@ -8,10 +8,10 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | login', function(hooks) {
+module('Acceptance | login', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     this.server.post('/token', (schema, { requestBody }) => {
       authenticateSession({ access_token: 'abcdef' });
 
@@ -36,7 +36,7 @@ module('Acceptance | login', function(hooks) {
     });
   });
 
-  test('successful admin login forwards to the rides list', async function(assert) {
+  test('successful admin login forwards to the rides list', async function (assert) {
     await page.visit();
 
     await page.fillEmail('jorts@jants.ca');
@@ -48,7 +48,7 @@ module('Acceptance | login', function(hooks) {
     assert.equal(shared.session.text, 'Log out jorts@jants.ca');
   });
 
-  test('successful non-admin login forwards to the report route', async function(assert) {
+  test('successful non-admin login forwards to the report route', async function (assert) {
     await page.visit();
 
     await page.fillEmail('jj@jj.ca');
@@ -58,7 +58,7 @@ module('Acceptance | login', function(hooks) {
     assert.equal(currentURL(), '/reports/new');
   });
 
-  test('a failure from the current endpoint logs the user out', async function(assert) {
+  test('a failure from the current endpoint logs the user out', async function (assert) {
     this.server.get(
       '/users/current',
       () => {
@@ -75,7 +75,7 @@ module('Acceptance | login', function(hooks) {
     assert.equal(currentURL(), '/reports/new');
   });
 
-  test('a failed login shows an error', async function(assert) {
+  test('a failed login shows an error', async function (assert) {
     this.server.post(
       '/token',
       () => {

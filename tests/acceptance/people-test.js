@@ -9,10 +9,10 @@ import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | people', function(hooks) {
+module('Acceptance | people', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     const sun = this.server.create('person', {
       name: 'Sun',
       email: 'sun@sense8',
@@ -47,7 +47,7 @@ module('Acceptance | people', function(hooks) {
     await authenticateSession(this.application);
   });
 
-  test('people are listed, with inactive people hidden by default', async function(assert) {
+  test('people are listed, with inactive people hidden by default', async function (assert) {
     await page.visit();
 
     assert.equal(
@@ -56,7 +56,7 @@ module('Acceptance | people', function(hooks) {
       'expected the inactive person to be hidden'
     );
 
-    await page.people[1].as(sun => {
+    await page.people[1].as((sun) => {
       assert.equal(sun.name, 'Sun');
       assert.equal(sun.email.text, 'sun@sense8');
       assert.equal(sun.email.href, 'mailto:sun@sense8');
@@ -92,7 +92,7 @@ module('Acceptance | people', function(hooks) {
     percySnapshot(assert);
   });
 
-  test('people can be edited, cancelled edits are discarded', async function(assert) {
+  test('people can be edited, cancelled edits are discarded', async function (assert) {
     await page.visit();
 
     await page.head.inactiveSwitch.click();
@@ -138,7 +138,7 @@ module('Acceptance | people', function(hooks) {
     assert.equal(will.medium, 'mobile');
   });
 
-  test('a person can be created and chosen for a ride', async function(assert) {
+  test('a person can be created and chosen for a ride', async function (assert) {
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();
 
@@ -166,7 +166,7 @@ module('Acceptance | people', function(hooks) {
     assert.equal(ridesPage.rides[0].driver.text, 'Capheus');
   });
 
-  test('people can be made inactive and active', async function(assert) {
+  test('people can be made inactive and active', async function (assert) {
     await page.visit();
 
     await page.people[1].activeSwitch.click();
@@ -204,7 +204,7 @@ module('Acceptance | people', function(hooks) {
     );
   });
 
-  test('person validation errors are displayed', async function(assert) {
+  test('person validation errors are displayed', async function (assert) {
     this.server.post(
       '/people',
       {

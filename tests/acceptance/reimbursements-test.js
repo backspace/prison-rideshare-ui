@@ -7,10 +7,10 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | reimbursements', function(hooks) {
+module('Acceptance | reimbursements', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     const sun = this.server.create('person', { name: 'Sun' });
     const kala = this.server.create('person', { name: 'Kala' });
     const will = this.server.create('person', { name: 'Will' });
@@ -102,7 +102,7 @@ module('Acceptance | reimbursements', function(hooks) {
     await authenticateSession(this.application);
   });
 
-  test('list reimbursements and optionally show processed ones', async function(assert) {
+  test('list reimbursements and optionally show processed ones', async function (assert) {
     await reimbursementsPage.visit();
 
     assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
@@ -133,7 +133,7 @@ module('Acceptance | reimbursements', function(hooks) {
       'expected the donate button to not be default for non-donations'
     );
 
-    await reimbursementsPage.rows[2].as(kalaDonation => {
+    await reimbursementsPage.rows[2].as((kalaDonation) => {
       assert.equal(kalaDonation.name, '');
       assert.equal(kalaDonation.foodExpenses, '');
       assert.equal(kalaDonation.carExpenses, '1');
@@ -157,7 +157,7 @@ module('Acceptance | reimbursements', function(hooks) {
     assert.equal(sun.carExpenses, '33');
     assert.equal(sun.totalExpenses, '77');
 
-    await reimbursementsPage.rows[4].as(willDonation => {
+    await reimbursementsPage.rows[4].as((willDonation) => {
       assert.equal(willDonation.name, 'Will');
       assert.equal(willDonation.carExpenses, '3.33');
     });
@@ -204,7 +204,7 @@ module('Acceptance | reimbursements', function(hooks) {
     percySnapshot(assert);
   });
 
-  test('process reimbursements', async function(assert) {
+  test('process reimbursements', async function (assert) {
     await reimbursementsPage.visit();
 
     await reimbursementsPage.rows[3].processButton.click();
@@ -237,7 +237,7 @@ module('Acceptance | reimbursements', function(hooks) {
     assert.ok(reimbursementsPage.noReimbursementsMessage.isVisible);
   });
 
-  test('rows can be copied for the ledger', async function(assert) {
+  test('rows can be copied for the ledger', async function (assert) {
     await reimbursementsPage.visit();
 
     const clipboardText = reimbursementsPage.rows[2].copyButton.clipboardText;

@@ -20,7 +20,7 @@ export default Controller.extend({
             user.get('password')
           );
         })
-        .catch(error => {
+        .catch((error) => {
           const errorText =
             get(error, 'errors.firstObject.detail') ??
             'There was an error registering you';

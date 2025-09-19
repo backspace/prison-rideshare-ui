@@ -10,10 +10,10 @@ import page from 'prison-rideshare-ui/tests/pages/calendar';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { POLL_TOKEN } from 'prison-rideshare-ui/routes/calendar';
 
-module('Acceptance | calendar', function(hooks) {
+module('Acceptance | calendar', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     const person = this.server.create('person', {
       name: 'Jortle Tortle',
       email: 'jorts@jants.ca',
@@ -88,15 +88,15 @@ module('Acceptance | calendar', function(hooks) {
     pastCommittedSlot.createCommitment({ person });
   });
 
-  test('calendar shows existing commitments and lets them be changed', async function(assert) {
+  test('calendar shows existing commitments and lets them be changed', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     assert.equal(page.personSession, 'Logged in as jorts@jants.ca');
     assert.equal(page.month, 'December 2117');
 
-    page.days[3].as(d4 => {
+    page.days[3].as((d4) => {
       assert.equal(d4.slots.length, 1, 'expected one slot on Monday');
-      d4.slots[0].as(s1 => {
+      d4.slots[0].as((s1) => {
         assert.equal(s1.hours, '5:30p—8');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
         assert.notOk(s1.isDisabled, 'expected the slot to not be full');
@@ -107,16 +107,16 @@ module('Acceptance | calendar', function(hooks) {
       });
     });
 
-    page.days[9].as(d10 => {
+    page.days[9].as((d10) => {
       assert.equal(d10.slots.length, 2, 'expected two slots on Sunday');
-      d10.slots[0].as(s1 => {
+      d10.slots[0].as((s1) => {
         assert.equal(s1.hours, '11a—5p');
         assert.notOk(
           s1.isCommittedTo,
           'expected the slot to not be committed-to'
         );
       });
-      d10.slots[1].as(s2 => {
+      d10.slots[1].as((s2) => {
         assert.equal(s2.hours, '5p—9');
       });
     });
@@ -139,7 +139,7 @@ module('Acceptance | calendar', function(hooks) {
     percySnapshot(assert);
   });
 
-  test('slots can be committed to', async function(assert) {
+  test('slots can be committed to', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     // FIXME this is only a separate test because toasts linger forever in the test environment
@@ -162,7 +162,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('slots are polled so remote commitments show up', async function(assert) {
+  test('slots are polled so remote commitments show up', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     assert.ok(page.days[9].slots[1].isVisible);
@@ -178,8 +178,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('full and committed-to slots show as such and full slots from others are hidden', async function(assert) {
-    this.server.post('/commitments', function() {
+  test('full and committed-to slots show as such and full slots from others are hidden', async function (assert) {
+    this.server.post('/commitments', function () {
       assert.ok(false, 'expected no commitment to be created for a full slot');
     });
 
@@ -194,8 +194,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('past slots can’t be committed to', async function(assert) {
-    this.server.post('/commitments', function() {
+  test('past slots can’t be committed to', async function (assert) {
+    this.server.post('/commitments', function () {
       assert.ok(false, 'expected no commitment to be created for a past slot');
     });
 
@@ -222,8 +222,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('a failure to delete a commitment keeps it displayed and shows an error', async function(assert) {
-    this.server.delete('/commitments/:id', function() {
+  test('a failure to delete a commitment keeps it displayed and shows an error', async function (assert) {
+    this.server.delete('/commitments/:id', function () {
       return new Mirage.Response(
         401,
         {},
@@ -254,8 +254,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('a failure to create a commitment makes it not display and shows an error', async function(assert) {
-    this.server.post('/commitments', function() {
+  test('a failure to create a commitment makes it not display and shows an error', async function (assert) {
+    this.server.post('/commitments', function () {
       return new Mirage.Response(
         401,
         {},
@@ -286,8 +286,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('a failure to create a commitment with a particular error shows the error', async function(assert) {
-    this.server.post('/commitments', function() {
+  test('a failure to create a commitment with a particular error shows the error', async function (assert) {
+    this.server.post('/commitments', function () {
       return new Mirage.Response(
         422,
         {},
@@ -310,20 +310,20 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(shared.toast.text, 'Fail!');
   });
 
-  test('visiting with an unknown magic token shows an error', async function(assert) {
+  test('visiting with an unknown magic token shows an error', async function (assert) {
     await page.visit({ month: '2117-12', token: 'JORTLEBY' });
 
     assert.equal(page.error, 'We were unable to log you in with that token.');
   });
 
-  test('visiting with no token shows an error', async function(assert) {
+  test('visiting with no token shows an error', async function (assert) {
     await page.visit({ month: '2117-12' });
 
     assert.equal(page.error, 'We were unable to log you in without a token.');
   });
 
-  test('visiting with a magic token that doesn’t resolve to a person shows an error', async function(assert) {
-    this.server.get('/people/me', function() {
+  test('visiting with a magic token that doesn’t resolve to a person shows an error', async function (assert) {
+    this.server.get('/people/me', function () {
       return new Mirage.Response(
         401,
         {},
@@ -343,8 +343,8 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(page.error, 'We were unable to log you in with that token.');
   });
 
-  test('visiting with a rejected magic token shows an error including details', async function(assert) {
-    this.server.post('/people/token', function() {
+  test('visiting with a rejected magic token shows an error including details', async function (assert) {
+    this.server.post('/people/token', function () {
       return new Mirage.Response(
         401,
         {},
@@ -365,7 +365,7 @@ module('Acceptance | calendar', function(hooks) {
     assert.equal(page.error, 'A detail');
   });
 
-  test('the person can edit their details', async function(assert) {
+  test('the person can edit their details', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     assert.ok(
@@ -479,7 +479,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('the person can get a link to subscribe to their calendar', async function(assert) {
+  test('the person can get a link to subscribe to their calendar', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     assert.ok(
@@ -490,7 +490,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('shows detail validation errors', async function(assert) {
+  test('shows detail validation errors', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     await page.person.toggle.click();
@@ -506,10 +506,10 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('handles an error saving details', async function(assert) {
+  test('handles an error saving details', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-    this.server.patch('/people/me', function() {
+    this.server.patch('/people/me', function () {
       return new Mirage.Response(
         401,
         {},
@@ -535,13 +535,13 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('the path controls the month', async function(assert) {
+  test('the path controls the month', async function (assert) {
     await page.visit({ month: '2118-01', token: 'MAGIC??TOKEN' });
 
     assert.equal(page.month, 'January 2118');
   });
 
-  test('an admin can see the commitments with person names', async function(assert) {
+  test('an admin can see the commitments with person names', async function (assert) {
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
     await page.adminVisit({ month: '2117-12' });
@@ -619,7 +619,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('an admin can create commitments', async function(assert) {
+  test('an admin can create commitments', async function (assert) {
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
     await page.adminVisit({ month: '2117-12' });
@@ -677,8 +677,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('an error when an admin tries to create a commitment is displayed', async function(assert) {
-    this.server.post('/commitments', function() {
+  test('an error when an admin tries to create a commitment is displayed', async function (assert) {
+    this.server.post('/commitments', function () {
       return new Mirage.Response(
         422,
         {},
@@ -711,7 +711,7 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('an admin can delete commitments', async function(assert) {
+  test('an admin can delete commitments', async function (assert) {
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
     await page.adminVisit({ month: '2117-12' });
@@ -730,8 +730,8 @@ module('Acceptance | calendar', function(hooks) {
     );
   });
 
-  test('an error when an admin tries to delete a commitment is displayed', async function(assert) {
-    this.server.delete('/commitments/:id', function() {
+  test('an error when an admin tries to delete a commitment is displayed', async function (assert) {
+    this.server.delete('/commitments/:id', function () {
       return new Mirage.Response(
         422,
         {},

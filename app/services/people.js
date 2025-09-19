@@ -6,13 +6,13 @@ import DS from 'ember-data';
 export default Service.extend({
   store: service(),
 
-  findAll: computed(function() {
+  findAll: computed(function () {
     return this.store.findAll('person');
   }),
 
-  all: computed('findAll.@each.name', function() {
+  all: computed('findAll.@each.name', function () {
     return DS.PromiseArray.create({
-      promise: this.findAll.then(people => people.sortBy('name')),
+      promise: this.findAll.then((people) => people.sortBy('name')),
     });
   }),
 

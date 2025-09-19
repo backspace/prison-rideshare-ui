@@ -7,10 +7,10 @@ import Mirage from 'ember-cli-mirage';
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | reset password', function(hooks) {
+module('Acceptance | reset password', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('resets a password and logs the user in', async function(assert) {
+  test('resets a password and logs the user in', async function (assert) {
     this.server.create('user', {
       email: 'test@example.com',
     });
@@ -18,25 +18,25 @@ module('Acceptance | reset password', function(hooks) {
     let resetDone = false,
       loginDone = false;
 
-    this.server.put('/users/:token', function(
-      { users },
-      { params: { token }, requestBody }
-    ) {
-      let {
-        data: {
-          attributes: { password, 'password-confirmation': confirmation },
-        },
-      } = JSON.parse(requestBody);
+    this.server.put(
+      '/users/:token',
+      function ({ users }, { params: { token }, requestBody }) {
+        let {
+          data: {
+            attributes: { password, 'password-confirmation': confirmation },
+          },
+        } = JSON.parse(requestBody);
 
-      assert.equal(token, 'Strike!');
+        assert.equal(token, 'Strike!');
 
-      assert.equal(password, 'hello');
-      assert.equal(confirmation, 'hello');
+        assert.equal(password, 'hello');
+        assert.equal(confirmation, 'hello');
 
-      resetDone = true;
+        resetDone = true;
 
-      return users.first();
-    });
+        return users.first();
+      }
+    );
 
     this.server.post('/token', () => {
       loginDone = true;
@@ -63,7 +63,7 @@ module('Acceptance | reset password', function(hooks) {
     assert.ok(loginDone);
   });
 
-  test('a validation error is displayed', async function(assert) {
+  test('a validation error is displayed', async function (assert) {
     this.server.put('/users/:token', () => {
       return new Mirage.Response(
         422,
@@ -90,7 +90,7 @@ module('Acceptance | reset password', function(hooks) {
     assert.equal(shared.toast.text, 'Password confirmation did not match');
   });
 
-  test('an unknown error is handled', async function(assert) {
+  test('an unknown error is handled', async function (assert) {
     this.server.put('/users/:token', () => {
       return new Mirage.Response(500, {}, {});
     });

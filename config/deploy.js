@@ -5,7 +5,7 @@ var VALID_DEPLOY_TARGETS = [
   'pull-request-sandbox',
 ];
 
-module.exports = function(deployTarget) {
+module.exports = function (deployTarget) {
   var ENV = {
     build: {
       environment: 'production',

@@ -5,20 +5,20 @@ import { percySnapshot } from 'ember-percy';
 import forgotPage from 'prison-rideshare-ui/tests/pages/forgot';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | forgot', function(hooks) {
+module('Acceptance | forgot', function (hooks) {
   setupApplicationTest(hooks);
 
-  test('triggers a reset email', async function(assert) {
+  test('triggers a reset email', async function (assert) {
     let done = assert.async();
 
-    this.server.post('/users/reset', function(
-      schema,
-      { queryParams: { email } }
-    ) {
-      assert.equal(email, 'hello');
+    this.server.post(
+      '/users/reset',
+      function (schema, { queryParams: { email } }) {
+        assert.equal(email, 'hello');
 
-      return done();
-    });
+        return done();
+      }
+    );
 
     await forgotPage.visit();
 

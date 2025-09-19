@@ -9,13 +9,13 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/register';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | registration', function(hooks) {
+module('Acceptance | registration', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     // FIXME this is duplicated here and in login-test because it needs access to the application
     // which seems impossible from mirage/config
-    this.server.post('/token', schema => {
+    this.server.post('/token', (schema) => {
       authenticateSession({ access_token: 'abcdef' });
 
       // FIXME yeah…
@@ -30,7 +30,7 @@ module('Acceptance | registration', function(hooks) {
     });
   });
 
-  test('registrations are sent to the server, currently with no followup', async function(assert) {
+  test('registrations are sent to the server, currently with no followup', async function (assert) {
     this.server.post('/register', 'users');
 
     await page.visit();
@@ -49,7 +49,7 @@ module('Acceptance | registration', function(hooks) {
     assert.equal(shared.session.text, 'Log out jorts@jants.ca');
   });
 
-  test('a failed registration shows an unprocessed error', async function(assert) {
+  test('a failed registration shows an unprocessed error', async function (assert) {
     this.server.post('/register', () => {
       return new Mirage.Response(
         422,

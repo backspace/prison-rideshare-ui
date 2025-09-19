@@ -5,9 +5,9 @@ function setupApplicationTest(hooks) {
   qunitSetup(hooks);
   setupMirage(hooks);
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     let toasts = this.owner.lookup('service:paperToaster');
-    toasts.get('queue').forEach(toast => toasts.cancelToast(toast));
+    toasts.get('queue').forEach((toast) => toasts.cancelToast(toast));
   });
 }
 

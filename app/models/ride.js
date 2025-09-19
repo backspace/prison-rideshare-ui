@@ -22,7 +22,7 @@ export default DS.Model.extend({
   combinedWith: DS.belongsTo('ride', { inverse: 'children' }),
   children: DS.hasMany('ride', { inverse: 'combinedWith' }),
 
-  isCombined: computed('combinedWith.id', function() {
+  isCombined: computed('combinedWith.id', function () {
     return this.belongsTo('combinedWith').id();
   }),
 
@@ -39,23 +39,27 @@ export default DS.Model.extend({
   passengers: DS.attr({ defaultValue: 1 }),
   firstTime: DS.attr('boolean'),
 
-  validationErrors: computed('constructor', 'errors.[]', function() {
-    const attributes = get(this.constructor, 'attributes');
-    const attributeKeys = Array.from(attributes.keys());
-    attributeKeys.push('institution');
+  validationErrors: computed(
+    'constructor.attributes',
+    'errors.[]',
+    function () {
+      const attributes = this.constructor.attributes;
+      const attributeKeys = Array.from(attributes.keys());
+      attributeKeys.push('institution');
 
-    return Array.from(attributeKeys).reduce((response, key) => {
-      const errors = this.get(`errors.${key}`) || [];
-      response[key] = errors.mapBy('message');
-      return response;
-    }, {});
-  }),
+      return Array.from(attributeKeys).reduce((response, key) => {
+        const errors = this.get(`errors.${key}`) || [];
+        response[key] = errors.mapBy('message');
+        return response;
+      }, {});
+    }
+  ),
 
   start: DS.attr('date'),
   end: DS.attr('date'),
   insertedAt: DS.attr('date'),
 
-  rideTimes: computed('start', 'end', function() {
+  rideTimes: computed('start', 'end', function () {
     const start = this.start;
     const end = this.end;
 
@@ -105,7 +109,7 @@ export default DS.Model.extend({
   reimbursementExpensesSum: computed(
     'reimbursementFoodExpensesSum.[]',
     'reimbursementCarExpensesSum.[]',
-    function() {
+    function () {
       return (
         this.reimbursementFoodExpensesSum + this.reimbursementCarExpensesSum
       );
@@ -117,7 +121,7 @@ export default DS.Model.extend({
     'outstandingCarExpenses'
   ),
 
-  namePlusPassengers: computed('name', 'passengers', function() {
+  namePlusPassengers: computed('name', 'passengers', function () {
     const name = this.name;
     const passengers = this.passengers;
 
@@ -144,7 +148,7 @@ export default DS.Model.extend({
 
   requiresConfirmation: computed(
     '{start,enabled,requestConfirmed}',
-    function() {
+    function () {
       const now = new Date();
 
       return this.start > now && this.enabled && !this.requestConfirmed;
@@ -154,10 +158,10 @@ export default DS.Model.extend({
   allAnonymisedAddresses: computed(
     'address',
     'children.@each.address',
-    function() {
+    function () {
       return [this.address]
         .concat(this.children.mapBy('address'))
-        .map(address => anonymiseAddress(address))
+        .map((address) => anonymiseAddress(address))
         .join(', ');
     }
   ),
@@ -165,7 +169,7 @@ export default DS.Model.extend({
   allPassengers: computed(
     'passengers',
     'children.@each.passengers',
-    function() {
+    function () {
       return this.children
         .mapBy('passengers')
         .reduce((sum, count) => count + sum, this.passengers);
@@ -178,7 +182,7 @@ export default DS.Model.extend({
     'carOwner.name',
     'name',
     'address',
-    function() {
+    function () {
       return `${
         this.get('institution.name') === undefined
           ? ''
@@ -187,9 +191,9 @@ export default DS.Model.extend({
         this.get('driver.name') === undefined ? '' : this.get('driver.name')
       } ${
         this.get('carOwner.name') === undefined ? '' : this.get('carOwner.name')
-      } ${this.name === undefined ? '' : this.name} ${this.get(
-        'address'
-      )}`.toLowerCase();
+      } ${this.name === undefined ? '' : this.name} ${
+        this.address
+      }`.toLowerCase();
     }
   ),
 
@@ -197,7 +201,7 @@ export default DS.Model.extend({
     const query = casedQuery.toLowerCase();
     const matchString = this.matchString;
 
-    return (query.match(/\S+/g) || []).every(queryTerm =>
+    return (query.match(/\S+/g) || []).every((queryTerm) =>
       matchString.includes(queryTerm)
     );
   },

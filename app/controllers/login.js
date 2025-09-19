@@ -16,7 +16,7 @@ export default Controller.extend({
           user.get('email'),
           user.get('password')
         )
-        .catch(error => {
+        .catch((error) => {
           this.set('error', error);
         });
     },

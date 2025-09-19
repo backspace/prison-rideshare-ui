@@ -23,27 +23,23 @@ export default CalendarController.extend({
   store: service(),
   toasts: service(),
 
-  previousMonth: computed('month', function() {
-    return moment(this.month)
-      .add(-1, 'M')
-      .format(format);
+  previousMonth: computed('month', function () {
+    return moment(this.month).add(-1, 'M').format(format);
   }),
 
-  nextMonth: computed('month', function() {
-    return moment(this.month)
-      .add(1, 'M')
-      .format(format);
+  nextMonth: computed('month', function () {
+    return moment(this.month).add(1, 'M').format(format);
   }),
 
-  monthString: computed('month', function() {
+  monthString: computed('month', function () {
     return moment(this.month).format(format);
   }),
 
-  monthMoment: computed('month', function() {
+  monthMoment: computed('month', function () {
     return moment(this.month);
   }),
 
-  title: computed('month', function() {
+  title: computed('month', function () {
     return `${moment(this.month).format('MMMM YYYY')} calendar`;
   }),
 
@@ -60,9 +56,9 @@ export default CalendarController.extend({
   uncommittedPeople: computed(
     'activePeople.[]',
     'viewingSlotPeopleIds.[]',
-    function() {
+    function () {
       const alreadyCommittedPeople = this.viewingSlotPeopleIds;
-      return this.activePeople.reject(person =>
+      return this.activePeople.reject((person) =>
         alreadyCommittedPeople.includes(person.id)
       );
     }
@@ -97,7 +93,7 @@ export default CalendarController.extend({
             ).format('MMMM D')}`
           );
         })
-        .catch(error => {
+        .catch((error) => {
           const errorDetail = get(error, 'errors.firstObject.detail');
           this.toasts.show(errorDetail || 'Couldn’t save your change');
         });
@@ -112,7 +108,7 @@ export default CalendarController.extend({
         .then(() => {
           this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
         })
-        .catch(error => {
+        .catch((error) => {
           const errorDetail = get(error, 'errors.firstObject.detail');
           this.toasts.show(errorDetail || 'Couldn’t save your change');
         });
@@ -121,7 +117,7 @@ export default CalendarController.extend({
     email() {
       const token = this.get('session.data.authenticated.access_token');
 
-      this.people.forEach(person => {
+      this.people.forEach((person) => {
         const url = `${person.store
           .adapterFor('person')
           .buildURL('person', person.id)}/calendar-email/${this.monthString}`;
@@ -156,7 +152,7 @@ export default CalendarController.extend({
       }, {});
 
       RSVP.hash(personLinkRequests)
-        .then(linkFetches => {
+        .then((linkFetches) => {
           return RSVP.hash(
             Object.keys(linkFetches).reduce((hash, email) => {
               hash[email] = linkFetches[email].text();
@@ -164,14 +160,14 @@ export default CalendarController.extend({
             }, {})
           );
         })
-        .then(links => {
-          const linkObjects = Object.keys(links).map(email => {
+        .then((links) => {
+          const linkObjects = Object.keys(links).map((email) => {
             return { email, link: links[email] };
           });
           this.set('links', linkObjects);
           this.set('linksError', undefined);
         })
-        .catch(e => {
+        .catch((e) => {
           this.set('links', undefined);
           this.set('linksError', e);
         });

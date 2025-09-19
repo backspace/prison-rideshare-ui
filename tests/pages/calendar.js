@@ -47,7 +47,7 @@ export default create({
       field: {
         scope: 'input',
         disabledAttribute: attribute('disabled'),
-        isDisabled: getter(function() {
+        isDisabled: getter(function () {
           return this.disabledAttribute === 'disabled';
         }),
       },
@@ -130,7 +130,7 @@ export default create({
 
       isCommittedTo: hasClass('md-checked', 'md-checkbox'),
       disabledAttribute: attribute('disabled', 'md-checkbox'),
-      isDisabled: getter(function() {
+      isDisabled: getter(function () {
         return this.disabledAttribute === 'disabled';
       }),
 

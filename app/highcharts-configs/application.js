@@ -1,4 +1,4 @@
-export default function(defaultOptions) {
+export default function (defaultOptions) {
   defaultOptions.chart = {
     style: {
       fontFamily: 'inherit',

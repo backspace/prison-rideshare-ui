@@ -27,10 +27,10 @@ export default PhoenixSocket.extend({
     // TODO is this a sensible channel name?
     const channel = this.joinChannel('user:presence');
 
-    channel.on('presence_state', presenceState =>
+    channel.on('presence_state', (presenceState) =>
       this._onPresenceState(presenceState)
     );
-    channel.on('presence_diff', presenceDiff =>
+    channel.on('presence_diff', (presenceDiff) =>
       this._onPresenceDiff(presenceDiff)
     );
   },
@@ -47,8 +47,8 @@ export default PhoenixSocket.extend({
   _processJoins(keys) {
     const present = this.present;
     keys
-      .map(stringWithPrefix => this._parseUserString(stringWithPrefix))
-      .forEach(joinId => {
+      .map((stringWithPrefix) => this._parseUserString(stringWithPrefix))
+      .forEach((joinId) => {
         if (!present.includes(joinId)) {
           present.pushObject(joinId);
         }
@@ -58,8 +58,8 @@ export default PhoenixSocket.extend({
   _processLeaves(keys) {
     const present = this.present;
     keys
-      .map(stringWithPrefix => this._parseUserString(stringWithPrefix))
-      .forEach(leaveId => present.removeObject(leaveId));
+      .map((stringWithPrefix) => this._parseUserString(stringWithPrefix))
+      .forEach((leaveId) => present.removeObject(leaveId));
   },
 
   _parseUserString(stringWithPrefix) {

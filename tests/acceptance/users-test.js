@@ -8,10 +8,10 @@ import page from 'prison-rideshare-ui/tests/pages/users';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | users', function(hooks) {
+module('Acceptance | users', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     this.admin = this.server.create('user', {
       email: 'abc@def.com',
       admin: true,
@@ -37,7 +37,7 @@ module('Acceptance | users', function(hooks) {
     await loginPage.submit();
   });
 
-  test('list users and update admin status', async function(assert) {
+  test('list users and update admin status', async function (assert) {
     await page.visit();
 
     assert.equal(shared.title, 'Users · Prison Rideshare');
@@ -61,7 +61,7 @@ module('Acceptance | users', function(hooks) {
     assert.ok(lastUser.admin);
   });
 
-  test('shows who is present', async function(assert) {
+  test('shows who is present', async function (assert) {
     await page.visit();
 
     const userSocket = this.owner.lookup('service:user-socket');

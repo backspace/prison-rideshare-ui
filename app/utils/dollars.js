@@ -1,6 +1,6 @@
 import { computed } from '@ember/object';
 
-export default function(property) {
+export default function (property) {
   return computed(property, {
     get() {
       return this.get(property) / 100;

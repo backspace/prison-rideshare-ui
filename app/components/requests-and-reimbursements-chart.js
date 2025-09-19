@@ -17,7 +17,7 @@ export default Component.extend({
   grouping: 'months',
   rendered: false,
 
-  timeGroups: computed('rides.@each.start', 'grouping', function() {
+  timeGroups: computed('rides.@each.start', 'grouping', function () {
     return this.rides.reduce((timeGroups, ride) => {
       const timeGroupForRide = this.timeGroupForRide(ride);
 
@@ -31,7 +31,7 @@ export default Component.extend({
     }, {});
   }),
 
-  timeGroupKeys: computed('timeGroups', 'grouping', function() {
+  timeGroupKeys: computed('timeGroups', 'grouping', function () {
     return Object.keys(this.timeGroups).sort();
   }),
 
@@ -39,15 +39,13 @@ export default Component.extend({
     const start = ride.get('start');
 
     if (this.grouping === 'weeks') {
-      return moment(start)
-        .startOf('week')
-        .format('YYMMDD');
+      return moment(start).startOf('week').format('YYMMDD');
     } else {
       return moment(start).format('YYYY-MM');
     }
   },
 
-  data: computed('grouping', 'timeGroupKeys', 'timeGroups', function() {
+  data: computed('grouping', 'timeGroupKeys', 'timeGroups', function () {
     const timeGroups = this.timeGroups;
     const grouping = this.grouping;
 
@@ -55,7 +53,7 @@ export default Component.extend({
       {
         name: 'Cancelled',
         type: 'column',
-        data: this.timeGroupKeys.map(timeGroupKey => {
+        data: this.timeGroupKeys.map((timeGroupKey) => {
           return countRidesOrVisitors(
             timeGroups[timeGroupKey].filterBy('cancelled'),
             grouping
@@ -66,7 +64,7 @@ export default Component.extend({
       {
         name: 'Not cancelled',
         type: 'column',
-        data: this.timeGroupKeys.map(timeGroupKey => {
+        data: this.timeGroupKeys.map((timeGroupKey) => {
           return countRidesOrVisitors(
             timeGroups[timeGroupKey].rejectBy('cancelled'),
             grouping
@@ -78,7 +76,7 @@ export default Component.extend({
         name: 'Distance',
         type: 'spline',
         yAxis: 1,
-        data: this.timeGroupKeys.map(timeGroupKey => {
+        data: this.timeGroupKeys.map((timeGroupKey) => {
           return timeGroups[timeGroupKey].reduce((sum, ride) => {
             return sum + (ride.get('distance') || 0);
           }, 0);
@@ -88,7 +86,7 @@ export default Component.extend({
         name: 'Reimbursements',
         type: 'spline',
         yAxis: 2,
-        data: this.timeGroupKeys.map(timeGroupKey => {
+        data: this.timeGroupKeys.map((timeGroupKey) => {
           return (
             timeGroups[timeGroupKey].reduce((sum, ride) => {
               return (
@@ -104,7 +102,7 @@ export default Component.extend({
         name: 'Food expenses',
         type: 'spline',
         yAxis: 2,
-        data: this.timeGroupKeys.map(timeGroupKey => {
+        data: this.timeGroupKeys.map((timeGroupKey) => {
           return (
             timeGroups[timeGroupKey].reduce((sum, ride) => {
               return sum + ride.get('reimbursementFoodExpensesSum');
@@ -119,7 +117,7 @@ export default Component.extend({
     'timeGroups',
     'timeGroupKeys.length',
     'grouping',
-    function() {
+    function () {
       return {
         title: {
           text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,

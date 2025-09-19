@@ -14,7 +14,7 @@ export default Controller.extend({
   ridesBadgeCount: computed(
     'overlaps.count',
     'rides.model.@each.requiresConfirmation',
-    function() {
+    function () {
       let rides = this.get('rides.model') || [];
       return (
         this.get('overlaps.count') +

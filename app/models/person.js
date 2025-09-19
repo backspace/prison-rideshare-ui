@@ -21,19 +21,23 @@ export default DS.Model.extend({
   drivings: DS.hasMany('ride', { inverse: 'driver' }),
   carOwnings: DS.hasMany('ride', { inverse: 'carOwner' }),
 
-  lastRide: computed('drivings.@each.start', function() {
+  lastRide: computed('drivings.@each.start', function () {
     return this.drivings.sortBy('start').get('lastObject');
   }),
 
   calendarSecret: DS.attr('string'),
 
-  validationErrors: computed('constructor', 'errors.[]', function() {
-    const attributes = get(this.constructor, 'attributes');
+  validationErrors: computed(
+    'constructor.attributes',
+    'errors.[]',
+    function () {
+      const attributes = this.constructor.attributes;
 
-    return Array.from(attributes.keys()).reduce((response, key) => {
-      const errors = this.get(`errors.${key}`) || [];
-      response[key] = errors.mapBy('message');
-      return response;
-    }, {});
-  }),
+      return Array.from(attributes.keys()).reduce((response, key) => {
+        const errors = this.get(`errors.${key}`) || [];
+        response[key] = errors.mapBy('message');
+        return response;
+      }, {});
+    }
+  ),
 });

@@ -8,7 +8,7 @@ export default DS.Model.extend({
 
   commitments: DS.hasMany({ async: false }),
 
-  isNotFull: computed('commitments.length', 'count', function() {
+  isNotFull: computed('commitments.length', 'count', function () {
     const count = this.count;
     const commitmentCount = this.get('commitments.length');
 

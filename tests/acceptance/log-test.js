@@ -7,10 +7,10 @@ import page from 'prison-rideshare-ui/tests/pages/log';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | log', function(hooks) {
+module('Acceptance | log', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     let poster = this.server.create('user', {
       email: 'jortle@tortle.ca',
       admin: true,
@@ -31,7 +31,7 @@ module('Acceptance | log', function(hooks) {
     });
   });
 
-  test('it lists posts, with the unread count in the sidebar, and posts can be marked read and unread', async function(assert) {
+  test('it lists posts, with the unread count in the sidebar, and posts can be marked read and unread', async function (assert) {
     this.server.post('/token', () => {
       return {
         access_token: 'abcdef',
@@ -52,7 +52,7 @@ module('Acceptance | log', function(hooks) {
 
     assert.equal(page.posts.length, 2);
 
-    await page.posts[0].as(post => {
+    await page.posts[0].as((post) => {
       assert.equal(post.date, 'Tue Aug 7 2018 2:18p');
       assert.equal(post.poster, 'jortle@tortle.ca');
       assert.equal(post.content, 'ya');
@@ -82,7 +82,7 @@ module('Acceptance | log', function(hooks) {
     assert.ok(page.markAllReadButton.isHidden);
   });
 
-  test('a post can be created', async function(assert) {
+  test('a post can be created', async function (assert) {
     await authenticateSession({ access_token: 'abcdef' });
 
     await page.visit();
@@ -100,7 +100,7 @@ module('Acceptance | log', function(hooks) {
     assert.equal(post.content, stringToMobiledoc('hello'));
   });
 
-  test('post validation errors are displayed', async function(assert) {
+  test('post validation errors are displayed', async function (assert) {
     await authenticateSession({ access_token: 'abcdef' });
 
     this.server.post(
@@ -125,7 +125,7 @@ module('Acceptance | log', function(hooks) {
     assert.equal(page.form.content.error.text, "Content can't be blank");
   });
 
-  test('posts can be edited, cancelled edits are discarded', async function(assert) {
+  test('posts can be edited, cancelled edits are discarded', async function (assert) {
     await authenticateSession({ access_token: 'abcdef' });
 
     await page.visit();
@@ -158,7 +158,7 @@ module('Acceptance | log', function(hooks) {
     assert.equal(post.content, stringToMobiledoc('new content'));
   });
 
-  test('posts can be deleted', async function(assert) {
+  test('posts can be deleted', async function (assert) {
     await authenticateSession({ access_token: 'abcdef' });
 
     await page.visit();

@@ -8,10 +8,10 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/report';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | reports', function(hooks) {
+module('Acceptance | reports', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     const leavenworth = this.server.create('institution', {
       name: 'Fort Leavenworth',
     });
@@ -47,7 +47,7 @@ module('Acceptance | reports', function(hooks) {
       complete: true,
     });
 
-    this.server.patch('/rides/:id', function({ rides }, { params: { id } }) {
+    this.server.patch('/rides/:id', function ({ rides }, { params: { id } }) {
       let ride = rides.find(id);
       let attrs = this.normalizedRequestAttrs('ride');
 
@@ -59,7 +59,7 @@ module('Acceptance | reports', function(hooks) {
     });
   });
 
-  test('submit a report for a ride', async function(assert) {
+  test('submit a report for a ride', async function (assert) {
     await page.visit();
 
     assert.equal(shared.title, 'Ride report · Prison Rideshare');
@@ -93,7 +93,7 @@ module('Acceptance | reports', function(hooks) {
     assert.equal(changedRide.foodExpenses, 2550);
     assert.equal(changedRide.carExpenses, 5205);
     assert.equal(changedRide.reportNotes, 'These r the notes');
-    assert.equal(changedRide.donation, true);
+    assert.true(changedRide.donation);
 
     assert.equal(currentURL(), '/reports/new');
 
@@ -109,7 +109,7 @@ module('Acceptance | reports', function(hooks) {
     );
   });
 
-  test('a fallback shows when no rides need a report', async function(assert) {
+  test('a fallback shows when no rides need a report', async function (assert) {
     this.server.db.rides.remove();
     await page.visit();
 
@@ -119,7 +119,7 @@ module('Acceptance | reports', function(hooks) {
     );
   });
 
-  test('the report interface is hidden when a user is logged in', async function(assert) {
+  test('the report interface is hidden when a user is logged in', async function (assert) {
     await authenticateSession(this.application);
 
     await page.visit();
@@ -128,7 +128,7 @@ module('Acceptance | reports', function(hooks) {
     assert.ok(page.noSession.isVisible);
   });
 
-  test('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', async function(assert) {
+  test('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', async function (assert) {
     await page.visit();
     await page.rides[1].choose();
 
@@ -142,7 +142,7 @@ module('Acceptance | reports', function(hooks) {
     );
   });
 
-  test('unsaved changes are discarded when the selected ride changes', async function(assert) {
+  test('unsaved changes are discarded when the selected ride changes', async function (assert) {
     await page.visit();
 
     await page.rides[0].choose();
@@ -154,7 +154,7 @@ module('Acceptance | reports', function(hooks) {
     assert.equal(page.distance.value, '');
   });
 
-  test('a failure to save keeps the values and displays an error', async function(assert) {
+  test('a failure to save keeps the values and displays an error', async function (assert) {
     this.server.patch(
       '/rides/:id',
       () => {

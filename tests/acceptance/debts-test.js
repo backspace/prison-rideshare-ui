@@ -7,10 +7,10 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/debts';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-module('Acceptance | debts', function(hooks) {
+module('Acceptance | debts', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function() {
+  hooks.beforeEach(async function () {
     const sun = this.server.create('person', { name: 'Sun' });
     const kala = this.server.create('person', { name: 'Kala' });
     const will = this.server.create('person', { name: 'Will' });
@@ -75,7 +75,7 @@ module('Acceptance | debts', function(hooks) {
     await authenticateSession(this.application);
   });
 
-  test('debts are listed', async function(assert) {
+  test('debts are listed', async function (assert) {
     await page.visit();
 
     percySnapshot(assert);
@@ -123,7 +123,7 @@ module('Acceptance | debts', function(hooks) {
     );
   });
 
-  test('a debt can be reimbursed', async function(assert) {
+  test('a debt can be reimbursed', async function (assert) {
     await page.visit();
     await page.people[0].reimburse();
 

@@ -7,12 +7,12 @@ const ClassWithDollars = EmberObject.extend({
   dollars: dollars('cents'),
 });
 
-module('Unit - dollars', function() {
-  test('converts from cents to dollars', function(assert) {
+module('Unit - dollars', function () {
+  test('converts from cents to dollars', function (assert) {
     assert.equal(ClassWithDollars.create({ cents: 50 }).get('dollars'), 0.5);
   });
 
-  test('converts from dollars to cents', function(assert) {
+  test('converts from dollars to cents', function (assert) {
     assert.equal(ClassWithDollars.create({ dollars: 5.25 }).get('cents'), 525);
     assert.equal(
       ClassWithDollars.create({ dollars: 0.55 }).get('cents'),

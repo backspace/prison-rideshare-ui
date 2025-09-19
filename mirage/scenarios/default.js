@@ -3,7 +3,7 @@ faker.seed(1919);
 
 import RidesController from 'prison-rideshare-ui/controllers/rides';
 
-export default function(server) {
+export default function (server) {
   const people = server.createList('person', 8);
 
   const institutionNames = [
@@ -14,7 +14,7 @@ export default function(server) {
     'Stony Mountain',
   ];
 
-  const institutions = institutionNames.map(name =>
+  const institutions = institutionNames.map((name) =>
     server.create('institution', { name })
   );
 

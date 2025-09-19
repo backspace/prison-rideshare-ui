@@ -16,7 +16,7 @@ export default Service.extend({
     this.fetchOverlaps.perform();
   },
 
-  fetchOverlaps: task(function*() {
+  fetchOverlaps: task(function* () {
     let rideAdapter = this.store.adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
     let token = this.get('session.data.authenticated.access_token');
@@ -34,11 +34,11 @@ export default Service.extend({
     this.set('overlaps', json);
   }),
 
-  count: computed('overlaps.data.length', function() {
+  count: computed('overlaps.data.length', function () {
     return this.get('overlaps.data.length') || 0;
   }),
 
-  rideIdsToCommitments: computed('overlaps.data.@each.id', function() {
+  rideIdsToCommitments: computed('overlaps.data.@each.id', function () {
     let response = this.overlaps;
 
     if (!response || !response.data) {
@@ -49,7 +49,7 @@ export default Service.extend({
       let commitmentIds = rideJson.relationships.commitments.data.mapBy('id');
       let commitments = response.included
         .filterBy('type', 'commitments')
-        .filter(included => commitmentIds.includes(included.id));
+        .filter((included) => commitmentIds.includes(included.id));
 
       let relationshipIdToAttributes = response.included.reduce(
         (relationshipIdToAttributes, included) => {
@@ -66,7 +66,7 @@ export default Service.extend({
       );
 
       // TODO remove side effects
-      commitments.forEach(commitment => {
+      commitments.forEach((commitment) => {
         /* eslint-disable ember/no-side-effects */
         set(
           commitment,

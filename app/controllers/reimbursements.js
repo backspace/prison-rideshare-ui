@@ -14,7 +14,7 @@ export default Controller.extend({
   reimbursements: alias('model'),
   unsortedFilteredReimbursements: computed(
     'reimbursements.@each.processed',
-    function() {
+    function () {
       return this.reimbursements.rejectBy('processed');
     }
   ),
@@ -35,17 +35,14 @@ export default Controller.extend({
 
   monthReimbursementCollections: computed(
     'filteredReimbursements.@each.person',
-    function() {
+    function () {
       const reimbursements = this.filteredReimbursements;
       const monthNumberStringToMonthName = {};
 
       const monthToPersonIdToReimbursements = reimbursements.reduce(
         (monthToPersonIdToReimbursements, reimbursement) => {
           // FIXME this assumes a ride is always preloaded and present
-          const start = reimbursement
-            .belongsTo('ride')
-            .value()
-            .get('start');
+          const start = reimbursement.belongsTo('ride').value().get('start');
           const month = moment(start).format('YYYY-MM');
 
           if (!monthToPersonIdToReimbursements[month]) {
@@ -53,9 +50,8 @@ export default Controller.extend({
           }
 
           if (!monthNumberStringToMonthName[month]) {
-            monthNumberStringToMonthName[month] = moment(start).format(
-              'MMMM YYYY'
-            );
+            monthNumberStringToMonthName[month] =
+              moment(start).format('MMMM YYYY');
           }
 
           const person = reimbursement.get('person');
@@ -80,11 +76,11 @@ export default Controller.extend({
 
           if (reimbursement.get('donation')) {
             collection = monthToPersonIdToReimbursements[month][personId].find(
-              c => c.get('donations')
+              (c) => c.get('donations')
             );
           } else {
             collection = monthToPersonIdToReimbursements[month][personId].find(
-              c => !c.get('donations')
+              (c) => !c.get('donations')
             );
           }
 
@@ -101,7 +97,7 @@ export default Controller.extend({
         const personIdToReimbursements =
           monthToPersonIdToReimbursements[monthNumberString];
         const collections = Object.keys(personIdToReimbursements)
-          .map(id => personIdToReimbursements[id])
+          .map((id) => personIdToReimbursements[id])
           .sortBy('firstObject.person.name');
 
         collections.forEach(([nonDonations, donations]) => {
@@ -136,7 +132,7 @@ export default Controller.extend({
 
   actions: {
     processReimbursements(personAndReimbursements, donation) {
-      personAndReimbursements.get('reimbursements').forEach(reimbursement => {
+      personAndReimbursements.get('reimbursements').forEach((reimbursement) => {
         reimbursement.set('processed', true);
 
         if (donation === true) {
@@ -150,20 +146,22 @@ export default Controller.extend({
 });
 
 const MonthReimbursementCollections = EmberObject.extend({
-  clipboardText: computed('reimbursementCollectionsClipboardText', function() {
-    return this.reimbursementCollections
-      .reduce(function(collections, collection) {
-        if (collection.reimbursements.length) {
-          collections.push(collection.clipboardText);
-        }
-        return collections;
-      }, [])
-      .join('\n');
-  }),
+  clipboardText: computed(
+    'reimbursementCollections',
+    'reimbursementCollectionsClipboardText',
+    function () {
+      return this.reimbursementCollections
+        .reduce(function (collections, collection) {
+          if (collection.reimbursements.length) {
+            collections.push(collection.clipboardText);
+          }
+          return collections;
+        }, [])
+        .join('\n');
+    }
+  ),
 
-  copyIconTitle: computed('clipboardText', function() {
-    return `This will copy the following to the clipboard:\n${
-      this.clipboardText
-    }`;
+  copyIconTitle: computed('clipboardText', function () {
+    return `This will copy the following to the clipboard:\n${this.clipboardText}`;
   }),
 });

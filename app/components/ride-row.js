@@ -36,19 +36,19 @@ export default Component.extend({
   store: service(),
 
   // TODO this is unfortunate but without it ignoring doesn’t make the overlap immediately disappear
-  commitments: computed('overlaps.overlaps.data.@each.id', 'ride', function() {
+  commitments: computed('overlaps.overlaps.data.@each.id', 'ride', function () {
     return this.overlaps.commitmentsForRide(this.ride);
   }),
 
   clearing: false,
 
-  creation: computed('ride.insertedAt', function() {
+  creation: computed('ride.insertedAt', function () {
     const insertedAt = this.get('ride.insertedAt');
 
     return this.moment.moment(insertedAt).format('ddd MMM D YYYY h:mma');
   }),
 
-  cancellationIcon: computed('ride.cancellationReason', function() {
+  cancellationIcon: computed('ride.cancellationReason', function () {
     const reason = this.get('ride.cancellationReason');
     const icon = reasonToIcon[reason];
 
@@ -57,7 +57,7 @@ export default Component.extend({
 
   cancellationButtonLabel: computed(
     'ride.{enabled,cancellationReason}',
-    function() {
+    function () {
       if (this.get('ride.enabled')) {
         return 'Cancel ride';
       } else {
@@ -66,7 +66,7 @@ export default Component.extend({
     }
   ),
 
-  combineButtonLabel: computed('ride.id', 'rideToCombine.id', function() {
+  combineButtonLabel: computed('ride.id', 'rideToCombine.id', function () {
     if (this.get('ride.id') == this.get('rideToCombine.id')) {
       return 'Cancel combining';
     } else {
@@ -74,7 +74,7 @@ export default Component.extend({
     }
   }),
 
-  uncombinable: computed('rideToCombine.{id,start}', 'ride.start', function() {
+  uncombinable: computed('rideToCombine.{id,start}', 'ride.start', function () {
     const sixHours = 1000 * 60 * 60 * 6;
     const rideToCombineStart = this.get('rideToCombine.start');
 
@@ -90,11 +90,11 @@ export default Component.extend({
     }
   }),
 
-  mediumIcon: computed('ride.medium', function() {
+  mediumIcon: computed('ride.medium', function () {
     return mediumIcon[this.get('ride.medium')];
   }),
 
-  mediumIconTitle: computed('ride.medium', function() {
+  mediumIconTitle: computed('ride.medium', function () {
     return `ride was requested via ${this.get('ride.medium')}`;
   }),
 
@@ -106,7 +106,7 @@ export default Component.extend({
 
       return ride
         .get('carOwner')
-        .then(carOwner => {
+        .then((carOwner) => {
           if (!carOwner) {
             ride.set('carOwner', driver);
           }
@@ -156,7 +156,7 @@ export default Component.extend({
     },
 
     match(option, searchTerm) {
-      const name = get(option, 'name');
+      const name = option.name;
       const result = (name || '')
         .toLowerCase()
         .startsWith(searchTerm.toLowerCase());

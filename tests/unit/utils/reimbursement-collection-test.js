@@ -3,13 +3,14 @@ import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-col
 
 import { module, test } from 'qunit';
 
-module('Unit | Utility | reimbursement collection', function() {
+module('Unit | Utility | reimbursement collection', function () {
   const reimbursementDate = new Date('2017-10-23');
   const ride = EmberObject.create({ start: reimbursementDate });
 
   const today = new Date();
-  const dateString = `${today.getMonth() +
-    1}/${today.getDate()}/${today.getFullYear()}`;
+  const dateString = `${
+    today.getMonth() + 1
+  }/${today.getDate()}/${today.getFullYear()}`;
 
   const FakeReimbursement = EmberObject.extend({
     ride,
@@ -38,7 +39,7 @@ module('Unit | Utility | reimbursement collection', function() {
     name: 'Chelsea',
   });
 
-  test('it generates a clipboard string for car expenses', function(assert) {
+  test('it generates a clipboard string for car expenses', function (assert) {
     const result = ReimbursementCollection.create({
       person,
       reimbursements: [carReimbursement],
@@ -49,7 +50,7 @@ module('Unit | Utility | reimbursement collection', function() {
     );
   });
 
-  test('it generates a clipboard string for car expense donation', function(assert) {
+  test('it generates a clipboard string for car expense donation', function (assert) {
     const result = ReimbursementCollection.create({
       person,
       reimbursements: [carReimbursement, otherCarReimbursement],
@@ -61,7 +62,7 @@ module('Unit | Utility | reimbursement collection', function() {
     );
   });
 
-  test('it generates a clipboard string for car and food expenses', function(assert) {
+  test('it generates a clipboard string for car and food expenses', function (assert) {
     const result = ReimbursementCollection.create({
       person,
       reimbursements: [foodReimbursement, carReimbursement],
@@ -72,7 +73,7 @@ module('Unit | Utility | reimbursement collection', function() {
     );
   });
 
-  test('it generates a clipboard string for food expenses', function(assert) {
+  test('it generates a clipboard string for food expenses', function (assert) {
     const result = ReimbursementCollection.create({
       person,
       reimbursements: [foodReimbursement, otherFoodReimbursement],

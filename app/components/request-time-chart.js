@@ -5,7 +5,7 @@ import moment from 'moment';
 export default Component.extend({
   classNames: ['request-time-chart'],
 
-  data: computed('rides.@each.start', 'grouping', function() {
+  data: computed('rides.@each.start', 'grouping', function () {
     const grouping = this.grouping;
 
     const data = this.rides

@@ -17,16 +17,16 @@ export default Component.extend({
   commitment: computed(
     'person.id',
     'slot.commitments.@each.person',
-    function() {
+    function () {
       const personId = this.get('person.id');
 
       return this.get('slot.commitments').find(
-        slot => slot.belongsTo('person').id() == personId
+        (slot) => slot.belongsTo('person').id() == personId
       );
     }
   ),
 
-  timespan: computed('slot.{start,end}', function() {
+  timespan: computed('slot.{start,end}', function () {
     return formatBriefTimespan(
       this.moment,
       this.get('slot.start'),
@@ -35,7 +35,7 @@ export default Component.extend({
     );
   }),
 
-  hidden: computed('slot.isNotFull', 'isCommittedTo', function() {
+  hidden: computed('slot.isNotFull', 'isCommittedTo', function () {
     return !this.get('slot.isNotFull') && !this.isCommittedTo;
   }),
 
@@ -43,7 +43,7 @@ export default Component.extend({
     'isCommittedTo',
     'slot.{isNotFull,start}',
     'toggle.isRunning',
-    function() {
+    function () {
       const isNotFull = this.get('slot.isNotFull');
       const start = this.get('slot.start');
       const toggleIsRunning = this.get('toggle.isRunning');
@@ -60,7 +60,7 @@ export default Component.extend({
     }
   ),
 
-  capacity: computed('slot.{count,commitments.length}', function() {
+  capacity: computed('slot.{count,commitments.length}', function () {
     const dividend = this.get('slot.commitments.length');
 
     const count = this.get('slot.count');
@@ -69,7 +69,7 @@ export default Component.extend({
     return `${dividend}/${divisor}`;
   }),
 
-  toggle: task(function*() {
+  toggle: task(function* () {
     if (this.isCommittedTo) {
       try {
         yield this.commitment.destroyRecord();
