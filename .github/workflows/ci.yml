@@ -36,6 +36,7 @@ jobs:
       - name: Run Tests
         run: npm run test:ember
         env:
+          COVERAGE: true
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
       - name: Publish test results
@@ -44,3 +45,6 @@ jobs:
         with:
           junit_files: junit.xml
           check_name: Test Results
+
+      - name: Upload coverage to coveralls
+        run: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
