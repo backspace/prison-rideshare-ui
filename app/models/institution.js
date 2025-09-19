@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports, no-unused-vars */
 import { computed, get } from '@ember/object';
 import DS from 'ember-data';
 

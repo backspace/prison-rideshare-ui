@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-mixins */
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import moment from 'moment';

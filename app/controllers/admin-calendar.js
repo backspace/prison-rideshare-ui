@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-actions-hash, ember/no-get */
 import CalendarController from './calendar';
 import { alias, mapBy, sum } from '@ember/object/computed';
 import { inject as service } from '@ember/service';

@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-get */
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
 import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';

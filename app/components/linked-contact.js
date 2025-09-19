@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-return-from-computed, ember/require-tagless-components */
 import Ember from 'ember';
 import Component from '@ember/component';
 import { computed } from '@ember/object';

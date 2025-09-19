@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, no-unused-vars */
 import EmberObject, { computed } from '@ember/object';
 import { alias, sort, filterBy, mapBy } from '@ember/object/computed';
 import Controller from '@ember/controller';

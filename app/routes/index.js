@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-get, ember/no-mixins */
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';

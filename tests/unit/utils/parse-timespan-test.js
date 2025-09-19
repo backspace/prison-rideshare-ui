@@ -1,3 +1,4 @@
+/* eslint-disable qunit/require-expect */
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import { module, test } from 'qunit';
 
