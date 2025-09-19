@@ -21,6 +21,7 @@ module.exports = function (defaults) {
     babel: {
       plugins: [
         require.resolve('ember-concurrency/async-arrow-task-transform'),
+        ...require('ember-cli-code-coverage').buildBabelPlugin(),
       ],
     },
     fingerprint,
