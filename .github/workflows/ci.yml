@@ -46,5 +46,5 @@ jobs:
           junit_files: junit.xml
           check_name: Test Results
 
-      - name: Upload coverage to coveralls
-        run: cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+      - name: Upload to Coveralls
+        uses: coverallsapp/github-action@v2
