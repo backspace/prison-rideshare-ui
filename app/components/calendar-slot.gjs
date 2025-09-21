@@ -10,6 +10,7 @@ import { task } from 'ember-concurrency';
 import gt from "ember-truth-helpers/helpers/gt";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import perform from "ember-concurrency/helpers/perform";
+import { action } from "@ember/object";
 
 @classic
 export default class CalendarSlot extends Component {<template>{{!-- template-lint-disable no-action --}}

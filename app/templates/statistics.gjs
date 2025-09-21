@@ -9,6 +9,7 @@ import RequestTimeChart from "prison-rideshare-ui/components/request-time-chart"
 import CancellationChart from "prison-rideshare-ui/components/cancellation-chart";
 import CopyButton from "ember-cli-clipboard/components/copy-button";
 import paperIcon from "ember-paper/components/paper-icon";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PaperContent @class="layout-column flex">
   <PaperCard @class="statistics-card" as |card|>

@@ -9,6 +9,7 @@ import momentFormat from "ember-moment/helpers/moment-format";
 import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperButton from "ember-paper/components/paper-button";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Record ride details" />
 

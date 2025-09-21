@@ -11,6 +11,7 @@ import sortBy from "ember-composable-helpers/helpers/sort-by";
 import RideRow from "prison-rideshare-ui/components/ride-row";
 import RideForm from "prison-rideshare-ui/components/ride-form";
 import CancellationForm from "prison-rideshare-ui/components/cancellation-form";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Rides">
   <PaperButton @mini={{true}} @aria-label="New ride" @title="New ride" class="new" @onClick={{action "newRide"}}>

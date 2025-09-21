@@ -7,6 +7,7 @@ import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import { LinkTo } from "@ember/routing";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import PaperButton from "ember-paper/components/paper-button";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PaperDialog>
   <PaperToolbar>

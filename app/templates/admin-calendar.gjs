@@ -9,6 +9,7 @@ import PaperChips from "ember-paper/components/paper-chips/component";
 import PersonBadge from "prison-rideshare-ui/components/person-badge";
 import PaperButton from "ember-paper/components/paper-button";
 import gt from "ember-truth-helpers/helpers/gt";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title={{@controller.title}} />
 

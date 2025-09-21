@@ -11,6 +11,7 @@ import { LinkTo } from "@ember/routing";
 import momentFormat from "ember-moment/helpers/moment-format";
 import now from "ember-moment/helpers/now";
 import PaperDivider from "ember-paper/components/paper-divider/component";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <HeadLayout />
 <EmberLoadRemover />

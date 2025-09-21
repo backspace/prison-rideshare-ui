@@ -5,6 +5,7 @@ import momentFormat from "ember-moment/helpers/moment-format";
 import paperIcon from "ember-paper/components/paper-icon";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import eq from "ember-truth-helpers/helpers/eq";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Users" />
 

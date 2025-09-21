@@ -11,6 +11,7 @@ import PaperSwitch from "ember-paper/components/paper-switch";
 import momentFormat from "ember-moment/helpers/moment-format";
 import and from "ember-truth-helpers/helpers/and";
 import ReimbursementForm from "prison-rideshare-ui/components/reimbursement-form";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Reimbursements" />
 

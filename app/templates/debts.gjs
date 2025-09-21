@@ -4,6 +4,7 @@ import PaperDataTable from "paper-data-table/components/paper-data-table";
 import PaperButton from "ember-paper/components/paper-button";
 import eq from "ember-truth-helpers/helpers/eq";
 import DonationIcon from "prison-rideshare-ui/components/donation-icon";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Debts" />
 

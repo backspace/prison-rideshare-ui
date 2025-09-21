@@ -9,6 +9,7 @@ import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import PaperForm from "ember-paper/components/paper-form";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Institutions">
   <PaperButton @mini={{true}} @aria-label="New institution" @title="New institution" @class="new" @onClick={{action "newInstitution"}}>

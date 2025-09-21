@@ -4,6 +4,7 @@ import PaperForm from "ember-paper/components/paper-form";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import PaperButton from "ember-paper/components/paper-button";
+import { action } from "@ember/object";
 <template>{{!-- template-lint-disable no-action --}}
 <PaperDialog @clickOutsideToClose={{true}} @onClose={{this.cancel}}>
   <PaperDialogContent>

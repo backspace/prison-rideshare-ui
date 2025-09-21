@@ -13,6 +13,7 @@ import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import PaperForm from "ember-paper/components/paper-form";
 import PaperRadioGroup from "ember-paper/components/paper-radio-group";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Drivers">
   <PaperButton @mini={{true}} @aria-label="New driver" @title="New driver" @class="new" @onClick={{action "newPerson"}}>

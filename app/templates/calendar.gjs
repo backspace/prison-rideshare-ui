@@ -9,6 +9,7 @@ import PaperRadioGroup from "ember-paper/components/paper-radio-group";
 import PaperSwitch from "ember-paper/components/paper-switch";
 import PaperTooltip from "ember-paper/components/paper-tooltip";
 import CalendarDay from "prison-rideshare-ui/components/calendar-day";
+import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PowerCalendar @center={{@controller.monthMoment}} @daysComponent="calendar-days" as |calendar|>
   <PaperCard @class="person-card" as |card|>
