@@ -1,7 +1,7 @@
 import RouteTemplate from 'ember-route-template'
 import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PaperButton from "ember-paper/components/paper-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon";
+import paperIcon from "ember-paper/components/paper-icon";
 import PaperContent from "ember-paper/components/paper-content/component";
 import PaperDataTable from "paper-data-table/components/paper-data-table";
 import filterBy from "ember-composable-helpers/helpers/filter-by";
@@ -9,7 +9,7 @@ import sortBy from "ember-composable-helpers/helpers/sort-by";
 import momentFormat from "ember-moment/helpers/moment-format";
 import eq from "ember-truth-helpers/helpers/eq";
 import PaperDialog from "ember-paper/components/paper-dialog";
-import PaperForm from "ember-paper/_app_/components/paper-form";
+import PaperForm from "ember-paper/components/paper-form";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import RenderMobiledoc from "ember-mobiledoc-dom-renderer/components/render-mobiledoc/component";
 import MobiledocEditor from "ember-mobiledoc-editor/components/mobiledoc-editor/component";

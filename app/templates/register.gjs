@@ -1,10 +1,10 @@
 import RouteTemplate from 'ember-route-template'
 import PaperDialog from "ember-paper/components/paper-dialog";
-import PaperToolbar from "ember-paper/_app_/components/paper-toolbar";
-import PaperToolbarTools from "ember-paper/_app_/components/paper-toolbar-tools";
-import PaperForm from "ember-paper/_app_/components/paper-form";
+import PaperToolbar from "ember-paper/components/paper-toolbar";
+import PaperToolbarTools from "ember-paper/components/paper-toolbar-tools";
+import PaperForm from "ember-paper/components/paper-form";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
-import PaperCard from "ember-paper/_app_/components/paper-card";
+import PaperCard from "ember-paper/components/paper-card";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import PaperButton from "ember-paper/components/paper-button";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}

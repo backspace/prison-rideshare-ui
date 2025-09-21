@@ -1,12 +1,12 @@
 import RouteTemplate from 'ember-route-template'
 import PowerCalendar from "ember-power-calendar/components/power-calendar";
-import PaperCard from "ember-paper/_app_/components/paper-card";
+import PaperCard from "ember-paper/components/paper-card";
 import PaperButton from "ember-paper/components/paper-button";
 import perform from "ember-concurrency/helpers/perform";
 import not from "ember-truth-helpers/helpers/not";
-import PaperForm from "ember-paper/_app_/components/paper-form";
+import PaperForm from "ember-paper/components/paper-form";
 import PaperRadioGroup from "ember-paper/components/paper-radio-group";
-import PaperSwitch from "ember-paper/_app_/components/paper-switch";
+import PaperSwitch from "ember-paper/components/paper-switch";
 import PaperTooltip from "ember-paper/components/paper-tooltip";
 import CalendarDay from "prison-rideshare-ui/components/calendar-day";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}

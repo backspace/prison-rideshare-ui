@@ -7,7 +7,7 @@ import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import fetch from 'fetch';
 import ScrollTo from "prison-rideshare-ui/components/scroll-to";
-import paperIcon from "ember-paper/_app_/components/paper-icon";
+import paperIcon from "ember-paper/components/paper-icon";
 import LinkedContact from "prison-rideshare-ui/components/linked-contact";
 import PaperButton from "ember-paper/components/paper-button";
 import RidePerson from "prison-rideshare-ui/components/ride-person";

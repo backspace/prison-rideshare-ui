@@ -4,7 +4,7 @@ import { action } from '@ember/object';
 import { classNames } from '@ember-decorators/component';
 import Component from '@ember/component';
 import eq from "ember-truth-helpers/helpers/eq";
-import paperIcon from "ember-paper/_app_/components/paper-icon";
+import paperIcon from "ember-paper/components/paper-icon";
 
 @classic
 @classNames('person-badge')

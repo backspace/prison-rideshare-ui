@@ -1,14 +1,14 @@
 import RouteTemplate from 'ember-route-template'
 import PaperContent from "ember-paper/components/paper-content/component";
-import PaperCard from "ember-paper/_app_/components/paper-card";
-import PaperInput from "ember-paper/_app_/components/paper-input";
+import PaperCard from "ember-paper/components/paper-card";
+import PaperInput from "ember-paper/components/paper-input";
 import PaperButton from "ember-paper/components/paper-button";
 import PaperRadioGroup from "ember-paper/components/paper-radio-group";
 import RequestsAndReimbursementsChart from "prison-rideshare-ui/components/requests-and-reimbursements-chart";
 import RequestTimeChart from "prison-rideshare-ui/components/request-time-chart";
 import CancellationChart from "prison-rideshare-ui/components/cancellation-chart";
 import CopyButton from "ember-cli-clipboard/components/copy-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon";
+import paperIcon from "ember-paper/components/paper-icon";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PaperContent @class="layout-column flex">
   <PaperCard @class="statistics-card" as |card|>

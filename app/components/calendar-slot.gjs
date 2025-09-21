@@ -8,7 +8,7 @@ import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan
 import moment from 'moment';
 import { task } from 'ember-concurrency';
 import gt from "ember-truth-helpers/helpers/gt";
-import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox";
+import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import perform from "ember-concurrency/helpers/perform";
 
 @classic

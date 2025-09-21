@@ -1,8 +1,8 @@
 import RouteTemplate from 'ember-route-template'
 import PaperDialog from "ember-paper/components/paper-dialog";
-import PaperToolbar from "ember-paper/_app_/components/paper-toolbar";
-import PaperToolbarTools from "ember-paper/_app_/components/paper-toolbar-tools";
-import PaperForm from "ember-paper/_app_/components/paper-form";
+import PaperToolbar from "ember-paper/components/paper-toolbar";
+import PaperToolbarTools from "ember-paper/components/paper-toolbar-tools";
+import PaperForm from "ember-paper/components/paper-form";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import { LinkTo } from "@ember/routing";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
