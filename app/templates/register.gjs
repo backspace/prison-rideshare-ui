@@ -8,6 +8,7 @@ import PaperCard from "ember-paper/components/paper-card";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import PaperButton from "ember-paper/components/paper-button";
 import { action } from "@ember/object";
+import { fn } from "@ember/helper";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PaperDialog>
   <PaperToolbar>
@@ -27,13 +28,13 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
         </PaperCard>
       {{/if}}
       <div class="layout layout-row">
-        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{mut @controller.model.email}} />
+        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{fn (mut @controller.model.email)}} />
       </div>
       <div class="layout layout-row">
-        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{mut @controller.model.password}} />
+        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{fn (mut @controller.model.password)}} />
       </div>
       <div class="layout layout-row">
-        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.model.passwordConfirmation}} @onChange={{mut @controller.model.passwordConfirmation}} />
+        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.model.passwordConfirmation}} @onChange={{fn (mut @controller.model.passwordConfirmation)}} />
       </div>
     </PaperDialogContent>
 

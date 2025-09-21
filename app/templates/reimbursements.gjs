@@ -98,7 +98,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </table.body>
     </PaperDataTable>
   {{/if}}
-  <PaperSwitch @class="processed layout-row" @value={{@controller.showProcessed}} @onChange={{mut @controller.showProcessed}}>
+  <PaperSwitch @class="processed layout-row" @value={{@controller.showProcessed}} @onChange={{fn (mut @controller.showProcessed)}}>
     Show processed reimbursements
   </PaperSwitch>
   {{#if @controller.showProcessed}}

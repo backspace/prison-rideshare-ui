@@ -6,6 +6,7 @@ import PaperForm from "ember-paper/components/paper-form";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
+import { fn } from "@ember/helper";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PaperDialog>
   <PaperToolbar>
@@ -18,10 +19,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperForm @onSubmit={{this.submitReset}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
-        <form.input @class="password" @type="password" @label="Password" @autofocus={{true}} @value={{@controller.password}} @onChange={{mut @controller.password}} />
+        <form.input @class="password" @type="password" @label="Password" @autofocus={{true}} @value={{@controller.password}} @onChange={{fn (mut @controller.password)}} />
       </div>
       <div class="layout layout-row">
-        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.passwordConfirmation}} @onChange={{mut @controller.passwordConfirmation}} />
+        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.passwordConfirmation}} @onChange={{fn (mut @controller.passwordConfirmation)}} />
       </div>
       {{#if @controller.error}}
         <div class="error">

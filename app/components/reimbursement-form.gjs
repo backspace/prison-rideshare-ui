@@ -5,6 +5,7 @@ import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import PaperButton from "ember-paper/components/paper-button";
 import { action } from "@ember/object";
+import { fn } from "@ember/helper";
 <template>{{!-- template-lint-disable no-action --}}
 <PaperDialog @clickOutsideToClose={{true}} @onClose={{this.cancel}}>
   <PaperDialogContent>
@@ -13,11 +14,11 @@ import { action } from "@ember/object";
     </h2>
     <PaperForm @onSubmit={{this.save}} as |form|>
       <div class="layout layout-sm-column">
-        <form.input @class="amount" @label="Amount" @type="number" @autofocus={{true}} @value={{this.reimbursement.amountDollars}} @onChange={{mut this.reimbursement.amountDollars}} />
+        <form.input @class="amount" @label="Amount" @type="number" @autofocus={{true}} @value={{this.reimbursement.amountDollars}} @onChange={{fn (mut this.reimbursement.amountDollars)}} />
       </div>
 
       <div class="layout layout-sm-column">
-        <PaperCheckbox @value={{this.reimbursement.donation}} @onChange={{mut this.reimbursement.donation}}>
+        <PaperCheckbox @value={{this.reimbursement.donation}} @onChange={{fn (mut this.reimbursement.donation)}}>
           Donation?
         </PaperCheckbox>
       </div>
