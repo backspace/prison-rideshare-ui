@@ -11,12 +11,14 @@ import eq from "ember-truth-helpers/helpers/eq";
 import PaperDialog from "ember-paper/components/paper-dialog";
 import PaperForm from "ember-paper/components/paper-form";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
-import RenderMobiledoc from "ember-mobiledoc-dom-renderer/components/render-mobiledoc/component";
 import MobiledocEditor from "ember-mobiledoc-editor/components/mobiledoc-editor/component";
 import MobiledocToolbar from "ember-mobiledoc-editor/components/mobiledoc-toolbar/component";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
 import { fn } from '@ember/helper';
+import DOMRenderer from 'ember-mobiledoc-dom-renderer';
+import Component from '@glimmer/component';
+import { modifier } from 'ember-modifier';
 
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Log">
@@ -56,7 +58,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
               </span>
             </row.cell>
             <row.cell @class="content">
-              <RenderMobiledoc @mobiledoc={{post.bodyJson}} />
+              <MobiledocRenderer @mobiledoc={{post.bodyJson}} />
             </row.cell>
             <row.cell @class="controls">
               {{#if post.unread}}
@@ -128,3 +130,23 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </PaperForm>
   </PaperDialog>
 {{/if}}</template>)
+
+class MobiledocRenderer extends Component {
+  <template>
+    <section {{renderMobiledoc @mobiledoc}}></section>
+  </template>
+}
+
+let renderMobiledoc = modifier((element, [mobiledoc]) => {
+  if (!mobiledoc) {
+    element.innerHTML = '';
+    return;
+  }
+
+  let renderer = new DOMRenderer({ dom: document, cards: [], atoms: []});
+  let { result, teardown } = renderer.render(mobiledoc);
+  element.innerHTML = '';
+  element.appendChild(result);
+
+  return teardown;
+});
