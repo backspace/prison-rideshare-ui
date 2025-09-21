@@ -3,12 +3,12 @@ import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PaperContent from "ember-paper/components/paper-content/component";
 import PaperDataTable from "paper-data-table/components/paper-data-table";
 import CopyButton from "ember-cli-clipboard/components/copy-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon.js";
+import paperIcon from "ember-paper/_app_/components/paper-icon";
 import DonationIcon from "prison-rideshare-ui/components/donation-icon";
 import PaperButton from "ember-paper/components/paper-button";
 import not from "ember-truth-helpers/helpers/not";
-import PaperSwitch from "ember-paper/_app_/components/paper-switch.js";
-import momentFormat from "ember-moment/helpers/moment-format.js";
+import PaperSwitch from "ember-paper/_app_/components/paper-switch";
+import momentFormat from "ember-moment/helpers/moment-format";
 import and from "ember-truth-helpers/helpers/and";
 import ReimbursementForm from "prison-rideshare-ui/components/reimbursement-form";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}

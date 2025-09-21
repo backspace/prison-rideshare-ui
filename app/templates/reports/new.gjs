@@ -1,13 +1,13 @@
 import RouteTemplate from 'ember-route-template'
 import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PaperContent from "ember-paper/components/paper-content/component";
-import PaperCard from "ember-paper/_app_/components/paper-card.js";
-import PaperForm from "ember-paper/_app_/components/paper-form.js";
+import PaperCard from "ember-paper/_app_/components/paper-card";
+import PaperForm from "ember-paper/_app_/components/paper-form";
 import PaperRadioGroup from "ember-paper/components/paper-radio-group";
 import sortBy from "ember-composable-helpers/helpers/sort-by";
-import momentFormat from "ember-moment/helpers/moment-format.js";
+import momentFormat from "ember-moment/helpers/moment-format";
 import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
-import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox";
 import PaperButton from "ember-paper/components/paper-button";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Record ride details" />

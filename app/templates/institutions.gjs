@@ -1,13 +1,13 @@
 import RouteTemplate from 'ember-route-template'
 import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PaperButton from "ember-paper/components/paper-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon.js";
+import paperIcon from "ember-paper/_app_/components/paper-icon";
 import PaperDataTable from "paper-data-table/components/paper-data-table";
 import sortBy from "ember-composable-helpers/helpers/sort-by";
 import PaperDialog from "ember-paper/components/paper-dialog";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
-import PaperForm from "ember-paper/_app_/components/paper-form.js";
-import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import PaperForm from "ember-paper/_app_/components/paper-form";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Institutions">

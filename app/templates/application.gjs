@@ -3,13 +3,13 @@ import HeadLayout from "ember-cli-head/components/head-layout";
 import EmberLoadRemover from "ember-load/components/ember-load-remover";
 import PaperToaster from "ember-paper/components/paper-toaster";
 import PaperSidenavContainer from "ember-paper/components/paper-sidenav-container";
-import PaperSidenav from "ember-paper/_app_/components/paper-sidenav.js";
+import PaperSidenav from "ember-paper/_app_/components/paper-sidenav";
 import PaperContent from "ember-paper/components/paper-content/component";
-import PaperList from "ember-paper/_app_/components/paper-list.js";
-import PaperItem from "ember-paper/_app_/components/paper-item.js";
+import PaperList from "ember-paper/_app_/components/paper-list";
+import PaperItem from "ember-paper/_app_/components/paper-item";
 import { LinkTo } from "@ember/routing";
-import momentFormat from "ember-moment/helpers/moment-format.js";
-import now from "ember-moment/helpers/now.js";
+import momentFormat from "ember-moment/helpers/moment-format";
+import now from "ember-moment/helpers/now";
 import PaperDivider from "ember-paper/components/paper-divider/component";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <HeadLayout />

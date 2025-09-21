@@ -4,10 +4,10 @@ import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
-import PaperSwitch from "ember-paper/_app_/components/paper-switch.js";
+import PaperSwitch from "ember-paper/_app_/components/paper-switch";
 import CopyButton from "ember-cli-clipboard/components/copy-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon.js";
-import momentFormat from "ember-moment/helpers/moment-format.js";
+import paperIcon from "ember-paper/_app_/components/paper-icon";
+import momentFormat from "ember-moment/helpers/moment-format";
 import PaperButton from "ember-paper/components/paper-button";
 
 @classic

@@ -5,11 +5,11 @@ import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import PaperDialog from "ember-paper/components/paper-dialog";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
-import PaperCard from "ember-paper/_app_/components/paper-card.js";
-import PaperForm from "ember-paper/_app_/components/paper-form.js";
+import PaperCard from "ember-paper/_app_/components/paper-card";
+import PaperForm from "ember-paper/_app_/components/paper-form";
 import PaperButton from "ember-paper/components/paper-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon.js";
-import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import paperIcon from "ember-paper/_app_/components/paper-icon";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox";
 import PaperSelect from "ember-paper/components/paper-select/component";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 

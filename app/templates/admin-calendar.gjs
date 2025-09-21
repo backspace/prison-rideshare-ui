@@ -2,8 +2,8 @@ import RouteTemplate from 'ember-route-template'
 import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PowerCalendar from "ember-power-calendar/components/power-calendar";
 import { LinkTo } from "@ember/routing";
-import momentFormat from "ember-moment/helpers/moment-format.js";
-import pluralize from "ember-inflector/_app_/helpers/pluralize.js";
+import momentFormat from "ember-moment/helpers/moment-format";
+import pluralize from "ember-inflector/_app_/helpers/pluralize";
 import CalendarDay from "prison-rideshare-ui/components/calendar-day";
 import PaperChips from "ember-paper/components/paper-chips/component";
 import PersonBadge from "prison-rideshare-ui/components/person-badge";

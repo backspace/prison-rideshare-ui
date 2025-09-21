@@ -1,9 +1,9 @@
 import RouteTemplate from 'ember-route-template'
 import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PaperDataTable from "paper-data-table/components/paper-data-table";
-import momentFormat from "ember-moment/helpers/moment-format.js";
-import paperIcon from "ember-paper/_app_/components/paper-icon.js";
-import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import momentFormat from "ember-moment/helpers/moment-format";
+import paperIcon from "ember-paper/_app_/components/paper-icon";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox";
 import eq from "ember-truth-helpers/helpers/eq";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Users" />

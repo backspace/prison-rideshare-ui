@@ -1,11 +1,11 @@
 import RouteTemplate from 'ember-route-template'
 import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
 import PaperContent from "ember-paper/components/paper-content/component";
-import PaperCard from "ember-paper/_app_/components/paper-card.js";
+import PaperCard from "ember-paper/_app_/components/paper-card";
 import PaperDataTable from "paper-data-table/components/paper-data-table";
 import take from "ember-composable-helpers/helpers/take";
 import sortBy from "ember-composable-helpers/helpers/sort-by";
-import momentFormat from "ember-moment/helpers/moment-format.js";
+import momentFormat from "ember-moment/helpers/moment-format";
 import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
 export default RouteTemplate(<template><ToolbarHeader @title="Gas prices and reimbursement rates" />
 

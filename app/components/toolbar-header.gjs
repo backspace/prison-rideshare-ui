@@ -4,10 +4,10 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
-import PaperToolbar from "ember-paper/_app_/components/paper-toolbar.js";
+import PaperToolbar from "ember-paper/_app_/components/paper-toolbar";
 import PaperButton from "ember-paper/components/paper-button";
-import paperIcon from "ember-paper/_app_/components/paper-icon.js";
-import pluralize from "ember-inflector/_app_/helpers/pluralize.js";
+import paperIcon from "ember-paper/_app_/components/paper-icon";
+import pluralize from "ember-inflector/_app_/helpers/pluralize";
 import PaperChips from "ember-paper/components/paper-chips/component";
 
 @classic
