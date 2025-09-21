@@ -5,6 +5,8 @@ import Controller from '@ember/controller';
 
 @classic
 export default class NewController extends Controller {
+  @service router;
+
   @service
   session;
 
@@ -38,7 +40,7 @@ export default class NewController extends Controller {
           this.store.unloadRecord(this.editingRide);
 
           this.set('editingRide', undefined);
-          this.transitionToRoute('application');
+          this.router.transitionToRoute('application');
           window.scrollTo(0, 0);
         },
         () => {
