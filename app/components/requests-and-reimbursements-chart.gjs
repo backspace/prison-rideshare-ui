@@ -1,6 +1,7 @@
 /* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
+import { equal } from '@ember/object/computed';
 import Component from '@ember/component';
 import moment from 'moment';
 import HighCharts from "ember-highcharts/components/high-charts";
@@ -23,15 +24,18 @@ export default class RequestsAndReimbursementsChart extends Component {<template
 <HighCharts @content={{this.data}} @chartOptions={{this.options}} @theme={{this.theme}} @callback={{this.afterRenderCallback}} />
 
 {{#if this.rendered}}
-  <EmberWormhole @to="grouping-weeks">
-    <PaperButton @label="Weeks" @primary={{eq this.grouping "weeks"}} @onClick={{action (mut this.grouping) "weeks"}} />
+  {{!-- <EmberWormhole @to="grouping-weeks">
+    <PaperButton @label="Weeks" @primary={{this.isWeeks}} @onClick={{this.setTimeGrouping "weeks"}} />
   </EmberWormhole>
   <EmberWormhole @to="grouping-months">
-    <PaperButton @label="Months" @primary={{eq this.grouping "months"}} @onClick={{action (mut this.grouping) "months"}} />
-  </EmberWormhole>
+    <PaperButton @label="Months" @primary={{this.isMonths}} @onClick={{this.setTimeGrouping "months"}} />
+  </EmberWormhole> --}}
 {{/if}}</template>
-  grouping = 'months';
+  timeGrouping = 'months';
   rendered = false;
+
+  @equal('timeGrouping', 'weeks') isWeeks;
+  @equal('timeGrouping', 'months') isMonths;
 
   @computed('rides.@each.start', 'grouping')
   get timeGroups() {
@@ -48,7 +52,7 @@ export default class RequestsAndReimbursementsChart extends Component {<template
     }, {});
   }
 
-  @computed('timeGroups', 'grouping')
+  @computed('timeGroups', 'timeGrouping')
   get timeGroupKeys() {
     return Object.keys(this.timeGroups).sort();
   }
@@ -56,16 +60,17 @@ export default class RequestsAndReimbursementsChart extends Component {<template
   timeGroupForRide(ride) {
     const start = ride.get('start');
 
-    if (this.grouping === 'weeks') {
+    if (this.timeGrouping === 'weeks') {
       return moment(start).startOf('week').format('YYMMDD');
     } else {
       return moment(start).format('YYYY-MM');
     }
   }
 
-  @computed('grouping', 'timeGroupKeys', 'timeGroups')
+  @computed('timeGrouping', 'timeGroupKeys', 'timeGroups')
   get data() {
     const timeGroups = this.timeGroups;
+    const timeGrouping = this.timeGrouping;
     const grouping = this.grouping;
 
     return [
@@ -132,11 +137,12 @@ export default class RequestsAndReimbursementsChart extends Component {<template
     ];
   }
 
-  @computed('timeGroups', 'timeGroupKeys.length', 'grouping')
+  @computed('timeGroups', 'timeGroupKeys.length', 'timeGrouping')
   get options() {
     return {
       title: {
-        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
+        // text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
+        text: `Ride distances and expenses, grouped into months`,
         useHTML: true,
       },
       plotOptions: {
