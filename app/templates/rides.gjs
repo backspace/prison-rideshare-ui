@@ -20,9 +20,9 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 </ToolbarHeader>
 
 <div class="switch-container layout-row layout-align-start-center">
-  <PaperInput class="search" @type="search" @icon="search" @placeholder="Institution, driver, visitor, address" @value={{@controller.search}} @onChange={{mut @controller.search}} as |input|>
+  <PaperInput class="search" @type="search" @icon="search" @placeholder="Institution, driver, visitor, address" @value={{@controller.search}} @onChange={{@controller.updateSearch}} as |input|>
     {{#if input.hasValue}}
-      <PaperButton @icon={{true}} @aria-label="Clear search" @title="Clear search" @onClick={{this.clearSearch}}>
+      <PaperButton @icon={{true}} @aria-label="Clear search" @title="Clear search" @onClick={{@controller.clearSearch}}>
         {{paperIcon "clear" size=14}}
       </PaperButton>
     {{/if}}

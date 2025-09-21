@@ -203,6 +203,11 @@ export default class RidesController extends Controller {
   }
 
   @action
+  updateSearch(value) {
+    this.set('search', value);
+  }
+
+  @action
   clearSearch() {
     this.set('search', undefined);
   }
