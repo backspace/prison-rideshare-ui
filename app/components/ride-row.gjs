@@ -16,6 +16,7 @@ import not from "ember-truth-helpers/helpers/not";
 import eq from "ember-truth-helpers/helpers/eq";
 import and from "ember-truth-helpers/helpers/and";
 import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
+import { fn } from '@ember/helper';
 
 const mediumIcon = {
   txt: 'textsms',
@@ -70,7 +71,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
   <row.cell class="driver-and-car-owner">
     {{#if this.combined}}
       {{#unless this.rideToCombine}}
-        <PaperButton class="combine" @iconButton={{true}} @aria-label="Uncombine this ride" @title="Uncombine this ride" @onClick={{this.uncombineRide this.ride}}>
+        <PaperButton class="combine" @iconButton={{true}} @aria-label="Uncombine this ride" @title="Uncombine this ride" @onClick={{fn this.uncombineRide this.ride}}>
           {{paperIcon "call split"}}
         </PaperButton>
       {{/unless}}
@@ -85,7 +86,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
         {{paperIcon "directions_bus" title="driver can override car expenses (van-driving, probably)"}}
       {{/if}}
       {{#if (or (not this.ride.children) this.rideToCombine)}}
-        <PaperButton class="combine" @iconButton={{true}} @raised={{eq this.ride.id this.rideToCombine.id}} @aria-label={{this.combineButtonLabel}} @title={{this.combineButtonLabel}} @onClick={{this.combineRide this.ride}}>
+        <PaperButton class="combine" @iconButton={{true}} @raised={{eq this.ride.id this.rideToCombine.id}} @aria-label={{this.combineButtonLabel}} @title={{this.combineButtonLabel}} @onClick={{fn this.combineRide this.ride}}>
           {{paperIcon "merge type"}}
         </PaperButton>
       {{/if}}
@@ -93,7 +94,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
   </row.cell>
   <row.cell>
     <span class="cancellation">
-      <PaperButton @iconButton={{true}} @aria-label={{this.cancellationButtonLabel}} @title={{this.cancellationButtonLabel}} @onClick={{this.editCancellation this.ride}}>
+      <PaperButton @iconButton={{true}} @aria-label={{this.cancellationButtonLabel}} @title={{this.cancellationButtonLabel}} @onClick={{fn this.editCancellation this.ride}}>
         {{#if this.ride.enabled}}
           {{paperIcon "highlight off"}}
         {{else}}
@@ -101,7 +102,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
         {{/if}}
       </PaperButton>
     </span>
-    <PaperButton @iconButton={{true}} @aria-label="Edit ride" @title="Edit ride" class="edit" @onClick={{this.editRide this.ride}}>
+    <PaperButton @iconButton={{true}} @aria-label="Edit ride" @title="Edit ride" class="edit" @onClick={{fn this.editRide this.ride}}>
       {{paperIcon "mode edit"}}
     </PaperButton>
   </row.cell>
@@ -188,7 +189,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
         <PaperButton class="clear-confirm" @warn={{true}} @aria-label="Clear report" @title="Clear report" @onClick={{this.clearReport}}>
           Yes
         </PaperButton>
-        <PaperButton class="clear-cancel" @aria-label="Don’t clear report" @title="Don’t clear report" @onClick={{action (mut this.clearing) false}}>
+        <PaperButton class="clear-cancel" @aria-label="Don’t clear report" @title="Don’t clear report" @onClick={{this.unproposeClear}}>
           No
         </PaperButton>
       {{else}}
@@ -375,6 +376,10 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
   @action
   proposeClear() {
     this.set('clearing', true);
+  }
+
+  @action unproposeClear() {
+    this.set('clearing', false);
   }
 
   @action

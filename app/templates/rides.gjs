@@ -12,9 +12,10 @@ import RideRow from "prison-rideshare-ui/components/ride-row";
 import RideForm from "prison-rideshare-ui/components/ride-form";
 import CancellationForm from "prison-rideshare-ui/components/cancellation-form";
 import { action } from "@ember/object";
+import { fn } from '@ember/helper';
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Rides">
-  <PaperButton @mini={{true}} @aria-label="New ride" @title="New ride" class="new" @onClick={{this.newRide}}>
+  <PaperButton @mini={{true}} @aria-label="New ride" @title="New ride" class="new" @onClick={{@controller.newRide}}>
     {{paperIcon "add"}}
   </PaperButton>
 </ToolbarHeader>
@@ -27,10 +28,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </PaperButton>
     {{/if}}
   </PaperInput>
-  <PaperSwitch class="completed" @value={{@controller.showCompleted}} @onChange={{mut @controller.showCompleted}}>
+  <PaperSwitch class="completed" @value={{@controller.showCompleted}} @onChange={{fn @controller.toggle 'showCompleted'}}>
     Reported-on
   </PaperSwitch>
-  <PaperSwitch class="cancelled" @value={{@controller.showCancelled}} @onChange={{mut @controller.showCancelled}}>
+  <PaperSwitch class="cancelled" @value={{@controller.showCancelled}} @onChange={{fn @controller.toggle 'showCancelled'}}>
     Cancelled
   </PaperSwitch>
 </div>
@@ -62,9 +63,9 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </table.head>
     <table.body as |body|>
       {{#each (filterBy "id" (sortBy table.sortDesc @controller.filteredRides)) as |ride|}}
-        <RideRow @body={{body}} @ride={{ride}} @showCreation={{@controller.showCreation}} @editCancellation={{this.editCancellation}} @editRide={{this.editRide}} @combineRide={{this.combineRide}} @uncombineRide={{this.uncombineRide}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
+        <RideRow @body={{body}} @ride={{ride}} @showCreation={{@controller.showCreation}} @editCancellation={{@controller.editCancellation}} @editRide={{@controller.editRide}} @combineRide={{@controller.combineRide}} @uncombineRide={{@controller.uncombineRide}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
         {{#each ride.children as |child|}}
-          <RideRow @body={{body}} @ride={{child}} @combined={{true}} @showCreation={{@controller.showCreation}} @editCancellation={{this.editCancellation}} @editRide={{this.editRide}} @combineRide={{this.combineRide}} @uncombineRide={{this.uncombineRide}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
+          <RideRow @body={{body}} @ride={{child}} @combined={{true}} @showCreation={{@controller.showCreation}} @editCancellation={{@controller.editCancellation}} @editRide={{@controller.editRide}} @combineRide={{@controller.combineRide}} @uncombineRide={{@controller.uncombineRide}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
         {{/each}}
       {{else}}
         <body.row class="no-matches" as |row|>
@@ -78,10 +79,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   </PaperDataTable>
 
   {{#if @controller.editingRide}}
-    <RideForm @ride={{@controller.editingRide}} @cancel={{@controller.cancel @controller.editingRide}} @save={{@controller.submitRide @controller.editingRide}} />
+    <RideForm @ride={{@controller.editingRide}} @cancel={{fn @controller.cancel @controller.editingRide}} @save={{fn @controller.submitRide @controller.editingRide}} />
   {{/if}}
 
   {{#if @controller.editingCancellation}}
-    <CancellationForm @ride={{@controller.editingCancellation}} @save={{@controller.submitCancellation @controller.editingCancellation}} @cancel={{@controller.cancelCancellation @controller.editingCancellation}} />
+    <CancellationForm @ride={{@controller.editingCancellation}} @save={{fn @controller.submitCancellation @controller.editingCancellation}} @cancel={{fn @controller.cancelCancellation @controller.editingCancellation}} />
   {{/if}}
 </PaperContent></template>)

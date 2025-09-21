@@ -12,6 +12,7 @@ import paperIcon from "ember-paper/components/paper-icon";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperSelect from "ember-paper/components/paper-select/component";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
+import { fn } from '@ember/helper';
 
 const reasons = Object.keys(reasonToIcon).sort();
 const shortcuts = ['driver not found', 'visitor'];
@@ -43,7 +44,7 @@ export default class CancellationForm extends Component {<template>{{!-- templat
     <PaperForm @onSubmit={{this.save}} as |form|>
       <div class="layout layout-sm-column">
         {{#each-in this.shortcutReasonToIcon as |reason icon|}}
-          <PaperButton @raised={{true}} @class="shortcut" @onClick={{this.cancelViaShortcut reason}}>
+          <PaperButton @raised={{true}} @class="shortcut" @onClick={{fn this.cancelViaShortcut reason}}>
             {{paperIcon icon}}
             {{reason}}
           </PaperButton>
@@ -59,12 +60,12 @@ export default class CancellationForm extends Component {<template>{{!-- templat
       </div>
 
       <div class="layout layout-sm-column">
-        <PaperSelect @class="reason" @placeholder="Reason" @selected={{this.ride.cancellationReason}} @options={{this.reasons}} @onChange={{mut this.ride.cancellationReason}} as |reason|>
+        <PaperSelect @class="reason" @placeholder="Reason" @selected={{this.ride.cancellationReason}} @options={{this.reasons}} @onChange={{this.updateCancellationReason}} as |reason|>
           {{reason}}
         </PaperSelect>
       </div>
 
-      <form.input @class="other" @label="Other reason" @value={{this.ride.cancellationReason}} @onChange={{mut this.ride.cancellationReason}} />
+      <form.input @class="other" @label="Other reason" @value={{this.ride.cancellationReason}} @onChange={{this.updateCancellationReason}} />
     </PaperForm>
   </PaperDialogContent>
 
@@ -94,5 +95,9 @@ export default class CancellationForm extends Component {<template>{{!-- templat
     this.set('ride.cancelled', true);
     this.set('ride.cancellationReason', reason);
     this.save();
+  }
+
+  @action updateCancellationReason(reason) {
+    this.set('ride.cancellationReason', reason);
   }
 }

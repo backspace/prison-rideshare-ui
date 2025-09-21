@@ -211,4 +211,8 @@ export default class RidesController extends Controller {
   clearSearch() {
     this.set('search', undefined);
   }
+
+  @action toggle(propertyName) {
+    this.toggleProperty(propertyName);
+  }
 }
