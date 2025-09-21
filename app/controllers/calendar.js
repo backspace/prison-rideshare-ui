@@ -35,7 +35,9 @@ export default class CalendarController extends Controller {
       .adapterFor('person')
       .buildURL('person', person.id);
 
-    return `${base}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
+    return `${base}/calendar?secret=${encodeURIComponent(
+      person.get('calendarSecret')
+    )}`;
   }
 
   @computed('httpSubscriptionUrl')

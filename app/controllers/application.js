@@ -27,8 +27,7 @@ export default class ApplicationController extends Controller {
   get ridesBadgeCount() {
     let rides = this.get('rides.model') || [];
     return (
-      this.get('overlaps.count') +
-      rides.filterBy('requiresConfirmation').length
+      this.get('overlaps.count') + rides.filterBy('requiresConfirmation').length
     );
   }
 

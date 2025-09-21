@@ -90,11 +90,9 @@ export default class RideForm extends Component {
 
   @action
   searchRides(name) {
-    return this.store
-      .query('ride', { 'filter[name]': name })
-      .then((rides) => {
-        return deduplicateVisitorSuggestions(rides);
-      });
+    return this.store.query('ride', { 'filter[name]': name }).then((rides) => {
+      return deduplicateVisitorSuggestions(rides);
+    });
   }
 
   @action

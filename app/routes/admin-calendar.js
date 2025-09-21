@@ -7,7 +7,9 @@ import moment from 'moment';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 @classic
-export default class AdminCalendarRoute extends Route.extend(AuthenticatedRoute) {
+export default class AdminCalendarRoute extends Route.extend(
+  AuthenticatedRoute
+) {
   @service
   store;
 

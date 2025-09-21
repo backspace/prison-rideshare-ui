@@ -6,7 +6,9 @@ import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 @classic
-export default class ReimbursementsRoute extends Route.extend(AuthenticatedRoute) {
+export default class ReimbursementsRoute extends Route.extend(
+  AuthenticatedRoute
+) {
   @service
   store;
 
