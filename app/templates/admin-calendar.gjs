@@ -18,7 +18,6 @@ class AdminCalendarComponent extends Component {
   }
 
   @action changeMonth(value) {
-    //  @onCenterChange={{action (mut @controller.month) value="date"}}
     this.args.controller.set('month', value.date);
   }
   <template>
