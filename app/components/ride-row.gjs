@@ -70,7 +70,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
   <row.cell class="driver-and-car-owner">
     {{#if this.combined}}
       {{#unless this.rideToCombine}}
-        <PaperButton class="combine" @iconButton={{true}} @aria-label="Uncombine this ride" @title="Uncombine this ride" @onClick={{action this.uncombineRide this.ride}}>
+        <PaperButton class="combine" @iconButton={{true}} @aria-label="Uncombine this ride" @title="Uncombine this ride" @onClick={{this.uncombineRide this.ride}}>
           {{paperIcon "call split"}}
         </PaperButton>
       {{/unless}}
@@ -117,10 +117,10 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
       </span>
     </row.cell>
     <row.cell @colspan={{3}}>
-      <PaperButton class="assign" @onClick={{action "assignFromCommitment" commitment}}>
+      <PaperButton class="assign" @onClick={{this.assignFromCommitment commitment}}>
         Assign
       </PaperButton>
-      <PaperButton class="ignore" @onClick={{action "ignoreCommitment" commitment}}>
+      <PaperButton class="ignore" @onClick={{this.ignoreCommitment commitment}}>
         Ignore
       </PaperButton>
     </row.cell>

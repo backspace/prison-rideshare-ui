@@ -19,7 +19,7 @@ export default class CalendarSlot extends Component {<template>{{!-- template-li
     <span class="hours">
       {{this.timespan}}
     </span>
-    <button class="count {{if (gt this.slot.commitments.length 0) "committed-to"}}" onClick={{action this.setViewingSlot this.slot}} type="button">
+    <button class="count {{if (gt this.slot.commitments.length 0) "committed-to"}}" onClick={{this.setViewingSlot this.slot}} type="button">
       {{this.capacity}}
     </button>
   {{else}}

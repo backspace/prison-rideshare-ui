@@ -40,7 +40,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             {{/if}}
           </row.cell>
           <row.cell>
-            <PaperButton @iconButton={{true}} @aria-label="Edit institution" @title="Edit institution" @class="edit" @onClick={{action "editInstitution" institution}}>
+            <PaperButton @iconButton={{true}} @aria-label="Edit institution" @title="Edit institution" @class="edit" @onClick={{@controller.editInstitution institution}}>
               {{paperIcon "mode edit"}}
             </PaperButton>
           </row.cell>

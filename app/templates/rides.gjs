@@ -78,10 +78,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   </PaperDataTable>
 
   {{#if @controller.editingRide}}
-    <RideForm @ride={{@controller.editingRide}} @cancel={{action "cancel" @controller.editingRide}} @save={{action "submitRide" @controller.editingRide}} />
+    <RideForm @ride={{@controller.editingRide}} @cancel={{@controller.cancel @controller.editingRide}} @save={{@controller.submitRide @controller.editingRide}} />
   {{/if}}
 
   {{#if @controller.editingCancellation}}
-    <CancellationForm @ride={{@controller.editingCancellation}} @save={{action "submitCancellation" @controller.editingCancellation}} @cancel={{action "cancelCancellation" @controller.editingCancellation}} />
+    <CancellationForm @ride={{@controller.editingCancellation}} @save={{@controller.submitCancellation @controller.editingCancellation}} @cancel={{@controller.cancelCancellation @controller.editingCancellation}} />
   {{/if}}
 </PaperContent></template>)

@@ -20,7 +20,7 @@ export default class PersonBadge extends Component {<template>{{!-- template-lin
   </span>
   {{#if this.clear}}
     <span class="remove-container">
-      <button onclick={{action this.clear}} type="button">
+      <button onclick={{this.clear}} type="button">
         <paperIcon @icon="clear" @size={{14}} @title="remove" />
         <span class="md-visually-hidden">
           Remove

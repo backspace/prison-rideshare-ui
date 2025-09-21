@@ -59,16 +59,16 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </row.cell>
             <row.cell @class="controls">
               {{#if post.unread}}
-                <PaperButton @aria-label="Mark read" @title="Mark read" @class="markRead" @onClick={{action "markRead" post}}>
+                <PaperButton @aria-label="Mark read" @title="Mark read" @class="markRead" @onClick={{this.markRead post}}>
                   Mark read{{paperIcon "done"}}
                 </PaperButton>
               {{else}}
-                <PaperButton @aria-label="Mark unread" @title="Mark unread" @class="markUnread" @onClick={{action "markUnread" post}}>
+                <PaperButton @aria-label="Mark unread" @title="Mark unread" @class="markUnread" @onClick={{this.markUnread post}}>
                   Mark unread{{paperIcon "autorenew"}}
                 </PaperButton>
               {{/if}}
               {{#if (eq @controller.session.currentUser.id post.poster.id)}}
-                <PaperButton @iconButton={{true}} @aria-label="Edit post" @title="Edit post" @class="edit" @onClick={{action "editPost" post}}>
+                <PaperButton @iconButton={{true}} @aria-label="Edit post" @title="Edit post" @class="edit" @onClick={{this.editPost post}}>
                   {{paperIcon "mode edit"}}
                 </PaperButton>
                 {{#if (eq @controller.deletingPost post)}}

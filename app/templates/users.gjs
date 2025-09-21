@@ -39,7 +39,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
           {{/if}}
         </row.cell>
         <row.cell>
-          <PaperCheckbox @value={{user.admin}} @disabled={{eq user @controller.session.currentUser}} @onChange={{action "updateUserAdmin" user}} />
+          <PaperCheckbox @value={{user.admin}} @disabled={{eq user @controller.session.currentUser}} @onChange={{this.updateUserAdmin user}} />
         </row.cell>
       </body.row>
     {{/each}}

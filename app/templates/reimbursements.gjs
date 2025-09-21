@@ -73,10 +73,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
                   <CopyButton @text={{reimbursementCollection.clipboardText}}>
                     {{paperIcon "content copy" title=reimbursementCollection.copyIconTitle}}
                   </CopyButton>
-                  <PaperButton @class="process" @primary={{not reimbursementCollection.donations}} @onClick={{action "processReimbursements" reimbursementCollection}}>
+                  <PaperButton @class="process" @primary={{not reimbursementCollection.donations}} @onClick={{@controller.processReimbursements reimbursementCollection}}>
                     Process
                   </PaperButton>
-                  <PaperButton @class="donate" @primary={{reimbursementCollection.donations}} @onClick={{action "processReimbursements" reimbursementCollection true}}>
+                  <PaperButton @class="donate" @primary={{reimbursementCollection.donations}} @onClick={{@controller.processReimbursements reimbursementCollection true}}>
                     Donate
                   </PaperButton>
                 </row.cell>

@@ -43,7 +43,7 @@ export default class CancellationForm extends Component {<template>{{!-- templat
     <PaperForm @onSubmit={{this.save}} as |form|>
       <div class="layout layout-sm-column">
         {{#each-in this.shortcutReasonToIcon as |reason icon|}}
-          <PaperButton @raised={{true}} @class="shortcut" @onClick={{action "cancelViaShortcut" reason}}>
+          <PaperButton @raised={{true}} @class="shortcut" @onClick={{this.cancelViaShortcut reason}}>
             {{paperIcon icon}}
             {{reason}}
           </PaperButton>
