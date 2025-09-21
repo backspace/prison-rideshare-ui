@@ -2,7 +2,7 @@
 import { currentURL, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import Mirage from 'ember-cli-mirage';
+import { Response } from 'miragejs';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { percySnapshot } from 'ember-percy';
 import { pollTaskFor } from 'ember-lifeline/test-support';
@@ -225,7 +225,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('a failure to delete a commitment keeps it displayed and shows an error', async function (assert) {
     this.server.delete('/commitments/:id', function () {
-      return new Mirage.Response(
+      return new Response(
         401,
         {},
         {
@@ -257,7 +257,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('a failure to create a commitment makes it not display and shows an error', async function (assert) {
     this.server.post('/commitments', function () {
-      return new Mirage.Response(
+      return new Response(
         401,
         {},
         {
@@ -289,7 +289,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('a failure to create a commitment with a particular error shows the error', async function (assert) {
     this.server.post('/commitments', function () {
-      return new Mirage.Response(
+      return new Response(
         422,
         {},
         {
@@ -325,7 +325,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('visiting with a magic token that doesn’t resolve to a person shows an error', async function (assert) {
     this.server.get('/people/me', function () {
-      return new Mirage.Response(
+      return new Response(
         401,
         {},
         {
@@ -346,7 +346,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('visiting with a rejected magic token shows an error including details', async function (assert) {
     this.server.post('/people/token', function () {
-      return new Mirage.Response(
+      return new Response(
         401,
         {},
         {
@@ -511,7 +511,7 @@ module('Acceptance | calendar', function (hooks) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     this.server.patch('/people/me', function () {
-      return new Mirage.Response(
+      return new Response(
         401,
         {},
         {
@@ -680,7 +680,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('an error when an admin tries to create a commitment is displayed', async function (assert) {
     this.server.post('/commitments', function () {
-      return new Mirage.Response(
+      return new Response(
         422,
         {},
         {
@@ -733,7 +733,7 @@ module('Acceptance | calendar', function (hooks) {
 
   test('an error when an admin tries to delete a commitment is displayed', async function (assert) {
     this.server.delete('/commitments/:id', function () {
-      return new Mirage.Response(
+      return new Response(
         422,
         {},
         {

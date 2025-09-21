@@ -3,7 +3,7 @@ import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { currentURL } from '@ember/test-helpers';
 import { percySnapshot } from 'ember-percy';
-import Mirage from 'ember-cli-mirage';
+import { Response } from 'miragejs';
 
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -66,7 +66,7 @@ module('Acceptance | reset password', function (hooks) {
 
   test('a validation error is displayed', async function (assert) {
     this.server.put('/users/:token', () => {
-      return new Mirage.Response(
+      return new Response(
         422,
         {},
         {
@@ -93,7 +93,7 @@ module('Acceptance | reset password', function (hooks) {
 
   test('an unknown error is handled', async function (assert) {
     this.server.put('/users/:token', () => {
-      return new Mirage.Response(500, {}, {});
+      return new Response(500, {}, {});
     });
 
     await resetPage.visit({ token: 'hey' });

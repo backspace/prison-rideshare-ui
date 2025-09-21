@@ -7,7 +7,7 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
-import Mirage from 'ember-cli-mirage';
+import { Response } from 'miragejs';
 
 module('Acceptance | overlaps', function (hooks) {
   setupApplicationTest(hooks);
@@ -120,7 +120,7 @@ module('Acceptance | overlaps', function (hooks) {
         this.firstRide.commitments = [];
         this.firstRide.save();
 
-        return new Mirage.Response(201, {}, {});
+        return new Response(201, {}, {});
       }
     );
 

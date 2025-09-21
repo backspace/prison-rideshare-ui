@@ -2,7 +2,7 @@
 import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import Mirage from 'ember-cli-mirage';
+import { Response } from 'miragejs';
 import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
@@ -52,7 +52,7 @@ module('Acceptance | registration', function (hooks) {
 
   test('a failed registration shows an unprocessed error', async function (assert) {
     this.server.post('/register', () => {
-      return new Mirage.Response(
+      return new Response(
         422,
         {},
         {
