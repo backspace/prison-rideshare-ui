@@ -30,6 +30,10 @@ export default class LogController extends Controller {
     this.set('editingPost', proxy);
   }
 
+  @action updatePostBody(body) {
+    this.editingPost.set('body', JSON.stringify(body));
+  }
+
   @action
   savePost() {
     const proxy = this.editingPost;
@@ -50,6 +54,11 @@ export default class LogController extends Controller {
     }
 
     this.set('editingPost', undefined);
+  }
+
+  @action
+  maybeDeletePost(post) {
+    this.set('deletingPost', post);
   }
 
   @action

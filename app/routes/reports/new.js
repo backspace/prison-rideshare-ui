@@ -11,6 +11,4 @@ export default class NewRoute extends Route {
   model() {
     return this.store.findAll('ride', { reload: true });
   }
-
-  titleToken = 'Ride report';
 }

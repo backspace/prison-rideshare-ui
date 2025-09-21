@@ -23,6 +23,4 @@ export default class LoginRoute extends Route {
 
     return EmberObject.create(user);
   }
-
-  titleToken = 'Log in';
 }

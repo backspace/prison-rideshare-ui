@@ -12,6 +12,4 @@ export default class UsersRoute extends Route.extend(AuthenticatedRoute) {
   model() {
     return this.store.findAll('user');
   }
-
-  titleToken = 'Users';
 }

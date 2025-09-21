@@ -20,6 +20,4 @@ export default class ReimbursementsRoute extends Route.extend(
     // TODO coalesceFindRequests?
     return all(reimbursements.mapBy('ride'));
   }
-
-  titleToken = 'Reimbursements';
 }

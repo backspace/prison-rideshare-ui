@@ -9,6 +9,7 @@ import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 import moment from 'moment';
 
@@ -76,8 +77,7 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
     percySnapshot(assert);
 
-    assert.equal(shared.title, 'Rides · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Rides · Prison Rideshare');
     assert.equal(
       page.rides.length,
       2,

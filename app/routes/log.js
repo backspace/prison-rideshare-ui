@@ -11,6 +11,4 @@ export default class LogRoute extends Route {
   model() {
     return this.store.findAll('post');
   }
-
-  titleToken = 'Log';
 }

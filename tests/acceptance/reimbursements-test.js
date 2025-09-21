@@ -6,7 +6,7 @@ import { percySnapshot } from 'ember-percy';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
-import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | reimbursements', function (hooks) {
   setupApplicationTest(hooks);
@@ -106,8 +106,7 @@ module('Acceptance | reimbursements', function (hooks) {
   test('list reimbursements and optionally show processed ones', async function (assert) {
     await reimbursementsPage.visit();
 
-    assert.equal(shared.title, 'Reimbursements · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Reimbursements · Prison Rideshare');
     assert.equal(
       reimbursementsPage.rows.length,
       8,
