@@ -76,7 +76,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
                   <PaperButton @class="delete-confirm" @warn={{true}} @aria-label="Delete post" @title="Delete post" @onClick={{this.deletePost}}>
                     Yes
                   </PaperButton>
-                  <PaperButton @class="delete-cancel" @aria-label="Don’t delete report" @title="Don’t delete report" @onClick={{action (mut @controller.deletingPost)}}>
+                  <PaperButton @class="delete-cancel" @aria-label="Don’t delete report" @title="Don’t delete report" @onClick={{mut @controller.deletingPost}}>
                     No
                   </PaperButton>
                 {{else}}
@@ -102,7 +102,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
           post
         </h2>
         <div class="layout layout-sm-column content">
-          <MobiledocEditor @mobiledoc={{@controller.editingPost.bodyJson}} @autofocus={{true}} @on-change={{action (mut @controller.editingPost.bodyJson)}} as |editor|>
+          <MobiledocEditor @mobiledoc={{@controller.editingPost.bodyJson}} @autofocus={{true}} @on-change={{mut @controller.editingPost.bodyJson}} as |editor|>
             <MobiledocToolbar @editor={{editor}} />
           </MobiledocEditor>
           {{#if @controller.editingPost.validationErrors.body}}

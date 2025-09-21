@@ -18,10 +18,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperForm @onSubmit={{this.submitReset}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
-        <form.input @class="password" @type="password" @label="Password" @autofocus={{true}} @value={{@controller.password}} @onChange={{action (mut @controller.password)}} />
+        <form.input @class="password" @type="password" @label="Password" @autofocus={{true}} @value={{@controller.password}} @onChange={{mut @controller.password}} />
       </div>
       <div class="layout layout-row">
-        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.passwordConfirmation}} @onChange={{action (mut @controller.passwordConfirmation)}} />
+        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.passwordConfirmation}} @onChange={{mut @controller.passwordConfirmation}} />
       </div>
       {{#if @controller.error}}
         <div class="error">

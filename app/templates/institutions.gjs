@@ -58,10 +58,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </h2>
       <PaperForm @onSubmit={{@controller.saveInstitution}} as |form|>
         <div class="layout layout-sm-column">
-          <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.editingInstitution.name}} @onChange={{action (mut @controller.editingInstitution.name)}} @errors={{@controller.editingInstitution.validationErrors.name}} @isTouched={{readonly @controller.editingInstitution.validationErrors.name.length}} />
+          <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.editingInstitution.name}} @onChange={{mut @controller.editingInstitution.name}} @errors={{@controller.editingInstitution.validationErrors.name}} @isTouched={{readonly @controller.editingInstitution.validationErrors.name.length}} />
         </div>
         <div class="layout layout-sm-column">
-          <PaperCheckbox @value={{@controller.editingInstitution.far}} @onChange={{action (mut @controller.editingInstitution.far)}}>
+          <PaperCheckbox @value={{@controller.editingInstitution.far}} @onChange={{mut @controller.editingInstitution.far}}>
             Far?
           </PaperCheckbox>
         </div>

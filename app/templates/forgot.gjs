@@ -18,7 +18,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperForm @onSubmit={{this.submitForgot}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
-        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.email}} @onChange={{action (mut @controller.email)}} />
+        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.email}} @onChange={{mut @controller.email}} />
       </div>
       {{#if @controller.error}}
         <div class="error">

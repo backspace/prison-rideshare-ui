@@ -20,17 +20,17 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 </ToolbarHeader>
 
 <div class="switch-container layout-row layout-align-start-center">
-  <PaperInput class="search" @type="search" @icon="search" @placeholder="Institution, driver, visitor, address" @value={{@controller.search}} @onChange={{action (mut @controller.search)}} as |input|>
+  <PaperInput class="search" @type="search" @icon="search" @placeholder="Institution, driver, visitor, address" @value={{@controller.search}} @onChange={{mut @controller.search}} as |input|>
     {{#if input.hasValue}}
       <PaperButton @icon={{true}} @aria-label="Clear search" @title="Clear search" @onClick={{this.clearSearch}}>
         {{paperIcon "clear" size=14}}
       </PaperButton>
     {{/if}}
   </PaperInput>
-  <PaperSwitch class="completed" @value={{@controller.showCompleted}} @onChange={{action (mut @controller.showCompleted)}}>
+  <PaperSwitch class="completed" @value={{@controller.showCompleted}} @onChange={{mut @controller.showCompleted}}>
     Reported-on
   </PaperSwitch>
-  <PaperSwitch class="cancelled" @value={{@controller.showCancelled}} @onChange={{action (mut @controller.showCancelled)}}>
+  <PaperSwitch class="cancelled" @value={{@controller.showCancelled}} @onChange={{mut @controller.showCancelled}}>
     Cancelled
   </PaperSwitch>
 </div>

@@ -75,18 +75,18 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
       {{/if}}
       <div class="layout-row layout-xs-column layout-align-center-center">
         <div class="flex">
-          <PaperSelect @class="institution" @placeholder="Institution" @selected={{this.ride.institution}} @searchField="name" @options={{this.institutions}} @onChange={{action (mut this.ride.institution)}} @errors={{this.ride.validationErrors.institution}} @isTouched={{readonly this.ride.validationErrors.institution.length}} as |institution|>
+          <PaperSelect @class="institution" @placeholder="Institution" @selected={{this.ride.institution}} @searchField="name" @options={{this.institutions}} @onChange={{mut this.ride.institution}} @errors={{this.ride.validationErrors.institution}} @isTouched={{readonly this.ride.validationErrors.institution.length}} as |institution|>
             {{institution.name}}
           </PaperSelect>
         </div>
         <div class="flex">
-          <PaperCheckbox @class="overridable" @value={{this.ride.overridable}} @onChange={{action (mut this.ride.overridable)}}>
+          <PaperCheckbox @class="overridable" @value={{this.ride.overridable}} @onChange={{mut this.ride.overridable}}>
             Sunshine House van?
           </PaperCheckbox>
         </div>
       </div>
       <div class="layout-row layout-xs-column medium-row">
-        <PaperRadioGroup @groupValue={{readonly this.ride.medium}} @onChange={{action (mut this.ride.medium)}} as |group|>
+        <PaperRadioGroup @groupValue={{readonly this.ride.medium}} @onChange={{mut this.ride.medium}} as |group|>
           <div class="flex" title="ride was requested via txt">
             <group.radio @value="txt" @class="txt">
               {{paperIcon "textsms"}}
@@ -106,7 +106,7 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
       </div>
       <div class="layout-row layout-xs-column medium-row">
         <div class="flex">
-          <PaperCheckbox @class="request-confirmed" @value={{this.ride.requestConfirmed}} @onChange={{action (mut this.ride.requestConfirmed)}}>
+          <PaperCheckbox @class="request-confirmed" @value={{this.ride.requestConfirmed}} @onChange={{mut this.ride.requestConfirmed}}>
             Confirmed receipt of request with visitor?
           </PaperCheckbox>
         </div>
@@ -118,7 +118,7 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
 
       <div class="layout-row layout-xs-column">
         <div class="flex">
-          <form.autocomplete @label="Name" @selected={{this.ride}} @onSelectionChange={{this.autocompleteSelectionChanged}} @onSearchTextChange={{action (mut this.ride.name)}} @search={{this.searchRides}} @searchField="name" @labelPath="name" @searchText={{readonly this.ride.name}} @errors={{this.ride.validationErrors.name}} @isTouched={{readonly this.ride.validationErrors.name.length}} as |ride autocomplete|>
+          <form.autocomplete @label="Name" @selected={{this.ride}} @onSelectionChange={{this.autocompleteSelectionChanged}} @onSearchTextChange={{mut this.ride.name}} @search={{this.searchRides}} @searchField="name" @labelPath="name" @searchText={{readonly this.ride.name}} @errors={{this.ride.validationErrors.name}} @isTouched={{readonly this.ride.validationErrors.name.length}} as |ride autocomplete|>
             <div class="visitor-autocomplete-option">
               <span class="name">
                 <PaperAutocompleteHighlight @label={{ride.name}} @searchText={{autocomplete.searchText}} @flags="i" />
@@ -135,20 +135,20 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
       </div>
       <div class="layout-row layout-xs-column">
         <div class="flex">
-          <form.input @class="address" @label="Address" @value={{this.ride.address}} @onChange={{action (mut this.ride.address)}} @errors={{this.ride.validationErrors.address}} @isTouched={{readonly this.ride.validationErrors.address.length}} />
+          <form.input @class="address" @label="Address" @value={{this.ride.address}} @onChange={{mut this.ride.address}} @errors={{this.ride.validationErrors.address}} @isTouched={{readonly this.ride.validationErrors.address.length}} />
         </div>
       </div>
       <div class="layout-row layout-xs-column">
         <div class="flex">
-          <form.input @class="contact" @label="Contact" @value={{this.ride.contact}} @onChange={{action (mut this.ride.contact)}} @errors={{this.ride.validationErrors.contact}} @isTouched={{readonly this.ride.validationErrors.contact.length}} />
+          <form.input @class="contact" @label="Contact" @value={{this.ride.contact}} @onChange={{mut this.ride.contact}} @errors={{this.ride.validationErrors.contact}} @isTouched={{readonly this.ride.validationErrors.contact.length}} />
         </div>
       </div>
       <div class="layout-row layout-xs-column layout-align-center-center">
         <div class="flex">
-          <form.input @class="passengers" @label="Passengers" @value={{this.ride.passengers}} @onChange={{action (mut this.ride.passengers)}} @errors={{this.ride.validationErrors.passengers}} @isTouched={{readonly this.ride.validationErrors.passengers.length}} />
+          <form.input @class="passengers" @label="Passengers" @value={{this.ride.passengers}} @onChange={{mut this.ride.passengers}} @errors={{this.ride.validationErrors.passengers}} @isTouched={{readonly this.ride.validationErrors.passengers.length}} />
         </div>
         <div class="flex">
-          <PaperCheckbox @class="first-time" @value={{this.ride.firstTime}} @onChange={{action (mut this.ride.firstTime)}}>
+          <PaperCheckbox @class="first-time" @value={{this.ride.firstTime}} @onChange={{mut this.ride.firstTime}}>
             First time?
           </PaperCheckbox>
         </div>
@@ -187,7 +187,7 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
       {{/if}}
 
       <div class="layout layout-sm-column">
-        <form.input @class="request-notes" @textarea={{true}} @label="Notes" @value={{this.ride.requestNotes}} @onChange={{action (mut this.ride.requestNotes)}} />
+        <form.input @class="request-notes" @textarea={{true}} @label="Notes" @value={{this.ride.requestNotes}} @onChange={{mut this.ride.requestNotes}} />
       </div>
     </PaperForm>
   </PaperDialogContent>

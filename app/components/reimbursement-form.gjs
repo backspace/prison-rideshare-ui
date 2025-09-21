@@ -13,11 +13,11 @@ import { action } from "@ember/object";
     </h2>
     <PaperForm @onSubmit={{this.save}} as |form|>
       <div class="layout layout-sm-column">
-        <form.input @class="amount" @label="Amount" @type="number" @autofocus={{true}} @value={{this.reimbursement.amountDollars}} @onChange={{action (mut this.reimbursement.amountDollars)}} />
+        <form.input @class="amount" @label="Amount" @type="number" @autofocus={{true}} @value={{this.reimbursement.amountDollars}} @onChange={{mut this.reimbursement.amountDollars}} />
       </div>
 
       <div class="layout layout-sm-column">
-        <PaperCheckbox @value={{this.reimbursement.donation}} @onChange={{action (mut this.reimbursement.donation)}}>
+        <PaperCheckbox @value={{this.reimbursement.donation}} @onChange={{mut this.reimbursement.donation}}>
           Donation?
         </PaperCheckbox>
       </div>

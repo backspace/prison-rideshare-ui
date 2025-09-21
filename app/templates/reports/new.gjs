@@ -42,25 +42,25 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
           {{#if @controller.editingRide}}
             <div class="layout-column">
-              <form.input @class="distance" @type="number" @label="Distance in kilometres" @value={{@controller.editingRide.distance}} @errors={{@controller.editingRide.validationErrors.distance}} @isTouched={{readonly @controller.editingRide.validationErrors.distance.length}} @onChange={{action (mut @controller.editingRide.distance)}} />
+              <form.input @class="distance" @type="number" @label="Distance in kilometres" @value={{@controller.editingRide.distance}} @errors={{@controller.editingRide.validationErrors.distance}} @isTouched={{readonly @controller.editingRide.validationErrors.distance.length}} @onChange={{mut @controller.editingRide.distance}} />
             </div>
             {{#if @controller.editingRide.donatable}}
               <div class="layout layout-sm-column">
-                <PaperCheckbox @value={{@controller.editingRide.donation}} @onChange={{action (mut @controller.editingRide.donation)}}>
+                <PaperCheckbox @value={{@controller.editingRide.donation}} @onChange={{mut @controller.editingRide.donation}}>
                   Donate your gas reimbursement
                 </PaperCheckbox>
               </div>
             {{/if}}
             <div class="layout-column">
-              <form.input @class="food-expenses" @type="number" @label="Food expenses if wanting reimbursement" @value={{@controller.editingRide.foodExpensesDollars}} @onChange={{action (mut @controller.editingRide.foodExpensesDollars)}} />
+              <form.input @class="food-expenses" @type="number" @label="Food expenses if wanting reimbursement" @value={{@controller.editingRide.foodExpensesDollars}} @onChange={{mut @controller.editingRide.foodExpensesDollars}} />
             </div>
             {{#if @controller.editingRide.overridable}}
               <div class="layout-column">
-                <form.input @class="car-expenses" @type="number" @label="Car expenses" @value={{@controller.editingRide.carExpensesDollars}} @onChange={{action (mut @controller.editingRide.carExpensesDollars)}} />
+                <form.input @class="car-expenses" @type="number" @label="Car expenses" @value={{@controller.editingRide.carExpensesDollars}} @onChange={{mut @controller.editingRide.carExpensesDollars}} />
               </div>
             {{/if}}
             <div class="layout-column">
-              <form.input @class="report-notes" @textarea={{true}} @label="Notes" @value={{@controller.editingRide.reportNotes}} @onChange={{action (mut @controller.editingRide.reportNotes)}} as |textHelper|>
+              <form.input @class="report-notes" @textarea={{true}} @label="Notes" @value={{@controller.editingRide.reportNotes}} @onChange={{mut @controller.editingRide.reportNotes}} as |textHelper|>
                 {{#unless textHelper.hasValue}}
                   <div class="hint">
                     Anything unusual, like paying the driver for gas instead of car owner.

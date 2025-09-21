@@ -20,10 +20,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperForm @onSubmit={{this.login}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
-        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{action (mut @controller.model.email)}} />
+        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{mut @controller.model.email}} />
       </div>
       <div class="layout layout-row">
-        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{action (mut @controller.model.password)}}>
+        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{mut @controller.model.password}}>
           <div class="hint">
             <LinkTo @route="forgot">
               Forgot?

@@ -28,7 +28,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </nav>
 
     <calendar.Days @showDaysAround={{false}} as |day|>
-      <CalendarDay @day={{day}} @slots={{@controller.slots}} @count={{true}} @setViewingSlot={{action (mut @controller.viewingSlot)}} />
+      <CalendarDay @day={{day}} @slots={{@controller.slots}} @count={{true}} @setViewingSlot={{mut @controller.viewingSlot}} />
     </calendar.Days>
   </PowerCalendar>
 

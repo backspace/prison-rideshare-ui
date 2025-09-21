@@ -15,9 +15,9 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperCard @class="statistics-card" as |card|>
     <card.content>
       <div class="inputs">
-        <PaperInput @class="start" @type="date" @label="Chart data begins" @value={{@controller.start}} @onChange={{action (mut @controller.start)}} />
+        <PaperInput @class="start" @type="date" @label="Chart data begins" @value={{@controller.start}} @onChange={{mut @controller.start}} />
 
-        <PaperInput @class="end" @type="date" @label="Chart data ends" @value={{@controller.end}} @onChange={{action (mut @controller.end)}} />
+        <PaperInput @class="end" @type="date" @label="Chart data ends" @value={{@controller.end}} @onChange={{mut @controller.end}} />
       </div>
 
       <div class="buttons">
@@ -28,7 +28,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
       <div class="radios">
         Count
-        <PaperRadioGroup @groupValue={{readonly @controller.grouping}} @onChange={{action (mut @controller.grouping)}} as |group|>
+        <PaperRadioGroup @groupValue={{readonly @controller.grouping}} @onChange={{mut @controller.grouping}} as |group|>
           <div class="flex">
             <group.radio @value="rides">
               rides

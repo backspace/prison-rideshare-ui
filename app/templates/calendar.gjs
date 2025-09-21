@@ -28,18 +28,18 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </PaperButton>
           </div>
         {{else}}
-          <PaperButton @class="toggle" @label="Edit communication details" @onClick={{action (mut @controller.showPerson) (not @controller.showPerson)}} />
+          <PaperButton @class="toggle" @label="Edit communication details" @onClick={{mut @controller.showPerson (not @controller.showPerson)}} />
         {{/if}}
       </header>
       {{#if @controller.showPerson}}
         <PaperForm @onSubmit={{@controller.save}} as |form|>
-          <PaperRadioGroup @groupValue={{readonly @controller.person.medium}} @onChange={{action (mut @controller.person.medium)}} as |group|>
+          <PaperRadioGroup @groupValue={{readonly @controller.person.medium}} @onChange={{mut @controller.person.medium}} as |group|>
             <div class="layout-row">
               <div class="layout-column flex-50">
-                <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.person.name}} @onChange={{action (mut @controller.person.name)}} @errors={{@controller.person.validationErrors.name}} @isTouched={{readonly @controller.person.validationErrors.name.length}} />
+                <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.person.name}} @onChange={{mut @controller.person.name}} @errors={{@controller.person.validationErrors.name}} @isTouched={{readonly @controller.person.validationErrors.name.length}} />
               </div>
               <div class="layout-column flex-50">
-                <PaperSwitch @value={{@controller.person.active}} @onChange={{action (mut @controller.person.active) (not @controller.person.active)}}>
+                <PaperSwitch @value={{@controller.person.active}} @onChange={{mut @controller.person.active (not @controller.person.active)}}>
                   Available for rides
                 </PaperSwitch>
               </div>
@@ -47,13 +47,13 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             <div class="layout-row">
               <div class="layout-column flex-50">
                 <div class="layout-row text-radio mobile">
-                  <form.input @type="mobile" @label="Mobile" @value={{@controller.person.mobile}} @onChange={{action (mut @controller.person.mobile)}} @errors={{@controller.person.validationErrors.mobile}} @isTouched={{readonly @controller.person.validationErrors.mobile.length}} />
+                  <form.input @type="mobile" @label="Mobile" @value={{@controller.person.mobile}} @onChange={{mut @controller.person.mobile}} @errors={{@controller.person.validationErrors.mobile}} @isTouched={{readonly @controller.person.validationErrors.mobile.length}} />
                   <group.radio @value="mobile">
                     preferred
                   </group.radio>
                 </div>
                 <div class="layout-row text-radio landline">
-                  <form.input @type="mobile" @label="Landline" @value={{@controller.person.landline}} @onChange={{action (mut @controller.person.landline)}} @errors={{@controller.person.validationErrors.landline}} @isTouched={{readonly @controller.person.validationErrors.landline.length}} />
+                  <form.input @type="mobile" @label="Landline" @value={{@controller.person.landline}} @onChange={{mut @controller.person.landline}} @errors={{@controller.person.validationErrors.landline}} @isTouched={{readonly @controller.person.validationErrors.landline.length}} />
                   <group.radio @value="landline">
                     preferred
                   </group.radio>
@@ -64,7 +64,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
                   <PaperTooltip>
                     Email us if you need to change this
                   </PaperTooltip>
-                  <form.input @type="email" @label="Email" @disabled={{true}} @value={{@controller.person.email}} @onChange={{action (mut @controller.person.email)}} @errors={{@controller.person.validationErrors.email}} @isTouched={{readonly @controller.person.validationErrors.email.length}} />
+                  <form.input @type="email" @label="Email" @disabled={{true}} @value={{@controller.person.email}} @onChange={{mut @controller.person.email}} @errors={{@controller.person.validationErrors.email}} @isTouched={{readonly @controller.person.validationErrors.email.length}} />
                   <group.radio @value="email">
                     preferred
                   </group.radio>
@@ -73,7 +73,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </div>
             <div class="layout-row">
               <div class="layout-column flex-100">
-                <form.input @class="address" @textarea={{true}} @label="Mailing address" @value={{@controller.person.address}} @onChange={{action (mut @controller.person.address)}}>
+                <form.input @class="address" @textarea={{true}} @label="Mailing address" @value={{@controller.person.address}} @onChange={{mut @controller.person.address}}>
                   <div class="hint">
                     To send you our quarterly newsletter and very occasionally, invitations or other such communications
                   </div>
@@ -82,7 +82,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </div>
             <div class="layout-row">
               <div class="layout-column flex-100">
-                <form.input @class="self-notes" @textarea={{true}} @label="Notes" @value={{@controller.person.selfNotes}} @onChange={{action (mut @controller.person.selfNotes)}}>
+                <form.input @class="self-notes" @textarea={{true}} @label="Notes" @value={{@controller.person.selfNotes}} @onChange={{mut @controller.person.selfNotes}}>
                   <div class="hint">
                     Vehicle capacity, institutions you don’t want to drive to, etc
                   </div>

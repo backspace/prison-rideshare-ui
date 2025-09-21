@@ -59,12 +59,12 @@ export default class CancellationForm extends Component {<template>{{!-- templat
       </div>
 
       <div class="layout layout-sm-column">
-        <PaperSelect @class="reason" @placeholder="Reason" @selected={{this.ride.cancellationReason}} @options={{this.reasons}} @onChange={{action (mut this.ride.cancellationReason)}} as |reason|>
+        <PaperSelect @class="reason" @placeholder="Reason" @selected={{this.ride.cancellationReason}} @options={{this.reasons}} @onChange={{mut this.ride.cancellationReason}} as |reason|>
           {{reason}}
         </PaperSelect>
       </div>
 
-      <form.input @class="other" @label="Other reason" @value={{this.ride.cancellationReason}} @onChange={{action (mut this.ride.cancellationReason)}} />
+      <form.input @class="other" @label="Other reason" @value={{this.ride.cancellationReason}} @onChange={{mut this.ride.cancellationReason}} />
     </PaperForm>
   </PaperDialogContent>
 
