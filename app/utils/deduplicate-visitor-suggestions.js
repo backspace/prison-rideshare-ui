@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { get } from '@ember/object';
-
 const SUGGESTION_COUNT = 3;
 
 export default function deduplicateVisitorSuggestions(rides) {

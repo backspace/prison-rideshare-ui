@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import {
   clickable,
   collection,
   create,
-  property,
   text,
   visitable,
 } from 'ember-cli-page-object';

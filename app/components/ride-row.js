@@ -1,5 +1,5 @@
-/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/no-get, no-unused-vars */
-import { computed, get } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/no-get */
+import { computed } from '@ember/object';
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
