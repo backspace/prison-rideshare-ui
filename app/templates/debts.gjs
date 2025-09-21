@@ -40,7 +40,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
           {{debt.totalExpensesDollars}}
         </row.cell>
         <row.cell>
-          <PaperButton @class="reimburse" @onClick={{action "reimburse" debt}}>
+          <PaperButton @class="reimburse" @onClick={{this.reimburse debt}}>
             Reimburse
           </PaperButton>
         </row.cell>
