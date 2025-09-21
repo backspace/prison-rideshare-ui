@@ -50,6 +50,6 @@ module('Integration | Component | linked contact', function (hooks) {
 
   test('it ignores an undefined contact value', async function (assert) {
     await render(hbs`{{linked-contact}}`);
-    assert.equal(find('span').innerHTML.trim(), '');
+    assert.equal(find('span').innerText.trim(), '');
   });
 });
