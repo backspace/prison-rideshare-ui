@@ -1,4 +1,3 @@
-/* eslint-disable ember/no-empty-glimmer-component-classes, ember/template-no-let-reference */
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import PaperButton from 'ember-paper/components/paper-button';
@@ -17,7 +16,6 @@ import MobiledocToolbar from 'ember-mobiledoc-editor/components/mobiledoc-toolba
 import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
 import { fn } from '@ember/helper';
 import DOMRenderer from 'ember-mobiledoc-dom-renderer';
-import Component from '@glimmer/component';
 import { modifier } from 'ember-modifier';
 
 export default RouteTemplate(
@@ -196,13 +194,11 @@ export default RouteTemplate(
   </template>,
 );
 
-class MobiledocRenderer extends Component {
-  <template>
-    <section {{renderMobiledoc @mobiledoc}}></section>
-  </template>
-}
+const MobiledocRenderer = <template>
+  <section {{renderMobiledoc @mobiledoc}}></section>
+</template>;
 
-let renderMobiledoc = modifier((element, [mobiledoc]) => {
+const renderMobiledoc = modifier((element, [mobiledoc]) => {
   if (!mobiledoc) {
     element.innerHTML = '';
     return;
