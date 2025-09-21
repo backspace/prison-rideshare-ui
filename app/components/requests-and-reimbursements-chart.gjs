@@ -2,8 +2,11 @@
 import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
 import Component from '@ember/component';
-
 import moment from 'moment';
+import HighCharts from "ember-highcharts/components/high-charts";
+import EmberWormhole from "ember-wormhole/components/ember-wormhole";
+import PaperButton from "ember-paper/components/paper-button";
+import eq from "ember-truth-helpers/helpers/eq";
 
 function countRidesOrVisitors(rides, grouping) {
   if (grouping === 'rides') {
@@ -16,7 +19,17 @@ function countRidesOrVisitors(rides, grouping) {
 }
 
 @classic
-export default class RequestsAndReimbursementsChart extends Component {
+export default class RequestsAndReimbursementsChart extends Component {<template>{{!-- template-lint-disable no-action --}}
+<HighCharts @content={{this.data}} @chartOptions={{this.options}} @theme={{this.theme}} @callback={{action "afterRenderCallback"}} />
+
+{{#if this.rendered}}
+  <EmberWormhole @to="grouping-weeks">
+    <PaperButton @label="Weeks" @primary={{eq this.grouping "weeks"}} @onClick={{action (mut this.grouping) "weeks"}} />
+  </EmberWormhole>
+  <EmberWormhole @to="grouping-months">
+    <PaperButton @label="Months" @primary={{eq this.grouping "months"}} @onClick={{action (mut this.grouping) "months"}} />
+  </EmberWormhole>
+{{/if}}</template>
   grouping = 'months';
   rendered = false;
 
@@ -169,28 +182,3 @@ export default class RequestsAndReimbursementsChart extends Component {
     this.set('rendered', true);
   }
 }
-
-{{! template-lint-disable no-action }}
-<HighCharts
-  @content={{this.data}}
-  @chartOptions={{this.options}}
-  @theme={{this.theme}}
-  @callback={{action 'afterRenderCallback'}}
-/>
-
-{{#if this.rendered}}
-  <EmberWormhole @to='grouping-weeks'>
-    <PaperButton
-      @label='Weeks'
-      @primary={{eq this.grouping 'weeks'}}
-      @onClick={{action (mut this.grouping) 'weeks'}}
-    />
-  </EmberWormhole>
-  <EmberWormhole @to='grouping-months'>
-    <PaperButton
-      @label='Months'
-      @primary={{eq this.grouping 'months'}}
-      @onClick={{action (mut this.grouping) 'months'}}
-    />
-  </EmberWormhole>
-{{/if}}

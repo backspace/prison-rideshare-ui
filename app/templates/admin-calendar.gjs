@@ -1,61 +1,43 @@
-{{! template-lint-disable no-action }}
-<ToolbarHeader @title={{this.title}} />
+import RouteTemplate from 'ember-route-template'
+import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
+import PowerCalendar from "ember-power-calendar/components/power-calendar";
+import { LinkTo } from "@ember/routing";
+import momentFormat from "ember-moment/helpers/moment-format.js";
+import pluralize from "ember-inflector/_app_/helpers/pluralize.js";
+import CalendarDay from "prison-rideshare-ui/components/calendar-day";
+import PaperChips from "ember-paper/components/paper-chips/component";
+import PersonBadge from "prison-rideshare-ui/components/person-badge";
+import PaperButton from "ember-paper/components/paper-button";
+import gt from "ember-truth-helpers/helpers/gt";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+<ToolbarHeader @title={{@controller.title}} />
 
-<div class='admin-calendar'>
-  <PowerCalendar
-    @center={{this.monthMoment}}
-    @daysComponent='calendar-days'
-    @onCenterChange={{action (mut this.month) value='date'}} as |calendar|
-  >
-    <nav class='ember-power-calendar-nav'>
-      <LinkTo
-        @route='admin-calendar'
-        @model={{this.previousMonth}}
-        class='ember-power-calendar-nav-control previous-month'
-      >
+<div class="admin-calendar">
+  <PowerCalendar @center={{@controller.monthMoment}} @daysComponent="calendar-days" @onCenterChange={{action (mut @controller.month) value="date"}} as |calendar|>
+    <nav class="ember-power-calendar-nav">
+      <LinkTo @route="admin-calendar" @model={{@controller.previousMonth}} class="ember-power-calendar-nav-control previous-month">
         ‹
       </LinkTo>
-      <div class='ember-power-calendar-nav-title'>
-        {{moment-format calendar.center 'MMMM YYYY'}}: {{pluralize
-          this.commitmentCount
-          'commitment'
-        }}
+      <div class="ember-power-calendar-nav-title">
+        {{momentFormat calendar.center "MMMM YYYY"}}: {{pluralize @controller.commitmentCount "commitment"}}
       </div>
-      <LinkTo
-        @route='admin-calendar'
-        @model={{this.nextMonth}}
-        class='ember-power-calendar-nav-control next-month'
-      >
+      <LinkTo @route="admin-calendar" @model={{@controller.nextMonth}} class="ember-power-calendar-nav-control next-month">
         ›
       </LinkTo>
     </nav>
 
     <calendar.Days @showDaysAround={{false}} as |day|>
-      <CalendarDay
-        @day={{day}}
-        @slots={{this.slots}}
-        @count={{true}}
-        @setViewingSlot={{action (mut this.viewingSlot)}}
-      />
+      <CalendarDay @day={{day}} @slots={{@controller.slots}} @count={{true}} @setViewingSlot={{action (mut @controller.viewingSlot)}} />
     </calendar.Days>
   </PowerCalendar>
 
   <section>
-    {{#if this.viewingSlot}}
-      <div class='viewing-slot'>
-        <h3 class='hours'>
-          {{moment-format this.viewingSlot.start 'dddd, MMMM D, h:mma'
-          }}–{{moment-format this.viewingSlot.end 'h:mma'}}
+    {{#if @controller.viewingSlot}}
+      <div class="viewing-slot">
+        <h3 class="hours">
+          {{momentFormat @controller.viewingSlot.start "dddd, MMMM D, h:mma"}}–{{momentFormat @controller.viewingSlot.end "h:mma"}}
         </h3>
-        <PaperChips
-          @removeItem={{action 'deleteCommitment'}}
-          @addItem={{action 'createCommitment'}}
-          @placeholder='Commit someone to this slot'
-          @content={{this.viewingSlot.commitments}}
-          @options={{this.uncommittedPeople}}
-          @class='commitments'
-          @searchField='name' as |person_or_commitment|
-        >
+        <PaperChips @removeItem={{action "deleteCommitment"}} @addItem={{action "createCommitment"}} @placeholder="Commit someone to this slot" @content={{@controller.viewingSlot.commitments}} @options={{@controller.uncommittedPeople}} @class="commitments" @searchField="name" as |person_or_commitment|>
           {{#if person_or_commitment.name}}
             <PersonBadge @person={{person_or_commitment}} />
           {{else}}
@@ -67,34 +49,19 @@
     <h2>
       Temporary email interface
     </h2>
-    <PaperButton
-      @label='Add all active people'
-      @raised={{true}}
-      @onClick={{action 'addAllActive'}}
-    />
-    <PaperChips
-      @removeItem={{action 'removePerson'}}
-      @addItem={{action 'addPerson'}}
-      @placeholder='Add a person to email'
-      @content={{this.people}}
-      @options={{this.remainingPeople}}
-      @searchField='name' as |person|
-    >
+    <PaperButton @label="Add all active people" @raised={{true}} @onClick={{action "addAllActive"}} />
+    <PaperChips @removeItem={{action "removePerson"}} @addItem={{action "addPerson"}} @placeholder="Add a person to email" @content={{@controller.people}} @options={{@controller.remainingPeople}} @searchField="name" as |person|>
       {{person.name}}
     </PaperChips>
-    <PaperButton
-      @primary={{gt this.people.length 0}}
-      @raised={{gt this.people.length 0}}
-      @onClick={{action 'email'}}
-    >
-      Email {{this.monthString}} calendar link
+    <PaperButton @primary={{gt @controller.people.length 0}} @raised={{gt @controller.people.length 0}} @onClick={{action "email"}}>
+      Email {{@controller.monthString}} calendar link
     </PaperButton>
-    <PaperButton @onClick={{action 'fetchLinks'}}>
+    <PaperButton @onClick={{action "fetchLinks"}}>
       View calendar links
     </PaperButton>
-    {{#if this.links}}
+    {{#if @controller.links}}
       <ul>
-        {{#each this.links as |emailAndLink|}}
+        {{#each @controller.links as |emailAndLink|}}
           <li>
             {{emailAndLink.email}}:
             <a href={{emailAndLink.link}}>
@@ -104,8 +71,8 @@
         {{/each}}
       </ul>
     {{/if}}
-    {{#if this.linksError}}
-      There was an error loading calendar links: {{this.linksError}}
+    {{#if @controller.linksError}}
+      There was an error loading calendar links: {{@controller.linksError}}
     {{/if}}
   </section>
-</div>
+</div></template>)

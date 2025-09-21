@@ -1,56 +1,40 @@
-{{! template-lint-disable no-action }}
-<PaperContent @class='layout-column flex'>
-  <PaperCard @class='statistics-card' as |card|>
+import RouteTemplate from 'ember-route-template'
+import PaperContent from "ember-paper/components/paper-content/component";
+import PaperCard from "ember-paper/_app_/components/paper-card.js";
+import PaperInput from "ember-paper/_app_/components/paper-input.js";
+import PaperButton from "ember-paper/components/paper-button";
+import PaperRadioGroup from "ember-paper/components/paper-radio-group";
+import RequestsAndReimbursementsChart from "prison-rideshare-ui/components/requests-and-reimbursements-chart";
+import RequestTimeChart from "prison-rideshare-ui/components/request-time-chart";
+import CancellationChart from "prison-rideshare-ui/components/cancellation-chart";
+import CopyButton from "ember-cli-clipboard/components/copy-button";
+import paperIcon from "ember-paper/_app_/components/paper-icon.js";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+<PaperContent @class="layout-column flex">
+  <PaperCard @class="statistics-card" as |card|>
     <card.content>
-      <div class='inputs'>
-        <PaperInput
-          @class='start'
-          @type='date'
-          @label='Chart data begins'
-          @value={{this.start}}
-          @onChange={{action (mut this.start)}}
-        />
+      <div class="inputs">
+        <PaperInput @class="start" @type="date" @label="Chart data begins" @value={{@controller.start}} @onChange={{action (mut @controller.start)}} />
 
-        <PaperInput
-          @class='end'
-          @type='date'
-          @label='Chart data ends'
-          @value={{this.end}}
-          @onChange={{action (mut this.end)}}
-        />
+        <PaperInput @class="end" @type="date" @label="Chart data ends" @value={{@controller.end}} @onChange={{action (mut @controller.end)}} />
       </div>
 
-      <div class='buttons'>
-        <PaperButton
-          @class='past-year'
-          @label='Past year'
-          @onClick={{action 'setPastYear'}}
-        />
-        <PaperButton
-          @class='past-two-weeks'
-          @label='Past two weeks'
-          @onClick={{action 'setPastTwoWeeks'}}
-        />
-        <PaperButton
-          @class='this-year'
-          @label='This year'
-          @onClick={{action 'setThisYear'}}
-        />
+      <div class="buttons">
+        <PaperButton @class="past-year" @label="Past year" @onClick={{action "setPastYear"}} />
+        <PaperButton @class="past-two-weeks" @label="Past two weeks" @onClick={{action "setPastTwoWeeks"}} />
+        <PaperButton @class="this-year" @label="This year" @onClick={{action "setThisYear"}} />
       </div>
 
-      <div class='radios'>
+      <div class="radios">
         Count
-        <PaperRadioGroup
-          @groupValue={{readonly this.grouping}}
-          @onChange={{action (mut this.grouping)}} as |group|
-        >
-          <div class='flex'>
-            <group.radio @value='rides'>
+        <PaperRadioGroup @groupValue={{readonly @controller.grouping}} @onChange={{action (mut @controller.grouping)}} as |group|>
+          <div class="flex">
+            <group.radio @value="rides">
               rides
             </group.radio>
           </div>
-          <div class='flex'>
-            <group.radio @value='passengers'>
+          <div class="flex">
+            <group.radio @value="passengers">
               passengers
             </group.radio>
           </div>
@@ -59,27 +43,15 @@
     </card.content>
   </PaperCard>
 
-  <RequestsAndReimbursementsChart
-    @rides={{this.rides}}
-    @theme={{this.theme}}
-    @grouping={{this.grouping}}
-  />
+  <RequestsAndReimbursementsChart @rides={{@controller.rides}} @theme={{@controller.theme}} @grouping={{@controller.grouping}} />
 
-  <RequestTimeChart
-    @rides={{this.rides}}
-    @theme={{this.theme}}
-    @grouping={{this.grouping}}
-  />
+  <RequestTimeChart @rides={{@controller.rides}} @theme={{@controller.theme}} @grouping={{@controller.grouping}} />
 
-  <CancellationChart
-    @rides={{this.rides}}
-    @theme={{this.theme}}
-    @grouping={{this.grouping}}
-  />
+  <CancellationChart @rides={{@controller.rides}} @theme={{@controller.theme}} @grouping={{@controller.grouping}} />
 
   <div>
-    <CopyButton @text={{this.clipboardText}} title={{this.copyButtonTitle}}>
-      {{paper-icon 'content copy'}} Copy for report
+    <CopyButton @text={{@controller.clipboardText}} title={{@controller.copyButtonTitle}}>
+      {{paperIcon "content copy"}} Copy for report
     </CopyButton>
   </div>
-</PaperContent>
+</PaperContent></template>)

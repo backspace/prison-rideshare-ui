@@ -1,4 +1,13 @@
-<ToolbarHeader @title='Gas prices and reimbursement rates' />
+import RouteTemplate from 'ember-route-template'
+import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
+import PaperContent from "ember-paper/components/paper-content/component";
+import PaperCard from "ember-paper/_app_/components/paper-card.js";
+import PaperDataTable from "paper-data-table/components/paper-data-table";
+import take from "ember-composable-helpers/helpers/take";
+import sortBy from "ember-composable-helpers/helpers/sort-by";
+import momentFormat from "ember-moment/helpers/moment-format.js";
+import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
+export default RouteTemplate(<template><ToolbarHeader @title="Gas prices and reimbursement rates" />
 
 <PaperContent>
   <PaperCard as |card|>
@@ -9,7 +18,7 @@
     </card.content>
   </PaperCard>
 
-  <PaperDataTable @class='gas-prices' as |table|>
+  <PaperDataTable @class="gas-prices" as |table|>
     <table.head as |head|>
       <head.column>
         Date
@@ -25,22 +34,22 @@
       </head.column>
     </table.head>
     <table.body as |body|>
-      {{#each (take 10 (sort-by 'insertedAt:desc' this.model)) as |gasPrice|}}
+      {{#each (take 10 (sortBy "insertedAt:desc" @controller.model)) as |gasPrice|}}
         <body.row as |row|>
-          <row.cell @class='date'>
-            {{moment-format gasPrice.insertedAt 'ddd, MMM D'}}
+          <row.cell @class="date">
+            {{momentFormat gasPrice.insertedAt "ddd, MMM D"}}
           </row.cell>
-          <row.cell @class='price'>
-            {{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub>L</sub></span>
+          <row.cell @class="price">
+            {{gasPrice.price}}<span class="unit"><sup>¢</sup>&frasl;<sub>L</sub></span>
           </row.cell>
-          <row.cell @class='far'>
+          <row.cell @class="far">
             {{gasPrice.farRate}}<ReimbursementUnit />
           </row.cell>
-          <row.cell @class='close'>
+          <row.cell @class="close">
             {{gasPrice.closeRate}}<ReimbursementUnit />
           </row.cell>
         </body.row>
       {{/each}}
     </table.body>
   </PaperDataTable>
-</PaperContent>
+</PaperContent></template>)

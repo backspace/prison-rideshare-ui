@@ -6,11 +6,29 @@ import Component from '@ember/component';
 import { get, computed } from '@ember/object';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment';
-
 import { task } from 'ember-concurrency';
+import gt from "ember-truth-helpers/helpers/gt";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import perform from "ember-concurrency/helpers/perform";
 
 @classic
-export default class CalendarSlot extends Component {
+export default class CalendarSlot extends Component {<template>{{!-- template-lint-disable no-action --}}
+<div class="slot {{if this.hidden "hidden"}}">
+  {{#if this.count}}
+    <span class="hours">
+      {{this.timespan}}
+    </span>
+    <button class="count {{if (gt this.slot.commitments.length 0) "committed-to"}}" onClick={{action this.setViewingSlot this.slot}} type="button">
+      {{this.capacity}}
+    </button>
+  {{else}}
+    <PaperCheckbox @value={{this.isCommittedTo}} @disabled={{this.disabled}} @indeterminate={{this.toggle.isRunning}} @onChange={{perform this.toggle}}>
+      <span class="hours">
+        {{this.timespan}}
+      </span>
+    </PaperCheckbox>
+  {{/if}}
+</div></template>
   @service
   moment;
 
@@ -111,30 +129,3 @@ export default class CalendarSlot extends Component {
   }).drop())
   toggle;
 }
-
-{{! template-lint-disable no-action }}
-<div class='slot {{if this.hidden 'hidden'}}'>
-  {{#if this.count}}
-    <span class='hours'>
-      {{this.timespan}}
-    </span>
-    <button
-      class='count {{if (gt this.slot.commitments.length 0) 'committed-to'}}'
-      onClick={{action this.setViewingSlot this.slot}}
-      type='button'
-    >
-      {{this.capacity}}
-    </button>
-  {{else}}
-    <PaperCheckbox
-      @value={{this.isCommittedTo}}
-      @disabled={{this.disabled}}
-      @indeterminate={{this.toggle.isRunning}}
-      @onChange={{perform this.toggle}}
-    >
-      <span class='hours'>
-        {{this.timespan}}
-      </span>
-    </PaperCheckbox>
-  {{/if}}
-</div>

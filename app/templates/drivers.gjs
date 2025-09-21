@@ -1,191 +1,120 @@
-{{! template-lint-disable no-action }}
-<ToolbarHeader @title='Drivers'>
-  <PaperButton
-    @mini={{true}}
-    @aria-label='New driver'
-    @title='New driver'
-    @class='new'
-    @onClick={{action 'newPerson'}}
-  >
-    {{paper-icon 'add'}}
+import RouteTemplate from 'ember-route-template'
+import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
+import PaperButton from "ember-paper/components/paper-button";
+import paperIcon from "ember-paper/_app_/components/paper-icon.js";
+import PaperSwitch from "ember-paper/_app_/components/paper-switch.js";
+import PaperDataTable from "paper-data-table/components/paper-data-table";
+import sortBy from "ember-composable-helpers/helpers/sort-by";
+import or from "ember-truth-helpers/helpers/or";
+import PersonRow from "prison-rideshare-ui/components/person-row";
+import ReimbursementForm from "prison-rideshare-ui/components/reimbursement-form";
+import PaperDialog from "ember-paper/components/paper-dialog";
+import PaperDialogContent from "ember-paper/components/paper-dialog-content";
+import PaperForm from "ember-paper/_app_/components/paper-form.js";
+import PaperRadioGroup from "ember-paper/components/paper-radio-group";
+import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+<ToolbarHeader @title="Drivers">
+  <PaperButton @mini={{true}} @aria-label="New driver" @title="New driver" @class="new" @onClick={{action "newPerson"}}>
+    {{paperIcon "add"}}
   </PaperButton>
 </ToolbarHeader>
 
-<div class='switch-container layout-row layout-align-start-center'>
-  <PaperSwitch
-    @class='inactive'
-    @value={{this.showInactive}}
-    @onChange={{action (mut this.showInactive)}}
-  >
+<div class="switch-container layout-row layout-align-start-center">
+  <PaperSwitch @class="inactive" @value={{@controller.showInactive}} @onChange={{action (mut @controller.showInactive)}}>
     Inactive
   </PaperSwitch>
 </div>
 
-<PaperDataTable @sortProp='name' @sortDir='asc' as |table|>
+<PaperDataTable @sortProp="name" @sortDir="asc" as |table|>
   <table.head as |head|>
     <head.column>
       Active
     </head.column>
-    <head.column @sortProp='name' @class='name'>
+    <head.column @sortProp="name" @class="name">
       Name
     </head.column>
-    <head.column @class='email'>
+    <head.column @class="email">
       Email
     </head.column>
-    <head.column @class='mobile'>
+    <head.column @class="mobile">
       Mobile
     </head.column>
-    <head.column @class='landline'>
+    <head.column @class="landline">
       Landline
     </head.column>
-    <head.column @class='address'>
+    <head.column @class="address">
       Address
     </head.column>
-    <head.column @sortProp='lastRide.start' @class='last-ride'>
+    <head.column @sortProp="lastRide.start" @class="last-ride">
       Last ride
     </head.column>
-    <head.column @class='notes'>
+    <head.column @class="notes">
       Notes
     </head.column>
     {{head.column}}
   </table.head>
   <table.body as |body|>
-    {{#each (sort-by table.sortDesc this.model) as |person|}}
-      {{#if (or person.active this.showInactive)}}
+    {{#each (sortBy table.sortDesc @controller.model) as |person|}}
+      {{#if (or person.active @controller.showInactive)}}
         {{#unless person.isNew}}
-          <PersonRow
-            @body={{body}}
-            @person={{person}}
-            @editPerson={{action 'editPerson'}}
-          />
+          <PersonRow @body={{body}} @person={{person}} @editPerson={{action "editPerson"}} />
         {{/unless}}
       {{/if}}
     {{/each}}
   </table.body>
 </PaperDataTable>
 
-{{#if this.editingReimbursement}}
-  <ReimbursementForm
-    @reimbursement={{this.editingReimbursement}}
-    @cancel={{action 'cancel'}}
-    @save={{action 'submitReimbursement'}}
-  />
+{{#if @controller.editingReimbursement}}
+  <ReimbursementForm @reimbursement={{@controller.editingReimbursement}} @cancel={{action "cancel"}} @save={{action "submitReimbursement"}} />
 {{/if}}
 
-{{#if this.editingPerson}}
-  <PaperDialog
-    @clickOutsideToClose={{true}}
-    @fullscreen={{true}}
-    @onClose={{action 'cancelPerson'}}
-  >
+{{#if @controller.editingPerson}}
+  <PaperDialog @clickOutsideToClose={{true}} @fullscreen={{true}} @onClose={{action "cancelPerson"}}>
     <PaperDialogContent>
-      <h2 class='md-title'>
-        {{if this.editingPerson.isNew 'New' 'Edit'}} person
+      <h2 class="md-title">
+        {{if @controller.editingPerson.isNew "New" "Edit"}} person
       </h2>
-      <PaperForm @onSubmit={{this.savePerson}} as |form|>
-        <PaperRadioGroup
-          @groupValue={{readonly this.editingPerson.medium}}
-          @onChange={{action (mut this.editingPerson.medium)}} as |group|
-        >
-          <div class='layout layout-sm-column'>
-            <form.input
-              @class='name'
-              @label='Name'
-              @autofocus={{true}}
-              @value={{this.editingPerson.name}}
-              @onChange={{action (mut this.editingPerson.name)}}
-              @errors={{this.editingPerson.validationErrors.name}}
-              @isTouched={{
-                readonly this.editingPerson.validationErrors.name.length
-              }}
-            />
+      <PaperForm @onSubmit={{@controller.savePerson}} as |form|>
+        <PaperRadioGroup @groupValue={{readonly @controller.editingPerson.medium}} @onChange={{action (mut @controller.editingPerson.medium)}} as |group|>
+          <div class="layout layout-sm-column">
+            <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.editingPerson.name}} @onChange={{action (mut @controller.editingPerson.name)}} @errors={{@controller.editingPerson.validationErrors.name}} @isTouched={{readonly @controller.editingPerson.validationErrors.name.length}} />
           </div>
-          <div class='layout layout-sm-column text-radio email'>
-            <form.input
-              @type='email'
-              @label='Email'
-              @value={{this.editingPerson.email}}
-              @onChange={{action (mut this.editingPerson.email)}}
-              @errors={{this.editingPerson.validationErrors.email}}
-              @isTouched={{
-                readonly this.editingPerson.validationErrors.email.length
-              }}
-            />
-            <group.radio @value='email'>
-              {{paper-icon 'favorite'}}
+          <div class="layout layout-sm-column text-radio email">
+            <form.input @type="email" @label="Email" @value={{@controller.editingPerson.email}} @onChange={{action (mut @controller.editingPerson.email)}} @errors={{@controller.editingPerson.validationErrors.email}} @isTouched={{readonly @controller.editingPerson.validationErrors.email.length}} />
+            <group.radio @value="email">
+              {{paperIcon "favorite"}}
             </group.radio>
           </div>
-          <div class='layout layout-sm-column text-radio mobile'>
-            <form.input
-              @type='mobile'
-              @label='Mobile'
-              @value={{this.editingPerson.mobile}}
-              @onChange={{action (mut this.editingPerson.mobile)}}
-              @errors={{this.editingPerson.validationErrors.mobile}}
-              @isTouched={{
-                readonly this.editingPerson.validationErrors.mobile.length
-              }}
-            />
-            <group.radio @value='mobile'>
-              {{paper-icon 'favorite'}}
+          <div class="layout layout-sm-column text-radio mobile">
+            <form.input @type="mobile" @label="Mobile" @value={{@controller.editingPerson.mobile}} @onChange={{action (mut @controller.editingPerson.mobile)}} @errors={{@controller.editingPerson.validationErrors.mobile}} @isTouched={{readonly @controller.editingPerson.validationErrors.mobile.length}} />
+            <group.radio @value="mobile">
+              {{paperIcon "favorite"}}
             </group.radio>
           </div>
-          <div class='layout layout-sm-column text-radio landline'>
-            <form.input
-              @type='mobile'
-              @label='Landline'
-              @value={{this.editingPerson.landline}}
-              @onChange={{action (mut this.editingPerson.landline)}}
-              @errors={{this.editingPerson.validationErrors.landline}}
-              @isTouched={{
-                readonly this.editingPerson.validationErrors.landline.length
-              }}
-            />
-            <group.radio @value='landline'>
-              {{paper-icon 'favorite'}}
+          <div class="layout layout-sm-column text-radio landline">
+            <form.input @type="mobile" @label="Landline" @value={{@controller.editingPerson.landline}} @onChange={{action (mut @controller.editingPerson.landline)}} @errors={{@controller.editingPerson.validationErrors.landline}} @isTouched={{readonly @controller.editingPerson.validationErrors.landline.length}} />
+            <group.radio @value="landline">
+              {{paperIcon "favorite"}}
             </group.radio>
           </div>
-          <div class='layout layout-sm-column'>
-            <form.input
-              @textarea={{true}}
-              @class='address'
-              @label='Mailing address'
-              @value={{this.editingPerson.address}}
-              @onChange={{action (mut this.editingPerson.address)}}
-              @errors={{this.editingPerson.validationErrors.address}}
-              @isTouched={{
-                readonly this.editingPerson.validationErrors.address.length
-              }}
-            />
+          <div class="layout layout-sm-column">
+            <form.input @textarea={{true}} @class="address" @label="Mailing address" @value={{@controller.editingPerson.address}} @onChange={{action (mut @controller.editingPerson.address)}} @errors={{@controller.editingPerson.validationErrors.address}} @isTouched={{readonly @controller.editingPerson.validationErrors.address.length}} />
           </div>
-          <div class='layout layout-sm-column'>
-            <form.input
-              @textarea={{true}}
-              @class='notes'
-              @label='Notes'
-              @value={{this.editingPerson.notes}}
-              @onChange={{action (mut this.editingPerson.notes)}}
-              @errors={{this.editingPerson.validationErrors.notes}}
-              @isTouched={{
-                readonly this.editingPerson.validationErrors.notes.length
-              }}
-            />
+          <div class="layout layout-sm-column">
+            <form.input @textarea={{true}} @class="notes" @label="Notes" @value={{@controller.editingPerson.notes}} @onChange={{action (mut @controller.editingPerson.notes)}} @errors={{@controller.editingPerson.validationErrors.notes}} @isTouched={{readonly @controller.editingPerson.validationErrors.notes.length}} />
           </div>
         </PaperRadioGroup>
       </PaperForm>
     </PaperDialogContent>
 
-    <PaperDialogActions @class='layout-row'>
-      <PaperButton @class='cancel' @onClick={{action 'cancelPerson'}}>
+    <PaperDialogActions @class="layout-row">
+      <PaperButton @class="cancel" @onClick={{action "cancelPerson"}}>
         Cancel
       </PaperButton>
-      <PaperButton
-        @class='submit'
-        @primary={{true}}
-        @onClick={{action 'savePerson'}}
-      >
+      <PaperButton @class="submit" @primary={{true}} @onClick={{action "savePerson"}}>
         Save
       </PaperButton>
     </PaperDialogActions>
   </PaperDialog>
-{{/if}}
+{{/if}}</template>)

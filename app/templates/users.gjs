@@ -1,5 +1,12 @@
-{{! template-lint-disable no-action }}
-<ToolbarHeader @title='Users' />
+import RouteTemplate from 'ember-route-template'
+import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
+import PaperDataTable from "paper-data-table/components/paper-data-table";
+import momentFormat from "ember-moment/helpers/moment-format.js";
+import paperIcon from "ember-paper/_app_/components/paper-icon.js";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import eq from "ember-truth-helpers/helpers/eq";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+<ToolbarHeader @title="Users" />
 
 <PaperDataTable as |table|>
   <table.head as |head|>
@@ -17,27 +24,23 @@
     </head.column>
   </table.head>
   <table.body as |body|>
-    {{#each this.model as |user|}}
-      <body.row @class='user' as |row|>
-        <row.cell @class='email'>
+    {{#each @controller.model as |user|}}
+      <body.row @class="user" as |row|>
+        <row.cell @class="email">
           {{user.email}}
         </row.cell>
-        <row.cell @class='last-seen'>
-          {{moment-format user.lastSeenAt 'MMM D YYYY'}}
+        <row.cell @class="last-seen">
+          {{momentFormat user.lastSeenAt "MMM D YYYY"}}
         </row.cell>
-        <row.cell @class='present'>
+        <row.cell @class="present">
           {{#if user.isPresent}}
-            {{paper-icon 'done'}}
+            {{paperIcon "done"}}
           {{/if}}
         </row.cell>
         <row.cell>
-          <PaperCheckbox
-            @value={{user.admin}}
-            @disabled={{eq user this.session.currentUser}}
-            @onChange={{action 'updateUserAdmin' user}}
-          />
+          <PaperCheckbox @value={{user.admin}} @disabled={{eq user @controller.session.currentUser}} @onChange={{action "updateUserAdmin" user}} />
         </row.cell>
       </body.row>
     {{/each}}
   </table.body>
-</PaperDataTable>
+</PaperDataTable></template>)

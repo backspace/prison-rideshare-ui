@@ -4,10 +4,11 @@ import { classNames } from '@ember-decorators/component';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import moment from 'moment';
+import HighCharts from "ember-highcharts/components/high-charts";
 
 @classic
 @classNames('request-time-chart')
-export default class RequestTimeChart extends Component {
+export default class RequestTimeChart extends Component {<template><HighCharts @content={{this.data}} @chartOptions={{this.options}} @theme={{this.theme}} /></template>
   @computed('rides.@each.start', 'grouping')
   get data() {
     const grouping = this.grouping;
@@ -126,9 +127,3 @@ export default class RequestTimeChart extends Component {
     },
   });
 }
-
-<HighCharts
-  @content={{this.data}}
-  @chartOptions={{this.options}}
-  @theme={{this.theme}}
-/>

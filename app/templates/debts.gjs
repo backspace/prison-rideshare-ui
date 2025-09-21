@@ -1,7 +1,13 @@
-{{! template-lint-disable no-action }}
-<ToolbarHeader @title='Debts' />
+import RouteTemplate from 'ember-route-template'
+import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
+import PaperDataTable from "paper-data-table/components/paper-data-table";
+import PaperButton from "ember-paper/components/paper-button";
+import eq from "ember-truth-helpers/helpers/eq";
+import DonationIcon from "prison-rideshare-ui/components/donation-icon";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+<ToolbarHeader @title="Debts" />
 
-<PaperDataTable @class='debts' as |table|>
+<PaperDataTable @class="debts" as |table|>
   <table.head as |head|>
     <head.column>
       Person
@@ -17,38 +23,38 @@
     </head.column>
     {{head.column}}
   </table.head>
-  {{#each this.model as |debt|}}
-    <table.body @class='debt' as |body|>
-      <body.row @class='person' as |row|>
-        <row.cell @class='name'>
+  {{#each @controller.model as |debt|}}
+    <table.body @class="debt" as |body|>
+      <body.row @class="person" as |row|>
+        <row.cell @class="name">
           {{debt.person.name}}
         </row.cell>
-        <row.cell @class='food-expenses'>
+        <row.cell @class="food-expenses">
           {{debt.foodExpensesDollars}}
         </row.cell>
-        <row.cell @class='car-expenses'>
+        <row.cell @class="car-expenses">
           {{debt.carExpensesDollars}}
         </row.cell>
-        <row.cell @class='total-expenses'>
+        <row.cell @class="total-expenses">
           {{debt.totalExpensesDollars}}
         </row.cell>
         <row.cell>
-          <PaperButton @class='reimburse' @onClick={{action 'reimburse' debt}}>
+          <PaperButton @class="reimburse" @onClick={{action "reimburse" debt}}>
             Reimburse
           </PaperButton>
         </row.cell>
       </body.row>
       {{#each debt.descendingRides as |ride|}}
-        <body.row @class='ride' as |row|>
-          <row.cell @class='date'>
+        <body.row @class="ride" as |row|>
+          <row.cell @class="date">
             {{ride.rideTimes}}
           </row.cell>
-          <row.cell @class='food-expenses'>
+          <row.cell @class="food-expenses">
             {{#if (eq ride.driver.id debt.person.id)}}
               {{if ride.foodExpensesDollars ride.foodExpensesDollars}}
             {{/if}}
           </row.cell>
-          <row.cell @class='car-expenses'>
+          <row.cell @class="car-expenses">
             {{#if (eq ride.carOwner.id debt.person.id)}}
               {{if ride.carExpensesDollars ride.carExpensesDollars}}
               {{#if ride.donation}}
@@ -61,14 +67,14 @@
         </body.row>
         {{#each ride.reimbursements as |reimbursement|}}
           {{#if (eq reimbursement.person.id debt.person.id)}}
-            <body.row @class='reimbursement' as |row|>
+            <body.row @class="reimbursement" as |row|>
               <row.cell />
-              <row.cell @class='food-expenses'>
+              <row.cell @class="food-expenses">
                 {{#if reimbursement.foodExpensesDollars}}
                   -{{reimbursement.foodExpensesDollars}}
                 {{/if}}
               </row.cell>
-              <row.cell @class='car-expenses'>
+              <row.cell @class="car-expenses">
                 {{#if reimbursement.carExpensesDollars}}
                   -{{reimbursement.carExpensesDollars}}
                 {{/if}}
@@ -81,4 +87,4 @@
       {{/each}}
     </table.body>
   {{/each}}
-</PaperDataTable>
+</PaperDataTable></template>)

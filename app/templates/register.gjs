@@ -1,65 +1,50 @@
-{{! template-lint-disable no-action }}
+import RouteTemplate from 'ember-route-template'
+import PaperDialog from "ember-paper/components/paper-dialog";
+import PaperToolbar from "ember-paper/_app_/components/paper-toolbar.js";
+import PaperToolbarTools from "ember-paper/_app_/components/paper-toolbar-tools.js";
+import PaperForm from "ember-paper/_app_/components/paper-form.js";
+import PaperDialogContent from "ember-paper/components/paper-dialog-content";
+import PaperCard from "ember-paper/_app_/components/paper-card.js";
+import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
+import PaperButton from "ember-paper/components/paper-button";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <PaperDialog>
   <PaperToolbar>
     <PaperToolbarTools>
-      <h2 class='md-title'>
+      <h2 class="md-title">
         Register
       </h2>
     </PaperToolbarTools>
   </PaperToolbar>
-  <PaperForm @onSubmit={{action 'register'}} as |form|>
+  <PaperForm @onSubmit={{action "register"}} as |form|>
     <PaperDialogContent>
-      {{#if this.error}}
-        <PaperCard @class='error' as |card|>
+      {{#if @controller.error}}
+        <PaperCard @class="error" as |card|>
           <card.content>
-            {{this.error}}
+            {{@controller.error}}
           </card.content>
         </PaperCard>
       {{/if}}
-      <div class='layout layout-row'>
-        <form.input
-          @class='email'
-          @type='email'
-          @label='Email'
-          @autofocus={{true}}
-          @value={{this.model.email}}
-          @onChange={{action (mut this.model.email)}}
-        />
+      <div class="layout layout-row">
+        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{action (mut @controller.model.email)}} />
       </div>
-      <div class='layout layout-row'>
-        <form.input
-          @class='password'
-          @type='password'
-          @label='Password'
-          @value={{this.model.password}}
-          @onChange={{action (mut this.model.password)}}
-        />
+      <div class="layout layout-row">
+        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{action (mut @controller.model.password)}} />
       </div>
-      <div class='layout layout-row'>
-        <form.input
-          @class='password-confirmation'
-          @type='password'
-          @label='Password confirmation'
-          @value={{this.model.passwordConfirmation}}
-          @onChange={{action (mut this.model.passwordConfirmation)}}
-        />
+      <div class="layout layout-row">
+        <form.input @class="password-confirmation" @type="password" @label="Password confirmation" @value={{@controller.model.passwordConfirmation}} @onChange={{action (mut @controller.model.passwordConfirmation)}} />
       </div>
     </PaperDialogContent>
 
-    <PaperDialogActions @class='layout-row'>
-      <div class='layout layout-row'>
-        <form.submit-button
-          @class='submit'
-          @primary={{true}}
-          @raised={{true}}
-          @onClick={{action 'register'}}
-        >
+    <PaperDialogActions @class="layout-row">
+      <div class="layout layout-row">
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{action "register"}}>
           Register
         </form.submit-button>
-        <PaperButton @href='/login' @class='flex-order--1'>
+        <PaperButton @href="/login" @class="flex-order--1">
           Log in
         </PaperButton>
       </div>
     </PaperDialogActions>
   </PaperForm>
-</PaperDialog>
+</PaperDialog></template>)

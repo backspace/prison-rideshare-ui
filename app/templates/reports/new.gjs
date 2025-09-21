@@ -1,30 +1,36 @@
-{{! template-lint-disable no-action }}
-<ToolbarHeader @title='Record ride details' />
+import RouteTemplate from 'ember-route-template'
+import ToolbarHeader from "prison-rideshare-ui/components/toolbar-header";
+import PaperContent from "ember-paper/components/paper-content/component";
+import PaperCard from "ember-paper/_app_/components/paper-card.js";
+import PaperForm from "ember-paper/_app_/components/paper-form.js";
+import PaperRadioGroup from "ember-paper/components/paper-radio-group";
+import sortBy from "ember-composable-helpers/helpers/sort-by";
+import momentFormat from "ember-moment/helpers/moment-format.js";
+import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
+import PaperCheckbox from "ember-paper/_app_/components/paper-checkbox.js";
+import PaperButton from "ember-paper/components/paper-button";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+<ToolbarHeader @title="Record ride details" />
 
-<PaperContent @class='layout-column'>
-  {{#if this.session.isAuthenticated}}
-    <PaperCard @class='no-session' as |card|>
+<PaperContent @class="layout-column">
+  {{#if @controller.session.isAuthenticated}}
+    <PaperCard @class="no-session" as |card|>
       <card.content>
         The ability to submit reports while logged in is indefinitely unavailable for annoying technical reasons. Please use another browser or a private/incognito window to submit your reports in the interim. ☹️
       </card.content>
     </PaperCard>
   {{else}}
-    {{#if this.model}}
-      <div class='form-container'>
-        <PaperForm @onSubmit={{action 'submitReport'}} as |form|>
-          <div class='layout layout-sm-column'>
-            <PaperRadioGroup
-              @groupValue={{readonly this.editingRide}}
-              @onChange={{action 'setRide'}} as |group|
-            >
-              {{#each (sort-by 'start' this.model) as |ride|}}
+    {{#if @controller.model}}
+      <div class="form-container">
+        <PaperForm @onSubmit={{action "submitReport"}} as |form|>
+          <div class="layout layout-sm-column">
+            <PaperRadioGroup @groupValue={{readonly @controller.editingRide}} @onChange={{action "setRide"}} as |group|>
+              {{#each (sortBy "start" @controller.model) as |ride|}}
                 <group.radio @value={{ride}}>
                   {{#if ride.initials}}
                     {{ride.initials}}:
                   {{/if}}
-                  {{moment-format ride.start 'ddd, MMM D [at] h:mma'}} to {{
-                    ride.institution.name
-                  }}
+                  {{momentFormat ride.start "ddd, MMM D [at] h:mma"}} to {{ride.institution.name}}
                   {{#if ride.rate}}
                     ({{ride.rate}}<ReimbursementUnit />)
                   {{/if}}
@@ -33,88 +39,50 @@
             </PaperRadioGroup>
           </div>
 
-          {{#if this.editingRide}}
-            <div class='layout-column'>
-              <form.input
-                @class='distance'
-                @type='number'
-                @label='Distance in kilometres'
-                @value={{this.editingRide.distance}}
-                @errors={{this.editingRide.validationErrors.distance}}
-                @isTouched={{
-                  readonly this.editingRide.validationErrors.distance.length
-                }}
-                @onChange={{action (mut this.editingRide.distance)}}
-              />
+          {{#if @controller.editingRide}}
+            <div class="layout-column">
+              <form.input @class="distance" @type="number" @label="Distance in kilometres" @value={{@controller.editingRide.distance}} @errors={{@controller.editingRide.validationErrors.distance}} @isTouched={{readonly @controller.editingRide.validationErrors.distance.length}} @onChange={{action (mut @controller.editingRide.distance)}} />
             </div>
-            {{#if this.editingRide.donatable}}
-              <div class='layout layout-sm-column'>
-                <PaperCheckbox
-                  @value={{this.editingRide.donation}}
-                  @onChange={{action (mut this.editingRide.donation)}}
-                >
+            {{#if @controller.editingRide.donatable}}
+              <div class="layout layout-sm-column">
+                <PaperCheckbox @value={{@controller.editingRide.donation}} @onChange={{action (mut @controller.editingRide.donation)}}>
                   Donate your gas reimbursement
                 </PaperCheckbox>
               </div>
             {{/if}}
-            <div class='layout-column'>
-              <form.input
-                @class='food-expenses'
-                @type='number'
-                @label='Food expenses if wanting reimbursement'
-                @value={{this.editingRide.foodExpensesDollars}}
-                @onChange={{action (mut this.editingRide.foodExpensesDollars)}}
-              />
+            <div class="layout-column">
+              <form.input @class="food-expenses" @type="number" @label="Food expenses if wanting reimbursement" @value={{@controller.editingRide.foodExpensesDollars}} @onChange={{action (mut @controller.editingRide.foodExpensesDollars)}} />
             </div>
-            {{#if this.editingRide.overridable}}
-              <div class='layout-column'>
-                <form.input
-                  @class='car-expenses'
-                  @type='number'
-                  @label='Car expenses'
-                  @value={{this.editingRide.carExpensesDollars}}
-                  @onChange={{action (mut this.editingRide.carExpensesDollars)}}
-                />
+            {{#if @controller.editingRide.overridable}}
+              <div class="layout-column">
+                <form.input @class="car-expenses" @type="number" @label="Car expenses" @value={{@controller.editingRide.carExpensesDollars}} @onChange={{action (mut @controller.editingRide.carExpensesDollars)}} />
               </div>
             {{/if}}
-            <div class='layout-column'>
-              <form.input
-                @class='report-notes'
-                @textarea={{true}}
-                @label='Notes'
-                @value={{this.editingRide.reportNotes}}
-                @onChange={{
-                  action (mut this.editingRide.reportNotes)
-                }} as |textHelper|
-              >
+            <div class="layout-column">
+              <form.input @class="report-notes" @textarea={{true}} @label="Notes" @value={{@controller.editingRide.reportNotes}} @onChange={{action (mut @controller.editingRide.reportNotes)}} as |textHelper|>
                 {{#unless textHelper.hasValue}}
-                  <div class='hint'>
+                  <div class="hint">
                     Anything unusual, like paying the driver for gas instead of car owner.
                   </div>
                 {{/unless}}
               </form.input>
             </div>
 
-            <div class='layout-row'>
-              <PaperButton
-                @class='submit'
-                @raised={{true}}
-                @primary={{true}}
-                @onClick={{action 'submitReport'}}
-              >
+            <div class="layout-row">
+              <PaperButton @class="submit" @raised={{true}} @primary={{true}} @onClick={{action "submitReport"}}>
                 Save
               </PaperButton>
-              {{! FIXME simplify if/when form yields radio-group?}}
+              {{!-- FIXME simplify if/when form yields radio-group?--}}
             </div>
           {{/if}}
         </PaperForm>
       </div>
     {{else}}
-      <PaperCard @class='no-rides' as |card|>
+      <PaperCard @class="no-rides" as |card|>
         <card.content>
           There are no rides to report on! Thanks for your diligence, drivers. Email us if you expected to see a report here.
         </card.content>
       </PaperCard>
     {{/if}}
   {{/if}}
-</PaperContent>
+</PaperContent></template>)

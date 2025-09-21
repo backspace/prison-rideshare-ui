@@ -1,72 +1,78 @@
-{{! template-lint-disable no-action }}
+import RouteTemplate from 'ember-route-template'
+import HeadLayout from "ember-cli-head/components/head-layout";
+import EmberLoadRemover from "ember-load/components/ember-load-remover";
+import PaperToaster from "ember-paper/components/paper-toaster";
+import PaperSidenavContainer from "ember-paper/components/paper-sidenav-container";
+import PaperSidenav from "ember-paper/_app_/components/paper-sidenav.js";
+import PaperContent from "ember-paper/components/paper-content/component";
+import PaperList from "ember-paper/_app_/components/paper-list.js";
+import PaperItem from "ember-paper/_app_/components/paper-item.js";
+import { LinkTo } from "@ember/routing";
+import momentFormat from "ember-moment/helpers/moment-format.js";
+import now from "ember-moment/helpers/now.js";
+import PaperDivider from "ember-paper/components/paper-divider/component";
+export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <HeadLayout />
 <EmberLoadRemover />
 
 <PaperToaster />
 
-<PaperSidenavContainer @class='site-nav-container'>
-  <PaperSidenav
-    @lockedOpen='gt-sm'
-    @open={{this.sidebar.open}}
-    @onToggle={{action (mut this.sidebar.open)}}
-  >
+<PaperSidenavContainer @class="site-nav-container">
+  <PaperSidenav @lockedOpen="gt-sm" @open={{@controller.sidebar.open}} @onToggle={{action (mut @controller.sidebar.open)}}>
     <PaperContent>
       <PaperList>
-        {{#if this.session.currentUser.admin}}
+        {{#if @controller.session.currentUser.admin}}
           <PaperItem>
-            <LinkTo @route='drivers'>
+            <LinkTo @route="drivers">
               <span>
                 Drivers
               </span>
             </LinkTo>
           </PaperItem>
           <PaperItem>
-            <LinkTo @route='reimbursements'>
+            <LinkTo @route="reimbursements">
               <span>
                 Reimbursements
               </span>
             </LinkTo>
           </PaperItem>
           <PaperItem>
-            <LinkTo @route='debts'>
+            <LinkTo @route="debts">
               <span>
                 Debts
               </span>
             </LinkTo>
           </PaperItem>
           <PaperItem>
-            <LinkTo @route='rides'>
-              <span class='rides'>
+            <LinkTo @route="rides">
+              <span class="rides">
                 <span>
                   Rides
                 </span>
-                {{#if this.ridesBadgeCount}}
-                  <span class='count' title='How many rides require attention'>
-                    {{this.ridesBadgeCount}}
+                {{#if @controller.ridesBadgeCount}}
+                  <span class="count" title="How many rides require attention">
+                    {{@controller.ridesBadgeCount}}
                   </span>
                 {{/if}}
               </span>
             </LinkTo>
           </PaperItem>
           <PaperItem>
-            <LinkTo @route='institutions'>
+            <LinkTo @route="institutions">
               <span>
                 Institutions
               </span>
             </LinkTo>
           </PaperItem>
           <PaperItem>
-            <LinkTo
-              @route='admin-calendar'
-              @model={{moment-format (now) 'YYYY-MM'}}
-            >
+            <LinkTo @route="admin-calendar" @model={{momentFormat (now) "YYYY-MM"}}>
               <span>
                 Calendar
               </span>
             </LinkTo>
           </PaperItem>
           <PaperItem>
-            <LinkTo @route='statistics'>
+            <LinkTo @route="statistics">
               <span>
                 Statistics
               </span>
@@ -74,44 +80,44 @@
           </PaperItem>
         {{/if}}
         <PaperItem>
-          <LinkTo @route='reports.new'>
+          <LinkTo @route="reports.new">
             <span>
               Report
             </span>
           </LinkTo>
         </PaperItem>
         <PaperItem>
-          <LinkTo @route='gas-prices'>
+          <LinkTo @route="gas-prices">
             <span>
               Gas prices
             </span>
           </LinkTo>
         </PaperItem>
-        {{#if this.session.isAuthenticated}}
-          {{#if this.session.currentUser.admin}}
+        {{#if @controller.session.isAuthenticated}}
+          {{#if @controller.session.currentUser.admin}}
             <PaperItem>
-              <LinkTo @route='log'>
-                <span class='log'>
+              <LinkTo @route="log">
+                <span class="log">
                   <span>
                     Log
                   </span>
-                  {{#if this.sidebar.unreadCount}}
-                    <span class='count' title='How many unread posts you have'>
-                      {{this.sidebar.unreadCount}}
+                  {{#if @controller.sidebar.unreadCount}}
+                    <span class="count" title="How many unread posts you have">
+                      {{@controller.sidebar.unreadCount}}
                     </span>
                   {{/if}}
                 </span>
               </LinkTo>
             </PaperItem>
             <PaperItem>
-              <LinkTo @route='users'>
-                <span class='users'>
+              <LinkTo @route="users">
+                <span class="users">
                   <span>
                     Users
                   </span>
-                  {{#if this.sidebar.userCount}}
-                    <span class='count' title='How many users are connected'>
-                      {{this.sidebar.userCount}}
+                  {{#if @controller.sidebar.userCount}}
+                    <span class="count" title="How many users are connected">
+                      {{@controller.sidebar.userCount}}
                     </span>
                   {{/if}}
                 </span>
@@ -119,12 +125,12 @@
             </PaperItem>
             <PaperDivider />
           {{/if}}
-          <PaperItem @onClick={{action 'logout'}} @class='session'>
-            Log out {{this.session.currentUser.email}}
+          <PaperItem @onClick={{action "logout"}} @class="session">
+            Log out {{@controller.session.currentUser.email}}
           </PaperItem>
         {{else}}
           <PaperItem>
-            <LinkTo @route='login'>
+            <LinkTo @route="login">
               <span>
                 Admin log in
               </span>
@@ -135,7 +141,7 @@
     </PaperContent>
   </PaperSidenav>
 
-  <main class='flex layout-column'>
+  <main class="flex layout-column">
     {{outlet}}
   </main>
-</PaperSidenavContainer>
+</PaperSidenavContainer></template>)

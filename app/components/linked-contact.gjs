@@ -8,7 +8,9 @@ import { htmlSafe } from '@ember/string';
 
 @classic
 @tagName('span')
-export default class LinkedContact extends Component {
+export default class LinkedContact extends Component {<template>{{#if this.contact}}
+  {{this.link}}
+{{/if}}</template>
   @computed('contact')
   get link() {
     const phonePattern =
@@ -27,7 +29,3 @@ export default class LinkedContact extends Component {
     return undefined;
   }
 }
-
-{{#if this.contact}}
-  {{this.link}}
-{{/if}}
