@@ -40,7 +40,7 @@ export default class NewController extends Controller {
           this.store.unloadRecord(this.editingRide);
 
           this.set('editingRide', undefined);
-          this.router.transitionToRoute('application');
+          this.router.transitionTo('application');
           window.scrollTo(0, 0);
         },
         () => {

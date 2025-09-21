@@ -10,7 +10,26 @@ import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperButton from "ember-paper/components/paper-button";
 import { action } from "@ember/object";
-export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+import Component from '@glimmer/component';
+
+class NewReportComponent extends Component{
+  @action updateDistance(distance) {
+    this.args.controller.editingRide.distance = distance;
+  }
+
+  @action updatedonation(value) {
+    this.args.controller.editingRide.donation = value;
+  }
+@action updatefoodExpensesDollars(value) {
+  this.args.controller.editingRide.foodExpensesDollars = value;
+}
+@action updatecarExpensesDollars(value) {
+  this.args.controller.editingRide.carExpensesDollars = value;
+}
+@action updatereportNotes(value) {
+  this.args.controller.editingRide.reportNotes = value;
+}
+<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Record ride details" />
 
 <PaperContent @class="layout-column">
@@ -25,7 +44,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       <div class="form-container">
         <PaperForm @onSubmit={{this.submitReport}} as |form|>
           <div class="layout layout-sm-column">
-            <PaperRadioGroup @groupValue={{readonly @controller.editingRide}} @onChange={{this.setRide}} as |group|>
+            <PaperRadioGroup @groupValue={{readonly @controller.editingRide}} @onChange={{@controller.setRide}} as |group|>
               {{#each (sortBy "start" @controller.model) as |ride|}}
                 <group.radio @value={{ride}}>
                   {{#if ride.initials}}
@@ -42,25 +61,25 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
           {{#if @controller.editingRide}}
             <div class="layout-column">
-              <form.input @class="distance" @type="number" @label="Distance in kilometres" @value={{@controller.editingRide.distance}} @errors={{@controller.editingRide.validationErrors.distance}} @isTouched={{readonly @controller.editingRide.validationErrors.distance.length}} @onChange={{mut @controller.editingRide.distance}} />
+              <form.input @class="distance" @type="number" @label="Distance in kilometres" @value={{@controller.editingRide.distance}} @errors={{@controller.editingRide.validationErrors.distance}} @isTouched={{readonly @controller.editingRide.validationErrors.distance.length}} @onChange={{this.updateDistance}} />
             </div>
             {{#if @controller.editingRide.donatable}}
               <div class="layout layout-sm-column">
-                <PaperCheckbox @value={{@controller.editingRide.donation}} @onChange={{mut @controller.editingRide.donation}}>
+                <PaperCheckbox @value={{@controller.editingRide.donation}} @onChange={{this.updatedonation}}>
                   Donate your gas reimbursement
                 </PaperCheckbox>
               </div>
             {{/if}}
             <div class="layout-column">
-              <form.input @class="food-expenses" @type="number" @label="Food expenses if wanting reimbursement" @value={{@controller.editingRide.foodExpensesDollars}} @onChange={{mut @controller.editingRide.foodExpensesDollars}} />
+              <form.input @class="food-expenses" @type="number" @label="Food expenses if wanting reimbursement" @value={{@controller.editingRide.foodExpensesDollars}} @onChange={{this.updatefoodExpensesDollars}} />
             </div>
             {{#if @controller.editingRide.overridable}}
               <div class="layout-column">
-                <form.input @class="car-expenses" @type="number" @label="Car expenses" @value={{@controller.editingRide.carExpensesDollars}} @onChange={{mut @controller.editingRide.carExpensesDollars}} />
+                <form.input @class="car-expenses" @type="number" @label="Car expenses" @value={{@controller.editingRide.carExpensesDollars}} @onChange={{this.updatecarExpensesDollars}} />
               </div>
             {{/if}}
             <div class="layout-column">
-              <form.input @class="report-notes" @textarea={{true}} @label="Notes" @value={{@controller.editingRide.reportNotes}} @onChange={{mut @controller.editingRide.reportNotes}} as |textHelper|>
+              <form.input @class="report-notes" @textarea={{true}} @label="Notes" @value={{@controller.editingRide.reportNotes}} @onChange={{this.updatereportNotes}} as |textHelper|>
                 {{#unless textHelper.hasValue}}
                   <div class="hint">
                     Anything unusual, like paying the driver for gas instead of car owner.
@@ -70,7 +89,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </div>
 
             <div class="layout-row">
-              <PaperButton @class="submit" @raised={{true}} @primary={{true}} @onClick={{this.submitReport}}>
+              <PaperButton @class="submit" @raised={{true}} @primary={{true}} @onClick={{@controller.submitReport}}>
                 Save
               </PaperButton>
               {{!-- FIXME simplify if/when form yields radio-group?--}}
@@ -86,4 +105,8 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </PaperCard>
     {{/if}}
   {{/if}}
-</PaperContent></template>)
+</PaperContent>
+</template>
+}
+
+export default RouteTemplate(NewReportComponent);
