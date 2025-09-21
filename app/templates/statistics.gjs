@@ -11,7 +11,10 @@ import CopyButton from "ember-cli-clipboard/components/copy-button";
 import paperIcon from "ember-paper/components/paper-icon";
 import { action } from "@ember/object";
 import { fn } from "@ember/helper";
+import { pageTitle } from 'ember-page-title';
+
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+  {{pageTitle "Statistics"}}
 <PaperContent @class="layout-column flex">
   <PaperCard @class="statistics-card" as |card|>
     <card.content>
