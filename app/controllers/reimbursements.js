@@ -79,11 +79,11 @@ export default class ReimbursementsController extends Controller {
 
         if (reimbursement.get('donation')) {
           collection = monthToPersonIdToReimbursements[month][personId].find(
-            (c) => c.get('donations')
+            (c) => c.get('donations'),
           );
         } else {
           collection = monthToPersonIdToReimbursements[month][personId].find(
-            (c) => !c.get('donations')
+            (c) => !c.get('donations'),
           );
         }
 
@@ -91,11 +91,11 @@ export default class ReimbursementsController extends Controller {
 
         return monthToPersonIdToReimbursements;
       },
-      {}
+      {},
     );
 
     const monthReimbursementCollections = Object.keys(
-      monthToPersonIdToReimbursements
+      monthToPersonIdToReimbursements,
     ).reduce((monthReimbursementCollections, monthNumberString) => {
       const personIdToReimbursements =
         monthToPersonIdToReimbursements[monthNumberString];
@@ -115,7 +115,7 @@ export default class ReimbursementsController extends Controller {
         (flattenedCollections, collectionPair) => {
           return flattenedCollections.concat(collectionPair);
         },
-        []
+        [],
       );
 
       monthReimbursementCollections.push(
@@ -123,7 +123,7 @@ export default class ReimbursementsController extends Controller {
           monthNumberString,
           monthName: monthNumberStringToMonthName[monthNumberString],
           reimbursementCollections: flattenedCollections,
-        })
+        }),
       );
 
       return monthReimbursementCollections;

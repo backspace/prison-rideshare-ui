@@ -5,21 +5,35 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
-import PersonBadge from "prison-rideshare-ui/components/person-badge";
-import PaperSelect from "ember-paper/components/paper-select/component";
+import PersonBadge from 'prison-rideshare-ui/components/person-badge';
+import PaperSelect from 'ember-paper/components/paper-select/component';
 
 @classic
 @tagName('')
-export default class RidePerson extends Component {<template>{{!-- template-lint-disable no-action --}}
-{{#if this.person}}
-  <span class="ride-person">
-    <PersonBadge @person={{this.person}} @property={{this.property}} @clear={{this.clear}} />
-  </span>
-{{else}}
-  <PaperSelect @selected={{this.person}} @options={{this.people}} @onChange={{this.onChange}} @allowClear={{true}} @searchField="name" as |person|>
-    {{person.name}}
-  </PaperSelect>
-{{/if}}</template>
+export default class RidePerson extends Component {
+  <template>
+    {{! template-lint-disable no-action }}
+    {{#if this.person}}
+      <span class='ride-person'>
+        <PersonBadge
+          @person={{this.person}}
+          @property={{this.property}}
+          @clear={{this.clear}}
+        />
+      </span>
+    {{else}}
+      <PaperSelect
+        @selected={{this.person}}
+        @options={{this.people}}
+        @onChange={{this.onChange}}
+        @allowClear={{true}}
+        @searchField='name'
+        as |person|
+      >
+        {{person.name}}
+      </PaperSelect>
+    {{/if}}
+  </template>
   @service('people')
   peopleService;
 

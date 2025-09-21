@@ -27,7 +27,7 @@ module('Acceptance | institutions', function (hooks) {
     assert.equal(
       page.institutions.length,
       2,
-      'expected two institutions to be listed'
+      'expected two institutions to be listed',
     );
     assert.equal(page.institutions[0].name, 'Headingley');
     assert.notOk(page.institutions[0].isFar);

@@ -45,7 +45,7 @@ module('Acceptance | reports', function (hooks) {
     assert.equal(
       page.gasPrices.length,
       10,
-      'expected ten gas prices to be listed'
+      'expected ten gas prices to be listed',
     );
 
     page.gasPrices[0].as((latest) => {

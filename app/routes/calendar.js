@@ -23,7 +23,7 @@ export default class CalendarRoute extends Route {
       to: {
         queryParams: { token },
       },
-    }
+    },
   ) {
     const personTokenEndpoint = `${Ember.testing ? '' : config.DS.host}/${
       config.DS.namespace

@@ -18,7 +18,7 @@ export default class DriversController extends Controller {
       'editingPerson',
       BufferedProxy.create({
         content: this.store.createRecord('person'),
-      })
+      }),
     );
   }
 

@@ -49,7 +49,7 @@ module('Unit | Utility | reimbursement collection', function () {
     });
     assert.equal(
       result.get('clipboardText'),
-      `${dateString}\tOctober mileage\tChelsea\t-$33\t\t\t`
+      `${dateString}\tOctober mileage\tChelsea\t-$33\t\t\t`,
     );
   });
 
@@ -61,7 +61,7 @@ module('Unit | Utility | reimbursement collection', function () {
     });
     assert.equal(
       result.get('clipboardText'),
-      `${dateString}\tOctober mileage\tChelsea\t-$55\t$55\t\t(donated)`
+      `${dateString}\tOctober mileage\tChelsea\t-$55\t$55\t\t(donated)`,
     );
   });
 
@@ -72,7 +72,7 @@ module('Unit | Utility | reimbursement collection', function () {
     });
     assert.equal(
       result.get('clipboardText'),
-      `${dateString}\tOctober mileage + meal\tChelsea\t-$77\t\t\t`
+      `${dateString}\tOctober mileage + meal\tChelsea\t-$77\t\t\t`,
     );
   });
 
@@ -83,7 +83,7 @@ module('Unit | Utility | reimbursement collection', function () {
     });
     assert.equal(
       result.get('clipboardText'),
-      `${dateString}\tOctober meal × 2\tChelsea\t-$99\t\t\t`
+      `${dateString}\tOctober meal × 2\tChelsea\t-$99\t\t\t`,
     );
   });
 });

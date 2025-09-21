@@ -3,12 +3,19 @@ import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
-import HighCharts from "ember-highcharts/components/high-charts";
+import HighCharts from 'ember-highcharts/components/high-charts';
 
 const reasons = Object.keys(reasonToIcon);
 
 @classic
-export default class CancellationChart extends Component {<template><HighCharts @content={{this.data}} @chartOptions={{this.options}} @theme={{this.theme}} /></template>
+export default class CancellationChart extends Component {
+  <template>
+    <HighCharts
+      @content={{this.data}}
+      @chartOptions={{this.options}}
+      @theme={{this.theme}}
+    />
+  </template>
   @computed('rides.@each.cancellationReason', 'grouping')
   get reasonToCount() {
     const grouping = this.grouping;

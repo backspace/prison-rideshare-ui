@@ -16,7 +16,7 @@ export default class InstitutionsController extends Controller {
       'editingInstitution',
       BufferedProxy.create({
         content: this.store.createRecord('institution'),
-      })
+      }),
     );
   }
 

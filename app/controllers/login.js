@@ -28,7 +28,7 @@ export default class LoginController extends Controller {
       .authenticate(
         'authenticator:application',
         user.get('email'),
-        user.get('password')
+        user.get('password'),
       )
       .catch((error) => {
         this.set('error', error);

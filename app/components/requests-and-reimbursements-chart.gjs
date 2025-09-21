@@ -4,10 +4,10 @@ import { action, computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import Component from '@ember/component';
 import moment from 'moment';
-import HighCharts from "ember-highcharts/components/high-charts";
-import EmberWormhole from "ember-wormhole/components/ember-wormhole";
-import PaperButton from "ember-paper/components/paper-button";
-import eq from "ember-truth-helpers/helpers/eq";
+import HighCharts from 'ember-highcharts/components/high-charts';
+import EmberWormhole from 'ember-wormhole/components/ember-wormhole';
+import PaperButton from 'ember-paper/components/paper-button';
+import eq from 'ember-truth-helpers/helpers/eq';
 
 function countRidesOrVisitors(rides, grouping) {
   if (grouping === 'rides') {
@@ -20,17 +20,25 @@ function countRidesOrVisitors(rides, grouping) {
 }
 
 @classic
-export default class RequestsAndReimbursementsChart extends Component {<template>{{!-- template-lint-disable no-action --}}
-<HighCharts @content={{this.data}} @chartOptions={{this.options}} @theme={{this.theme}} @callback={{this.afterRenderCallback}} />
+export default class RequestsAndReimbursementsChart extends Component {
+  <template>
+    {{! template-lint-disable no-action }}
+    <HighCharts
+      @content={{this.data}}
+      @chartOptions={{this.options}}
+      @theme={{this.theme}}
+      @callback={{this.afterRenderCallback}}
+    />
 
-{{#if this.rendered}}
-  {{!-- <EmberWormhole @to="grouping-weeks">
+    {{#if this.rendered}}
+      {{!-- <EmberWormhole @to="grouping-weeks">
     <PaperButton @label="Weeks" @primary={{this.isWeeks}} @onClick={{this.setTimeGrouping "weeks"}} />
   </EmberWormhole>
   <EmberWormhole @to="grouping-months">
     <PaperButton @label="Months" @primary={{this.isMonths}} @onClick={{this.setTimeGrouping "months"}} />
   </EmberWormhole> --}}
-{{/if}}</template>
+    {{/if}}
+  </template>
   timeGrouping = 'months';
   rendered = false;
 
@@ -67,7 +75,7 @@ export default class RequestsAndReimbursementsChart extends Component {<template
     }
   }
 
-  @computed('timeGrouping', 'timeGroupKeys', 'timeGroups')
+  @computed('grouping', 'timeGroupKeys', 'timeGrouping', 'timeGroups')
   get data() {
     const timeGroups = this.timeGroups;
     const timeGrouping = this.timeGrouping;
@@ -80,7 +88,7 @@ export default class RequestsAndReimbursementsChart extends Component {<template
         data: this.timeGroupKeys.map((timeGroupKey) => {
           return countRidesOrVisitors(
             timeGroups[timeGroupKey].filterBy('cancelled'),
-            grouping
+            grouping,
           );
         }),
         stack: 'Requests',
@@ -91,7 +99,7 @@ export default class RequestsAndReimbursementsChart extends Component {<template
         data: this.timeGroupKeys.map((timeGroupKey) => {
           return countRidesOrVisitors(
             timeGroups[timeGroupKey].rejectBy('cancelled'),
-            grouping
+            grouping,
           );
         }),
         stack: 'Requests',

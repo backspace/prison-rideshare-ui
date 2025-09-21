@@ -20,7 +20,7 @@ export default Model.extend({
     'rides.@each.driver',
     function () {
       return this.rides.filterBy('driver.id', this.get('person.id'));
-    }
+    },
   ),
   rideFoodExpenses: mapBy('ridesWithFoodExpenses', 'outstandingFoodExpenses'),
   foodExpenses: sum('rideFoodExpenses'),
@@ -31,7 +31,7 @@ export default Model.extend({
     'rides.@each.carOwner',
     function () {
       return this.rides.filterBy('carOwner.id', this.get('person.id'));
-    }
+    },
   ),
   rideCarExpenses: mapBy('ridesWithCarExpenses', 'outstandingCarExpenses'),
   carExpenses: sum('rideCarExpenses'),

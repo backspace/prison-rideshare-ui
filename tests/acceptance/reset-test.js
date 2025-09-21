@@ -37,7 +37,7 @@ module('Acceptance | reset password', function (hooks) {
         resetDone = true;
 
         return users.first();
-      }
+      },
     );
 
     this.server.post('/token', () => {
@@ -56,7 +56,7 @@ module('Acceptance | reset password', function (hooks) {
 
     assert.equal(
       shared.toast.text,
-      'Changed your password, will now log you in'
+      'Changed your password, will now log you in',
     );
     assert.equal(currentURL(), '/reports/new');
 
@@ -78,7 +78,7 @@ module('Acceptance | reset password', function (hooks) {
               detail: 'Password confirmation did not match',
             },
           ],
-        }
+        },
       );
     });
 

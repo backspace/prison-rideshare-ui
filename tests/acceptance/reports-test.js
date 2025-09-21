@@ -70,11 +70,11 @@ module('Acceptance | reports', function (hooks) {
 
     assert.equal(
       page.rides[0].label,
-      'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km )'
+      'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km )',
     );
     assert.equal(
       page.rides[1].label,
-      'Tue, Dec 27 at 5:00p to Fort Leavenworth'
+      'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
 
     await page.rides[0].choose();
@@ -102,11 +102,11 @@ module('Acceptance | reports', function (hooks) {
     assert.equal(
       page.rides.length,
       1,
-      'expected the reported-on ride to have disappeared'
+      'expected the reported-on ride to have disappeared',
     );
     assert.equal(
       page.rides[0].label,
-      'Tue, Dec 27 at 5:00p to Fort Leavenworth'
+      'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
   });
 
@@ -116,7 +116,7 @@ module('Acceptance | reports', function (hooks) {
 
     assert.ok(
       page.noRides.isVisible,
-      'expected there to be no rides to report on'
+      'expected there to be no rides to report on',
     );
   });
 
@@ -135,11 +135,11 @@ module('Acceptance | reports', function (hooks) {
 
     assert.ok(
       page.donation.isHidden,
-      'expected the donation checkbox to be hidden when a ride is not donatable'
+      'expected the donation checkbox to be hidden when a ride is not donatable',
     );
     assert.ok(
       page.carExpenses.isHidden,
-      'expected the car expenses field to be hidden when a ride is not overridable'
+      'expected the car expenses field to be hidden when a ride is not overridable',
     );
   });
 
@@ -161,7 +161,7 @@ module('Acceptance | reports', function (hooks) {
       () => {
         return {};
       },
-      422
+      422,
     );
 
     await page.visit();
@@ -177,7 +177,7 @@ module('Acceptance | reports', function (hooks) {
     assert.equal(
       page.distance.value,
       '75',
-      'expected the distance field to have the same value'
+      'expected the distance field to have the same value',
     );
   });
 });

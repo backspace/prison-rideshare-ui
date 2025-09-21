@@ -32,10 +32,10 @@ export default class UserSocketService extends PhoenixSocket {
     const channel = this.joinChannel('user:presence');
 
     channel.on('presence_state', (presenceState) =>
-      this._onPresenceState(presenceState)
+      this._onPresenceState(presenceState),
     );
     channel.on('presence_diff', (presenceDiff) =>
-      this._onPresenceDiff(presenceDiff)
+      this._onPresenceDiff(presenceDiff),
     );
   }
 

@@ -16,7 +16,7 @@ module('Acceptance | authentication', function (hooks) {
 
     assert.ok(
       shared.session.isHidden,
-      'expected the sidebar to show not being logged in'
+      'expected the sidebar to show not being logged in',
     );
   });
 

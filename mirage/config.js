@@ -20,7 +20,7 @@ export default function (config) {
           const matchingRides = rides
             .all()
             .models.filter((ride) =>
-              (ride.name || '').toLowerCase().includes(nameFilter)
+              (ride.name || '').toLowerCase().includes(nameFilter),
             );
           return {
             data: matchingRides.map((ride) => this.serialize(ride)['data']),
@@ -72,7 +72,7 @@ export default function (config) {
                       detail: "Name can't be blank",
                     },
                   ],
-                }
+                },
               );
             } else {
               return person.update(attrs);
@@ -108,7 +108,7 @@ export default function (config) {
           let post = posts.find(id);
           post.unread = false;
           return post;
-        }
+        },
       );
 
       this.delete(
@@ -117,7 +117,7 @@ export default function (config) {
           let post = posts.find(id);
           post.unread = true;
           return post;
-        }
+        },
       );
 
       this.get('/users/current', ({ users }) => {
@@ -166,7 +166,7 @@ export default function (config) {
                   title: 'Unauthorized',
                 },
               ],
-            }
+            },
           );
         }
       });

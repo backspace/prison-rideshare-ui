@@ -4,7 +4,7 @@ export default function anonymiseAddress(address) {
     .replace(/^#?(\d+-\d+)/, (dashedNumber) => dashedNumber.split('-')[1])
     .replace(
       /^(\d+)/,
-      (number) => `${Math.floor(parseInt(number) / 100) * 100} block`
+      (number) => `${Math.floor(parseInt(number) / 100) * 100} block`,
     )
     .replace(/ \(.*\)$/, '')
     .replace(/ #\w*$/, '')

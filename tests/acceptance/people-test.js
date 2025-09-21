@@ -55,7 +55,7 @@ module('Acceptance | people', function (hooks) {
     assert.equal(
       page.people.length,
       2,
-      'expected the inactive person to be hidden'
+      'expected the inactive person to be hidden',
     );
 
     await page.people[1].as((sun) => {
@@ -72,12 +72,12 @@ module('Acceptance | people', function (hooks) {
 
     assert.ok(
       page.people[0].mobile.isPreferred,
-      'expected Kala to prefer mobile'
+      'expected Kala to prefer mobile',
     );
     assert.equal(
       page.people[0].lastRide.text,
       '',
-      'expected someone with no rides to have a blank last ride'
+      'expected someone with no rides to have a blank last ride',
     );
 
     await page.head.inactiveSwitch.click();
@@ -85,7 +85,7 @@ module('Acceptance | people', function (hooks) {
     assert.equal(
       page.people.length,
       3,
-      'expected the inactive person to be shown after the switch is flipped'
+      'expected the inactive person to be shown after the switch is flipped',
     );
 
     assert.ok(page.people[2].copyButton.isVisible);
@@ -153,7 +153,7 @@ module('Acceptance | people', function (hooks) {
     assert.equal(
       page.people.length,
       '3',
-      'expected the new person to have been added to the list'
+      'expected the new person to have been added to the list',
     );
     assert.equal(page.people[0].name, 'Capheus');
 
@@ -175,13 +175,13 @@ module('Acceptance | people', function (hooks) {
     assert.equal(
       page.people.length,
       1,
-      'expected the person made inactive to have disappeared'
+      'expected the person made inactive to have disappeared',
     );
 
     let [sun] = this.server.db.people;
     assert.notOk(
       sun.active,
-      'expected Sun to have been made inactive on the server'
+      'expected Sun to have been made inactive on the server',
     );
 
     await page.head.inactiveSwitch.click();
@@ -190,7 +190,7 @@ module('Acceptance | people', function (hooks) {
     [sun] = this.server.db.people;
     assert.ok(
       sun.active,
-      'expected Sun to have been made active on the server'
+      'expected Sun to have been made active on the server',
     );
 
     this.server.patch('/people/:id', {}, 422);
@@ -201,7 +201,7 @@ module('Acceptance | people', function (hooks) {
 
     assert.equal(
       shared.toast.text,
-      'There was an error saving the active status of Sun'
+      'There was an error saving the active status of Sun',
     );
   });
 
@@ -224,7 +224,7 @@ module('Acceptance | people', function (hooks) {
           },
         ],
       },
-      422
+      422,
     );
 
     await page.visit();

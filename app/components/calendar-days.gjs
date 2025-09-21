@@ -20,18 +20,18 @@ export default class extends Days {
           {{#each week.days key='id' as |day|}}
             <div
               data-date={{day.id}}
-              class='ember-power-calendar-day {{
-                if this.onSelect 'ember-power-calendar-day--interactive'
-              }} {{
-                if
-                day.isCurrentMonth
-                'ember-power-calendar-day--current-month'
-                'ember-power-calendar-day--other-month'
-              }} {{if day.isSelected 'ember-power-calendar-day--selected'}} {{
-                if day.isToday 'ember-power-calendar-day--today'
-              }} {{if day.isFocused 'ember-power-calendar-day--focused'}} {{
-                if day.isRangeStart 'ember-power-calendar-day--range-start'
-              }} {{if day.isRangeEnd 'ember-power-calendar-day--range-end'}}'
+              class='ember-power-calendar-day
+                {{if this.onSelect "ember-power-calendar-day--interactive"}}
+                {{if
+                  day.isCurrentMonth
+                  "ember-power-calendar-day--current-month"
+                  "ember-power-calendar-day--other-month"
+                }}
+                {{if day.isSelected "ember-power-calendar-day--selected"}}
+                {{if day.isToday "ember-power-calendar-day--today"}}
+                {{if day.isFocused "ember-power-calendar-day--focused"}}
+                {{if day.isRangeStart "ember-power-calendar-day--range-start"}}
+                {{if day.isRangeEnd "ember-power-calendar-day--range-end"}}'
               disabled={{day.isDisabled}}
             >
               {{#if (has-block)}}

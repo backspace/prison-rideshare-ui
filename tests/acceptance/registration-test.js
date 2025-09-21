@@ -64,7 +64,7 @@ module('Acceptance | registration', function (hooks) {
               detail: 'Password confirmation did not match',
             },
           ],
-        }
+        },
       );
     });
 

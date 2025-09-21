@@ -48,7 +48,7 @@ export default class RidesController extends Controller {
     'showCancelled',
     'model.@each.{complete,enabled,isCombined}',
     'search',
-    'sortDir'
+    'sortDir',
   )
   get filteredRides() {
     const showCompleted = this.showCompleted,
@@ -99,7 +99,7 @@ export default class RidesController extends Controller {
       'editingRide',
       BufferedProxy.create({
         content: this.store.createRecord('ride'),
-      })
+      }),
     );
   }
 
@@ -109,7 +109,7 @@ export default class RidesController extends Controller {
       'editingRide',
       BufferedProxy.create({
         content: model,
-      })
+      }),
     );
   }
 
@@ -149,7 +149,7 @@ export default class RidesController extends Controller {
       'editingCancellation',
       BufferedProxy.create({
         content: ride,
-      })
+      }),
     );
 
     if (ride.get('enabled')) {

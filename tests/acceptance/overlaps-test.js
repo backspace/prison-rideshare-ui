@@ -43,11 +43,11 @@ module('Acceptance | overlaps', function (hooks) {
 
     assert.ok(
       page.rides[0].isHighlighted,
-      'expected the overlapping ride to be highlighted'
+      'expected the overlapping ride to be highlighted',
     );
     assert.equal(
       page.overlaps[0].text,
-      'Octavia Butler committed to slot 5:30p—8'
+      'Octavia Butler committed to slot 5:30p—8',
     );
 
     commitment.destroy();
@@ -66,7 +66,7 @@ module('Acceptance | overlaps', function (hooks) {
     assert.ok(shared.ridesBadge.isHidden);
     assert.notOk(
       page.rides[0].isHighlighted,
-      'expected the ride to no longer be overlapping'
+      'expected the ride to no longer be overlapping',
     );
   });
 
@@ -97,7 +97,7 @@ module('Acceptance | overlaps', function (hooks) {
     assert.equal(shared.ridesBadge.text, '1');
     assert.ok(
       page.rides[0].isHighlighted,
-      'expected the overlapping ride to be highlighted'
+      'expected the overlapping ride to be highlighted',
     );
   });
 
@@ -121,7 +121,7 @@ module('Acceptance | overlaps', function (hooks) {
         this.firstRide.save();
 
         return new Response(201, {}, {});
-      }
+      },
     );
 
     await page.visit();
@@ -130,7 +130,7 @@ module('Acceptance | overlaps', function (hooks) {
     assert.ok(shared.ridesBadge.isHidden);
     assert.notOk(
       page.rides[0].isHighlighted,
-      'expected the ride to no longer be overlapping'
+      'expected the ride to no longer be overlapping',
     );
   });
 

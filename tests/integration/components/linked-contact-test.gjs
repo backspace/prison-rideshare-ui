@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { find, render } from '@ember/test-helpers';
-import LinkedContact from "prison-rideshare-ui/components/linked-contact";
+import LinkedContact from 'prison-rideshare-ui/components/linked-contact';
 
 module('Integration | Component | linked contact', function (hooks) {
   setupRenderingTest(hooks);
@@ -17,7 +17,7 @@ module('Integration | Component | linked contact', function (hooks) {
     await render(<template><LinkedContact @contact={{value}} /></template>);
     assert.equal(
       find('span').innerHTML.trim(),
-      `hello <a href="tel:212-986-8227">212-986-8227</a> what`
+      `hello <a href="tel:212-986-8227">212-986-8227</a> what`,
     );
   });
 
@@ -26,7 +26,7 @@ module('Integration | Component | linked contact', function (hooks) {
     await render(<template><LinkedContact @contact={{value}} /></template>);
     assert.equal(
       find('span').innerHTML.trim(),
-      `hello <a href="tel:2129868227">2129868227</a> what`
+      `hello <a href="tel:2129868227">2129868227</a> what`,
     );
   });
 
@@ -35,7 +35,7 @@ module('Integration | Component | linked contact', function (hooks) {
     await render(<template><LinkedContact @contact={{value}} /></template>);
     assert.equal(
       find('span').innerHTML.trim(),
-      `hello <a href="tel:212 986 8227">212 986 8227</a> what`
+      `hello <a href="tel:212 986 8227">212 986 8227</a> what`,
     );
   });
 
@@ -44,7 +44,7 @@ module('Integration | Component | linked contact', function (hooks) {
     await render(<template><LinkedContact @contact={{value}} /></template>);
     assert.equal(
       find('span').innerHTML.trim(),
-      `hello <a href="tel:(212) 986 8227">(212) 986 8227</a> what`
+      `hello <a href="tel:(212) 986 8227">(212) 986 8227</a> what`,
     );
   });
 

@@ -21,7 +21,7 @@ export default class RegisterController extends Controller {
         return this.session.authenticate(
           'authenticator:application',
           user.get('email'),
-          user.get('password')
+          user.get('password'),
         );
       })
       .catch((error) => {

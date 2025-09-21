@@ -50,7 +50,7 @@ export default class ResetController extends Controller {
           this.session.authenticate(
             'authenticator:application',
             email,
-            this.password
+            this.password,
           );
         });
       } else {

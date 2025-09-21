@@ -8,9 +8,12 @@ import { htmlSafe } from '@ember/string';
 
 @classic
 @tagName('span')
-export default class LinkedContact extends Component {<template>{{#if this.contact}}
-  {{this.link}}
-{{/if}}</template>
+export default class LinkedContact extends Component {
+  <template>
+    {{#if this.contact}}
+      {{this.link}}
+    {{/if}}
+  </template>
   @computed('contact')
   get link() {
     const phonePattern =
@@ -22,7 +25,7 @@ export default class LinkedContact extends Component {<template>{{#if this.conta
         contact.replace(phonePattern, function (number) {
           const escapedNumber = Ember.Handlebars.Utils.escapeExpression(number);
           return `<a href='tel:${escapedNumber}'>${escapedNumber}</a>`;
-        })
+        }),
       );
     }
 

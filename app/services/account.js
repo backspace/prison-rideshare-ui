@@ -32,7 +32,7 @@ export default class AccountService extends Service {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         )
           .then((raw) => raw.json(), reject)
           .then((data) => {

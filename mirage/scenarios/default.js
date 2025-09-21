@@ -15,7 +15,7 @@ export default function (server) {
   ];
 
   const institutions = institutionNames.map((name) =>
-    server.create('institution', { name })
+    server.create('institution', { name }),
   );
 
   for (let i = 0; i < 25; i++) {
@@ -30,7 +30,7 @@ export default function (server) {
       reportAttributes = {
         enabled: false,
         cancellationReason: faker.random.arrayElement(
-          RidesController.create().get('cancellationReasons')
+          RidesController.create().get('cancellationReasons'),
         ),
       };
     } else if (randomlyReportedOn) {
@@ -54,8 +54,8 @@ export default function (server) {
           start,
           end,
         },
-        reportAttributes
-      )
+        reportAttributes,
+      ),
     );
 
     if (reportAttributes.carExpenses && faker.random.boolean()) {

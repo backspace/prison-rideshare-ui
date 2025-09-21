@@ -8,7 +8,7 @@ import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 @classic
 export default class AdminCalendarRoute extends Route.extend(
-  AuthenticatedRoute
+  AuthenticatedRoute,
 ) {
   @service
   store;
@@ -19,8 +19,8 @@ export default class AdminCalendarRoute extends Route.extend(
         .findAll('slot')
         .then((slots) =>
           slots.filter(
-            (slot) => moment(slot.get('start')).format('YYYY-MM') === month
-          )
+            (slot) => moment(slot.get('start')).format('YYYY-MM') === month,
+          ),
         ),
       month,
     });

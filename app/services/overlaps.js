@@ -73,7 +73,7 @@ export default class OverlapsService extends Service {
 
           return relationshipIdToAttributes;
         },
-        { people: {}, slots: {} }
+        { people: {}, slots: {} },
       );
 
       // TODO remove side effects
@@ -83,14 +83,14 @@ export default class OverlapsService extends Service {
           'person',
           relationshipIdToAttributes.people[
             commitment.relationships.person.data.id
-          ]
+          ],
         );
         set(
           commitment,
           'slot',
           relationshipIdToAttributes.slots[
             commitment.relationships.slot.data.id
-          ]
+          ],
         );
         set(
           commitment,
@@ -98,8 +98,8 @@ export default class OverlapsService extends Service {
           formatBriefTimespan(
             this.moment,
             new Date(Date.parse(commitment.slot.start)),
-            new Date(Date.parse(commitment.slot.end))
-          )
+            new Date(Date.parse(commitment.slot.end)),
+          ),
         );
       });
 

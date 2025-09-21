@@ -20,7 +20,7 @@ module('Unit - dollars', function () {
     assert.equal(
       ClassWithDollars.create({ dollars: 0.55 }).get('cents'),
       55,
-      'expected floating point rounding'
+      'expected floating point rounding',
     );
   });
 });

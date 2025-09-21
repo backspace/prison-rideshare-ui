@@ -4,11 +4,18 @@ import { classNames } from '@ember-decorators/component';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import moment from 'moment';
-import HighCharts from "ember-highcharts/components/high-charts";
+import HighCharts from 'ember-highcharts/components/high-charts';
 
 @classic
 @classNames('request-time-chart')
-export default class RequestTimeChart extends Component {<template><HighCharts @content={{this.data}} @chartOptions={{this.options}} @theme={{this.theme}} /></template>
+export default class RequestTimeChart extends Component {
+  <template>
+    <HighCharts
+      @content={{this.data}}
+      @chartOptions={{this.options}}
+      @theme={{this.theme}}
+    />
+  </template>
   @computed('rides.@each.start', 'grouping')
   get data() {
     const grouping = this.grouping;
@@ -49,7 +56,7 @@ export default class RequestTimeChart extends Component {<template><HighCharts @
       }, new Array(7))
       .reduce((data, day, index) => {
         day.hours.forEach((hourCount, hour) =>
-          data.push([hour, index, hourCount || 0])
+          data.push([hour, index, hourCount || 0]),
         );
         return data;
       }, []);

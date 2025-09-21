@@ -38,7 +38,7 @@ export default class ReimbursementCollection extends EmberObject {
     'clipboardDescriptionColumn',
     'donations',
     'person.name',
-    'totalExpensesDollars'
+    'totalExpensesDollars',
   )
   get clipboardText() {
     const name = this.get('person.name');
@@ -70,7 +70,7 @@ export default class ReimbursementCollection extends EmberObject {
     'carExpensesSum',
     'clipboardDescriptionColumnMeal',
     'foodExpensesSum',
-    'monthName'
+    'monthName',
   )
   get clipboardDescriptionColumn() {
     const food = this.foodExpensesSum;

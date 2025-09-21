@@ -103,7 +103,7 @@ module('Acceptance | calendar', function (hooks) {
         assert.notOk(s1.isDisabled, 'expected the slot to not be full');
         assert.notOk(
           s1.count.isVisible,
-          'expected the slot count not to show for a non-admin'
+          'expected the slot count not to show for a non-admin',
         );
       });
     });
@@ -114,7 +114,7 @@ module('Acceptance | calendar', function (hooks) {
         assert.equal(s1.hours, '11a—5p');
         assert.notOk(
           s1.isCommittedTo,
-          'expected the slot to not be committed-to'
+          'expected the slot to not be committed-to',
         );
       });
       d10.slots[1].as((s2) => {
@@ -126,16 +126,16 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.equal(
       shared.toast.text,
-      'Cancelled your agreement to drive on December 4'
+      'Cancelled your agreement to drive on December 4',
     );
     assert.notOk(
       page.days[3].slots[0].isCommittedTo,
-      'expected the slot to not longer be committed-to'
+      'expected the slot to not longer be committed-to',
     );
     assert.equal(
       this.server.db.commitments.length,
       3,
-      'expected the commitment to have been deleted on the server'
+      'expected the commitment to have been deleted on the server',
     );
     percySnapshot(assert);
   });
@@ -148,18 +148,18 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.equal(
       shared.toast.text,
-      'Thanks for agreeing to drive on December 10!'
+      'Thanks for agreeing to drive on December 10!',
     );
     assert.ok(
       page.days[9].slots[1].isCommittedTo,
-      'expected the slot to be newly committed-to'
+      'expected the slot to be newly committed-to',
     );
 
     const [, , , , commitment] = this.server.db.commitments;
     assert.equal(
       commitment.slotId,
       this.toCommitSlot.id,
-      'expected the server to have the newly-created commitment'
+      'expected the server to have the newly-created commitment',
     );
   });
 
@@ -175,7 +175,7 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.days[9].slots[1].isHidden,
-      'expected the remotely-filled slot to have disappeared'
+      'expected the remotely-filled slot to have disappeared',
     );
   });
 
@@ -191,7 +191,7 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.days[9].slots[1].isHidden,
-      'expected the full slot to be hidden'
+      'expected the full slot to be hidden',
     );
   });
 
@@ -204,22 +204,22 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.days[9].slots[0].isDisabled,
-      'expected the past slot to be disabled'
+      'expected the past slot to be disabled',
     );
     assert.ok(
       page.days[10].slots[0].isCommittedTo,
-      'expected the past committed slot to show as committed-to'
+      'expected the past committed slot to show as committed-to',
     );
     assert.ok(
       page.days[10].slots[0].isDisabled,
-      'expected the past committed slot to be disabled'
+      'expected the past committed slot to be disabled',
     );
 
     await page.days[9].slots[0].click();
 
     assert.notOk(
       page.days[9].slots[0].isCommittedTo,
-      'expected the slot to not be committed-to'
+      'expected the slot to not be committed-to',
     );
   });
 
@@ -235,7 +235,7 @@ module('Acceptance | calendar', function (hooks) {
               title: 'Unauthorized',
             },
           ],
-        }
+        },
       );
     });
 
@@ -246,12 +246,12 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
     assert.ok(
       page.days[3].slots[0].isCommittedTo,
-      'expected the slot to still be committed-to'
+      'expected the slot to still be committed-to',
     );
     assert.equal(
       this.server.db.commitments.length,
       4,
-      'expected the commitment to still be on the server'
+      'expected the commitment to still be on the server',
     );
   });
 
@@ -267,7 +267,7 @@ module('Acceptance | calendar', function (hooks) {
               title: 'Unauthorized',
             },
           ],
-        }
+        },
       );
     });
 
@@ -278,12 +278,12 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(shared.toast.text, 'Couldn’t save your change');
     assert.notOk(
       page.days[9].slots[1].isCommittedTo,
-      'expected the slot to not be committed-to'
+      'expected the slot to not be committed-to',
     );
     assert.equal(
       this.server.db.commitments.length,
       4,
-      'expected the commitments to be unchanged on the server'
+      'expected the commitments to be unchanged on the server',
     );
   });
 
@@ -300,7 +300,7 @@ module('Acceptance | calendar', function (hooks) {
               detail: 'Fail!',
             },
           ],
-        }
+        },
       );
     });
 
@@ -335,7 +335,7 @@ module('Acceptance | calendar', function (hooks) {
               title: 'Unauthorized',
             },
           ],
-        }
+        },
       );
     });
 
@@ -357,7 +357,7 @@ module('Acceptance | calendar', function (hooks) {
               detail: 'A detail',
             },
           ],
-        }
+        },
       );
     });
 
@@ -371,31 +371,31 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.person.name.isHidden,
-      'expected the name field to be hidden by default'
+      'expected the name field to be hidden by default',
     );
 
     await page.person.toggle.click();
 
     assert.ok(
       page.person.name.isVisible,
-      'expected the name field to have become visible'
+      'expected the name field to have become visible',
     );
     assert.equal(page.person.name.field.value, 'Jortle Tortle');
 
     assert.ok(
       page.person.activeSwitch.enabled,
-      'expected the active switch to be on'
+      'expected the active switch to be on',
     );
 
     assert.ok(
       page.person.email.field.isDisabled,
-      'expected the email field to be disabled'
+      'expected the email field to be disabled',
     );
     assert.equal(page.person.email.field.value, 'jorts@jants.ca');
 
     assert.ok(
       page.person.mobile.desiredMedium,
-      'expected mobile to be the desired medium'
+      'expected mobile to be the desired medium',
     );
 
     assert.equal(page.person.selfNotes.field.value, 'My self notes');
@@ -403,7 +403,7 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.notOk(
       page.person.submitButton.isHighlighted,
-      'expected the submit button to not be highlighted before anything has changed'
+      'expected the submit button to not be highlighted before anything has changed',
     );
 
     await page.person.name.field.fillIn('Jartle');
@@ -411,7 +411,7 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.person.name.isHidden,
-      'expected the form to be hidden again'
+      'expected the form to be hidden again',
     );
 
     await page.person.toggle.click();
@@ -419,7 +419,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.person.name.field.value,
       'Jortle Tortle',
-      'expected the change to have been reverted'
+      'expected the change to have been reverted',
     );
 
     await page.person.name.field.fillIn('Jortleby');
@@ -431,7 +431,7 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.person.submitButton.isHighlighted,
-      'expected the submit button to be highlighted when the record is dirty'
+      'expected the submit button to be highlighted when the record is dirty',
     );
 
     percySnapshot(assert);
@@ -442,26 +442,26 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       person.name,
       'Jortleby',
-      'expected the name to have changed on the server'
+      'expected the name to have changed on the server',
     );
     assert.notOk(
       person.active,
-      'expected the person to be inactive on the server'
+      'expected the person to be inactive on the server',
     );
     assert.equal(
       person.mobile,
       '1234',
-      'expected the mobile number to have changed on the server'
+      'expected the mobile number to have changed on the server',
     );
     assert.equal(
       person.medium,
       'email',
-      'expected the medium to have changed on the server'
+      'expected the medium to have changed on the server',
     );
     assert.equal(
       person.selfNotes,
       'Updated self notes',
-      'expected the self notes to have changed on the server'
+      'expected the self notes to have changed on the server',
     );
     assert.equal(person.address, 'A new address');
 
@@ -469,14 +469,14 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.person.name.isHidden,
-      'expected the form to be hidden again'
+      'expected the form to be hidden again',
     );
 
     await page.person.toggle.click();
 
     assert.notOk(
       page.person.name.isError,
-      'expected the name field to not show as being invalid'
+      'expected the name field to not show as being invalid',
     );
   });
 
@@ -485,9 +485,9 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.ok(
       page.subscription.link.href.endsWith(
-        `/people/${this.person.id}/calendar?secret=SECRET%2B%2B`
+        `/people/${this.person.id}/calendar?secret=SECRET%2B%2B`,
       ),
-      'expected the calendar URL to have the encoded secret'
+      'expected the calendar URL to have the encoded secret',
     );
   });
 
@@ -503,7 +503,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(page.person.name.error.text, "Name can't be blank");
     assert.ok(
       page.person.name.isError,
-      'expected the name field to show as being invalid'
+      'expected the name field to show as being invalid',
     );
   });
 
@@ -521,7 +521,7 @@ module('Acceptance | calendar', function (hooks) {
               title: 'Unauthorized',
             },
           ],
-        }
+        },
       );
     });
 
@@ -532,7 +532,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(shared.toast.text, 'Couldn’t save your details');
     assert.ok(
       page.person.name.isVisible,
-      'expected the form to still be visible'
+      'expected the form to still be visible',
     );
   });
 
@@ -550,36 +550,36 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.days[3].slots[0].count.text,
       '2/1',
-      'expected two people to show for the slot out of a maximum of one'
+      'expected two people to show for the slot out of a maximum of one',
     );
     assert.ok(
       page.days[3].slots[0].count.isCommittedTo,
-      'expected the two person-slot to show as committed to'
+      'expected the two person-slot to show as committed to',
     );
     assert.ok(
       page.days[3].slots[0].checkbox.isHidden,
-      'expected the checkbox to not display'
+      'expected the checkbox to not display',
     );
 
     assert.ok(
       page.days[13].slots[0].isVisible,
-      'expected a full slot to show in admin mode'
+      'expected a full slot to show in admin mode',
     );
 
     assert.equal(
       page.people.length,
       0,
-      'expected no people details to show initially'
+      'expected no people details to show initially',
     );
 
     assert.equal(
       page.days[9].slots[0].count.text,
       '0/∞',
-      'expected the slot capacity to show as ∞'
+      'expected the slot capacity to show as ∞',
     );
     assert.notOk(
       page.days[9].slots[0].count.isCommittedTo,
-      'expected the empty slot to not show as committed to'
+      'expected the empty slot to not show as committed to',
     );
 
     await page.days[3].slots[0].count.click();
@@ -588,7 +588,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.people.length,
       2,
-      'expected two people details to show for the slot'
+      'expected two people details to show for the slot',
     );
     assert.equal(page.people[0].name, 'Other Slot Person');
     assert.equal(page.people[1].name, 'Jortle Tortle');
@@ -598,7 +598,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.people[1].email,
       'jorts@jants.ca',
-      'expected the contact information to be revealed'
+      'expected the contact information to be revealed',
     );
 
     percySnapshot(assert);
@@ -608,7 +608,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(page.month, 'January 2118: 0 commitments');
     assert.ok(
       currentURL().endsWith('2118-01'),
-      'expected the path to have changed with the new month'
+      'expected the path to have changed with the new month',
     );
 
     await page.previousMonth.click();
@@ -616,7 +616,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(page.month, 'December 2117: 3 commitments');
     assert.ok(
       currentURL().endsWith('2117-12'),
-      'expected the path to have returned to the original month'
+      'expected the path to have returned to the original month',
     );
   });
 
@@ -632,12 +632,12 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.peopleSearch.options.length,
       3,
-      'expected three people to show for possible commitments'
+      'expected three people to show for possible commitments',
     );
     assert.equal(page.peopleSearch.options[0].name, 'Also non-committal');
     assert.equal(
       page.peopleSearch.options[1].name,
-      'Fully Committed Slot Person'
+      'Fully Committed Slot Person',
     );
     assert.equal(page.peopleSearch.options[2].name, 'Non-committal');
 
@@ -647,26 +647,26 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.peopleSearch.options.length,
       1,
-      'expected only one match'
+      'expected only one match',
     );
 
     await page.peopleSearch.options[0].click();
 
     assert.equal(
       shared.toast.text,
-      'Committed Also non-committal to drive on December 10'
+      'Committed Also non-committal to drive on December 10',
     );
     assert.equal(
       page.days[9].slots[1].count.text,
       '1/2',
-      'expected the slot to be newly committed-to'
+      'expected the slot to be newly committed-to',
     );
 
     const [, , , , commitment] = this.server.db.commitments;
     assert.equal(
       commitment.slotId,
       this.toCommitSlot.id,
-      'expected the server to have the newly-created commitment'
+      'expected the server to have the newly-created commitment',
     );
 
     await page.peopleSearch.fillIn('commit');
@@ -674,7 +674,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       page.peopleSearch.options.length,
       2,
-      'expected the now-commited person to not show in the search'
+      'expected the now-commited person to not show in the search',
     );
   });
 
@@ -691,7 +691,7 @@ module('Acceptance | calendar', function (hooks) {
               detail: 'Fail!',
             },
           ],
-        }
+        },
       );
     });
 
@@ -708,7 +708,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       this.server.db.commitments.length,
       4,
-      'expected no change on the server'
+      'expected no change on the server',
     );
   });
 
@@ -722,12 +722,12 @@ module('Acceptance | calendar', function (hooks) {
 
     assert.equal(
       shared.toast.text,
-      'Deleted Other Slot Person’s commitment on December 4'
+      'Deleted Other Slot Person’s commitment on December 4',
     );
     assert.equal(
       this.server.db.commitments.length,
       3,
-      'expected there to be three commitments left on the server'
+      'expected there to be three commitments left on the server',
     );
   });
 
@@ -744,7 +744,7 @@ module('Acceptance | calendar', function (hooks) {
               detail: 'Fail!',
             },
           ],
-        }
+        },
       );
     });
 
@@ -759,7 +759,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(
       this.server.db.commitments.length,
       4,
-      'expected no change on the server'
+      'expected no change on the server',
     );
   });
 });

@@ -39,6 +39,6 @@ export default Model.extend({
         response[key] = errors.mapBy('message');
         return response;
       }, {});
-    }
+    },
   ),
 });

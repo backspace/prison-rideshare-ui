@@ -85,7 +85,7 @@ module('Acceptance | debts', function (hooks) {
     assert.equal(
       page.people.length,
       2,
-      'only people with outstanding debts are listed'
+      'only people with outstanding debts are listed',
     );
 
     const sun = page.people[0];
@@ -107,7 +107,7 @@ module('Acceptance | debts', function (hooks) {
     assert.equal(
       sun.reimbursements.length,
       '1',
-      'expected the Kala reimbursement to be hidden'
+      'expected the Kala reimbursement to be hidden',
     );
     assert.equal(sun.reimbursements[0].foodExpenses, '-44');
     assert.equal(sun.reimbursements[0].carExpenses, '');
@@ -119,7 +119,7 @@ module('Acceptance | debts', function (hooks) {
     assert.equal(will.rides.length, '1');
     assert.ok(
       will.rides[0].carExpenseIsDonation,
-      'expected the ride’s car expenses to be marked a donation'
+      'expected the ride’s car expenses to be marked a donation',
     );
   });
 
@@ -130,12 +130,12 @@ module('Acceptance | debts', function (hooks) {
     assert.equal(
       page.people.length,
       1,
-      'expected the debt to have disappeared'
+      'expected the debt to have disappeared',
     );
     assert.equal(
       this.server.db.debts.length,
       1,
-      'expected the debt to have been deleted on the server'
+      'expected the debt to have been deleted on the server',
     );
   });
 });

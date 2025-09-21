@@ -6,5 +6,8 @@ import Component from '@ember/component';
 @classic
 @tagName('span')
 @classNames('unit')
-export default class ReimbursementUnit extends Component {<template><sup>¢</sup>&frasl;<sub>km</sub>
-</template>}
+export default class ReimbursementUnit extends Component {
+  <template>
+    <sup>¢</sup>&frasl;<sub>km</sub>
+  </template>
+}

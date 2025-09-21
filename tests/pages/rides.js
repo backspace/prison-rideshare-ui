@@ -64,16 +64,16 @@ export default create({
       scope: '.cancellation',
       click: clickable('button'),
       showsLockdown: isVisible(
-        `button md-icon[md-font-icon='${reasonToIcon['lockdown']}']`
+        `button md-icon[md-font-icon='${reasonToIcon['lockdown']}']`,
       ),
       showsVisitor: isVisible(
-        `button md-icon[md-font-icon='${reasonToIcon['visitor']}']`
+        `button md-icon[md-font-icon='${reasonToIcon['visitor']}']`,
       ),
       showsDriverNotFound: isVisible(
-        `button md-icon[md-font-icon='${reasonToIcon['driver not found']}']`
+        `button md-icon[md-font-icon='${reasonToIcon['driver not found']}']`,
       ),
       showsNotCancelled: isVisible(
-        'button md-icon[md-font-icon="highlight off"]'
+        'button md-icon[md-font-icon="highlight off"]',
       ),
       showsOther: isVisible('button md-icon[md-font-icon="help"]'),
 
@@ -82,7 +82,7 @@ export default create({
 
     name: text('.name-and-contact .name'),
     isFirstTimer: isVisible(
-      '.name-and-contact md-icon[md-font-icon=announcement]'
+      '.name-and-contact md-icon[md-font-icon=announcement]',
     ),
     date: text('.date'),
     clickDate: clickable('.date-cell'),
@@ -138,7 +138,7 @@ export default create({
     },
 
     isCombined: isVisible(
-      '.driver-and-car-owner md-icon[md-font-icon="call split"]'
+      '.driver-and-car-owner md-icon[md-font-icon="call split"]',
     ),
 
     edit: clickable('button.edit'),

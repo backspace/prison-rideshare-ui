@@ -26,12 +26,12 @@ module('Acceptance | statistics', function (hooks) {
     assert.equal(
       page.start.value,
       moment().subtract(1, 'year').format(format),
-      'expected the start date to be a year ago'
+      'expected the start date to be a year ago',
     );
     assert.equal(
       page.end.value,
       moment().format(format),
-      'expected the end date to be today'
+      'expected the end date to be today',
     );
 
     await page.pastTwoWeeks.click();
@@ -39,12 +39,12 @@ module('Acceptance | statistics', function (hooks) {
     assert.equal(
       page.start.value,
       moment().subtract(2, 'weeks').format(format),
-      'expected the start date to be two weeks ago'
+      'expected the start date to be two weeks ago',
     );
     assert.equal(
       page.end.value,
       moment().format(format),
-      'expected the end date to be today'
+      'expected the end date to be today',
     );
 
     await page.thisYear.click();
@@ -52,12 +52,12 @@ module('Acceptance | statistics', function (hooks) {
     assert.equal(
       page.start.value,
       moment().startOf('year').format(format),
-      'expected the start date to be the beginning of this year'
+      'expected the start date to be the beginning of this year',
     );
     assert.equal(
       page.end.value,
       moment().format(format),
-      'expected the end date to be today'
+      'expected the end date to be today',
     );
 
     await page.pastYear.click();
@@ -65,12 +65,12 @@ module('Acceptance | statistics', function (hooks) {
     assert.equal(
       page.start.value,
       moment().subtract(1, 'year').format(format),
-      'expected the start date to be a year ago'
+      'expected the start date to be a year ago',
     );
     assert.equal(
       page.end.value,
       moment().format(format),
-      'expected the end date to be today'
+      'expected the end date to be today',
     );
 
     percySnapshot(assert);

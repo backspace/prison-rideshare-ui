@@ -116,7 +116,7 @@ module('Acceptance | log', function (hooks) {
           },
         ],
       },
-      422
+      422,
     );
 
     await page.visit();

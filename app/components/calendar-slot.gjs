@@ -7,31 +7,44 @@ import { get, computed } from '@ember/object';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment';
 import { task } from 'ember-concurrency';
-import gt from "ember-truth-helpers/helpers/gt";
-import PaperCheckbox from "ember-paper/components/paper-checkbox";
-import perform from "ember-concurrency/helpers/perform";
-import { action } from "@ember/object";
-import { fn } from "@ember/helper";
-import { on } from "@ember/modifier";
+import gt from 'ember-truth-helpers/helpers/gt';
+import PaperCheckbox from 'ember-paper/components/paper-checkbox';
+import perform from 'ember-concurrency/helpers/perform';
+import { action } from '@ember/object';
+import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
 
 @classic
-export default class CalendarSlot extends Component {<template>{{!-- template-lint-disable no-action --}}
-<div class="slot {{if this.hidden "hidden"}}">
-  {{#if this.count}}
-    <span class="hours">
-      {{this.timespan}}
-    </span>
-    <button class="count {{if (gt this.slot.commitments.length 0) "committed-to"}}" {{on 'click' (fn this.setViewingSlot this.slot)}} type="button">
-      {{this.capacity}}
-    </button>
-  {{else}}
-    <PaperCheckbox @value={{this.isCommittedTo}} @disabled={{this.disabled}} @indeterminate={{this.toggle.isRunning}} @onChange={{perform this.toggle}}>
-      <span class="hours">
-        {{this.timespan}}
-      </span>
-    </PaperCheckbox>
-  {{/if}}
-</div></template>
+export default class CalendarSlot extends Component {
+  <template>
+    {{! template-lint-disable no-action }}
+    <div class='slot {{if this.hidden "hidden"}}'>
+      {{#if this.count}}
+        <span class='hours'>
+          {{this.timespan}}
+        </span>
+        <button
+          class='count
+            {{if (gt this.slot.commitments.length 0) "committed-to"}}'
+          {{on 'click' (fn this.setViewingSlot this.slot)}}
+          type='button'
+        >
+          {{this.capacity}}
+        </button>
+      {{else}}
+        <PaperCheckbox
+          @value={{this.isCommittedTo}}
+          @disabled={{this.disabled}}
+          @indeterminate={{this.toggle.isRunning}}
+          @onChange={{perform this.toggle}}
+        >
+          <span class='hours'>
+            {{this.timespan}}
+          </span>
+        </PaperCheckbox>
+      {{/if}}
+    </div>
+  </template>
   @service
   moment;
 
@@ -49,7 +62,7 @@ export default class CalendarSlot extends Component {<template>{{!-- template-li
     const personId = this.get('person.id');
 
     return this.get('slot.commitments').find(
-      (slot) => slot.belongsTo('person').id() == personId
+      (slot) => slot.belongsTo('person').id() == personId,
     );
   }
 
@@ -59,7 +72,7 @@ export default class CalendarSlot extends Component {<template>{{!-- template-li
       this.moment,
       this.get('slot.start'),
       this.get('slot.end'),
-      false
+      false,
     );
   }
 
@@ -102,8 +115,8 @@ export default class CalendarSlot extends Component {<template>{{!-- template-li
 
         this.toasts.show(
           `Cancelled your agreement to drive on ${moment(
-            this.get('slot.start')
-          ).format('MMMM D')}`
+            this.get('slot.start'),
+          ).format('MMMM D')}`,
         );
       } catch (error) {
         const errorDetail = get(error, 'errors.firstObject.detail');
@@ -120,8 +133,8 @@ export default class CalendarSlot extends Component {<template>{{!-- template-li
 
         this.toasts.show(
           `Thanks for agreeing to drive on ${moment(
-            this.get('slot.start')
-          ).format('MMMM D')}!`
+            this.get('slot.start'),
+          ).format('MMMM D')}!`,
         );
       } catch (error) {
         const errorDetail = get(error, 'errors.firstObject.detail');

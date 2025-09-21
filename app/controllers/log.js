@@ -19,7 +19,7 @@ export default class LogController extends Controller {
       'editingPost',
       BufferedProxy.create({
         content: this.store.createRecord('post'),
-      })
+      }),
     );
   }
 

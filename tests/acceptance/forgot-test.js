@@ -19,7 +19,7 @@ module('Acceptance | forgot', function (hooks) {
         assert.equal(email, 'hello');
 
         return done();
-      }
+      },
     );
 
     await forgotPage.visit();

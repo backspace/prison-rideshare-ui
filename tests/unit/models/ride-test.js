@@ -31,18 +31,18 @@ module('Unit | Model | ride', function (hooks) {
 
           name: 'jORTLE',
           address: '91 Albert',
-        })
+        }),
       );
     });
 
     assert.ok(rockwoodRide.matches('Rock'));
     assert.ok(
       rockwoodRide.matches('rock'),
-      'expected institution-matching to ignore case'
+      'expected institution-matching to ignore case',
     );
     assert.ok(
       rockwoodRide.matches('ROCK'),
-      'expected institution-matching to ignore case'
+      'expected institution-matching to ignore case',
     );
     assert.notOk(rockwoodRide.matches('head'));
 
@@ -54,7 +54,7 @@ module('Unit | Model | ride', function (hooks) {
 
     assert.ok(
       rockwoodRide.matches('rock snow'),
-      'expected each word in the query to be matched independently'
+      'expected each word in the query to be matched independently',
     );
   });
 });

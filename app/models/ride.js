@@ -53,7 +53,7 @@ export default Model.extend({
         response[key] = errors.mapBy('message');
         return response;
       }, {});
-    }
+    },
   ),
 
   start: attr('date'),
@@ -97,14 +97,14 @@ export default Model.extend({
   reimbursementFoodExpensesSum: sum('reimbursementFoodExpenses'),
   outstandingFoodExpenses: difference(
     'foodExpenses',
-    'reimbursementFoodExpensesSum'
+    'reimbursementFoodExpensesSum',
   ),
 
   reimbursementCarExpenses: mapBy('reimbursements', 'carExpenses'),
   reimbursementCarExpensesSum: sum('reimbursementCarExpenses'),
   outstandingCarExpenses: difference(
     'carExpenses',
-    'reimbursementCarExpensesSum'
+    'reimbursementCarExpensesSum',
   ),
 
   reimbursementExpensesSum: computed(
@@ -114,12 +114,12 @@ export default Model.extend({
       return (
         this.reimbursementFoodExpensesSum + this.reimbursementCarExpensesSum
       );
-    }
+    },
   ),
 
   outstandingTotalExpenses: sum(
     'outstandingFoodExpenses',
-    'outstandingCarExpenses'
+    'outstandingCarExpenses',
   ),
 
   namePlusPassengers: computed('name', 'passengers', function () {
@@ -153,7 +153,7 @@ export default Model.extend({
       const now = new Date();
 
       return this.start > now && this.enabled && !this.requestConfirmed;
-    }
+    },
   ),
 
   allAnonymisedAddresses: computed(
@@ -164,7 +164,7 @@ export default Model.extend({
         .concat(this.children.mapBy('address'))
         .map((address) => anonymiseAddress(address))
         .join(', ');
-    }
+    },
   ),
 
   allPassengers: computed(
@@ -174,7 +174,7 @@ export default Model.extend({
       return this.children
         .mapBy('passengers')
         .reduce((sum, count) => count + sum, this.passengers);
-    }
+    },
   ),
 
   matchString: computed(
@@ -195,7 +195,7 @@ export default Model.extend({
       } ${this.name === undefined ? '' : this.name} ${
         this.address
       }`.toLowerCase();
-    }
+    },
   ),
 
   matches(casedQuery) {
@@ -203,7 +203,7 @@ export default Model.extend({
     const matchString = this.matchString;
 
     return (query.match(/\S+/g) || []).every((queryTerm) =>
-      matchString.includes(queryTerm)
+      matchString.includes(queryTerm),
     );
   },
 });

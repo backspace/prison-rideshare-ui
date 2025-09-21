@@ -9,8 +9,11 @@ module.exports = {
     ecmaFeatures: {
       legacyDecorators: true,
     },
+    babelOptions: {
+      plugins: [['@babel/plugin-proposal-decorators', { legacy: true }]],
+    },
   },
-  plugins: ['ember', 'prettier'],
+  plugins: ['ember'],
   extends: [
     'eslint:recommended',
     'plugin:ember/recommended',
@@ -19,10 +22,17 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {
-    'prettier/prettier': 'error',
-  },
   overrides: [
+    {
+      files: ['**/*.gjs'],
+      parser: 'ember-eslint-parser',
+      plugins: ['ember'],
+      extends: [
+        'eslint:recommended',
+        'plugin:ember/recommended',
+        'plugin:ember/recommended-gjs',
+      ],
+    },
     // node files
     {
       files: [

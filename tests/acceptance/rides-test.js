@@ -81,11 +81,11 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       2,
-      'expected the cancelled ride to be hidden'
+      'expected the cancelled ride to be hidden',
     );
     assert.notOk(
       page.head.cancelledSwitch.enabled,
-      'expected the cancelled switch to be off'
+      'expected the cancelled switch to be off',
     );
 
     await page.head.cancelledSwitch.click();
@@ -93,7 +93,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       3,
-      'expected the cancelled ride to be shown'
+      'expected the cancelled ride to be shown',
     );
 
     const ride = page.rides[2];
@@ -101,12 +101,12 @@ module('Acceptance | rides', function (hooks) {
     assert.notOk(ride.enabled, 'expected the later ride to not be enabled');
     assert.ok(
       ride.cancellation.showsLockdown,
-      'expected the cancelled ride to show lockdown for the reason'
+      'expected the cancelled ride to show lockdown for the reason',
     );
     assert.equal(ride.name, 'Edward + 2');
     assert.ok(
       ride.isFirstTimer,
-      'expected the rider to be marked a first-timer'
+      'expected the rider to be marked a first-timer',
     );
     assert.equal(ride.date, 'Mon Dec 26 2016 8:30p — 10');
     assert.equal(ride.institution, 'Fort Leavenworth');
@@ -114,11 +114,11 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(ride.contact, 'jorts@example.com');
     assert.ok(
       ride.medium.isTxt,
-      'expected the request to have been received via txt'
+      'expected the request to have been received via txt',
     );
     assert.ok(
       ride.creationDate.isHidden,
-      'expected the creation date to be hidden by default'
+      'expected the creation date to be hidden by default',
     );
     assert.ok(ride.isOverridable, 'expected the ride to be overridable');
 
@@ -136,7 +136,7 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.rides[2].creationDate.isHidden,
-      'expected the creation date to be hidden again'
+      'expected the creation date to be hidden again',
     );
 
     await page.rides[2].driver.reveal();
@@ -161,31 +161,31 @@ module('Acceptance | rides', function (hooks) {
     assert.ok(page.rides[0].enabled, 'expected the other ride to be enabled');
     assert.notOk(
       page.rides[0].isFirstTimer,
-      'expected the other ride to not be a first-timer'
+      'expected the other ride to not be a first-timer',
     );
     assert.notOk(
       page.rides[0].isOverridable,
-      'expected the other ride to not be overridable'
+      'expected the other ride to not be overridable',
     );
     assert.ok(
       page.rides[0].cancellation.showsNotCancelled,
-      'expected the other ride to not be cancelled'
+      'expected the other ride to not be cancelled',
     );
     assert.equal(
       page.rides[0].name,
       'Chelsea',
-      'expected the earlier ride to be sorted to the bottom'
+      'expected the earlier ride to be sorted to the bottom',
     );
     assert.equal(page.rides[0].contactPhoneHref, 'tel:5145551212');
 
     assert.ok(
       page.rides[1].name,
       'Visitor',
-      'expected the combined ride to be beneath its parent'
+      'expected the combined ride to be beneath its parent',
     );
     assert.ok(
       page.rides[1].isCombined,
-      'expected the combined ride to show it is combined'
+      'expected the combined ride to show it is combined',
     );
 
     await page.ridesHead.clickDate();
@@ -193,14 +193,14 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides[1].name,
       'Chelsea',
-      'expected the earlier ride to be sorted to the top'
+      'expected the earlier ride to be sorted to the top',
     );
 
     await page.rides[0].cancellation.click();
 
     assert.ok(
       page.cancellationForm.cancelled.checked,
-      'expected the cancellation box to be checked'
+      'expected the cancellation box to be checked',
     );
     assert.equal(page.cancellationForm.reason.value, 'lockdown');
 
@@ -211,7 +211,7 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.rides[0].cancellation.showsVisitor,
-      'expected the ride to now be cancelled by the visitor'
+      'expected the ride to now be cancelled by the visitor',
     );
 
     await page.rides[0].cancellation.click();
@@ -220,7 +220,7 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.rides[0].cancellation.showsOther,
-      'expected the ride to now be cancelled with another reason'
+      'expected the ride to now be cancelled with another reason',
     );
     assert.equal(page.rides[0].cancellation.title, 'Edit cancellation: other!');
 
@@ -230,19 +230,19 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.rides[0].enabled,
-      'expected the ride to no longer be cancelled'
+      'expected the ride to no longer be cancelled',
     );
     assert.ok(
       page.rides[0].cancellation.showsNotCancelled,
-      'expected the other ride to not be cancelled'
+      'expected the other ride to not be cancelled',
     );
     assert.notOk(
       page.rides[0].cancellation.showsVisitor,
-      'expected the ride to not show the visitor as a reason'
+      'expected the ride to not show the visitor as a reason',
     );
     assert.notOk(
       page.rides[0].cancellation.showsLockdown,
-      'expected the ride not show lockdown as a reason'
+      'expected the ride not show lockdown as a reason',
     );
 
     await page.rides[0].cancellation.click();
@@ -282,11 +282,11 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       2,
-      'expected the completed rides to be hidden'
+      'expected the completed rides to be hidden',
     );
     assert.notOk(
       page.head.completedSwitch.enabled,
-      'expected the completed switch to be off'
+      'expected the completed switch to be off',
     );
 
     await page.head.completedSwitch.click();
@@ -294,11 +294,11 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       4,
-      'expected the completed rides to be showing'
+      'expected the completed rides to be showing',
     );
     assert.ok(
       page.head.completedSwitch.enabled,
-      'expected the completed switch to be on'
+      'expected the completed switch to be on',
     );
 
     assert.equal(page.reports.length, 2, 'expected the reports to be rendered');
@@ -315,18 +315,18 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.reports[0].clearConfirm.isVisible,
-      'expected the confirmation button to be visible'
+      'expected the confirmation button to be visible',
     );
     assert.ok(
       page.reports[0].clearCancel.isVisible,
-      'expected the cancellation button to be visible'
+      'expected the cancellation button to be visible',
     );
 
     await page.reports[0].clearCancel.click();
 
     assert.ok(
       page.reports[0].clearConfirm.isHidden,
-      'expected the confirmation button to be hidden again'
+      'expected the confirmation button to be hidden again',
     );
 
     await page.reports[0].clear();
@@ -338,15 +338,15 @@ module('Acceptance | rides', function (hooks) {
 
     assert.notOk(
       ride.foodExpenses,
-      'expected the food expenses to have been cleared on the server'
+      'expected the food expenses to have been cleared on the server',
     );
     assert.notOk(
       ride.reportNotes,
-      'expected the report notes to have been cleared on the server'
+      'expected the report notes to have been cleared on the server',
     );
     assert.notOk(
       ride.distance,
-      'expected the distance to have been cleared on the server'
+      'expected the distance to have been cleared on the server',
     );
   });
 
@@ -373,23 +373,23 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       0,
-      'there should be no row for an unsaved ride'
+      'there should be no row for an unsaved ride',
     );
     assert.equal(
       page.notes.length,
       0,
-      'there should be no notes when there are no rides'
+      'there should be no notes when there are no rides',
     );
 
     assert.equal(
       page.form.passengers.value,
       '1',
-      'the form should default to one passenger'
+      'the form should default to one passenger',
     );
 
     assert.ok(
       page.form.firstTimePoints.isHidden,
-      'expected the first time tips to not be visible by default'
+      'expected the first time tips to not be visible by default',
     );
 
     await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
@@ -407,7 +407,7 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.form.firstTimePoints.isVisible,
-      'expected the first time tips to show after the checkbox is set'
+      'expected the first time tips to show after the checkbox is set',
     );
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
@@ -422,7 +422,7 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       ride.medium.isPhone,
-      'expected the ride request to have been received via phone'
+      'expected the ride request to have been received via phone',
     );
     assert.equal(ride.date, 'Mon Dec 26 2016 9a — 11:30');
 
@@ -437,11 +437,11 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(lastRide.name, 'Edward');
     assert.equal(
       moment(lastRide.start).format('YYYY-MM-DD HH:mm'),
-      '2016-12-26 09:00'
+      '2016-12-26 09:00',
     );
     assert.equal(
       moment(lastRide.end).format('YYYY-MM-DD HH:mm'),
-      '2016-12-26 11:30'
+      '2016-12-26 11:30',
     );
     assert.equal(lastRide.address, '114 Spence');
     assert.equal(lastRide.contact, 'jants@example.com');
@@ -451,7 +451,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       lastRide.requestNotes,
       undefined,
-      'expected the notes to have been unspecified'
+      'expected the notes to have been unspecified',
     );
     assert.ok(lastRide.overridable);
 
@@ -462,7 +462,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides[0].carOwner.text,
       'Sun',
-      'expected the car owner to be set automatically'
+      'expected the car owner to be set automatically',
     );
 
     assert.equal(page.notes.length, 0, 'expected no notes on the new ride');
@@ -506,7 +506,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides[0].name,
       'Edward + 1',
-      'expected the original model to not yet have changed'
+      'expected the original model to not yet have changed',
     );
 
     await page.form.submit();
@@ -515,12 +515,12 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.rides[0].medium.isEmail,
-      'expected the medium to now be email'
+      'expected the medium to now be email',
     );
     assert.equal(
       page.notes.length,
       1,
-      'expected the notes for the new ride to show'
+      'expected the notes for the new ride to show',
     );
     assert.equal(page.notes[0].text, 'Some request notes?');
 
@@ -645,7 +645,7 @@ module('Acceptance | rides', function (hooks) {
           },
         ],
       },
-      422
+      422,
     );
 
     await page.visit();
@@ -697,55 +697,55 @@ module('Acceptance | rides', function (hooks) {
 
     assert.notOk(
       page.rides[1].date.includes(today.getFullYear()),
-      'expected the year to be hidden when the date is in the current year'
+      'expected the year to be hidden when the date is in the current year',
     );
     assert.ok(
       page.rides[1].combineButton.isHidden,
-      'expected a ride that already has one combined with it to not a have a button to combine'
+      'expected a ride that already has one combined with it to not a have a button to combine',
     );
 
     await page.rides[1].cancellation.click();
 
     assert.equal(
       page.cancellationForm.notice,
-      'Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.'
+      'Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.',
     );
 
     await page.rides[0].combineButton.click();
 
     assert.ok(
       page.rides[0].combineButton.isActive,
-      'expected the combine button to indicate it is active'
+      'expected the combine button to indicate it is active',
     );
     assert.equal(page.rides[0].combineButton.title, 'Cancel combining');
 
     assert.ok(
       page.rides[1].combineButton.isVisible,
-      'expected the already-combined-with ride to be combinable-with'
+      'expected the already-combined-with ride to be combinable-with',
     );
 
     assert.notOk(
       page.rides[1].isUncombinable,
-      'expected the ride on the same day to be combinable'
+      'expected the ride on the same day to be combinable',
     );
     assert.ok(
       page.rides[2].combineButton.isHidden,
-      'expected a ride that has already been combined into another to not be combinable-into'
+      'expected a ride that has already been combined into another to not be combinable-into',
     );
     assert.ok(
       page.rides[3].isUncombinable,
-      'expected the ride on the day before to not be combinable'
+      'expected the ride on the day before to not be combinable',
     );
 
     await page.rides[0].combineButton.click();
 
     assert.notOk(
       page.rides[0].combineButton.isActive,
-      'expected the button to have become inactive after clicking'
+      'expected the button to have become inactive after clicking',
     );
     assert.equal(
       page.rides[0].combineButton.title,
-      'Combine with another ride'
+      'Combine with another ride',
     );
 
     await page.rides[0].combineButton.click();
@@ -754,16 +754,16 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides[2].name,
       'C',
-      'expected the combined-into ride to have moved'
+      'expected the combined-into ride to have moved',
     );
     assert.equal(
       page.rides[3].name,
       'A',
-      'expected the combined ride to have moved'
+      'expected the combined ride to have moved',
     );
     assert.ok(
       page.rides[3].isCombined,
-      'expected the combined ride to show as combined'
+      'expected the combined ride to show as combined',
     );
     assert.equal(page.rides[3].combineButton.title, 'Uncombine this ride');
 
@@ -772,7 +772,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides[0].name,
       'A',
-      'expected the formerly-combined ride to have returned'
+      'expected the formerly-combined ride to have returned',
     );
   });
 
@@ -822,7 +822,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(page.rides.length, 2, 'expected two rides to show by default');
     assert.ok(
       page.head.search.clear.isHidden,
-      'expected the empty search field to have no clear button'
+      'expected the empty search field to have no clear button',
     );
 
     await page.head.search.fillIn('chel');
@@ -830,16 +830,16 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       1,
-      'expected one ride to be showing after filtering'
+      'expected one ride to be showing after filtering',
     );
     assert.equal(
       page.rides[0].name,
       'Chelsea',
-      'expected the ride to be the Chelsea one'
+      'expected the ride to be the Chelsea one',
     );
     assert.ok(
       page.head.search.clear.isVisible,
-      'expected the clear button to show when the field has content'
+      'expected the clear button to show when the field has content',
     );
 
     await page.head.search.clear.click();
@@ -847,16 +847,16 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides.length,
       2,
-      'expected the ride list to be returned to its default state'
+      'expected the ride list to be returned to its default state',
     );
     assert.equal(
       page.head.search.value,
       '',
-      'expected the search field to now be empty'
+      'expected the search field to now be empty',
     );
     assert.ok(
       page.head.search.clear.isHidden,
-      'expected the empty search field to have no clear button'
+      'expected the empty search field to have no clear button',
     );
 
     await page.head.search.fillIn('HEL');
@@ -864,14 +864,14 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(
       page.rides[0].name,
       'Chelsea',
-      'expected the search to be case-insensitive'
+      'expected the search to be case-insensitive',
     );
 
     await page.head.search.fillIn('non-matching search');
 
     assert.ok(
       page.noMatchesRow.isVisible,
-      'expected the no matches row to show with non-matching search'
+      'expected the no matches row to show with non-matching search',
     );
   });
 
@@ -901,14 +901,14 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(
       page.rides[2].isDivider,
-      'expected the first future ride to have a divider above it'
+      'expected the first future ride to have a divider above it',
     );
 
     await page.ridesHead.clickDate();
 
     assert.ok(
       page.rides[1].isDivider,
-      'expected the first past ride to have a divider above it'
+      'expected the first past ride to have a divider above it',
     );
   });
 

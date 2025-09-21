@@ -20,7 +20,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
     assert,
     timespanString,
     startString,
-    endString
+    endString,
   ) {
     const parsed = parseTimespan(timespanString);
 
@@ -33,7 +33,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
       assert,
       'september 27 2017 from 1pm to 3pm',
       '2017-09-27 13:00',
-      '2017-09-27 15:00'
+      '2017-09-27 15:00',
     );
   });
 
@@ -42,7 +42,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
       assert,
       'september 27 2017 from 1pm to 3',
       '2017-09-27 13:00',
-      '2017-09-27 15:00'
+      '2017-09-27 15:00',
     );
   });
 
@@ -51,7 +51,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
       assert,
       'september 27 2017 from 10am to 11pm',
       '2017-09-27 10:00',
-      '2017-09-27 23:00'
+      '2017-09-27 23:00',
     );
   });
 
@@ -60,7 +60,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
       assert,
       'september 27 2017 from 630 to 9',
       '2017-09-27 18:30',
-      '2017-09-27 21:00'
+      '2017-09-27 21:00',
     );
   });
 
@@ -69,7 +69,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
 
     assert.equal(
       moment(parsed.start.date()).format(formatString),
-      '2017-09-27 18:30'
+      '2017-09-27 18:30',
     );
     assert.notOk(parsed.end);
   });
@@ -82,14 +82,14 @@ module('Unit | Utility | parse timespan', function (hooks) {
       assert,
       'thursday from 7 to 9',
       '2019-10-17 19:00',
-      '2019-10-17 21:00'
+      '2019-10-17 21:00',
     );
 
     assertParsing(
       assert,
       'oct 10 2019 from 1 to 4',
       '2019-10-10 13:00',
-      '2019-10-10 16:00'
+      '2019-10-10 16:00',
     );
   });
 });

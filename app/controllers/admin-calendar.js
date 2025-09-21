@@ -83,7 +83,7 @@ export default class AdminCalendarController extends CalendarController {
   get uncommittedPeople() {
     const alreadyCommittedPeople = this.viewingSlotPeopleIds;
     return this.activePeople.reject((person) =>
-      alreadyCommittedPeople.includes(person.id)
+      alreadyCommittedPeople.includes(person.id),
     );
   }
 
@@ -115,8 +115,8 @@ export default class AdminCalendarController extends CalendarController {
       .then(() => {
         this.toasts.show(
           `Committed ${person.get('name')} to drive on ${moment(
-            slot.get('start')
-          ).format('MMMM D')}`
+            slot.get('start'),
+          ).format('MMMM D')}`,
         );
       })
       .catch((error) => {
@@ -186,7 +186,7 @@ export default class AdminCalendarController extends CalendarController {
           Object.keys(linkFetches).reduce((hash, email) => {
             hash[email] = linkFetches[email].text();
             return hash;
-          }, {})
+          }, {}),
         );
       })
       .then((links) => {

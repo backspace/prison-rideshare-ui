@@ -69,7 +69,7 @@ module('Acceptance | users', function (hooks) {
 
     assert.ok(
       shared.userCount.isHidden,
-      'expected no user count to show when no one is connected'
+      'expected no user count to show when no one is connected',
     );
 
     const presenceStateMessage = {};
@@ -85,15 +85,15 @@ module('Acceptance | users', function (hooks) {
     assert.equal(
       shared.userCount.text,
       '2',
-      'expected the count to show when two people are connected'
+      'expected the count to show when two people are connected',
     );
     assert.ok(
       page.users[0].isPresent,
-      'expected the admin to be marked as present'
+      'expected the admin to be marked as present',
     );
     assert.ok(
       page.users[1].isPresent,
-      'expected the non-admin to be marked as present'
+      'expected the non-admin to be marked as present',
     );
 
     percySnapshot(assert);
@@ -106,11 +106,11 @@ module('Acceptance | users', function (hooks) {
 
     assert.ok(
       shared.userCount.isHidden,
-      'expected no user count to show when only one person is connected'
+      'expected no user count to show when only one person is connected',
     );
     assert.notOk(
       page.users[1].isPresent,
-      'expected the non-admin to be not marked as present'
+      'expected the non-admin to be not marked as present',
     );
 
     const rejoinPresenceDiffMessage = { joins: {}, leaves: {} };
@@ -118,7 +118,7 @@ module('Acceptance | users', function (hooks) {
     userSocket._onPresenceDiff(rejoinPresenceDiffMessage);
     assert.ok(
       shared.userCount.isHidden,
-      'expected the count to not include duplicates'
+      'expected the count to not include duplicates',
     );
   });
 });

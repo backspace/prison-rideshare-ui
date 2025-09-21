@@ -110,7 +110,7 @@ module('Acceptance | reimbursements', function (hooks) {
     assert.equal(
       reimbursementsPage.rows.length,
       8,
-      'expected two month rows and six person reimbursement rows'
+      'expected two month rows and six person reimbursement rows',
     );
 
     assert.equal(reimbursementsPage.rows[0].month, 'April 2017');
@@ -120,17 +120,17 @@ module('Acceptance | reimbursements', function (hooks) {
     assert.equal(
       kala.foodExpenses,
       '0',
-      'expected the processed reimbursement to be excluded'
+      'expected the processed reimbursement to be excluded',
     );
     assert.equal(kala.carExpenses, '22');
     assert.equal(kala.totalExpenses, '22');
     assert.ok(
       kala.processButton.isPrimary,
-      'expected the process button to be default for non-donations'
+      'expected the process button to be default for non-donations',
     );
     assert.notOk(
       kala.donateButton.isPrimary,
-      'expected the donate button to not be default for non-donations'
+      'expected the donate button to not be default for non-donations',
     );
 
     await reimbursementsPage.rows[2].as((kalaDonation) => {
@@ -139,15 +139,15 @@ module('Acceptance | reimbursements', function (hooks) {
       assert.equal(kalaDonation.carExpenses, '1');
       assert.ok(
         kalaDonation.carExpenseIsDonation,
-        'expected the donation to be thus marked'
+        'expected the donation to be thus marked',
       );
       assert.notOk(
         kalaDonation.processButton.isPrimary,
-        'expected the process button to not be default for donations'
+        'expected the process button to not be default for donations',
       );
       assert.ok(
         kalaDonation.donateButton.isPrimary,
-        'expected the donate button to be default for donations'
+        'expected the donate button to be default for donations',
       );
     });
 
@@ -165,7 +165,7 @@ module('Acceptance | reimbursements', function (hooks) {
     assert.equal(
       reimbursementsPage.reimbursements.length,
       0,
-      'expected no processed reimbursements to be shown'
+      'expected no processed reimbursements to be shown',
     );
 
     assert.equal(reimbursementsPage.rows[5].month, 'May 2017');
@@ -177,7 +177,7 @@ module('Acceptance | reimbursements', function (hooks) {
     assert.equal(
       reimbursementsPage.reimbursements.length,
       2,
-      'expected the processed reimbursements to be shown'
+      'expected the processed reimbursements to be shown',
     );
 
     const foodProcessed = reimbursementsPage.reimbursements[0];
@@ -188,7 +188,7 @@ module('Acceptance | reimbursements', function (hooks) {
     assert.ok(foodProcessed.isFoodExpense, 'expected a food expense icon');
     assert.notOk(
       foodProcessed.isDonation,
-      'expected the food expense to not have been donated'
+      'expected the food expense to not have been donated',
     );
 
     const carProcessed = reimbursementsPage.reimbursements[1];
@@ -198,7 +198,7 @@ module('Acceptance | reimbursements', function (hooks) {
     assert.ok(carProcessed.isCarExpense, 'expected a car expense icon');
     assert.ok(
       carProcessed.isDonation,
-      'expected the car expense to have been donated'
+      'expected the car expense to have been donated',
     );
 
     percySnapshot(assert);
@@ -227,11 +227,11 @@ module('Acceptance | reimbursements', function (hooks) {
 
     assert.ok(
       k.processed,
-      'expected the reimbursement to have been marked as processed'
+      'expected the reimbursement to have been marked as processed',
     );
     assert.ok(
       k.donation,
-      'expected the reimbursement to have been marked as a donation'
+      'expected the reimbursement to have been marked as a donation',
     );
 
     assert.ok(reimbursementsPage.noReimbursementsMessage.isVisible);
@@ -245,7 +245,7 @@ module('Acceptance | reimbursements', function (hooks) {
       'April mileage\tKala\t-$1\t$1\t\t(donated)';
     assert.ok(
       clipboardText.includes(expectedClipboardTextEnding),
-      `expected April clipboard text to include ${expectedClipboardTextEnding}, got ${clipboardText}`
+      `expected April clipboard text to include ${expectedClipboardTextEnding}, got ${clipboardText}`,
     );
 
     const mayClipboardText =
@@ -257,11 +257,11 @@ module('Acceptance | reimbursements', function (hooks) {
       'May mileage + meal × 2\tSun\t-$102\t\t';
     assert.ok(
       kalaClipboardText.includes(expectedKalaClipboardTextEnding),
-      `expected Kala clipboard text to include ${expectedKalaClipboardTextEnding}, got ${kalaClipboardText}`
+      `expected Kala clipboard text to include ${expectedKalaClipboardTextEnding}, got ${kalaClipboardText}`,
     );
     assert.ok(
       sunClipboardText.includes(expectedSunClipboardTextEnding),
-      `expected Sun clipboard text to include ${expectedSunClipboardTextEnding}, got ${sunClipboardText}`
+      `expected Sun clipboard text to include ${expectedSunClipboardTextEnding}, got ${sunClipboardText}`,
     );
   });
 });

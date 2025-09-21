@@ -14,11 +14,11 @@ module('Unit | Utility | anonymise address', function () {
   test('it strips trailing bracketed strings', function (assert) {
     assert.equal(
       anonymiseAddress('440 Jorts street (building X unit 666)'),
-      '400 block Jorts street'
+      '400 block Jorts street',
     );
     assert.equal(
       anonymiseAddress('440 Jorts street (building X unit 666) '),
-      '400 block Jorts street'
+      '400 block Jorts street',
     );
   });
 
@@ -32,7 +32,7 @@ module('Unit | Utility | anonymise address', function () {
     assert.equal(anonymiseAddress('421 osborne suite X'), '400 block osborne');
     assert.equal(
       anonymiseAddress('421 osborne building A suite X'),
-      '400 block osborne'
+      '400 block osborne',
     );
   });
 });

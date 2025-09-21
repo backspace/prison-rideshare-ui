@@ -65,7 +65,7 @@ module('Acceptance | login', function (hooks) {
       () => {
         return {};
       },
-      401
+      401,
     );
 
     await page.visit();
@@ -82,7 +82,7 @@ module('Acceptance | login', function (hooks) {
       () => {
         return {};
       },
-      401
+      401,
     );
 
     await page.visit();

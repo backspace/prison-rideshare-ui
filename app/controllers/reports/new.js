@@ -45,7 +45,7 @@ export default class NewController extends Controller {
         },
         () => {
           this.toasts.show('There was an error saving your report!');
-        }
+        },
       );
     } else {
       this.toasts.show('Please choose a ride');

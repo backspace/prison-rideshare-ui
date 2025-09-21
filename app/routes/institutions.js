@@ -6,7 +6,7 @@ import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 @classic
 export default class InstitutionsRoute extends Route.extend(
-  AuthenticatedRoute
+  AuthenticatedRoute,
 ) {
   @service
   store;
