@@ -1,7 +1,5 @@
-/* eslint-disable ember/no-runloop */
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { run } from '@ember/runloop';
 
 module('Unit | Model | ride', function (hooks) {
   setupTest(hooks);
@@ -12,28 +10,24 @@ module('Unit | Model | ride', function (hooks) {
 
     let rockwoodRide;
 
-    run(() => {
-      rockwood = this.owner
-        .lookup('service:store')
-        .createRecord('institution', { name: 'Rockwood' });
+    rockwood = this.owner
+      .lookup('service:store')
+      .createRecord('institution', { name: 'Rockwood' });
 
-      chelsea = this.owner
-        .lookup('service:store')
-        .createRecord('person', { name: 'Chelsea Manning' });
-      edward = this.owner
-        .lookup('service:store')
-        .createRecord('person', { name: 'Edward Snowden' });
+    chelsea = this.owner
+      .lookup('service:store')
+      .createRecord('person', { name: 'Chelsea Manning' });
+    edward = this.owner
+      .lookup('service:store')
+      .createRecord('person', { name: 'Edward Snowden' });
 
-      rockwoodRide = run(() =>
-        this.owner.lookup('service:store').createRecord('ride', {
-          institution: rockwood,
-          driver: chelsea,
-          carOwner: edward,
+    rockwoodRide = this.owner.lookup('service:store').createRecord('ride', {
+      institution: rockwood,
+      driver: chelsea,
+      carOwner: edward,
 
-          name: 'jORTLE',
-          address: '91 Albert',
-        }),
-      );
+      name: 'jORTLE',
+      address: '91 Albert',
     });
 
     assert.ok(rockwoodRide.matches('Rock'));
