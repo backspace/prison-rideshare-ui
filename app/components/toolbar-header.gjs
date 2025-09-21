@@ -7,7 +7,7 @@ import Component from '@ember/component';
 import PaperToolbar from "ember-paper/components/paper-toolbar";
 import PaperButton from "ember-paper/components/paper-button";
 import paperIcon from "ember-paper/components/paper-icon";
-import pluralize from "ember-inflector/helpers/pluralize";
+import pluralize from "ember-inflector/lib/helpers/pluralize";
 import PaperChips from "ember-paper/components/paper-chips/component";
 
 @classic
