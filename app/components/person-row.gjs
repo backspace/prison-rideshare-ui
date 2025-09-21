@@ -96,7 +96,7 @@ export default class PersonRow extends Component {<template>{{!-- template-lint-
   @action
   toggleActiveness(active) {
     this.set('person.active', active);
-    @person.save().catch(() => {
+    this.person.save().catch(() => {
       this.toasts.show(
         `There was an error saving the active status of ${this.get(
           'person.name'
