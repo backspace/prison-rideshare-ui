@@ -10,11 +10,22 @@ import PersonBadge from "prison-rideshare-ui/components/person-badge";
 import PaperButton from "ember-paper/components/paper-button";
 import gt from "ember-truth-helpers/helpers/gt";
 import { action } from "@ember/object";
-export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+import Component from '@glimmer/component';
+
+class AdminCalendarComponent extends Component {
+  @action setViewingSlot(slot) {
+    this.args.controller.set('viewingSlot', slot);
+  }
+
+  @action changeMonth(value) {
+    //  @onCenterChange={{action (mut @controller.month) value="date"}}
+    this.args.controller.set('month', value.date);
+  }
+<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title={{@controller.title}} />
 
 <div class="admin-calendar">
-  <PowerCalendar @center={{@controller.monthMoment}} @daysComponent="calendar-days" @onCenterChange={{action (mut @controller.month) value="date"}} as |calendar|>
+  <PowerCalendar @center={{@controller.monthMoment}} @daysComponent="calendar-days" @onCenterChange={{this.changeMonth}} as |calendar|>
     <nav class="ember-power-calendar-nav">
       <LinkTo @route="admin-calendar" @model={{@controller.previousMonth}} class="ember-power-calendar-nav-control previous-month">
         ‹
@@ -28,7 +39,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </nav>
 
     <calendar.Days @showDaysAround={{false}} as |day|>
-      <CalendarDay @day={{day}} @slots={{@controller.slots}} @count={{true}} @setViewingSlot={{mut @controller.viewingSlot}} />
+      <CalendarDay @day={{day}} @slots={{@controller.slots}} @count={{true}} @setViewingSlot={{this.setViewingSlot}} />
     </calendar.Days>
   </PowerCalendar>
 
@@ -38,7 +49,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
         <h3 class="hours">
           {{momentFormat @controller.viewingSlot.start "dddd, MMMM D, h:mma"}}–{{momentFormat @controller.viewingSlot.end "h:mma"}}
         </h3>
-        <PaperChips @removeItem={{this.deleteCommitment}} @addItem={{this.createCommitment}} @placeholder="Commit someone to this slot" @content={{@controller.viewingSlot.commitments}} @options={{@controller.uncommittedPeople}} @class="commitments" @searchField="name" as |person_or_commitment|>
+        <PaperChips @removeItem={{@controller.deleteCommitment}} @addItem={{@controller.createCommitment}} @placeholder="Commit someone to this slot" @content={{@controller.viewingSlot.commitments}} @options={{@controller.uncommittedPeople}} @class="commitments" @searchField="name" as |person_or_commitment|>
           {{#if person_or_commitment.name}}
             <PersonBadge @person={{person_or_commitment}} />
           {{else}}
@@ -50,14 +61,14 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     <h2>
       Temporary email interface
     </h2>
-    <PaperButton @label="Add all active people" @raised={{true}} @onClick={{this.addAllActive}} />
-    <PaperChips @removeItem={{this.removePerson}} @addItem={{this.addPerson}} @placeholder="Add a person to email" @content={{@controller.people}} @options={{@controller.remainingPeople}} @searchField="name" as |person|>
+    <PaperButton @label="Add all active people" @raised={{true}} @onClick={{@controller.addAllActive}} />
+    <PaperChips @removeItem={{@controller.removePerson}} @addItem={{@controller.addPerson}} @placeholder="Add a person to email" @content={{@controller.people}} @options={{@controller.remainingPeople}} @searchField="name" as |person|>
       {{person.name}}
     </PaperChips>
-    <PaperButton @primary={{gt @controller.people.length 0}} @raised={{gt @controller.people.length 0}} @onClick={{this.email}}>
+    <PaperButton @primary={{gt @controller.people.length 0}} @raised={{gt @controller.people.length 0}} @onClick={{@controller.email}}>
       Email {{@controller.monthString}} calendar link
     </PaperButton>
-    <PaperButton @onClick={{this.fetchLinks}}>
+    <PaperButton @onClick={{@controller.fetchLinks}}>
       View calendar links
     </PaperButton>
     {{#if @controller.links}}
@@ -76,4 +87,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       There was an error loading calendar links: {{@controller.linksError}}
     {{/if}}
   </section>
-</div></template>)
+</div></template>
+}
+
+export default RouteTemplate(AdminCalendarComponent);

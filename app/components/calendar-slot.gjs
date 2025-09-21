@@ -11,6 +11,8 @@ import gt from "ember-truth-helpers/helpers/gt";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import perform from "ember-concurrency/helpers/perform";
 import { action } from "@ember/object";
+import { fn } from "@ember/helper";
+import { on } from "@ember/modifier";
 
 @classic
 export default class CalendarSlot extends Component {<template>{{!-- template-lint-disable no-action --}}
@@ -19,7 +21,7 @@ export default class CalendarSlot extends Component {<template>{{!-- template-li
     <span class="hours">
       {{this.timespan}}
     </span>
-    <button class="count {{if (gt this.slot.commitments.length 0) "committed-to"}}" onClick={{this.setViewingSlot this.slot}} type="button">
+    <button class="count {{if (gt this.slot.commitments.length 0) "committed-to"}}" {{on 'click' (fn this.setViewingSlot this.slot)}} type="button">
       {{this.capacity}}
     </button>
   {{else}}
