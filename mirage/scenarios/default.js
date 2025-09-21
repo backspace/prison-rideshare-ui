@@ -1,4 +1,3 @@
-/* eslint-disable no-dupe-else-if */
 import { faker } from '@faker-js/faker';
 faker.seed(1919);
 
@@ -24,15 +23,17 @@ export default function (server) {
     const end = new Date(start.getTime() + 1000 * 60 * 60);
 
     let reportAttributes = {};
+    let randomlyCancelled = faker.random.boolean();
+    let randomlyReportedOn = faker.random.boolean();
 
-    if (faker.random.boolean()) {
+    if (randomlyCancelled) {
       reportAttributes = {
         enabled: false,
         cancellationReason: faker.random.arrayElement(
           RidesController.create().get('cancellationReasons')
         ),
       };
-    } else if (faker.random.boolean()) {
+    } else if (randomlyReportedOn) {
       const carExpenses = randomCurrency();
 
       reportAttributes = {
