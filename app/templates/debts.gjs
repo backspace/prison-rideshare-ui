@@ -5,6 +5,8 @@ import PaperButton from "ember-paper/components/paper-button";
 import eq from "ember-truth-helpers/helpers/eq";
 import DonationIcon from "prison-rideshare-ui/components/donation-icon";
 import { action } from "@ember/object";
+import { fn } from '@ember/helper';
+
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Debts" />
 
@@ -40,7 +42,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
           {{debt.totalExpensesDollars}}
         </row.cell>
         <row.cell>
-          <PaperButton @class="reimburse" @onClick={{this.reimburse debt}}>
+          <PaperButton @class="reimburse" @onClick={{fn @controller.reimburse debt}}>
             Reimburse
           </PaperButton>
         </row.cell>
