@@ -118,10 +118,10 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
       </span>
     </row.cell>
     <row.cell @colspan={{3}}>
-      <PaperButton class="assign" @onClick={{this.assignFromCommitment commitment}}>
+      <PaperButton class="assign" @onClick={{fn this.assignFromCommitment commitment}}>
         Assign
       </PaperButton>
-      <PaperButton class="ignore" @onClick={{this.ignoreCommitment commitment}}>
+      <PaperButton class="ignore" @onClick={{fn this.ignoreCommitment commitment}}>
         Ignore
       </PaperButton>
     </row.cell>
