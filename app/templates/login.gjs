@@ -20,10 +20,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperForm @onSubmit={{this.login}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
-        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{mut @controller.model.email}} />
+        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{@controller.updateEmail}} />
       </div>
       <div class="layout layout-row">
-        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{mut @controller.model.password}}>
+        <form.input @class="password" @type="password" @label="Password" @value={{@controller.model.password}} @onChange={{@controller.updatePassword}}>
           <div class="hint">
             <LinkTo @route="forgot">
               Forgot?
@@ -40,7 +40,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.login}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{@controller.login}}>
           Log in
         </form.submit-button>
         <PaperButton @href="/register" @class="flex-order--1">

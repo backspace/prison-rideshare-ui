@@ -9,6 +9,16 @@ export default class LoginController extends Controller {
   session;
 
   @action
+  updateEmail(value) {
+    this.model.set('email', value);
+  }
+
+  @action
+  updatePassword(value) {
+    this.model.set('password', value);
+  }
+
+  @action
   login(event) {
     event.preventDefault();
 
