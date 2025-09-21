@@ -22,9 +22,9 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </div>
 
       <div class="buttons">
-        <PaperButton @class="past-year" @label="Past year" @onClick={{this.setPastYear}} />
-        <PaperButton @class="past-two-weeks" @label="Past two weeks" @onClick={{this.setPastTwoWeeks}} />
-        <PaperButton @class="this-year" @label="This year" @onClick={{this.setThisYear}} />
+        <PaperButton @class="past-year" @label="Past year" @onClick={{@controller.setPastYear}} />
+        <PaperButton @class="past-two-weeks" @label="Past two weeks" @onClick={{@controller.setPastTwoWeeks}} />
+        <PaperButton @class="this-year" @label="This year" @onClick={{@controller.setThisYear}} />
       </div>
 
       <div class="radios">
