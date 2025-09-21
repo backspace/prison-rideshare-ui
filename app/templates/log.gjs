@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-empty-glimmer-component-classes, ember/template-no-let-reference */
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import PaperButton from 'ember-paper/components/paper-button';

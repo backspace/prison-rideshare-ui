@@ -1,3 +1,4 @@
+/* eslint-disable ember/template-no-let-reference */
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { find, render } from '@ember/test-helpers';
