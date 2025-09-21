@@ -1,5 +1,7 @@
+import classic from 'ember-classic-decorator';
 import RavenLogger from 'ember-cli-sentry/services/raven';
 
-export default RavenLogger.extend({
-  unhandledPromiseErrorMessage: '',
-});
+@classic
+export default class RavenService extends RavenLogger {
+  unhandledPromiseErrorMessage = '';
+}

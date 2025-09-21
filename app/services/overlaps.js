@@ -1,23 +1,30 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get */
-import { computed, set } from '@ember/object';
+/* eslint-disable ember/no-classic-classes, ember/no-get, ember/no-side-effects */
+import classic from 'ember-classic-decorator';
+import { set, computed } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 
 import fetch from 'fetch';
 import { task } from 'ember-concurrency';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 
-export default Service.extend({
-  moment: service(),
-  session: service(),
-  store: service(),
+@classic
+export default class OverlapsService extends Service {
+  @service
+  moment;
+
+  @service
+  session;
+
+  @service
+  store;
 
   init() {
-    this._super(...arguments);
+    super.init(...arguments);
 
     this.fetchOverlaps.perform();
-  },
+  }
 
-  fetchOverlaps: task(function* () {
+  @task(function* () {
     let rideAdapter = this.store.adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
     let token = this.get('session.data.authenticated.access_token');
@@ -33,13 +40,16 @@ export default Service.extend({
     let json = yield response.json();
 
     this.set('overlaps', json);
-  }),
+  })
+  fetchOverlaps;
 
-  count: computed('overlaps.data.length', function () {
+  @computed('overlaps.data.length')
+  get count() {
     return this.get('overlaps.data.length') || 0;
-  }),
+  }
 
-  rideIdsToCommitments: computed('overlaps.data.@each.id', function () {
+  @computed('overlaps.data.@each.id')
+  get rideIdsToCommitments() {
     let response = this.overlaps;
 
     if (!response || !response.data) {
@@ -68,7 +78,6 @@ export default Service.extend({
 
       // TODO remove side effects
       commitments.forEach((commitment) => {
-        /* eslint-disable ember/no-side-effects */
         set(
           commitment,
           'person',
@@ -98,13 +107,13 @@ export default Service.extend({
 
       return ridesToCommitments;
     }, {});
-  }),
+  }
 
   commitmentsForRide(ride) {
     return this.rideIdsToCommitments[ride.get('id')] || [];
-  },
+  }
 
   fetch() {
     this.fetchOverlaps.perform();
-  },
-});
+  }
+}

@@ -1,12 +1,17 @@
 /* eslint-disable ember/no-classic-classes, ember/no-mixins */
+import classic from 'ember-classic-decorator';
+import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import moment from 'moment';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
-import { inject as service } from '@ember/service';
 
-export default Route.extend(AuthenticatedRoute, {
-  store: service(),
+@classic
+export default class AdminCalendarRoute extends Route.extend(
+  AuthenticatedRoute
+) {
+  @service
+  store;
 
   model({ month }) {
     return RSVP.hash({
@@ -19,5 +24,5 @@ export default Route.extend(AuthenticatedRoute, {
         ),
       month,
     });
-  },
-});
+  }
+}

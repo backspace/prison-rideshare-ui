@@ -1,13 +1,16 @@
 /* eslint-disable ember/no-classic-classes */
-import Route from '@ember/routing/route';
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
+import Route from '@ember/routing/route';
 
-export default Route.extend({
-  store: service(),
+@classic
+export default class LogRoute extends Route {
+  @service
+  store;
 
   model() {
     return this.store.findAll('post');
-  },
+  }
 
-  titleToken: 'Log',
-});
+  titleToken = 'Log';
+}

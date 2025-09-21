@@ -1,4 +1,5 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get */
+import classic from 'ember-classic-decorator';
 import RSVP from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
@@ -9,9 +10,13 @@ import config from '../config/environment';
 
 // This is mostly taken from the dummy Ember Simple Auth app
 
-export default Service.extend({
-  session: service('session'),
-  store: service(),
+@classic
+export default class AccountService extends Service {
+  @service('session')
+  session;
+
+  @service
+  store;
 
   loadCurrentUser() {
     return new RSVP.Promise((resolve, reject) => {
@@ -40,5 +45,5 @@ export default Service.extend({
         resolve();
       }
     });
-  },
-});
+  }
+}

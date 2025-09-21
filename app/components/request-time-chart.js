@@ -1,12 +1,15 @@
 /* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import Component from '@ember/component';
+import classic from 'ember-classic-decorator';
+import { classNames } from '@ember-decorators/component';
 import { computed } from '@ember/object';
+import Component from '@ember/component';
 import moment from 'moment';
 
-export default Component.extend({
-  classNames: ['request-time-chart'],
-
-  data: computed('rides.@each.start', 'grouping', function () {
+@classic
+@classNames('request-time-chart')
+export default class RequestTimeChart extends Component {
+  @computed('rides.@each.start', 'grouping')
+  get data() {
     const grouping = this.grouping;
 
     const data = this.rides
@@ -61,8 +64,9 @@ export default Component.extend({
         },
       },
     ];
-  }),
-  options: Object.freeze({
+  }
+
+  options = Object.freeze({
     chart: {
       type: 'heatmap',
       marginTop: 50,
@@ -120,5 +124,5 @@ export default Component.extend({
         } within <strong>${x}h</strong> on <strong>${y}s</strong>`;
       },
     },
-  }),
-});
+  });
+}

@@ -1,5 +1,6 @@
 /* eslint-disable ember/no-classic-classes */
 import EmberObject from '@ember/object';
+import classic from 'ember-classic-decorator';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
 
 import { module, test } from 'qunit';
@@ -13,12 +14,13 @@ module('Unit | Utility | reimbursement collection', function () {
     today.getMonth() + 1
   }/${today.getDate()}/${today.getFullYear()}`;
 
-  const FakeReimbursement = EmberObject.extend({
-    ride,
-    date: reimbursementDate,
-    carExpenses: 0,
-    foodExpenses: 0,
-  });
+  @classic
+  class FakeReimbursement extends EmberObject {
+    ride = ride;
+    date = reimbursementDate;
+    carExpenses = 0;
+    foodExpenses = 0;
+  }
 
   const foodReimbursement = FakeReimbursement.create({
     foodExpenses: 4400,
