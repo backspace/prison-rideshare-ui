@@ -7,7 +7,8 @@ import take from "ember-composable-helpers/helpers/take";
 import sortBy from "ember-composable-helpers/helpers/sort-by";
 import momentFormat from "ember-moment/helpers/moment-format";
 import ReimbursementUnit from "prison-rideshare-ui/components/reimbursement-unit";
-export default RouteTemplate(<template><ToolbarHeader @title="Gas prices and reimbursement rates" />
+
+export default RouteTemplate(<template><ToolbarHeader @title="Gas prices and reimbursement rates" @titleOverride='Gas prices' />
 
 <PaperContent>
   <PaperCard as |card|>

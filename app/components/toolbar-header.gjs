@@ -13,7 +13,11 @@ import { pageTitle } from 'ember-page-title';
 
 @classic
 export default class ToolbarHeader extends Component {<template>{{!-- template-lint-disable no-action --}}
-{{pageTitle this.title}}
+  {{#if @titleOverride}}
+    {{pageTitle @titleOverride}}
+  {{else}}
+    {{pageTitle this.title}}
+  {{/if}}
 <PaperToolbar as |toolbar|>
   <toolbar.tools>
     <PaperButton @iconButton={{true}} @onClick={{this.toggleSidebar}} @class="hide-gt-sm">
