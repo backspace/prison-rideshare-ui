@@ -1,7 +1,7 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
-import DS from 'ember-data';
+/* eslint-disable ember/no-classic-classes */
+import Model, { belongsTo } from '@ember-data/model';
 
-export default DS.Model.extend({
-  slot: DS.belongsTo({ async: false }),
-  person: DS.belongsTo(),
+export default Model.extend({
+  slot: belongsTo({ async: false }),
+  person: belongsTo(),
 });

@@ -1,11 +1,11 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
+/* eslint-disable ember/no-classic-classes*/
+import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
-import DS from 'ember-data';
 import { modelAction, resourceAction } from 'ember-custom-actions';
 
-export default DS.Model.extend({
-  body: DS.attr('string'),
-  unread: DS.attr('boolean'),
+export default Model.extend({
+  body: attr('string'),
+  unread: attr('boolean'),
 
   bodyJson: computed('body', {
     get() {
@@ -24,9 +24,9 @@ export default DS.Model.extend({
     },
   }),
 
-  poster: DS.belongsTo('user'),
+  poster: belongsTo('user'),
 
-  insertedAt: DS.attr('date'),
+  insertedAt: attr('date'),
 
   validationErrors: computed(
     'constructor.attributes',

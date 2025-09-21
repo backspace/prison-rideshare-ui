@@ -1,8 +1,7 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get */
 import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
-import Service from '@ember/service';
-import { inject as service } from '@ember/service';
+import Service, { inject as service } from '@ember/service';
 
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';

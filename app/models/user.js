@@ -1,18 +1,18 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get, ember/use-ember-data-rfc-395-imports */
+/* eslint-disable ember/no-classic-classes, ember/no-get*/
+import Model, { attr } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import DS from 'ember-data';
 
-export default DS.Model.extend({
+export default Model.extend({
   userSocket: service(),
 
-  email: DS.attr('string'),
-  password: DS.attr('string'),
-  passwordConfirmation: DS.attr('string'),
+  email: attr('string'),
+  password: attr('string'),
+  passwordConfirmation: attr('string'),
 
-  admin: DS.attr('boolean'),
+  admin: attr('boolean'),
 
-  lastSeenAt: DS.attr('date'),
+  lastSeenAt: attr('date'),
 
   isPresent: computed.gt('presenceCount', 0),
 

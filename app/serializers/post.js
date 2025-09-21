@@ -1,7 +1,7 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
-import DS from 'ember-data';
+/* eslint-disable ember/no-classic-classes*/
+import JSONAPISerializer from '@ember-data/serializer/json-api';
 
-export default DS.JSONAPISerializer.extend({
+export default JSONAPISerializer.extend({
   attrs: {
     body: 'content',
   },

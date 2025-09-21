@@ -1,10 +1,10 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
+/* eslint-disable ember/no-classic-classes*/
+import Model, { attr } from '@ember-data/model';
 import { computed } from '@ember/object';
-import DS from 'ember-data';
 
-export default DS.Model.extend({
-  name: DS.attr(),
-  far: DS.attr('boolean'),
+export default Model.extend({
+  name: attr(),
+  far: attr('boolean'),
 
   validationErrors: computed(
     'constructor.attributes',

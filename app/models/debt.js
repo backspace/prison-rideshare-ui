@@ -1,16 +1,16 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get, ember/use-ember-data-rfc-395-imports */
+/* eslint-disable ember/no-classic-classes, ember/no-get*/
+import Model, { belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 import { sort, mapBy } from '@ember/object/computed';
-import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import sum from 'ember-cpm/macros/sum';
 
-export default DS.Model.extend({
-  person: DS.belongsTo(),
+export default Model.extend({
+  person: belongsTo(),
 
-  rides: DS.hasMany(),
+  rides: hasMany(),
 
   descendingRides: sort('rides', 'descendingRideSort'),
   descendingRideSort: Object.freeze(['start:desc']),

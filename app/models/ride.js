@@ -1,8 +1,8 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get, ember/use-ember-data-rfc-395-imports */
+/* eslint-disable ember/no-classic-classes, ember/no-get*/
+import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { mapBy, gt } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import DS from 'ember-data';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
@@ -12,33 +12,33 @@ import difference from 'ember-cpm/macros/difference';
 
 import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
 
-export default DS.Model.extend({
+export default Model.extend({
   moment: service(),
 
-  enabled: DS.attr('boolean', { defaultValue: true }),
-  complete: DS.attr('boolean', { defaultValue: false }),
+  enabled: attr('boolean', { defaultValue: true }),
+  complete: attr('boolean', { defaultValue: false }),
 
-  cancellationReason: DS.attr(),
+  cancellationReason: attr(),
 
-  combinedWith: DS.belongsTo('ride', { inverse: 'children' }),
-  children: DS.hasMany('ride', { inverse: 'combinedWith' }),
+  combinedWith: belongsTo('ride', { inverse: 'children' }),
+  children: hasMany('ride', { inverse: 'combinedWith' }),
 
   isCombined: computed('combinedWith.id', function () {
     return this.belongsTo('combinedWith').id();
   }),
 
-  medium: DS.attr(),
-  requestConfirmed: DS.attr(),
+  medium: attr(),
+  requestConfirmed: attr(),
 
-  name: DS.attr(),
+  name: attr(),
 
-  institution: DS.belongsTo(),
-  rate: DS.attr('number'),
+  institution: belongsTo(),
+  rate: attr('number'),
 
-  address: DS.attr(),
-  contact: DS.attr(),
-  passengers: DS.attr({ defaultValue: 1 }),
-  firstTime: DS.attr('boolean'),
+  address: attr(),
+  contact: attr(),
+  passengers: attr({ defaultValue: 1 }),
+  firstTime: attr('boolean'),
 
   validationErrors: computed(
     'constructor.attributes',
@@ -56,9 +56,9 @@ export default DS.Model.extend({
     }
   ),
 
-  start: DS.attr('date'),
-  end: DS.attr('date'),
-  insertedAt: DS.attr('date'),
+  start: attr('date'),
+  end: attr('date'),
+  insertedAt: attr('date'),
 
   rideTimes: computed('start', 'end', function () {
     const start = this.start;
@@ -67,31 +67,31 @@ export default DS.Model.extend({
     return formatTimespan(this.moment, start, end);
   }),
 
-  driver: DS.belongsTo('person'),
-  carOwner: DS.belongsTo('person'),
-  initials: DS.attr('string'),
+  driver: belongsTo('person'),
+  carOwner: belongsTo('person'),
+  initials: attr('string'),
 
-  requestNotes: DS.attr(),
+  requestNotes: attr(),
 
-  distance: DS.attr(),
+  distance: attr(),
 
-  reportNotes: DS.attr(),
+  reportNotes: attr(),
 
-  overridable: DS.attr('boolean'),
+  overridable: attr('boolean'),
 
-  reimbursements: DS.hasMany(),
+  reimbursements: hasMany(),
 
-  foodExpenses: DS.attr({ defaultValue: 0 }),
+  foodExpenses: attr({ defaultValue: 0 }),
   foodExpensesDollars: dollars('foodExpenses'),
 
-  carExpenses: DS.attr({ defaultValue: 0 }),
+  carExpenses: attr({ defaultValue: 0 }),
   carExpensesDollars: dollars('carExpenses'),
 
   totalExpenses: sum('foodExpenses', 'carExpenses'),
   totalExpensesDollars: dollars('totalExpenses'),
 
-  donation: DS.attr('boolean'),
-  donatable: DS.attr('boolean'),
+  donation: attr('boolean'),
+  donatable: attr('boolean'),
 
   reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: sum('reimbursementFoodExpenses'),

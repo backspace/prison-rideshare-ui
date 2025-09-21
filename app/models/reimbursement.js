@@ -1,19 +1,19 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
-import DS from 'ember-data';
+/* eslint-disable ember/no-classic-classes*/
+import Model, { attr, belongsTo } from '@ember-data/model';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
-export default DS.Model.extend({
-  foodExpenses: DS.attr('number', { defaultValue: 0 }),
-  carExpenses: DS.attr('number', { defaultValue: 0 }),
+export default Model.extend({
+  foodExpenses: attr('number', { defaultValue: 0 }),
+  carExpenses: attr('number', { defaultValue: 0 }),
 
-  person: DS.belongsTo(),
-  donation: DS.attr('boolean'),
-  processed: DS.attr('boolean'),
+  person: belongsTo(),
+  donation: attr('boolean'),
+  processed: attr('boolean'),
 
   foodExpensesDollars: dollars('foodExpenses'),
   carExpensesDollars: dollars('carExpenses'),
 
-  ride: DS.belongsTo(),
+  ride: belongsTo(),
 
-  insertedAt: DS.attr('date'),
+  insertedAt: attr('date'),
 });

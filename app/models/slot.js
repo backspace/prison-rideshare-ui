@@ -1,13 +1,13 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get, ember/use-ember-data-rfc-395-imports */
-import DS from 'ember-data';
+/* eslint-disable ember/no-classic-classes, ember/no-get*/
+import Model, { attr, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
 
-export default DS.Model.extend({
-  start: DS.attr('date'),
-  end: DS.attr('date'),
-  count: DS.attr('number'),
+export default Model.extend({
+  start: attr('date'),
+  end: attr('date'),
+  count: attr('number'),
 
-  commitments: DS.hasMany({ async: false }),
+  commitments: hasMany({ async: false }),
 
   isNotFull: computed('commitments.length', 'count', function () {
     const count = this.count;

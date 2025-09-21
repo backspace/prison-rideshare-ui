@@ -1,32 +1,32 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
+/* eslint-disable ember/no-classic-classes*/
+import Model, { attr, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
-import DS from 'ember-data';
 
-export default DS.Model.extend({
-  name: DS.attr(),
+export default Model.extend({
+  name: attr(),
 
-  email: DS.attr('string'),
-  mobile: DS.attr('string'),
-  landline: DS.attr('string'),
-  medium: DS.attr('string'),
+  email: attr('string'),
+  mobile: attr('string'),
+  landline: attr('string'),
+  medium: attr('string'),
 
-  address: DS.attr('string'),
+  address: attr('string'),
 
-  active: DS.attr('boolean', { defaultValue: true }),
+  active: attr('boolean', { defaultValue: true }),
 
-  notes: DS.attr('string'),
-  selfNotes: DS.attr('string'),
+  notes: attr('string'),
+  selfNotes: attr('string'),
 
-  reimbursements: DS.hasMany(),
+  reimbursements: hasMany(),
 
-  drivings: DS.hasMany('ride', { inverse: 'driver' }),
-  carOwnings: DS.hasMany('ride', { inverse: 'carOwner' }),
+  drivings: hasMany('ride', { inverse: 'driver' }),
+  carOwnings: hasMany('ride', { inverse: 'carOwner' }),
 
   lastRide: computed('drivings.@each.start', function () {
     return this.drivings.sortBy('start').get('lastObject');
   }),
 
-  calendarSecret: DS.attr('string'),
+  calendarSecret: attr('string'),
 
   validationErrors: computed(
     'constructor.attributes',

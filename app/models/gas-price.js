@@ -1,10 +1,10 @@
-/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
-import DS from 'ember-data';
+/* eslint-disable ember/no-classic-classes*/
+import Model, { attr } from '@ember-data/model';
 
-export default DS.Model.extend({
-  price: DS.attr(),
-  closeRate: DS.attr(),
-  farRate: DS.attr(),
+export default Model.extend({
+  price: attr(),
+  closeRate: attr(),
+  farRate: attr(),
 
-  insertedAt: DS.attr('date'),
+  insertedAt: attr('date'),
 });
