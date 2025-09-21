@@ -14,7 +14,6 @@ import PaperButton from 'ember-paper/components/paper-button';
 @tagName('')
 export default class PersonRow extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     <@body.row class='person' as |row|>
       <row.cell>
         <PaperSwitch

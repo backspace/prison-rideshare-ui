@@ -14,7 +14,6 @@ import { pageTitle } from 'ember-page-title';
 @classic
 export default class ToolbarHeader extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     {{#if @titleOverride}}
       {{pageTitle @titleOverride}}
     {{else}}

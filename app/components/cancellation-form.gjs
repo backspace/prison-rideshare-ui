@@ -28,7 +28,6 @@ const shortcutReasonToIcon = shortcuts.reduce(
 @classic
 export default class CancellationForm extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     <PaperDialog @onClose={{this.cancel}} @clickOutsideToClose={{true}}>
       <PaperDialogContent>
         {{#if this.ride.children}}

@@ -12,7 +12,6 @@ import PaperSelect from 'ember-paper/components/paper-select/component';
 @tagName('')
 export default class RidePerson extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     {{#if this.person}}
       <span class='ride-person'>
         <PersonBadge

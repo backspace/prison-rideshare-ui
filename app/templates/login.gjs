@@ -10,7 +10,6 @@ import PaperButton from 'ember-paper/components/paper-button';
 
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <PaperDialog>
       <PaperToolbar>
         <PaperToolbarTools>

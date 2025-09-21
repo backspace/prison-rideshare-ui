@@ -21,7 +21,6 @@ class AdminCalendarComponent extends Component {
     this.args.controller.set('month', value.date);
   }
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title={{@controller.title}} />
 
     <div class='admin-calendar'>

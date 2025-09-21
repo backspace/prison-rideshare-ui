@@ -14,7 +14,6 @@ import ReimbursementForm from 'prison-rideshare-ui/components/reimbursement-form
 import { fn } from '@ember/helper';
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Reimbursements' />
 
     <PaperContent>

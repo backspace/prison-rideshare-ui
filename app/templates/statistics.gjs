@@ -14,7 +14,6 @@ import { pageTitle } from 'ember-page-title';
 
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     {{pageTitle 'Statistics'}}
     <PaperContent @class='layout-column flex'>
       <PaperCard @class='statistics-card' as |card|>

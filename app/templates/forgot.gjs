@@ -9,7 +9,6 @@ import { pageTitle } from 'ember-page-title';
 
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     {{pageTitle 'Forgot password'}}
     <PaperDialog>
       <PaperToolbar>

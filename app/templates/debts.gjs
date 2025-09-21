@@ -8,7 +8,6 @@ import { fn } from '@ember/helper';
 
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Debts' />
 
     <PaperDataTable @class='debts' as |table|>

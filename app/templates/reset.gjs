@@ -9,7 +9,6 @@ import { fn } from '@ember/helper';
 import { pageTitle } from 'ember-page-title';
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     {{pageTitle 'Reset password'}}
     <PaperDialog>
       <PaperToolbar>

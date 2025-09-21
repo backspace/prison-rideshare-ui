@@ -16,7 +16,6 @@ import { on } from '@ember/modifier';
 @classic
 export default class CalendarSlot extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     <div class='slot {{if this.hidden "hidden"}}'>
       {{#if this.count}}
         <span class='hours'>

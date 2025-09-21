@@ -22,7 +22,6 @@ function countRidesOrVisitors(rides, grouping) {
 @classic
 export default class RequestsAndReimbursementsChart extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     <HighCharts
       @content={{this.data}}
       @chartOptions={{this.options}}

@@ -14,7 +14,6 @@ import CancellationForm from 'prison-rideshare-ui/components/cancellation-form';
 import { fn } from '@ember/helper';
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Rides'>
       <PaperButton
         @mini={{true}}

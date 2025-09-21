@@ -17,7 +17,6 @@ import { fn } from '@ember/helper';
 
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Drivers'>
       <PaperButton
         @mini={{true}}

@@ -23,7 +23,6 @@ class InstitutionsComponent extends Component {
   }
 
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Institutions'>
       <PaperButton
         @mini={{true}}

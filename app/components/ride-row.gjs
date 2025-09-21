@@ -28,7 +28,6 @@ const mediumIcon = {
 @tagName('')
 export default class RideRow extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     <@body.row class={{this.classAttribute}} as |row|>
       {{#if this.showCreation}}
         <row.cell class='creation'>

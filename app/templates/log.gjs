@@ -21,7 +21,6 @@ import { modifier } from 'ember-modifier';
 
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Log'>
       <PaperButton
         @mini={{true}}

@@ -20,7 +20,6 @@ class ApplicationComponent extends Component {
     this.args.controller.sidebar.open = !this.args.controller.sidebar.open;
   }
   <template>
-    {{! template-lint-disable no-action }}
     {{pageTitle 'Prison Rideshare' separator=' · '}}
     <HeadLayout />
     <EmberLoadRemover />

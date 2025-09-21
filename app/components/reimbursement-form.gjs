@@ -6,7 +6,6 @@ import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
 import PaperButton from 'ember-paper/components/paper-button';
 import { fn } from '@ember/helper';
 <template>
-  {{! template-lint-disable no-action }}
   <PaperDialog @clickOutsideToClose={{true}} @onClose={{this.cancel}}>
     <PaperDialogContent>
       <h2 class='md-title'>

@@ -8,7 +8,6 @@ import eq from 'ember-truth-helpers/helpers/eq';
 import { fn } from '@ember/helper';
 export default RouteTemplate(
   <template>
-    {{! template-lint-disable no-action }}
     <ToolbarHeader @title='Users' />
 
     <PaperDataTable as |table|>

@@ -27,7 +27,6 @@ const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
 @classic
 export default class RideForm extends Component {
   <template>
-    {{! template-lint-disable no-action }}
     <PaperDialog @onClose={{this.cancel}} @fullscreen={{true}}>
       <PaperDialogContent>
         {{#if this.editingWarning}}
