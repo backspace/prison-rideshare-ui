@@ -8,8 +8,6 @@ export default class ForgotRoute extends Route {
   @service
   session;
 
-  titleToken = 'Forgot password';
-
   beforeModel() {
     this.session.prohibitAuthentication();
   }

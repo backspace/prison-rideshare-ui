@@ -14,6 +14,4 @@ export default class InstitutionsRoute extends Route.extend(
   model() {
     return this.store.findAll('institution');
   }
-
-  titleToken = 'Institutions';
 }

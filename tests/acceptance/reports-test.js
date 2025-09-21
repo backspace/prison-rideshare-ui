@@ -8,6 +8,7 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/report';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | reports', function (hooks) {
   setupApplicationTest(hooks);
@@ -63,8 +64,7 @@ module('Acceptance | reports', function (hooks) {
   test('submit a report for a ride', async function (assert) {
     await page.visit();
 
-    assert.equal(shared.title, 'Ride report · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Ride report · Prison Rideshare');
     assert.equal(page.rides.length, 2, 'expected two rides to choose from');
     assert.ok(page.noSession.isHidden);
 

@@ -7,6 +7,7 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/log';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | log', function (hooks) {
   setupApplicationTest(hooks);
@@ -47,8 +48,7 @@ module('Acceptance | log', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(shared.title, 'Log · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Log · Prison Rideshare');
     assert.equal(shared.logCount.text, '1');
 
     assert.equal(page.posts.length, 2);

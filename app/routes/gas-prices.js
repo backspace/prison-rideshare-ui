@@ -11,6 +11,4 @@ export default class GasPricesRoute extends Route {
   model() {
     return this.store.findAll('gas-price');
   }
-
-  titleToken = 'Gas prices';
 }

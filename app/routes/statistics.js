@@ -16,6 +16,4 @@ export default class StatisticsRoute extends Route.extend(AuthenticatedRoute) {
   afterModel() {
     return this.store.findAll('reimbursement');
   }
-
-  titleToken = 'Statistics';
 }

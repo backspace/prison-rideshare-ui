@@ -4,7 +4,7 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
 
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
-import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | reports', function (hooks) {
   setupApplicationTest(hooks);
@@ -41,8 +41,7 @@ module('Acceptance | reports', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(shared.title, 'Gas prices · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Gas prices · Prison Rideshare');
     assert.equal(
       page.gasPrices.length,
       10,

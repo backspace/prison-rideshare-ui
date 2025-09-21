@@ -7,6 +7,7 @@ import { Response } from 'miragejs';
 
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | reset password', function (hooks) {
   setupApplicationTest(hooks);
@@ -48,8 +49,7 @@ module('Acceptance | reset password', function (hooks) {
     });
 
     await resetPage.visit({ token: 'Strike!' });
-    assert.equal(shared.title, 'Reset password · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Reset password · Prison Rideshare');
     await resetPage.fillPassword('hello');
     await resetPage.fillPasswordConfirmation('hello');
     await resetPage.submit();

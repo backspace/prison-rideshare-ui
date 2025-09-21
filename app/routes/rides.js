@@ -12,6 +12,4 @@ export default class RidesRoute extends Route.extend(AuthenticatedRoute) {
   model() {
     return this.store.findAll('ride');
   }
-
-  titleToken = 'Rides';
 }

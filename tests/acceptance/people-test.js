@@ -9,6 +9,7 @@ import { selectChoose } from 'ember-power-select/test-support/helpers';
 import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | people', function (hooks) {
   setupApplicationTest(hooks);
@@ -105,8 +106,7 @@ module('Acceptance | people', function (hooks) {
     await page.form.nameField.fill('Billiam');
     await page.form.cancel();
 
-    assert.equal(shared.title, 'Drivers · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Drivers · Prison Rideshare');
     assert.equal(page.people[2].name, 'Will');
 
     let serverPeople = this.server.db.people;

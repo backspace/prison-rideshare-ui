@@ -6,7 +6,7 @@ import { percySnapshot } from 'ember-percy';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/institutions';
-import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | institutions', function (hooks) {
   setupApplicationTest(hooks);
@@ -23,8 +23,7 @@ module('Acceptance | institutions', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(shared.title, 'Institutions · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Institutions · Prison Rideshare');
     assert.equal(
       page.institutions.length,
       2,

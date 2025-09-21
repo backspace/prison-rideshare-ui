@@ -9,9 +9,11 @@ import PaperButton from "ember-paper/components/paper-button";
 import paperIcon from "ember-paper/components/paper-icon";
 import pluralize from "ember-inflector/lib/helpers/pluralize";
 import PaperChips from "ember-paper/components/paper-chips/component";
+import { pageTitle } from 'ember-page-title';
 
 @classic
 export default class ToolbarHeader extends Component {<template>{{!-- template-lint-disable no-action --}}
+{{pageTitle this.title}}
 <PaperToolbar as |toolbar|>
   <toolbar.tools>
     <PaperButton @iconButton={{true}} @onClick={{this.toggleSidebar}} @class="hide-gt-sm">

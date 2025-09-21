@@ -6,7 +6,7 @@ import { percySnapshot } from 'ember-percy';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/statistics';
-import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 import moment from 'moment';
 
@@ -22,8 +22,7 @@ module('Acceptance | statistics', function (hooks) {
   test('has convenience buttons for timespans', async function (assert) {
     await page.visit();
 
-    assert.equal(shared.title, 'Statistics · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Statistics · Prison Rideshare');
     assert.equal(
       page.start.value,
       moment().subtract(1, 'year').format(format),

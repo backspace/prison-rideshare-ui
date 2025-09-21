@@ -8,6 +8,7 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/users';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
+import { getPageTitle } from 'ember-page-title/test-support';
 
 module('Acceptance | users', function (hooks) {
   setupApplicationTest(hooks);
@@ -41,8 +42,7 @@ module('Acceptance | users', function (hooks) {
   test('list users and update admin status', async function (assert) {
     await page.visit();
 
-    assert.equal(shared.title, 'Users · Prison Rideshare');
-
+    assert.equal(getPageTitle(), 'Users · Prison Rideshare');
     assert.equal(page.users.length, 2, 'expected two users');
 
     assert.equal(page.users[0].email, 'abc@def.com');

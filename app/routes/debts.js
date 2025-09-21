@@ -12,6 +12,4 @@ export default class DebtsRoute extends Route.extend(AuthenticatedRoute) {
   model() {
     return this.store.findAll('debt');
   }
-
-  titleToken = 'Debts';
 }

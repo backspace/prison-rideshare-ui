@@ -18,6 +18,4 @@ export default class DriversRoute extends Route.extend(AuthenticatedRoute) {
     // FIXME this is ridiculous, should just be sync relationships perhaps, or have last ride be computed by API
     return this.store.findAll('ride');
   }
-
-  titleToken = 'Drivers';
 }

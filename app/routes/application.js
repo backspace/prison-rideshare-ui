@@ -32,10 +32,6 @@ export default class ApplicationRoute extends Route {
     return this._loadCurrentUser();
   }
 
-  title(tokens) {
-    return `${tokens.join(' · ')} · Prison Rideshare`;
-  }
-
   sessionAuthenticated() {
     this.userSocket.connect();
     this.overlaps.fetch();

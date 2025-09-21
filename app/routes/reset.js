@@ -8,8 +8,6 @@ export default class ResetRoute extends Route {
   @service
   session;
 
-  titleToken = 'Reset password';
-
   beforeModel() {
     this.session.prohibitAuthentication();
   }

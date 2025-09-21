@@ -13,11 +13,14 @@ import now from "ember-moment/helpers/now";
 import PaperDivider from "ember-paper/components/paper-divider/component";
 import { action } from "@ember/object";
 import Component from '@glimmer/component';
+import { pageTitle } from 'ember-page-title';
+
 class ApplicationComponent extends Component {
   @action toggleSidebar() {
     this.args.controller.sidebar.open = !this.args.controller.sidebar.open;
   }
 <template>{{!-- template-lint-disable no-action --}}
+  {{pageTitle "Prison Rideshare"}}
 <HeadLayout />
 <EmberLoadRemover />
 
