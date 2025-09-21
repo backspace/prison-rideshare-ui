@@ -85,7 +85,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
         {{paperIcon "directions_bus" title="driver can override car expenses (van-driving, probably)"}}
       {{/if}}
       {{#if (or (not this.ride.children) this.rideToCombine)}}
-        <PaperButton class="combine" @iconButton={{true}} @raised={{eq this.ride.id this.rideToCombine.id}} @aria-label={{this.combineButtonLabel}} @title={{this.combineButtonLabel}} @onClick={{action this.combineRide this.ride}}>
+        <PaperButton class="combine" @iconButton={{true}} @raised={{eq this.ride.id this.rideToCombine.id}} @aria-label={{this.combineButtonLabel}} @title={{this.combineButtonLabel}} @onClick={{this.combineRide this.ride}}>
           {{paperIcon "merge type"}}
         </PaperButton>
       {{/if}}
@@ -93,7 +93,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
   </row.cell>
   <row.cell>
     <span class="cancellation">
-      <PaperButton @iconButton={{true}} @aria-label={{this.cancellationButtonLabel}} @title={{this.cancellationButtonLabel}} @onClick={{action this.editCancellation this.ride}}>
+      <PaperButton @iconButton={{true}} @aria-label={{this.cancellationButtonLabel}} @title={{this.cancellationButtonLabel}} @onClick={{this.editCancellation this.ride}}>
         {{#if this.ride.enabled}}
           {{paperIcon "highlight off"}}
         {{else}}
@@ -101,7 +101,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
         {{/if}}
       </PaperButton>
     </span>
-    <PaperButton @iconButton={{true}} @aria-label="Edit ride" @title="Edit ride" class="edit" @onClick={{action this.editRide this.ride}}>
+    <PaperButton @iconButton={{true}} @aria-label="Edit ride" @title="Edit ride" class="edit" @onClick={{this.editRide this.ride}}>
       {{paperIcon "mode edit"}}
     </PaperButton>
   </row.cell>
