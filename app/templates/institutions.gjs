@@ -10,9 +10,21 @@ import PaperForm from "ember-paper/components/paper-form";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
-export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+import Component from '@glimmer/component';
+import { fn } from '@ember/helper';
+
+class InstitutionsComponent extends Component {
+  @action updateName(value) {
+    this.args.controller.editingInstitution.set('name', value);
+  }
+
+  @action updateFar(value) {
+    this.args.controller.editingInstitution.set('far', value);
+  }
+
+<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Institutions">
-  <PaperButton @mini={{true}} @aria-label="New institution" @title="New institution" @class="new" @onClick={{this.newInstitution}}>
+  <PaperButton @mini={{true}} @aria-label="New institution" @title="New institution" @class="new" @onClick={{@controller.newInstitution}}>
     {{paperIcon "add"}}
   </PaperButton>
 </ToolbarHeader>
@@ -40,7 +52,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             {{/if}}
           </row.cell>
           <row.cell>
-            <PaperButton @iconButton={{true}} @aria-label="Edit institution" @title="Edit institution" @class="edit" @onClick={{@controller.editInstitution institution}}>
+            <PaperButton @iconButton={{true}} @aria-label="Edit institution" @title="Edit institution" @class="edit" @onClick={{fn @controller.editInstitution institution}}>
               {{paperIcon "mode edit"}}
             </PaperButton>
           </row.cell>
@@ -58,10 +70,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </h2>
       <PaperForm @onSubmit={{@controller.saveInstitution}} as |form|>
         <div class="layout layout-sm-column">
-          <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.editingInstitution.name}} @onChange={{mut @controller.editingInstitution.name}} @errors={{@controller.editingInstitution.validationErrors.name}} @isTouched={{readonly @controller.editingInstitution.validationErrors.name.length}} />
+          <form.input @class="name" @label="Name" @autofocus={{true}} @value={{@controller.editingInstitution.name}} @onChange={{this.updateName}} @errors={{@controller.editingInstitution.validationErrors.name}} @isTouched={{readonly @controller.editingInstitution.validationErrors.name.length}} />
         </div>
         <div class="layout layout-sm-column">
-          <PaperCheckbox @value={{@controller.editingInstitution.far}} @onChange={{mut @controller.editingInstitution.far}}>
+          <PaperCheckbox @value={{@controller.editingInstitution.far}} @onChange={{this.updateFar}}>
             Far?
           </PaperCheckbox>
         </div>
@@ -69,12 +81,15 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </PaperDialogContent>
 
     <PaperDialogActions @class="layout-row">
-      <PaperButton @class="cancel" @onClick={{this.cancelInstitution}}>
+      <PaperButton @class="cancel" @onClick={{@controller.cancelInstitution}}>
         Cancel
       </PaperButton>
-      <PaperButton @class="submit" @primary={{true}} @onClick={{this.saveInstitution}}>
+      <PaperButton @class="submit" @primary={{true}} @onClick={{@controller.saveInstitution}}>
         Save
       </PaperButton>
     </PaperDialogActions>
   </PaperDialog>
-{{/if}}</template>)
+{{/if}}</template>
+};
+
+export default RouteTemplate(InstitutionsComponent);
