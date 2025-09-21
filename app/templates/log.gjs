@@ -16,9 +16,11 @@ import MobiledocEditor from "ember-mobiledoc-editor/components/mobiledoc-editor/
 import MobiledocToolbar from "ember-mobiledoc-editor/components/mobiledoc-toolbar/component";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
+import { fn } from '@ember/helper';
+
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Log">
-  <PaperButton @mini={{true}} @aria-label="New post" @title="New post" @class="new" @onClick={{this.newPost}}>
+  <PaperButton @mini={{true}} @aria-label="New post" @title="New post" @class="new" @onClick={{@controller.newPost}}>
     {{paperIcon "note_add"}}
   </PaperButton>
 </ToolbarHeader>
@@ -34,7 +36,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </head.column>
       <head.column>
         {{#if (filterBy "unread" @controller.model)}}
-          <PaperButton @aria-label="Mark all read" @title="Mark all read" @class="markAllRead" @onClick={{this.markAllRead}}>
+          <PaperButton @aria-label="Mark all read" @title="Mark all read" @class="markAllRead" @onClick={{@controller.markAllRead}}>
             Mark all read{{paperIcon "done_all"}}
           </PaperButton>
         {{/if}}
@@ -54,33 +56,32 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
               </span>
             </row.cell>
             <row.cell @class="content">
-                            <RenderMobiledoc @mobiledoc={{post.bodyJson}} />
-
+              <RenderMobiledoc @mobiledoc={{post.bodyJson}} />
             </row.cell>
             <row.cell @class="controls">
               {{#if post.unread}}
-                <PaperButton @aria-label="Mark read" @title="Mark read" @class="markRead" @onClick={{this.markRead post}}>
+                <PaperButton @aria-label="Mark read" @title="Mark read" @class="markRead" @onClick={{fn @controller.markRead post}}>
                   Mark read{{paperIcon "done"}}
                 </PaperButton>
               {{else}}
-                <PaperButton @aria-label="Mark unread" @title="Mark unread" @class="markUnread" @onClick={{this.markUnread post}}>
+                <PaperButton @aria-label="Mark unread" @title="Mark unread" @class="markUnread" @onClick={{fn @controller.markUnread post}}>
                   Mark unread{{paperIcon "autorenew"}}
                 </PaperButton>
               {{/if}}
               {{#if (eq @controller.session.currentUser.id post.poster.id)}}
-                <PaperButton @iconButton={{true}} @aria-label="Edit post" @title="Edit post" @class="edit" @onClick={{this.editPost post}}>
+                <PaperButton @iconButton={{true}} @aria-label="Edit post" @title="Edit post" @class="edit" @onClick={{fn @controller.editPost post}}>
                   {{paperIcon "mode edit"}}
                 </PaperButton>
                 {{#if (eq @controller.deletingPost post)}}
                   Delete this post?
-                  <PaperButton @class="delete-confirm" @warn={{true}} @aria-label="Delete post" @title="Delete post" @onClick={{this.deletePost}}>
+                  <PaperButton @class="delete-confirm" @warn={{true}} @aria-label="Delete post" @title="Delete post" @onClick={{@controller.deletePost}}>
                     Yes
                   </PaperButton>
-                  <PaperButton @class="delete-cancel" @aria-label="Don’t delete report" @title="Don’t delete report" @onClick={{mut @controller.deletingPost}}>
+                  <PaperButton @class="delete-cancel" @aria-label="Don’t delete report" @title="Don’t delete report" @onClick={{fn @controller.maybeDeletePost null}}>
                     No
                   </PaperButton>
                 {{else}}
-                  <PaperButton @iconButton={{true}} @aria-label="Delete post" @title="Delete post" @class="delete" @onClick={{action (mut @controller.deletingPost) post}}>
+                  <PaperButton @iconButton={{true}} @aria-label="Delete post" @title="Delete post" @class="delete" @onClick={{fn @controller.maybeDeletePost post}}>
                     {{paperIcon "delete"}}
                   </PaperButton>
                 {{/if}}
@@ -94,7 +95,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 </PaperContent>
 
 {{#if @controller.editingPost}}
-  <PaperDialog @clickOutsideToClose={{true}} @fullscreen={{true}} @onClose={{this.cancelPost}}>
+  <PaperDialog @clickOutsideToClose={{true}} @fullscreen={{true}} @onClose={{@cancelPost}}>
     <PaperForm @onSubmit={{@controller.savePost}}>
       <PaperDialogContent>
         <h2 class="md-title">
@@ -102,7 +103,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
           post
         </h2>
         <div class="layout layout-sm-column content">
-          <MobiledocEditor @mobiledoc={{@controller.editingPost.bodyJson}} @autofocus={{true}} @on-change={{mut @controller.editingPost.bodyJson}} as |editor|>
+          <MobiledocEditor @mobiledoc={{@controller.editingPost.bodyJson}} @autofocus={{true}} @on-change={{@controller.updatePostBody}} as |editor|>
             <MobiledocToolbar @editor={{editor}} />
           </MobiledocEditor>
           {{#if @controller.editingPost.validationErrors.body}}
@@ -117,10 +118,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
         </div>
       </PaperDialogContent>
       <PaperDialogActions @class="layout-row">
-        <PaperButton @class="cancel" @onClick={{this.cancelPost}}>
+        <PaperButton @class="cancel" @onClick={{@controller.cancelPost}}>
           Cancel
         </PaperButton>
-        <PaperButton @class="submit" @primary={{true}} @onClick={{this.savePost}}>
+        <PaperButton @class="submit" @primary={{true}} @onClick={{@controller.savePost}}>
           Save
         </PaperButton>
       </PaperDialogActions>
