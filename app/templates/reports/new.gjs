@@ -30,7 +30,7 @@ class NewReportComponent extends Component{
   this.args.controller.editingRide.reportNotes = value;
 }
 <template>{{!-- template-lint-disable no-action --}}
-<ToolbarHeader @title="Record ride details" />
+<ToolbarHeader @title="Record ride details" @titleOverride="Ride report" />
 
 <PaperContent @class="layout-column">
   {{#if @controller.session.isAuthenticated}}
