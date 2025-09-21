@@ -6,6 +6,7 @@ import paperIcon from "ember-paper/components/paper-icon";
 import PaperCheckbox from "ember-paper/components/paper-checkbox";
 import eq from "ember-truth-helpers/helpers/eq";
 import { action } from "@ember/object";
+import { fn } from "@ember/helper";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Users" />
 
@@ -39,7 +40,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
           {{/if}}
         </row.cell>
         <row.cell>
-          <PaperCheckbox @value={{user.admin}} @disabled={{eq user @controller.session.currentUser}} @onChange={{this.updateUserAdmin user}} />
+          <PaperCheckbox @value={{user.admin}} @disabled={{eq user @controller.session.currentUser}} @onChange={{fn @controller.updateUserAdmin user}} />
         </row.cell>
       </body.row>
     {{/each}}
