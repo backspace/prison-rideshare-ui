@@ -12,14 +12,19 @@ import momentFormat from "ember-moment/helpers/moment-format";
 import now from "ember-moment/helpers/now";
 import PaperDivider from "ember-paper/components/paper-divider/component";
 import { action } from "@ember/object";
-export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+import Component from '@glimmer/component';
+class ApplicationComponent extends Component {
+  @action toggleSidebar() {
+    this.args.controller.sidebar.open = !this.args.controller.sidebar.open;
+  }
+<template>{{!-- template-lint-disable no-action --}}
 <HeadLayout />
 <EmberLoadRemover />
 
 <PaperToaster />
 
 <PaperSidenavContainer @class="site-nav-container">
-  <PaperSidenav @lockedOpen="gt-sm" @open={{@controller.sidebar.open}} @onToggle={{action (mut @controller.sidebar.open)}}>
+  <PaperSidenav @lockedOpen="gt-sm" @open={{@controller.sidebar.open}} @onToggle={{this.toggleSidebar}}>
     <PaperContent>
       <PaperList>
         {{#if @controller.session.currentUser.admin}}
@@ -126,7 +131,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </PaperItem>
             <PaperDivider />
           {{/if}}
-          <PaperItem @onClick={{action "logout"}} @class="session">
+          <PaperItem @onClick={{this.logout}} @class="session">
             Log out {{@controller.session.currentUser.email}}
           </PaperItem>
         {{else}}
@@ -145,4 +150,6 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <main class="flex layout-column">
     {{outlet}}
   </main>
-</PaperSidenavContainer></template>)
+</PaperSidenavContainer></template>}
+
+export default RouteTemplate(ApplicationComponent);

@@ -14,7 +14,7 @@ import PaperChips from "ember-paper/components/paper-chips/component";
 export default class ToolbarHeader extends Component {<template>{{!-- template-lint-disable no-action --}}
 <PaperToolbar as |toolbar|>
   <toolbar.tools>
-    <PaperButton @iconButton={{true}} @onClick={{action "toggleSidebar"}} @class="hide-gt-sm">
+    <PaperButton @iconButton={{true}} @onClick={{this.toggleSidebar}} @class="hide-gt-sm">
       {{paperIcon "menu"}}
     </PaperButton>
     {{#if this.session.currentUser.admin}}
