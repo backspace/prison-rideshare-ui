@@ -5,7 +5,6 @@ import PaperToolbarTools from 'ember-paper/components/paper-toolbar-tools';
 import PaperForm from 'ember-paper/components/paper-form';
 import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
 import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
-import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { pageTitle } from 'ember-page-title';
 export default RouteTemplate(

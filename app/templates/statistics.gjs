@@ -9,7 +9,6 @@ import RequestTimeChart from 'prison-rideshare-ui/components/request-time-chart'
 import CancellationChart from 'prison-rideshare-ui/components/cancellation-chart';
 import CopyButton from 'ember-cli-clipboard/components/copy-button';
 import paperIcon from 'ember-paper/components/paper-icon';
-import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { pageTitle } from 'ember-page-title';
 

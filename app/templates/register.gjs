@@ -7,7 +7,6 @@ import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
 import PaperCard from 'ember-paper/components/paper-card';
 import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
 import PaperButton from 'ember-paper/components/paper-button';
-import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 export default RouteTemplate(
   <template>

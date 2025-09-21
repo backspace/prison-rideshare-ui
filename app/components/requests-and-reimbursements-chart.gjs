@@ -5,9 +5,9 @@ import { equal } from '@ember/object/computed';
 import Component from '@ember/component';
 import moment from 'moment';
 import HighCharts from 'ember-highcharts/components/high-charts';
-import EmberWormhole from 'ember-wormhole/components/ember-wormhole';
-import PaperButton from 'ember-paper/components/paper-button';
-import eq from 'ember-truth-helpers/helpers/eq';
+// import EmberWormhole from 'ember-wormhole/components/ember-wormhole';
+// import PaperButton from 'ember-paper/components/paper-button';
+// import eq from 'ember-truth-helpers/helpers/eq';
 
 function countRidesOrVisitors(rides, grouping) {
   if (grouping === 'rides') {
@@ -39,7 +39,7 @@ export default class RequestsAndReimbursementsChart extends Component {
   </EmberWormhole> --}}
     {{/if}}
   </template>
-  timeGrouping = 'months';
+  // timeGrouping = 'months';
   rendered = false;
 
   @equal('timeGrouping', 'weeks') isWeeks;
@@ -78,7 +78,7 @@ export default class RequestsAndReimbursementsChart extends Component {
   @computed('grouping', 'timeGroupKeys', 'timeGrouping', 'timeGroups')
   get data() {
     const timeGroups = this.timeGroups;
-    const timeGrouping = this.timeGrouping;
+    // const timeGrouping = this.timeGrouping;
     const grouping = this.grouping;
 
     return [

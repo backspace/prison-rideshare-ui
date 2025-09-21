@@ -13,7 +13,6 @@ import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
 import PaperForm from 'ember-paper/components/paper-form';
 import PaperRadioGroup from 'ember-paper/components/paper-radio-group';
 import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
-import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 
 export default RouteTemplate(

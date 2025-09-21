@@ -14,7 +14,6 @@ import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
 import MobiledocEditor from 'ember-mobiledoc-editor/components/mobiledoc-editor/component';
 import MobiledocToolbar from 'ember-mobiledoc-editor/components/mobiledoc-toolbar/component';
 import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
-import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import DOMRenderer from 'ember-mobiledoc-dom-renderer';
 import Component from '@glimmer/component';

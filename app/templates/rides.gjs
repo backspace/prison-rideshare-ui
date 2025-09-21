@@ -11,7 +11,6 @@ import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import RideRow from 'prison-rideshare-ui/components/ride-row';
 import RideForm from 'prison-rideshare-ui/components/ride-form';
 import CancellationForm from 'prison-rideshare-ui/components/cancellation-form';
-import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 export default RouteTemplate(
   <template>
