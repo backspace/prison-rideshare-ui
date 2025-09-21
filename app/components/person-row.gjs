@@ -15,47 +15,47 @@ import PaperButton from "ember-paper/components/paper-button";
 export default class PersonRow extends Component {<template>{{!-- template-lint-disable no-action --}}
 <@body.row class="person" as |row|>
   <row.cell>
-    <PaperSwitch @value={{this.person.active}} @onChange={{action "toggleActiveness"}} />
+    <PaperSwitch @value={{@person.active}} @onChange={{this.toggleActiveness}} />
   </row.cell>
   <row.cell class="name">
-    {{this.person.name}}
+    {{@person.name}}
   </row.cell>
   <row.cell class={{this.emailClass}}>
-    <a href="mailto:{{this.person.email}}">
-      {{this.person.email}}
+    <a href="mailto:{{@person.email}}">
+      {{@person.email}}
     </a>
   </row.cell>
   <row.cell class={{this.mobileClass}}>
-    {{#if this.person.mobile}}
-      <a href="tel:{{this.person.mobile}}">
-        {{this.person.mobile}}
+    {{#if @person.mobile}}
+      <a href="tel:{{@person.mobile}}">
+        {{@person.mobile}}
       </a>
     {{/if}}
   </row.cell>
   <row.cell class={{this.landlineClass}}>
-    {{#if this.person.landline}}
-      <a href="tel:{{this.person.landline}}">
-        {{this.person.landline}}
+    {{#if @person.landline}}
+      <a href="tel:{{@person.landline}}">
+        {{@person.landline}}
       </a>
     {{/if}}
   </row.cell>
   <row.cell>
-    {{#if this.person.address}}
-      <CopyButton @text={{this.person.address}} @onSuccess={{action "copied"}}>
+    {{#if @person.address}}
+      <CopyButton @text={{@person.address}} @onSuccess={{this.copied}}>
         {{paperIcon "content copy"}}
       </CopyButton>
     {{/if}}
   </row.cell>
   <row.cell class="last-ride">
-    {{#if this.person.lastRide}}
-      {{momentFormat this.person.lastRide.start "MMMM D, YYYY"}}
+    {{#if @person.lastRide}}
+      {{momentFormat @person.lastRide.start "MMMM D, YYYY"}}
     {{/if}}
   </row.cell>
   <row.cell class="notes">
-    {{this.person.notes}}
+    {{@person.notes}}
   </row.cell>
   <row.cell>
-    <PaperButton @iconButton={{true}} @aria-label="Edit person" @title="Edit person" class="edit" @onClick={{action this.editPerson this.person}}>
+    <PaperButton @iconButton={{true}} @aria-label="Edit person" @title="Edit person" class="edit" @onClick={{@editPerson @person}}>
       {{paperIcon "mode edit"}}
     </PaperButton>
   </row.cell>
@@ -92,7 +92,7 @@ export default class PersonRow extends Component {<template>{{!-- template-lint-
   @action
   toggleActiveness(active) {
     this.set('person.active', active);
-    this.person.save().catch(() => {
+    @person.save().catch(() => {
       this.toasts.show(
         `There was an error saving the active status of ${this.get(
           'person.name'
