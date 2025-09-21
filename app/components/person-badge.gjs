@@ -9,7 +9,7 @@ import paperIcon from "ember-paper/components/paper-icon";
 @classic
 @classNames('person-badge')
 export default class PersonBadge extends Component {<template>{{!-- template-lint-disable no-action no-invalid-interactive --}}
-<div class="name-container" onclick={{action "toggleContact"}}>
+<div class="name-container" onclick={{this.toggleContact}}>
   {{#if (eq this.property "driver")}}
     {{paperIcon "person" size=14 title="driver"}}
   {{else if (eq this.property "carOwner")}}

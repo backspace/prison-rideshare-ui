@@ -32,7 +32,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
       {{this.creation}}
     </row.cell>
   {{/if}}
-  <row.cell class="date-cell" @onClick={{action "toggleCreation"}}>
+  <row.cell class="date-cell" @onClick={{this.toggleCreation}}>
     {{#if this.ride.isDivider}}
       <ScrollTo />
     {{/if}}
@@ -76,10 +76,10 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
       {{/unless}}
     {{else}}
       <span class="driver">
-        <RidePerson @ride={{this.ride}} @property="driver" @onChange={{action "setDriver"}} />
+        <RidePerson @ride={{this.ride}} @property="driver" @onChange={{this.setDriver}} />
       </span>
       <span class="car-owner">
-        <RidePerson @ride={{this.ride}} @property="carOwner" @onChange={{action "setCarOwner"}} />
+        <RidePerson @ride={{this.ride}} @property="carOwner" @onChange={{this.setCarOwner}} />
       </span>
       {{#if this.ride.overridable}}
         {{paperIcon "directions_bus" title="driver can override car expenses (van-driving, probably)"}}
@@ -139,7 +139,7 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
       </span>
     </row.cell>
     <row.cell @colspan={{3}}>
-      <PaperButton class="mark-confirmed" @onClick={{action "markConfirmed"}}>
+      <PaperButton class="mark-confirmed" @onClick={{this.markConfirmed}}>
         Mark as contacted
       </PaperButton>
     </row.cell>
@@ -185,14 +185,14 @@ export default class RideRow extends Component {<template>{{!-- template-lint-di
       {{/if}}
       {{#if this.clearing}}
         Clear this report?
-        <PaperButton class="clear-confirm" @warn={{true}} @aria-label="Clear report" @title="Clear report" @onClick={{action "clearReport"}}>
+        <PaperButton class="clear-confirm" @warn={{true}} @aria-label="Clear report" @title="Clear report" @onClick={{this.clearReport}}>
           Yes
         </PaperButton>
         <PaperButton class="clear-cancel" @aria-label="Don’t clear report" @title="Don’t clear report" @onClick={{action (mut this.clearing) false}}>
           No
         </PaperButton>
       {{else}}
-        <PaperButton @iconButton={{true}} @aria-label="Clear report" @title="Clear report" @onClick={{action "proposeClear"}}>
+        <PaperButton @iconButton={{true}} @aria-label="Clear report" @title="Clear report" @onClick={{this.proposeClear}}>
           {{paperIcon "clear"}}
         </PaperButton>
       {{/if}}

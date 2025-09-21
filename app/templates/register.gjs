@@ -17,7 +17,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </h2>
     </PaperToolbarTools>
   </PaperToolbar>
-  <PaperForm @onSubmit={{action "register"}} as |form|>
+  <PaperForm @onSubmit={{this.register}} as |form|>
     <PaperDialogContent>
       {{#if @controller.error}}
         <PaperCard @class="error" as |card|>
@@ -39,7 +39,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{action "register"}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.register}}>
           Register
         </form.submit-button>
         <PaperButton @href="/login" @class="flex-order--1">

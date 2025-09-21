@@ -53,7 +53,7 @@ export default class CancellationForm extends Component {<template>{{!-- templat
       <hr>
 
       <div class="layout layout-sm-column">
-        <PaperCheckbox @value={{this.ride.cancelled}} @onChange={{action "cancelledChanged"}}>
+        <PaperCheckbox @value={{this.ride.cancelled}} @onChange={{this.cancelledChanged}}>
           Cancelled?
         </PaperCheckbox>
       </div>

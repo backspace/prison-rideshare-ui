@@ -12,7 +12,7 @@ import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Institutions">
-  <PaperButton @mini={{true}} @aria-label="New institution" @title="New institution" @class="new" @onClick={{action "newInstitution"}}>
+  <PaperButton @mini={{true}} @aria-label="New institution" @title="New institution" @class="new" @onClick={{this.newInstitution}}>
     {{paperIcon "add"}}
   </PaperButton>
 </ToolbarHeader>
@@ -51,7 +51,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 </PaperDataTable>
 
 {{#if @controller.editingInstitution}}
-  <PaperDialog @clickOutsideToClose={{true}} @onClose={{action "cancelInstitution"}}>
+  <PaperDialog @clickOutsideToClose={{true}} @onClose={{this.cancelInstitution}}>
     <PaperDialogContent>
       <h2 class="md-title">
         {{if @controller.editingInstitution.isNew "New" "Edit"}} institution
@@ -69,10 +69,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </PaperDialogContent>
 
     <PaperDialogActions @class="layout-row">
-      <PaperButton @class="cancel" @onClick={{action "cancelInstitution"}}>
+      <PaperButton @class="cancel" @onClick={{this.cancelInstitution}}>
         Cancel
       </PaperButton>
-      <PaperButton @class="submit" @primary={{true}} @onClick={{action "saveInstitution"}}>
+      <PaperButton @class="submit" @primary={{true}} @onClick={{this.saveInstitution}}>
         Save
       </PaperButton>
     </PaperDialogActions>

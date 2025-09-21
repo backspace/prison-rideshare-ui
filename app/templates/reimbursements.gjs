@@ -158,5 +158,5 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   {{/if}}
 </PaperContent>
 {{#if @controller.editingReimbursement}}
-  <ReimbursementForm @reimbursement={{@controller.editingReimbursement}} @cancel={{action "cancel"}} @save={{action "submitReimbursement"}} />
+  <ReimbursementForm @reimbursement={{@controller.editingReimbursement}} @cancel={{this.cancel}} @save={{this.submitReimbursement}} />
 {{/if}}</template>)

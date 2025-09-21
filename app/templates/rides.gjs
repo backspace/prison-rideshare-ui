@@ -14,7 +14,7 @@ import CancellationForm from "prison-rideshare-ui/components/cancellation-form";
 import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Rides">
-  <PaperButton @mini={{true}} @aria-label="New ride" @title="New ride" class="new" @onClick={{action "newRide"}}>
+  <PaperButton @mini={{true}} @aria-label="New ride" @title="New ride" class="new" @onClick={{this.newRide}}>
     {{paperIcon "add"}}
   </PaperButton>
 </ToolbarHeader>
@@ -22,7 +22,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 <div class="switch-container layout-row layout-align-start-center">
   <PaperInput class="search" @type="search" @icon="search" @placeholder="Institution, driver, visitor, address" @value={{@controller.search}} @onChange={{action (mut @controller.search)}} as |input|>
     {{#if input.hasValue}}
-      <PaperButton @icon={{true}} @aria-label="Clear search" @title="Clear search" @onClick={{action "clearSearch"}}>
+      <PaperButton @icon={{true}} @aria-label="Clear search" @title="Clear search" @onClick={{this.clearSearch}}>
         {{paperIcon "clear" size=14}}
       </PaperButton>
     {{/if}}
@@ -62,9 +62,9 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     </table.head>
     <table.body as |body|>
       {{#each (filterBy "id" (sortBy table.sortDesc @controller.filteredRides)) as |ride|}}
-        <RideRow @body={{body}} @ride={{ride}} @showCreation={{@controller.showCreation}} @editCancellation={{action "editCancellation"}} @editRide={{action "editRide"}} @combineRide={{action "combineRide"}} @uncombineRide={{action "uncombineRide"}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
+        <RideRow @body={{body}} @ride={{ride}} @showCreation={{@controller.showCreation}} @editCancellation={{this.editCancellation}} @editRide={{this.editRide}} @combineRide={{this.combineRide}} @uncombineRide={{this.uncombineRide}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
         {{#each ride.children as |child|}}
-          <RideRow @body={{body}} @ride={{child}} @combined={{true}} @showCreation={{@controller.showCreation}} @editCancellation={{action "editCancellation"}} @editRide={{action "editRide"}} @combineRide={{action "combineRide"}} @uncombineRide={{action "uncombineRide"}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
+          <RideRow @body={{body}} @ride={{child}} @combined={{true}} @showCreation={{@controller.showCreation}} @editCancellation={{this.editCancellation}} @editRide={{this.editRide}} @combineRide={{this.combineRide}} @uncombineRide={{this.uncombineRide}} @people={{@controller.people}} @rideToCombine={{@controller.rideToCombine}} />
         {{/each}}
       {{else}}
         <body.row class="no-matches" as |row|>

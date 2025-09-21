@@ -15,7 +15,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </h2>
     </PaperToolbarTools>
   </PaperToolbar>
-  <PaperForm @onSubmit={{action "submitForgot"}} as |form|>
+  <PaperForm @onSubmit={{this.submitForgot}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
         <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.email}} @onChange={{action (mut @controller.email)}} />
@@ -29,7 +29,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{action "submitForgot"}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.submitForgot}}>
           Send reset email
         </form.submit-button>
       </div>

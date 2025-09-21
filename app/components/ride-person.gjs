@@ -13,7 +13,7 @@ import PaperSelect from "ember-paper/components/paper-select/component";
 export default class RidePerson extends Component {<template>{{!-- template-lint-disable no-action --}}
 {{#if this.person}}
   <span class="ride-person">
-    <PersonBadge @person={{this.person}} @property={{this.property}} @clear={{action "clear"}} />
+    <PersonBadge @person={{this.person}} @property={{this.property}} @clear={{this.clear}} />
   </span>
 {{else}}
   <PaperSelect @selected={{this.person}} @options={{this.people}} @onChange={{this.onChange}} @allowClear={{true}} @searchField="name" as |person|>

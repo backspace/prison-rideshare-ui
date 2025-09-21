@@ -18,7 +18,7 @@ import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
 <ToolbarHeader @title="Log">
-  <PaperButton @mini={{true}} @aria-label="New post" @title="New post" @class="new" @onClick={{action "newPost"}}>
+  <PaperButton @mini={{true}} @aria-label="New post" @title="New post" @class="new" @onClick={{this.newPost}}>
     {{paperIcon "note_add"}}
   </PaperButton>
 </ToolbarHeader>
@@ -34,7 +34,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </head.column>
       <head.column>
         {{#if (filterBy "unread" @controller.model)}}
-          <PaperButton @aria-label="Mark all read" @title="Mark all read" @class="markAllRead" @onClick={{action "markAllRead"}}>
+          <PaperButton @aria-label="Mark all read" @title="Mark all read" @class="markAllRead" @onClick={{this.markAllRead}}>
             Mark all read{{paperIcon "done_all"}}
           </PaperButton>
         {{/if}}
@@ -73,7 +73,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
                 </PaperButton>
                 {{#if (eq @controller.deletingPost post)}}
                   Delete this post?
-                  <PaperButton @class="delete-confirm" @warn={{true}} @aria-label="Delete post" @title="Delete post" @onClick={{action "deletePost"}}>
+                  <PaperButton @class="delete-confirm" @warn={{true}} @aria-label="Delete post" @title="Delete post" @onClick={{this.deletePost}}>
                     Yes
                   </PaperButton>
                   <PaperButton @class="delete-cancel" @aria-label="Don’t delete report" @title="Don’t delete report" @onClick={{action (mut @controller.deletingPost)}}>
@@ -94,7 +94,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 </PaperContent>
 
 {{#if @controller.editingPost}}
-  <PaperDialog @clickOutsideToClose={{true}} @fullscreen={{true}} @onClose={{action "cancelPost"}}>
+  <PaperDialog @clickOutsideToClose={{true}} @fullscreen={{true}} @onClose={{this.cancelPost}}>
     <PaperForm @onSubmit={{@controller.savePost}}>
       <PaperDialogContent>
         <h2 class="md-title">
@@ -117,10 +117,10 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
         </div>
       </PaperDialogContent>
       <PaperDialogActions @class="layout-row">
-        <PaperButton @class="cancel" @onClick={{action "cancelPost"}}>
+        <PaperButton @class="cancel" @onClick={{this.cancelPost}}>
           Cancel
         </PaperButton>
-        <PaperButton @class="submit" @primary={{true}} @onClick={{action "savePost"}}>
+        <PaperButton @class="submit" @primary={{true}} @onClick={{this.savePost}}>
           Save
         </PaperButton>
       </PaperDialogActions>

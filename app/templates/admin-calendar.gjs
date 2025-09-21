@@ -38,7 +38,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
         <h3 class="hours">
           {{momentFormat @controller.viewingSlot.start "dddd, MMMM D, h:mma"}}–{{momentFormat @controller.viewingSlot.end "h:mma"}}
         </h3>
-        <PaperChips @removeItem={{action "deleteCommitment"}} @addItem={{action "createCommitment"}} @placeholder="Commit someone to this slot" @content={{@controller.viewingSlot.commitments}} @options={{@controller.uncommittedPeople}} @class="commitments" @searchField="name" as |person_or_commitment|>
+        <PaperChips @removeItem={{this.deleteCommitment}} @addItem={{this.createCommitment}} @placeholder="Commit someone to this slot" @content={{@controller.viewingSlot.commitments}} @options={{@controller.uncommittedPeople}} @class="commitments" @searchField="name" as |person_or_commitment|>
           {{#if person_or_commitment.name}}
             <PersonBadge @person={{person_or_commitment}} />
           {{else}}
@@ -50,14 +50,14 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
     <h2>
       Temporary email interface
     </h2>
-    <PaperButton @label="Add all active people" @raised={{true}} @onClick={{action "addAllActive"}} />
-    <PaperChips @removeItem={{action "removePerson"}} @addItem={{action "addPerson"}} @placeholder="Add a person to email" @content={{@controller.people}} @options={{@controller.remainingPeople}} @searchField="name" as |person|>
+    <PaperButton @label="Add all active people" @raised={{true}} @onClick={{this.addAllActive}} />
+    <PaperChips @removeItem={{this.removePerson}} @addItem={{this.addPerson}} @placeholder="Add a person to email" @content={{@controller.people}} @options={{@controller.remainingPeople}} @searchField="name" as |person|>
       {{person.name}}
     </PaperChips>
-    <PaperButton @primary={{gt @controller.people.length 0}} @raised={{gt @controller.people.length 0}} @onClick={{action "email"}}>
+    <PaperButton @primary={{gt @controller.people.length 0}} @raised={{gt @controller.people.length 0}} @onClick={{this.email}}>
       Email {{@controller.monthString}} calendar link
     </PaperButton>
-    <PaperButton @onClick={{action "fetchLinks"}}>
+    <PaperButton @onClick={{this.fetchLinks}}>
       View calendar links
     </PaperButton>
     {{#if @controller.links}}

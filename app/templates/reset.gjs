@@ -15,7 +15,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </h2>
     </PaperToolbarTools>
   </PaperToolbar>
-  <PaperForm @onSubmit={{action "submitReset"}} as |form|>
+  <PaperForm @onSubmit={{this.submitReset}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
         <form.input @class="password" @type="password" @label="Password" @autofocus={{true}} @value={{@controller.password}} @onChange={{action (mut @controller.password)}} />
@@ -32,7 +32,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{action "submitReset"}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.submitReset}}>
           Update password
         </form.submit-button>
       </div>

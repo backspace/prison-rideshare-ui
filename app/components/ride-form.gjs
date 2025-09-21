@@ -40,7 +40,7 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
     </h2>
     <PaperForm @onSubmit={{this.save}} as |form|>
       <div class="layout-column">
-        <form.input @class="timespan" @label="Timespan" @autofocus={{true}} @textarea={{true}} @value={{this.ride.timespan}} @onChange={{action "timespanUpdated"}}>
+        <form.input @class="timespan" @label="Timespan" @autofocus={{true}} @textarea={{true}} @value={{this.ride.timespan}} @onChange={{this.timespanUpdated}}>
           <div class="hint">
             “friday from 2 to 4” or “tomorrow 11am to noon”
           </div>
@@ -67,10 +67,10 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
       </div>
       {{#if this.overrideTimespan}}
         <div class="layout-row">
-          <form.input @type="datetime-local" @label="Start time" @value={{this.startTimeString}} @onChange={{action "updateStartTime"}} @errors={{this.ride.validationErrors.start}} @isTouched={{readonly this.ride.validationErrors.start.length}} data-test-timespan-start />
+          <form.input @type="datetime-local" @label="Start time" @value={{this.startTimeString}} @onChange={{this.updateStartTime}} @errors={{this.ride.validationErrors.start}} @isTouched={{readonly this.ride.validationErrors.start.length}} data-test-timespan-start />
         </div>
         <div class="layout-row">
-          <form.input @type="datetime-local" @label="End time" @value={{this.endTimeString}} @onChange={{action "updateEndTime"}} @errors={{this.ride.validationErrors.end}} @isTouched={{readonly this.ride.validationErrors.end.length}} data-test-timespan-end />
+          <form.input @type="datetime-local" @label="End time" @value={{this.endTimeString}} @onChange={{this.updateEndTime}} @errors={{this.ride.validationErrors.end}} @isTouched={{readonly this.ride.validationErrors.end.length}} data-test-timespan-end />
         </div>
       {{/if}}
       <div class="layout-row layout-xs-column layout-align-center-center">
@@ -118,7 +118,7 @@ export default class RideForm extends Component {<template>{{!-- template-lint-d
 
       <div class="layout-row layout-xs-column">
         <div class="flex">
-          <form.autocomplete @label="Name" @selected={{this.ride}} @onSelectionChange={{action "autocompleteSelectionChanged"}} @onSearchTextChange={{action (mut this.ride.name)}} @search={{action "searchRides"}} @searchField="name" @labelPath="name" @searchText={{readonly this.ride.name}} @errors={{this.ride.validationErrors.name}} @isTouched={{readonly this.ride.validationErrors.name.length}} as |ride autocomplete|>
+          <form.autocomplete @label="Name" @selected={{this.ride}} @onSelectionChange={{this.autocompleteSelectionChanged}} @onSearchTextChange={{action (mut this.ride.name)}} @search={{this.searchRides}} @searchField="name" @labelPath="name" @searchText={{readonly this.ride.name}} @errors={{this.ride.validationErrors.name}} @isTouched={{readonly this.ride.validationErrors.name.length}} as |ride autocomplete|>
             <div class="visitor-autocomplete-option">
               <span class="name">
                 <PaperAutocompleteHighlight @label={{ride.name}} @searchText={{autocomplete.searchText}} @flags="i" />

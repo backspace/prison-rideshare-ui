@@ -17,7 +17,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
       </h2>
     </PaperToolbarTools>
   </PaperToolbar>
-  <PaperForm @onSubmit={{action "login"}} as |form|>
+  <PaperForm @onSubmit={{this.login}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
         <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.model.email}} @onChange={{action (mut @controller.model.email)}} />
@@ -40,7 +40,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{action "login"}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.login}}>
           Log in
         </form.submit-button>
         <PaperButton @href="/register" @class="flex-order--1">

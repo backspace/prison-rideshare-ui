@@ -23,9 +23,9 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   {{else}}
     {{#if @controller.model}}
       <div class="form-container">
-        <PaperForm @onSubmit={{action "submitReport"}} as |form|>
+        <PaperForm @onSubmit={{this.submitReport}} as |form|>
           <div class="layout layout-sm-column">
-            <PaperRadioGroup @groupValue={{readonly @controller.editingRide}} @onChange={{action "setRide"}} as |group|>
+            <PaperRadioGroup @groupValue={{readonly @controller.editingRide}} @onChange={{this.setRide}} as |group|>
               {{#each (sortBy "start" @controller.model) as |ride|}}
                 <group.radio @value={{ride}}>
                   {{#if ride.initials}}
@@ -70,7 +70,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
             </div>
 
             <div class="layout-row">
-              <PaperButton @class="submit" @raised={{true}} @primary={{true}} @onClick={{action "submitReport"}}>
+              <PaperButton @class="submit" @raised={{true}} @primary={{true}} @onClick={{this.submitReport}}>
                 Save
               </PaperButton>
               {{!-- FIXME simplify if/when form yields radio-group?--}}
