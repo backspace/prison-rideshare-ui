@@ -1,6 +1,6 @@
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
-/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
 
 import moment from 'moment';

@@ -1,7 +1,7 @@
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-get, ember/require-tagless-components */
 import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-get, ember/require-tagless-components */
 import Component from '@ember/component';
 import { get, computed } from '@ember/object';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';

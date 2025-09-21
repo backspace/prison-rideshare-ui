@@ -1,5 +1,5 @@
-import classic from 'ember-classic-decorator';
 /* eslint-disable ember/no-classic-classes, ember/no-get */
+import classic from 'ember-classic-decorator';
 import RSVP from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';

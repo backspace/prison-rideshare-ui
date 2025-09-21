@@ -1,5 +1,5 @@
-import classic from 'ember-classic-decorator';
 /* eslint-disable ember/no-classic-classes */
+import classic from 'ember-classic-decorator';
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import config from 'prison-rideshare-ui/config/environment';

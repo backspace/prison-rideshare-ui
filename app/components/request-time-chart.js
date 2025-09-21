@@ -1,7 +1,7 @@
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import classic from 'ember-classic-decorator';
 import { classNames } from '@ember-decorators/component';
 import { computed } from '@ember/object';
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
 import moment from 'moment';
 

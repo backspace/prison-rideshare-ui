@@ -1,5 +1,5 @@
-import classic from 'ember-classic-decorator';
 /* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-component-lifecycle-hooks, ember/require-tagless-components */
+import classic from 'ember-classic-decorator';
 import Component from '@ember/component';
 
 @classic

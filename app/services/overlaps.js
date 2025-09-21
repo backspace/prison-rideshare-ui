@@ -1,5 +1,5 @@
+/* eslint-disable ember/no-classic-classes, ember/no-get, ember/no-side-effects */
 import classic from 'ember-classic-decorator';
-/* eslint-disable ember/no-classic-classes, ember/no-get */
 import { set, computed } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 
@@ -78,7 +78,6 @@ export default class OverlapsService extends Service {
 
       // TODO remove side effects
       commitments.forEach((commitment) => {
-        /* eslint-disable ember/no-side-effects */
         set(
           commitment,
           'person',

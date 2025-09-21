@@ -1,6 +1,6 @@
+/* eslint-disable ember/no-actions-hash, ember/no-get */
 import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
-/* eslint-disable ember/no-actions-hash, ember/no-get */
 import CalendarController from './calendar';
 import { setDiff, sum } from '@ember/object/computed';
 import { A } from '@ember/array';
