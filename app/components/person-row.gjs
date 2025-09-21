@@ -55,7 +55,7 @@ export default class PersonRow extends Component {<template>{{!-- template-lint-
     {{@person.notes}}
   </row.cell>
   <row.cell>
-    <PaperButton @iconButton={{true}} @aria-label="Edit person" @title="Edit person" class="edit" @onClick={{@editPerson @person}}>
+    <PaperButton @iconButton={{true}} @aria-label="Edit person" @title="Edit person" class="edit" @onClick={{this.edit}}>
       {{paperIcon "mode edit"}}
     </PaperButton>
   </row.cell>
@@ -82,6 +82,10 @@ export default class PersonRow extends Component {<template>{{!-- template-lint-
     return `landline ${
       this.get('person.medium') === 'landline' ? 'is-preferred' : ''
     }`;
+  }
+
+  @action edit() {
+    this.editPerson(this.person);
   }
 
   @action
