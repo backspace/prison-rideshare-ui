@@ -40,7 +40,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.register}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{@controller.register}}>
           Register
         </form.submit-button>
         <PaperButton @href="/login" @class="flex-order--1">
