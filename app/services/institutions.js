@@ -1,13 +1,16 @@
-/* eslint-disable ember/no-classic-classes */
+import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
 
-export default Service.extend({
-  store: service(),
+@classic
+export default class InstitutionsService extends Service {
+  @service
+  store;
 
-  all: computed(function () {
+  @computed
+  get all() {
     return this.store
       .findAll('institution')
       .then((institutions) => institutions.sortBy('name'));
-  }),
-});
+  }
+}

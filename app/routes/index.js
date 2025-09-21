@@ -1,12 +1,18 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get, ember/no-mixins */
+import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
-export default Route.extend(AuthenticatedRoute, {
-  account: service(),
-  router: service(),
-  session: service(),
+@classic
+export default class IndexRoute extends Route.extend(AuthenticatedRoute) {
+  @service
+  account;
+
+  @service
+  router;
+
+  @service
+  session;
 
   beforeModel() {
     // FIXME this is loading twice, also in application
@@ -23,5 +29,5 @@ export default Route.extend(AuthenticatedRoute, {
         }
       })
       .catch(() => this.router.transitionTo('reports.new'));
-  },
-});
+  }
+}

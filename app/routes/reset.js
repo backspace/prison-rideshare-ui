@@ -1,21 +1,24 @@
+import classic from 'ember-classic-decorator';
+import { inject as service } from '@ember/service';
 /* eslint-disable ember/no-classic-classes */
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  session: service(),
+@classic
+export default class ResetRoute extends Route {
+  @service
+  session;
 
-  titleToken: 'Reset password',
+  titleToken = 'Reset password';
 
   beforeModel() {
     this.session.prohibitAuthentication();
-  },
+  }
 
   model({ token }) {
     return token;
-  },
+  }
 
   setupController(controller, model) {
     controller.set('token', model);
-  },
-});
+  }
+}

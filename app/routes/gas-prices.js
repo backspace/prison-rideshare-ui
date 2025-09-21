@@ -1,13 +1,16 @@
+import classic from 'ember-classic-decorator';
+import { inject as service } from '@ember/service';
 /* eslint-disable ember/no-classic-classes */
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
 
-export default Route.extend({
-  store: service(),
+@classic
+export default class GasPricesRoute extends Route {
+  @service
+  store;
 
   model() {
     return this.store.findAll('gas-price');
-  },
+  }
 
-  titleToken: 'Gas prices',
-});
+  titleToken = 'Gas prices';
+}

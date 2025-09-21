@@ -1,6 +1,7 @@
+import classic from 'ember-classic-decorator';
+import { action, computed } from '@ember/object';
 /* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 
 import moment from 'moment';
 
@@ -14,11 +15,13 @@ function countRidesOrVisitors(rides, grouping) {
   }
 }
 
-export default Component.extend({
-  grouping: 'months',
-  rendered: false,
+@classic
+export default class RequestsAndReimbursementsChart extends Component {
+  grouping = 'months';
+  rendered = false;
 
-  timeGroups: computed('rides.@each.start', 'grouping', function () {
+  @computed('rides.@each.start', 'grouping')
+  get timeGroups() {
     return this.rides.reduce((timeGroups, ride) => {
       const timeGroupForRide = this.timeGroupForRide(ride);
 
@@ -30,11 +33,12 @@ export default Component.extend({
 
       return timeGroups;
     }, {});
-  }),
+  }
 
-  timeGroupKeys: computed('timeGroups', 'grouping', function () {
+  @computed('timeGroups', 'grouping')
+  get timeGroupKeys() {
     return Object.keys(this.timeGroups).sort();
-  }),
+  }
 
   timeGroupForRide(ride) {
     const start = ride.get('start');
@@ -44,9 +48,10 @@ export default Component.extend({
     } else {
       return moment(start).format('YYYY-MM');
     }
-  },
+  }
 
-  data: computed('grouping', 'timeGroupKeys', 'timeGroups', function () {
+  @computed('grouping', 'timeGroupKeys', 'timeGroups')
+  get data() {
     const timeGroups = this.timeGroups;
     const grouping = this.grouping;
 
@@ -112,60 +117,55 @@ export default Component.extend({
         }),
       },
     ];
-  }),
+  }
 
-  options: computed(
-    'timeGroups',
-    'timeGroupKeys.length',
-    'grouping',
-    function () {
-      return {
-        title: {
-          text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
-          useHTML: true,
+  @computed('timeGroups', 'timeGroupKeys.length', 'grouping')
+  get options() {
+    return {
+      title: {
+        text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
+        useHTML: true,
+      },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
         },
-        plotOptions: {
-          column: {
-            stacking: 'normal',
+      },
+      xAxis: [
+        {
+          categories: this.timeGroupKeys,
+        },
+      ],
+      yAxis: [
+        {
+          title: {
+            text: 'Requests',
           },
         },
-        xAxis: [
-          {
-            categories: this.timeGroupKeys,
+        {
+          title: {
+            text: 'Distance',
           },
-        ],
-        yAxis: [
-          {
-            title: {
-              text: 'Requests',
-            },
+          labels: {
+            format: '{value}km',
           },
-          {
-            title: {
-              text: 'Distance',
-            },
-            labels: {
-              format: '{value}km',
-            },
-            opposite: true,
+          opposite: true,
+        },
+        {
+          title: {
+            text: 'Reimbursements',
           },
-          {
-            title: {
-              text: 'Reimbursements',
-            },
-            labels: {
-              format: '${value}',
-            },
-            opposite: true,
+          labels: {
+            format: '${value}',
           },
-        ],
-      };
-    }
-  ),
+          opposite: true,
+        },
+      ],
+    };
+  }
 
-  actions: {
-    afterRenderCallback() {
-      this.set('rendered', true);
-    },
-  },
-});
+  @action
+  afterRenderCallback() {
+    this.set('rendered', true);
+  }
+}

@@ -1,3 +1,5 @@
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 /* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
 
@@ -14,23 +16,24 @@ const shortcutReasonToIcon = shortcuts.reduce(
   {}
 );
 
-export default Component.extend({
-  reasons,
-  shortcutReasonToIcon,
+@classic
+export default class CancellationForm extends Component {
+  reasons = reasons;
+  shortcutReasonToIcon = shortcutReasonToIcon;
 
-  actions: {
-    cancelledChanged(cancelled) {
-      if (!cancelled) {
-        this.set('ride.cancellationReason', null);
-      }
+  @action
+  cancelledChanged(cancelled) {
+    if (!cancelled) {
+      this.set('ride.cancellationReason', null);
+    }
 
-      this.set('ride.cancelled', cancelled);
-    },
+    this.set('ride.cancelled', cancelled);
+  }
 
-    cancelViaShortcut(reason) {
-      this.set('ride.cancelled', true);
-      this.set('ride.cancellationReason', reason);
-      this.save();
-    },
-  },
-});
+  @action
+  cancelViaShortcut(reason) {
+    this.set('ride.cancelled', true);
+    this.set('ride.cancellationReason', reason);
+    this.save();
+  }
+}

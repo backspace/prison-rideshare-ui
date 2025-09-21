@@ -1,9 +1,11 @@
+import classic from 'ember-classic-decorator';
 /* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-component-lifecycle-hooks, ember/require-tagless-components */
 import Component from '@ember/component';
 
-export default Component.extend({
+@classic
+export default class ScrollTo extends Component {
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
     this.element.scrollIntoView();
-  },
-});
+  }
+}
