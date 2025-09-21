@@ -1,3 +1,22 @@
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
+import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
+import { classNames } from '@ember-decorators/component';
+import Component from '@ember/component';
+
+@classic
+@classNames('person-badge')
+export default class PersonBadge extends Component {
+  showContact = false;
+
+  @action
+  toggleContact() {
+    if (!this.isDestroying && !this.isDestroyed) {
+      this.toggleProperty('showContact');
+    }
+  }
+}
+
 {{! template-lint-disable no-action no-invalid-interactive }}
 <div class='name-container' onclick={{action 'toggleContact'}}>
   {{#if (eq this.property 'driver')}}
