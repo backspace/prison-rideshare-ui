@@ -1,4 +1,4 @@
-/* eslint-disable ember/no-actions-hash, ember/no-classic-classes */
+/* eslint-disable ember/no-classic-classes */
 import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
 import Controller from '@ember/controller';
