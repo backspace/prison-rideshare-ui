@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-get */
 import classic from 'ember-classic-decorator';
 import { filterBy, mapBy } from '@ember/object/computed';
 import EmberObject, { computed } from '@ember/object';

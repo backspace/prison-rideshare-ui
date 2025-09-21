@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-get */
 import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';

@@ -1,3 +1,4 @@
+/* eslint-disable ember/use-ember-data-rfc-395-imports */
 import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import { filterBy } from '@ember/object/computed';

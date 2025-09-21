@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-components, ember/no-get */
 import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember/object';
