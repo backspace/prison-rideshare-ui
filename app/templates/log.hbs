@@ -1,4 +1,4 @@
-{{! template-lint-disable no-action no-curly-component-invocation }}
+{{! template-lint-disable no-action }}
 <ToolbarHeader @title='Log'>
   <PaperButton
     @mini={{true}}
@@ -47,7 +47,7 @@
               </span>
             </row.cell>
             <row.cell @class='content'>
-              {{render-mobiledoc mobiledoc=post.bodyJson}}
+              <RenderMobiledoc @mobiledoc={{post.bodyJson}} />
             </row.cell>
             <row.cell @class='controls'>
               {{#if post.unread}}
