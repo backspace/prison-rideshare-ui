@@ -7,7 +7,7 @@ import dollars from 'prison-rideshare-ui/utils/dollars';
 @classic
 class ClassWithDollars extends EmberObject {
   cents = undefined;
-  dollars = dollars('cents');
+  @dollars('cents') dollars;
 }
 
 module('Unit - dollars', function () {
