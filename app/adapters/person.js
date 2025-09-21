@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-get */
 import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
+import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import ApplicationAdapter from './application';
 
@@ -9,7 +9,8 @@ export default class Person extends ApplicationAdapter {
   @service
   router;
 
-  onCalendar = computed.equal('router.currentRouteName', 'calendar');
+  @equal('router.currentRouteName', 'calendar')
+  onCalendar;
 
   get headers() {
     if (this.onCalendar) {
