@@ -7,11 +7,17 @@ import fetch from 'fetch';
 
 @classic
 export default class ForgotController extends Controller {
+  email = undefined;
+
   @service
   store;
 
   @service
   toasts;
+
+  @action editEmail(value) {
+    this.set('email', value);
+  }
 
   @action
   submitForgot(event) {

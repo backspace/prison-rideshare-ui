@@ -6,7 +6,10 @@ import PaperForm from "ember-paper/components/paper-form";
 import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
+import { pageTitle } from 'ember-page-title';
+
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+  {{pageTitle 'Forgot password'}}
 <PaperDialog>
   <PaperToolbar>
     <PaperToolbarTools>
@@ -18,7 +21,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
   <PaperForm @onSubmit={{this.submitForgot}} as |form|>
     <PaperDialogContent>
       <div class="layout layout-row">
-        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.email}} @onChange={{mut @controller.email}} />
+        <form.input @class="email" @type="email" @label="Email" @autofocus={{true}} @value={{@controller.email}} @onChange={{@controller.editEmail}} />
       </div>
       {{#if @controller.error}}
         <div class="error">
@@ -29,7 +32,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.submitForgot}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{@controller.submitForgot}}>
           Send reset email
         </form.submit-button>
       </div>
