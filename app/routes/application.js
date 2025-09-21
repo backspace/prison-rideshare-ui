@@ -37,7 +37,6 @@ export default class ApplicationRoute extends Route {
   }
 
   sessionAuthenticated() {
-    undefined;
     this.userSocket.connect();
     this.overlaps.fetch();
     this._loadCurrentUser();
