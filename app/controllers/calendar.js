@@ -1,33 +1,25 @@
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
-import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes */
 import Controller from '@ember/controller';
+
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 
 import moment from 'moment';
 import { task } from 'ember-concurrency';
 
-@classic
-export default class CalendarController extends Controller {
-  @service
-  toasts;
+export default Controller.extend({
+  toasts: service(),
 
-  @alias('model.month')
-  month;
+  month: alias('model.month'),
+  slots: alias('model.slots'),
+  person: alias('model.person'),
 
-  @alias('model.slots')
-  slots;
-
-  @alias('model.person')
-  person;
-
-  @computed('month')
-  get monthMoment() {
+  monthMoment: computed('month', function () {
     return moment(this.month);
-  }
+  }),
 
-  @computed('person.{id,calendarSecret}')
-  get httpSubscriptionUrl() {
+  httpSubscriptionUrl: computed('person.{id,calendarSecret}', function () {
     const person = this.person;
 
     const base = person.store
@@ -35,16 +27,15 @@ export default class CalendarController extends Controller {
       .buildURL('person', person.id);
 
     return `${base}/calendar?secret=${encodeURIComponent(person.get('calendarSecret'))}`;
-  }
+  }),
 
-  @computed('httpSubscriptionUrl')
-  get webcalSubscriptionUrl() {
+  webcalSubscriptionUrl: computed('httpSubscriptionUrl', function () {
     return this.httpSubscriptionUrl
       .replace('https', 'webcal')
       .replace('http', 'webcal');
-  }
+  }),
 
-  @(task(function* () {
+  savePerson: task(function* () {
     try {
       yield this.person.save();
 
@@ -53,12 +44,12 @@ export default class CalendarController extends Controller {
     } catch (e) {
       this.toasts.show('Couldn’t save your details');
     }
-  }).drop())
-  savePerson;
+  }).drop(),
 
-  @action
-  cancel() {
-    this.set('showPerson', false);
-    this.person.rollbackAttributes();
-  }
-}
+  actions: {
+    cancel() {
+      this.set('showPerson', false);
+      this.person.rollbackAttributes();
+    },
+  },
+});

@@ -1,8 +1,7 @@
-import classic from 'ember-classic-decorator';
-import { classNames, tagName } from '@ember-decorators/component';
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
 
-@classic
-@tagName('span')
-@classNames('unit')
-export default class ReimbursementUnit extends Component {}
+export default Component.extend({
+  tagName: 'span',
+  classNames: ['unit'],
+});

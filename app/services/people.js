@@ -1,26 +1,21 @@
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/no-classic-classes, ember/use-ember-data-rfc-395-imports */
 import { computed } from '@ember/object';
 import { filterBy } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
 import DS from 'ember-data';
 
-@classic
-export default class PeopleService extends Service {
-  @service
-  store;
+export default Service.extend({
+  store: service(),
 
-  @computed
-  get findAll() {
+  findAll: computed(function () {
     return this.store.findAll('person');
-  }
+  }),
 
-  @computed('findAll.@each.name')
-  get all() {
+  all: computed('findAll.@each.name', function () {
     return DS.PromiseArray.create({
       promise: this.findAll.then((people) => people.sortBy('name')),
     });
-  }
+  }),
 
-  @filterBy('all', 'active')
-  active;
-}
+  active: filterBy('all', 'active'),
+});

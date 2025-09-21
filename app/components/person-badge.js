@@ -1,17 +1,16 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
-import { classNames } from '@ember-decorators/component';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
 
-@classic
-@classNames('person-badge')
-export default class PersonBadge extends Component {
-  showContact = false;
+export default Component.extend({
+  classNames: ['person-badge'],
 
-  @action
-  toggleContact() {
-    if (!this.isDestroying && !this.isDestroyed) {
-      this.toggleProperty('showContact');
-    }
-  }
-}
+  showContact: false,
+
+  actions: {
+    toggleContact() {
+      if (!this.isDestroying && !this.isDestroyed) {
+        this.toggleProperty('showContact');
+      }
+    },
+  },
+});

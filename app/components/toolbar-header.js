@@ -1,22 +1,15 @@
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 
-@classic
-export default class ToolbarHeader extends Component {
-  @service
-  session;
+export default Component.extend({
+  session: service(),
+  sidebar: service(),
+  sidebarOpen: alias('sidebar.open'),
 
-  @service
-  sidebar;
-
-  @alias('sidebar.open')
-  sidebarOpen;
-
-  @computed
-  get chips() {
+  chips: computed(function () {
     const hostname = window.location.hostname;
 
     if (hostname.indexOf('sandbox') > -1) {
@@ -30,10 +23,11 @@ export default class ToolbarHeader extends Component {
     } else {
       return [];
     }
-  }
+  }),
 
-  @action
-  toggleSidebar() {
-    this.toggleProperty('sidebarOpen');
-  }
-}
+  actions: {
+    toggleSidebar() {
+      this.toggleProperty('sidebarOpen');
+    },
+  },
+});

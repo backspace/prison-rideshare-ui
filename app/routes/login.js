@@ -1,16 +1,14 @@
-import classic from 'ember-classic-decorator';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-classic-classes */
 import EmberObject from '@ember/object';
 import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
 
-@classic
-export default class LoginRoute extends Route {
-  @service
-  session;
+export default Route.extend({
+  session: service(),
 
   beforeModel() {
     this.session.prohibitAuthentication();
-  }
+  },
 
   model() {
     const user = {};
@@ -21,7 +19,7 @@ export default class LoginRoute extends Route {
     }
 
     return EmberObject.create(user);
-  }
+  },
 
-  titleToken = 'Log in';
-}
+  titleToken: 'Log in',
+});

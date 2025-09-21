@@ -1,33 +1,29 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes */
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
 import fetch from 'fetch';
 
-@classic
-export default class ForgotController extends Controller {
-  @service
-  store;
+export default Controller.extend({
+  store: service(),
+  toasts: service(),
 
-  @service
-  toasts;
+  actions: {
+    submitForgot(event) {
+      event.preventDefault();
 
-  @action
-  submitForgot(event) {
-    event.preventDefault();
+      let email = this.email;
 
-    let email = this.email;
+      let userAdapter = this.store.adapterFor('user');
+      let resetUrl = `${userAdapter.buildURL('user')}/reset?email=${email}`;
 
-    let userAdapter = this.store.adapterFor('user');
-    let resetUrl = `${userAdapter.buildURL('user')}/reset?email=${email}`;
+      let query = fetch(resetUrl, {
+        method: 'POST',
+      });
 
-    let query = fetch(resetUrl, {
-      method: 'POST',
-    });
-
-    query.then(() => {
-      this.toasts.show('Check your email');
-    });
-  }
-}
+      query.then(() => {
+        this.toasts.show('Check your email');
+      });
+    },
+  },
+});

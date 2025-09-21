@@ -1,13 +1,12 @@
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-get */
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-@classic
-export default class RidesController extends Controller {
-  queryParams = {
+export default Controller.extend({
+  queryParams: {
     showCompleted: 'completed',
     showCancelled: 'cancelled',
 
@@ -17,192 +16,179 @@ export default class RidesController extends Controller {
     search: {
       replace: true,
     },
-  };
+  },
 
-  @service('overlaps')
-  overlapsService;
+  overlapsService: service('overlaps'),
+  store: service(),
+  toasts: service(),
 
-  @service
-  store;
+  peopleService: service('people'),
+  people: alias('peopleService.all'),
 
-  @service
-  toasts;
+  editingRide: undefined,
+  editingCancellation: undefined,
 
-  @service('people')
-  peopleService;
+  showCompleted: false,
+  showCancelled: false,
 
-  @alias('peopleService.all')
-  people;
+  sortProp: 'start',
+  sortDir: 'asc',
 
-  editingRide;
-  editingCancellation;
-  showCompleted = false;
-  showCancelled = false;
-  sortProp = 'start';
-  sortDir = 'asc';
-  showCreation = false;
+  showCreation: false,
 
-  @computed(
+  filteredRides: computed(
     'showCompleted',
     'showCancelled',
     'model.@each.{complete,enabled,isCombined}',
     'search',
-    'sortDir'
-  )
-  get filteredRides() {
-    const showCompleted = this.showCompleted,
-      showCancelled = this.showCancelled;
-    const search = this.search;
+    'sortDir',
+    function () {
+      const showCompleted = this.showCompleted,
+        showCancelled = this.showCancelled;
+      const search = this.search;
 
-    let rides = this.model.rejectBy('isCombined');
+      let rides = this.model.rejectBy('isCombined');
 
-    if (!showCompleted) {
-      rides = rides.filterBy('complete', false);
-    }
-
-    if (!showCancelled) {
-      rides = rides.filterBy('enabled');
-    }
-
-    if (search) {
-      rides = rides.filter((ride) => ride.matches(search));
-    }
-
-    rides.setEach('isDivider', false);
-
-    const sorted = rides.sortBy('start');
-    const sortDir = this.sortDir;
-    const now = new Date();
-
-    if (sortDir === 'asc') {
-      const firstAfterNow = sorted.find((ride) => ride.get('start') > now);
-
-      if (firstAfterNow) {
-        firstAfterNow.set('isDivider', true);
+      if (!showCompleted) {
+        rides = rides.filterBy('complete', false);
       }
-    } else {
-      const reversed = sorted.reverse();
-      const firstBeforeNow = reversed.find((ride) => ride.get('start') < now);
 
-      if (firstBeforeNow) {
-        firstBeforeNow.set('isDivider', true);
+      if (!showCancelled) {
+        rides = rides.filterBy('enabled');
       }
-    }
 
-    return rides;
-  }
+      if (search) {
+        rides = rides.filter((ride) => ride.matches(search));
+      }
 
-  @action
-  newRide() {
-    this.set(
-      'editingRide',
-      BufferedProxy.create({
-        content: this.store.createRecord('ride'),
-      })
-    );
-  }
+      rides.setEach('isDivider', false);
 
-  @action
-  editRide(model) {
-    this.set(
-      'editingRide',
-      BufferedProxy.create({
-        content: model,
-      })
-    );
-  }
+      const sorted = rides.sortBy('start');
+      const sortDir = this.sortDir;
+      const now = new Date();
 
-  @action
-  submitRide(proxy) {
-    let buffer = proxy.buffer;
-    proxy.applyBufferedChanges();
+      if (sortDir === 'asc') {
+        const firstAfterNow = sorted.find((ride) => ride.get('start') > now);
 
-    return proxy
-      .get('content')
-      .save()
-      .then(() => this.set('editingRide', undefined))
-      .catch(() => {
-        this.toasts.show('There was an error saving this ride');
-        proxy.setProperties(buffer);
-      })
-      .then(() => this.overlapsService.fetch());
-  }
-
-  @action
-  cancel() {
-    const model = this.get('editingRide.content');
-
-    if (model.get('isNew')) {
-      model.destroyRecord();
-    } else {
-      model.rollbackAttributes();
-    }
-
-    this.editingRide.discardBufferedChanges();
-    this.set('editingRide', undefined);
-  }
-
-  @action
-  editCancellation(ride) {
-    this.set(
-      'editingCancellation',
-      BufferedProxy.create({
-        content: ride,
-      })
-    );
-
-    if (ride.get('enabled')) {
-      this.set('editingCancellation.cancelled', true);
-    }
-  }
-
-  @action
-  submitCancellation(proxy) {
-    let buffer = proxy.buffer;
-    proxy.applyBufferedChanges();
-
-    return proxy
-      .get('content')
-      .save()
-      .then(() => this.set('editingCancellation'), undefined)
-      .catch(() => {
-        this.toasts.show('There was an error cancelling this ride');
-        proxy.content.rollbackAttributes();
-        proxy.setProperties(buffer);
-      });
-  }
-
-  @action
-  cancelCancellation() {
-    this.editingCancellation.discardBufferedChanges();
-    this.set('editingCancellation', undefined);
-  }
-
-  @action
-  combineRide(ride) {
-    if (this.rideToCombine) {
-      const rideToCombine = this.rideToCombine;
-
-      if (rideToCombine.id == ride.id) {
-        this.set('rideToCombine', undefined);
+        if (firstAfterNow) {
+          firstAfterNow.set('isDivider', true);
+        }
       } else {
-        rideToCombine.set('combinedWith', ride);
+        const reversed = sorted.reverse();
+        const firstBeforeNow = reversed.find((ride) => ride.get('start') < now);
 
-        rideToCombine.save().then(() => this.set('rideToCombine', undefined));
+        if (firstBeforeNow) {
+          firstBeforeNow.set('isDivider', true);
+        }
       }
-    } else {
-      this.set('rideToCombine', ride);
+
+      return rides;
     }
-  }
+  ),
 
-  @action
-  uncombineRide(ride) {
-    ride.set('combinedWith', null);
-    ride.save();
-  }
+  actions: {
+    newRide() {
+      this.set(
+        'editingRide',
+        BufferedProxy.create({
+          content: this.store.createRecord('ride'),
+        })
+      );
+    },
 
-  @action
-  clearSearch() {
-    this.set('search', undefined);
-  }
-}
+    editRide(model) {
+      this.set(
+        'editingRide',
+        BufferedProxy.create({
+          content: model,
+        })
+      );
+    },
+
+    submitRide(proxy) {
+      let buffer = proxy.buffer;
+      proxy.applyBufferedChanges();
+
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingRide', undefined))
+        .catch(() => {
+          this.toasts.show('There was an error saving this ride');
+          proxy.setProperties(buffer);
+        })
+        .then(() => this.overlapsService.fetch());
+    },
+
+    cancel() {
+      const model = this.get('editingRide.content');
+
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      } else {
+        model.rollbackAttributes();
+      }
+
+      this.editingRide.discardBufferedChanges();
+      this.set('editingRide', undefined);
+    },
+
+    editCancellation(ride) {
+      this.set(
+        'editingCancellation',
+        BufferedProxy.create({
+          content: ride,
+        })
+      );
+
+      if (ride.get('enabled')) {
+        this.set('editingCancellation.cancelled', true);
+      }
+    },
+
+    submitCancellation(proxy) {
+      let buffer = proxy.buffer;
+      proxy.applyBufferedChanges();
+
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingCancellation'), undefined)
+        .catch(() => {
+          this.toasts.show('There was an error cancelling this ride');
+          proxy.content.rollbackAttributes();
+          proxy.setProperties(buffer);
+        });
+    },
+
+    cancelCancellation() {
+      this.editingCancellation.discardBufferedChanges();
+      this.set('editingCancellation', undefined);
+    },
+
+    combineRide(ride) {
+      if (this.rideToCombine) {
+        const rideToCombine = this.rideToCombine;
+
+        if (rideToCombine.id == ride.id) {
+          this.set('rideToCombine', undefined);
+        } else {
+          rideToCombine.set('combinedWith', ride);
+
+          rideToCombine.save().then(() => this.set('rideToCombine', undefined));
+        }
+      } else {
+        this.set('rideToCombine', ride);
+      }
+    },
+
+    uncombineRide(ride) {
+      ride.set('combinedWith', null);
+      ride.save();
+    },
+
+    clearSearch() {
+      this.set('search', undefined);
+    },
+  },
+});

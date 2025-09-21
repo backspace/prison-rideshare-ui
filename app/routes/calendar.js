@@ -1,7 +1,7 @@
-import classic from 'ember-classic-decorator';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-classic-classes, ember/no-get */
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
+import { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
 import Ember from 'ember';
 import { get } from '@ember/object';
@@ -11,10 +11,8 @@ import { pollTask, runTask } from 'ember-lifeline';
 
 export const POLL_TOKEN = 'calendar_poll';
 
-@classic
-export default class CalendarRoute extends Route {
-  @service
-  store;
+export default Route.extend({
+  store: service(),
 
   model(
     { month },
@@ -71,14 +69,14 @@ export default class CalendarRoute extends Route {
           month,
         });
       });
-  }
+  },
 
   afterModel() {
     pollTask(this, 'poll', POLL_TOKEN);
-  }
+  },
 
   poll(next) {
     this.store.findAll('slot');
     runTask(this, next, Ember.testing ? 10 : 10000);
-  }
-}
+  },
+});

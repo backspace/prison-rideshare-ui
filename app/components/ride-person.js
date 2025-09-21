@@ -1,30 +1,31 @@
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import { action, computed } from '@ember/object';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components */
+import { computed } from '@ember/object';
 import { alias } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 
-@classic
-@tagName('')
-export default class RidePerson extends Component {
-  @service('people')
-  peopleService;
+export default Component.extend({
+  tagName: '',
 
-  @alias('peopleService.active')
-  people;
+  peopleService: service('people'),
+  people: alias('peopleService.active'),
 
-  @computed('ride', 'property', 'ride.{carOwner.id,driver.id}')
-  get person() {
-    return this.ride.get(this.property);
-  }
+  person: computed(
+    'ride',
+    'property',
+    'ride.{carOwner.id,driver.id}',
+    function () {
+      return this.ride.get(this.property);
+    }
+  ),
 
-  showContact = false;
+  showContact: false,
 
-  @action
-  clear() {
-    const ride = this.ride;
-    ride.set(this.property, null);
-    return ride.save();
-  }
-}
+  actions: {
+    clear() {
+      const ride = this.ride;
+      ride.set(this.property, null);
+      return ride.save();
+    },
+  },
+});

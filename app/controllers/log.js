@@ -1,73 +1,62 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-get */
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { inject as service } from '@ember/service';
 
-@classic
-export default class LogController extends Controller {
-  @service
-  session;
+export default Controller.extend({
+  session: service(),
+  store: service(),
 
-  @service
-  store;
+  actions: {
+    newPost() {
+      this.set(
+        'editingPost',
+        BufferedProxy.create({
+          content: this.store.createRecord('post'),
+        })
+      );
+    },
 
-  @action
-  newPost() {
-    this.set(
-      'editingPost',
-      BufferedProxy.create({
-        content: this.store.createRecord('post'),
-      })
-    );
-  }
+    editPost(post) {
+      const proxy = BufferedProxy.create({ content: post });
 
-  @action
-  editPost(post) {
-    const proxy = BufferedProxy.create({ content: post });
+      this.set('editingPost', proxy);
+    },
 
-    this.set('editingPost', proxy);
-  }
+    savePost() {
+      const proxy = this.editingPost;
+      proxy.applyBufferedChanges();
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingPost', undefined))
+        .catch(() => {});
+    },
 
-  @action
-  savePost() {
-    const proxy = this.editingPost;
-    proxy.applyBufferedChanges();
-    return proxy
-      .get('content')
-      .save()
-      .then(() => this.set('editingPost', undefined))
-      .catch(() => {});
-  }
+    cancelPost() {
+      const model = this.get('editingPost.content');
 
-  @action
-  cancelPost() {
-    const model = this.get('editingPost.content');
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
 
-    if (model.get('isNew')) {
-      model.destroyRecord();
-    }
+      this.set('editingPost', undefined);
+    },
 
-    this.set('editingPost', undefined);
-  }
+    deletePost() {
+      return this.deletingPost.destroyRecord();
+    },
 
-  @action
-  deletePost() {
-    return this.deletingPost.destroyRecord();
-  }
+    markAllRead() {
+      this.get('model.firstObject').markAllRead();
+    },
 
-  @action
-  markAllRead() {
-    this.get('model.firstObject').markAllRead();
-  }
+    markRead(post) {
+      return post.markRead();
+    },
 
-  @action
-  markRead(post) {
-    return post.markRead();
-  }
-
-  @action
-  markUnread(post) {
-    return post.markUnread();
-  }
-}
+    markUnread(post) {
+      return post.markUnread();
+    },
+  },
+});

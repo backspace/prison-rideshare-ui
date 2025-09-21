@@ -1,16 +1,14 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes */
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
-@classic
-export default class UsersController extends Controller {
-  @service
-  session;
+export default Controller.extend({
+  session: service(),
 
-  @action
-  updateUserAdmin(user, admin) {
-    user.set('admin', admin);
-    user.save();
-  }
-}
+  actions: {
+    updateUserAdmin(user, admin) {
+      user.set('admin', admin);
+      user.save();
+    },
+  },
+});

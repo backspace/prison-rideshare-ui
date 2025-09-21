@@ -1,50 +1,45 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-get */
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { inject as service } from '@ember/service';
 
-@classic
-export default class InstitutionsController extends Controller {
-  @service
-  store;
+export default Controller.extend({
+  store: service(),
 
-  @action
-  newInstitution() {
-    this.set(
-      'editingInstitution',
-      BufferedProxy.create({
-        content: this.store.createRecord('institution'),
-      })
-    );
-  }
+  actions: {
+    newInstitution() {
+      this.set(
+        'editingInstitution',
+        BufferedProxy.create({
+          content: this.store.createRecord('institution'),
+        })
+      );
+    },
 
-  @action
-  editInstitution(institution) {
-    const proxy = BufferedProxy.create({ content: institution });
+    editInstitution(institution) {
+      const proxy = BufferedProxy.create({ content: institution });
 
-    this.set('editingInstitution', proxy);
-  }
+      this.set('editingInstitution', proxy);
+    },
 
-  @action
-  saveInstitution() {
-    const proxy = this.editingInstitution;
-    proxy.applyBufferedChanges();
-    return proxy
-      .get('content')
-      .save()
-      .then(() => this.set('editingInstitution', undefined))
-      .catch(() => {});
-  }
+    saveInstitution() {
+      const proxy = this.editingInstitution;
+      proxy.applyBufferedChanges();
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingInstitution', undefined))
+        .catch(() => {});
+    },
 
-  @action
-  cancelInstitution() {
-    const model = this.get('editingInstitution.content');
+    cancelInstitution() {
+      const model = this.get('editingInstitution.content');
 
-    if (model.get('isNew')) {
-      model.destroyRecord();
-    }
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
 
-    this.set('editingInstitution', undefined);
-  }
-}
+      this.set('editingInstitution', undefined);
+    },
+  },
+});

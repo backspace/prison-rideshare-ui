@@ -1,40 +1,33 @@
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-get */
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
+import { computed } from '@ember/object';
 
-@classic
-export default class ApplicationController extends Controller {
-  @service
-  overlaps;
+export default Controller.extend({
+  overlaps: service(),
+  sidebar: service(),
+  session: service(),
+  store: service(),
+  userSocket: service(),
 
-  @service
-  sidebar;
+  rides: controller(),
 
-  @service
-  session;
+  ridesBadgeCount: computed(
+    'overlaps.count',
+    'rides.model.@each.requiresConfirmation',
+    function () {
+      let rides = this.get('rides.model') || [];
+      return (
+        this.get('overlaps.count') +
+        rides.filterBy('requiresConfirmation').length
+      );
+    }
+  ),
 
-  @service
-  store;
-
-  @service
-  userSocket;
-
-  @controller
-  rides;
-
-  @computed('overlaps.count', 'rides.model.@each.requiresConfirmation')
-  get ridesBadgeCount() {
-    let rides = this.get('rides.model') || [];
-    return (
-      this.get('overlaps.count') +
-      rides.filterBy('requiresConfirmation').length
-    );
-  }
-
-  @action
-  logout() {
-    this.session.invalidate();
-    this.store.unloadAll();
-  }
-}
+  actions: {
+    logout() {
+      this.session.invalidate();
+      this.store.unloadAll();
+    },
+  },
+});

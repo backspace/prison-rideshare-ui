@@ -33,6 +33,15 @@ module.exports = function (deployTarget) {
     throw new Error('Invalid deployTarget ' + deployTarget);
   }
 
+  if (deployTarget === 'sandbox') {
+    ENV['ssh-tunnel'] = {
+      username: process.env.SSH_TUNNEL_USERNAME,
+      host: process.env.SSH_TUNNEL_HOST,
+      privateKeyPath: process.env.SSH_TUNNEL_PRIVATE_KEY_PATH,
+      dstPort: process.env.SSH_TUNNEL_DST_PORT,
+    };
+  }
+
   if (deployTarget === 'production' || deployTarget === 'sandbox') {
     ENV.redis.keyPrefix = deployTarget;
   } else {

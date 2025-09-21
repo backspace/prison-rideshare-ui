@@ -1,4 +1,5 @@
-import { currentURL } from '@ember/test-helpers';
+/* eslint-disable qunit/require-expect */
+import { currentRouteName, currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
@@ -44,7 +45,7 @@ module('Acceptance | login', function (hooks) {
 
     await page.submit();
 
-    assert.equal(currentURL(), '/rides');
+    assert.equal(currentRouteName(), 'rides');
     assert.equal(shared.session.text, 'Log out jorts@jants.ca');
   });
 

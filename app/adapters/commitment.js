@@ -1,14 +1,12 @@
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/no-get */
+import ApplicationAdapter from './application';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import ApplicationAdapter from './application';
 
-@classic
-export default class Commitment extends ApplicationAdapter {
-  @service
-  router;
+export default ApplicationAdapter.extend({
+  router: service(),
 
-  onAdminCalendar = computed.equal('router.currentRouteName', 'admin-calendar');
+  onAdminCalendar: computed.equal('router.currentRouteName', 'admin-calendar'),
 
   get headers() {
     if (this.onAdminCalendar) {
@@ -22,5 +20,5 @@ export default class Commitment extends ApplicationAdapter {
         Authorization: `Person Bearer ${personToken}`,
       };
     }
-  }
-}
+  },
+});

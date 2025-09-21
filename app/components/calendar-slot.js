@@ -1,79 +1,76 @@
-import classic from 'ember-classic-decorator';
-import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-get, ember/require-tagless-components */
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
+import { computed, get } from '@ember/object';
+import { reads } from '@ember/object/computed';
+import { inject as service } from '@ember/service';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment';
 
 import { task } from 'ember-concurrency';
 
-@classic
-export default class CalendarSlot extends Component {
-  @service
-  moment;
+export default Component.extend({
+  moment: service(),
+  toasts: service(),
+  store: service(),
 
-  @service
-  toasts;
+  isCommittedTo: reads('commitment'),
 
-  @service
-  store;
+  commitment: computed(
+    'person.id',
+    'slot.commitments.@each.person',
+    function () {
+      const personId = this.get('person.id');
 
-  @reads('commitment')
-  isCommittedTo;
+      return this.get('slot.commitments').find(
+        (slot) => slot.belongsTo('person').id() == personId
+      );
+    }
+  ),
 
-  @computed('person.id', 'slot.commitments.@each.person')
-  get commitment() {
-    const personId = this.get('person.id');
-
-    return this.get('slot.commitments').find(
-      (slot) => slot.belongsTo('person').id() == personId
-    );
-  }
-
-  @computed('slot.{start,end}')
-  get timespan() {
+  timespan: computed('slot.{start,end}', function () {
     return formatBriefTimespan(
       this.moment,
       this.get('slot.start'),
       this.get('slot.end'),
       false
     );
-  }
+  }),
 
-  @computed('slot.isNotFull', 'isCommittedTo')
-  get hidden() {
+  hidden: computed('slot.isNotFull', 'isCommittedTo', function () {
     return !this.get('slot.isNotFull') && !this.isCommittedTo;
-  }
+  }),
 
-  @computed('isCommittedTo', 'slot.{isNotFull,start}', 'toggle.isRunning')
-  get disabled() {
-    const isNotFull = this.get('slot.isNotFull');
-    const start = this.get('slot.start');
-    const toggleIsRunning = this.get('toggle.isRunning');
+  disabled: computed(
+    'isCommittedTo',
+    'slot.{isNotFull,start}',
+    'toggle.isRunning',
+    function () {
+      const isNotFull = this.get('slot.isNotFull');
+      const start = this.get('slot.start');
+      const toggleIsRunning = this.get('toggle.isRunning');
 
-    if (toggleIsRunning) {
-      return true;
-    } else if (start < new Date()) {
-      return true;
-    } else if (!isNotFull) {
-      return !this.isCommittedTo;
-    } else {
-      return false;
+      if (toggleIsRunning) {
+        return true;
+      } else if (start < new Date()) {
+        return true;
+      } else if (!isNotFull) {
+        return !this.isCommittedTo;
+      } else {
+        return false;
+      }
     }
-  }
+  ),
 
-  @computed('slot.{count,commitments.length}')
-  get capacity() {
+  capacity: computed('slot.{count,commitments.length}', function () {
     const dividend = this.get('slot.commitments.length');
 
     const count = this.get('slot.count');
     const divisor = count === 0 ? '∞' : count;
 
     return `${dividend}/${divisor}`;
-  }
+  }),
 
-  @(task(function* () {
+  toggle: task(function* () {
     if (this.isCommittedTo) {
       try {
         yield this.commitment.destroyRecord();
@@ -107,6 +104,5 @@ export default class CalendarSlot extends Component {
         newRecord.destroyRecord();
       }
     }
-  }).drop())
-  toggle;
-}
+  }).drop(),
+});

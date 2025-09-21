@@ -1,6 +1,6 @@
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes */
 import Controller from '@ember/controller';
+import { computed } from '@ember/object';
 import moment from 'moment';
 
 // Sunset theme adapted from here: https://github.com/highcharts/highcharts/blob/master/js/themes/sunset.js
@@ -21,20 +21,19 @@ const theme = {
   },
 };
 
-@classic
-export default class StatisticsController extends Controller {
-  queryParams = ['start', 'end', 'grouping'];
-  grouping = 'rides';
+export default Controller.extend({
+  queryParams: ['start', 'end', 'grouping'],
+
+  grouping: 'rides',
 
   init() {
-    super.init(...arguments);
+    this._super(...arguments);
     this.send('setPastYear');
-  }
+  },
 
-  theme = theme;
+  theme,
 
-  @computed('model.@each.start', 'start', 'end')
-  get rides() {
+  rides: computed('model.@each.start', 'start', 'end', function () {
     const rangeStart = moment(this.start);
     const rangeEnd = moment(this.end);
 
@@ -44,10 +43,9 @@ export default class StatisticsController extends Controller {
         rangeEnd.isAfter(ride.get('start'))
       );
     });
-  }
+  }),
 
-  @computed('rides.length')
-  get clipboardText() {
+  clipboardText: computed('rides.length', function () {
     return (
       'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement\n' +
       this.rides
@@ -68,28 +66,26 @@ export default class StatisticsController extends Controller {
         })
         .join('\n')
     );
-  }
+  }),
 
-  @computed('clipboardText')
-  get copyButtonTitle() {
+  copyButtonTitle: computed('clipboardText', function () {
     return `This will copy the following to the clipboard:\n${this.clipboardText}`;
-  }
+  }),
 
-  @action
-  setPastYear() {
-    this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
-    this.set('end', moment().format('YYYY-MM-DD'));
-  }
+  actions: {
+    setPastYear() {
+      this.set('start', moment().subtract(1, 'y').format('YYYY-MM-DD'));
+      this.set('end', moment().format('YYYY-MM-DD'));
+    },
 
-  @action
-  setPastTwoWeeks() {
-    this.set('start', moment().subtract(2, 'w').format('YYYY-MM-DD'));
-    this.set('end', moment().format('YYYY-MM-DD'));
-  }
+    setPastTwoWeeks() {
+      this.set('start', moment().subtract(2, 'w').format('YYYY-MM-DD'));
+      this.set('end', moment().format('YYYY-MM-DD'));
+    },
 
-  @action
-  setThisYear() {
-    this.set('start', moment().startOf('year').format('YYYY-MM-DD'));
-    this.set('end', moment().format('YYYY-MM-DD'));
-  }
-}
+    setThisYear() {
+      this.set('start', moment().startOf('year').format('YYYY-MM-DD'));
+      this.set('end', moment().format('YYYY-MM-DD'));
+    },
+  },
+});

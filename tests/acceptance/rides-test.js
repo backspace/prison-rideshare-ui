@@ -1,3 +1,4 @@
+/* eslint-disable qunit/assert-args, qunit/require-expect */
 import { find, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';

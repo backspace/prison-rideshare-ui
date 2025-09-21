@@ -1,20 +1,18 @@
-import classic from 'ember-classic-decorator';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-get */
 import { A } from '@ember/array';
+import { inject as service } from '@ember/service';
 import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';
 import Ember from 'ember';
 import config from '../config/environment';
 
-@classic
-export default class UserSocketService extends PhoenixSocket {
-  @service('session')
-  session;
+export default PhoenixSocket.extend({
+  session: service('session'),
 
   init() {
-    super.init(...arguments);
+    this._super(...arguments);
     this.set('present', A());
     this.connect();
-  }
+  },
 
   connect() {
     if (Ember.testing || !this.get('session.isAuthenticated')) {
@@ -23,7 +21,7 @@ export default class UserSocketService extends PhoenixSocket {
 
     const guardian_token = this.get('session.data.authenticated.access_token');
 
-    super.connect(`${config.DS.socketHost}/socket`, {
+    this._super(`${config.DS.socketHost}/socket`, {
       params: { guardian_token },
     });
 
@@ -36,16 +34,16 @@ export default class UserSocketService extends PhoenixSocket {
     channel.on('presence_diff', (presenceDiff) =>
       this._onPresenceDiff(presenceDiff)
     );
-  }
+  },
 
   _onPresenceState(users) {
     this._processJoins(Object.keys(users));
-  }
+  },
 
   _onPresenceDiff({ leaves, joins }) {
     this._processJoins(Object.keys(joins));
     this._processLeaves(Object.keys(leaves));
-  }
+  },
 
   _processJoins(keys) {
     const present = this.present;
@@ -56,16 +54,16 @@ export default class UserSocketService extends PhoenixSocket {
           present.pushObject(joinId);
         }
       });
-  }
+  },
 
   _processLeaves(keys) {
     const present = this.present;
     keys
       .map((stringWithPrefix) => this._parseUserString(stringWithPrefix))
       .forEach((leaveId) => present.removeObject(leaveId));
-  }
+  },
 
   _parseUserString(stringWithPrefix) {
     return stringWithPrefix.split(':')[1];
-  }
-}
+  },
+});

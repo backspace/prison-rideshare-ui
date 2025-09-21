@@ -1,166 +1,168 @@
-import classic from 'ember-classic-decorator';
-import { mapBy, filterBy, sort, alias } from '@ember/object/computed';
-import EmberObject, { action, computed } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes */
+import EmberObject, { computed } from '@ember/object';
+import { alias, sort, filterBy } from '@ember/object/computed';
 import Controller from '@ember/controller';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
 // import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 import moment from 'moment';
 
-@classic
-export default class ReimbursementsController extends Controller {
-  queryParams = {
+export default Controller.extend({
+  queryParams: {
     showProcessed: 'processed',
-  };
+  },
 
-  @alias('model')
-  reimbursements;
+  reimbursements: alias('model'),
+  unsortedFilteredReimbursements: computed(
+    'reimbursements.@each.processed',
+    function () {
+      return this.reimbursements.rejectBy('processed');
+    }
+  ),
+  filteredReimbursementsSorting: Object.freeze(['ride.start']),
+  filteredReimbursements: sort(
+    'unsortedFilteredReimbursements',
+    'filteredReimbursementsSorting'
+  ),
 
-  @computed('reimbursements.@each.processed')
-  get unsortedFilteredReimbursements() {
-    return this.reimbursements.rejectBy('processed');
-  }
+  showProcessed: false,
 
-  filteredReimbursementsSorting = Object.freeze(['ride.start']);
+  unsortedProcessedReimbursements: filterBy('reimbursements', 'processed'),
+  processedReimbursementsSorting: Object.freeze(['insertedAt:desc']),
+  processedReimbursements: sort(
+    'unsortedProcessedReimbursements',
+    'processedReimbursementsSorting'
+  ),
 
-  @sort('unsortedFilteredReimbursements', 'filteredReimbursementsSorting')
-  filteredReimbursements;
+  monthReimbursementCollections: computed(
+    'filteredReimbursements.@each.person',
+    function () {
+      const reimbursements = this.filteredReimbursements;
+      const monthNumberStringToMonthName = {};
 
-  showProcessed = false;
+      const monthToPersonIdToReimbursements = reimbursements.reduce(
+        (monthToPersonIdToReimbursements, reimbursement) => {
+          // FIXME this assumes a ride is always preloaded and present
+          const start = reimbursement.belongsTo('ride').value().get('start');
+          const month = moment(start).format('YYYY-MM');
 
-  @filterBy('reimbursements', 'processed')
-  unsortedProcessedReimbursements;
+          if (!monthToPersonIdToReimbursements[month]) {
+            monthToPersonIdToReimbursements[month] = {};
+          }
 
-  processedReimbursementsSorting = Object.freeze(['insertedAt:desc']);
+          if (!monthNumberStringToMonthName[month]) {
+            monthNumberStringToMonthName[month] =
+              moment(start).format('MMMM YYYY');
+          }
 
-  @sort('unsortedProcessedReimbursements', 'processedReimbursementsSorting')
-  processedReimbursements;
+          const person = reimbursement.get('person');
+          const personId = person.get('id');
 
-  @computed('filteredReimbursements.@each.person')
-  get monthReimbursementCollections() {
-    const reimbursements = this.filteredReimbursements;
-    const monthNumberStringToMonthName = {};
+          if (!monthToPersonIdToReimbursements[month][personId]) {
+            monthToPersonIdToReimbursements[month][personId] = [
+              ReimbursementCollection.create({
+                donations: false,
+                person,
+                reimbursements: [],
+              }),
+              ReimbursementCollection.create({
+                donations: true,
+                person,
+                reimbursements: [],
+              }),
+            ];
+          }
 
-    const monthToPersonIdToReimbursements = reimbursements.reduce(
-      (monthToPersonIdToReimbursements, reimbursement) => {
-        // FIXME this assumes a ride is always preloaded and present
-        const start = reimbursement.belongsTo('ride').value().get('start');
-        const month = moment(start).format('YYYY-MM');
+          let collection;
 
-        if (!monthToPersonIdToReimbursements[month]) {
-          monthToPersonIdToReimbursements[month] = {};
-        }
+          if (reimbursement.get('donation')) {
+            collection = monthToPersonIdToReimbursements[month][personId].find(
+              (c) => c.get('donations')
+            );
+          } else {
+            collection = monthToPersonIdToReimbursements[month][personId].find(
+              (c) => !c.get('donations')
+            );
+          }
 
-        if (!monthNumberStringToMonthName[month]) {
-          monthNumberStringToMonthName[month] =
-            moment(start).format('MMMM YYYY');
-        }
+          collection.get('reimbursements').push(reimbursement);
 
-        const person = reimbursement.get('person');
-        const personId = person.get('id');
-
-        if (!monthToPersonIdToReimbursements[month][personId]) {
-          monthToPersonIdToReimbursements[month][personId] = [
-            ReimbursementCollection.create({
-              donations: false,
-              person,
-              reimbursements: [],
-            }),
-            ReimbursementCollection.create({
-              donations: true,
-              person,
-              reimbursements: [],
-            }),
-          ];
-        }
-
-        let collection;
-
-        if (reimbursement.get('donation')) {
-          collection = monthToPersonIdToReimbursements[month][personId].find(
-            (c) => c.get('donations')
-          );
-        } else {
-          collection = monthToPersonIdToReimbursements[month][personId].find(
-            (c) => !c.get('donations')
-          );
-        }
-
-        collection.get('reimbursements').push(reimbursement);
-
-        return monthToPersonIdToReimbursements;
-      },
-      {}
-    );
-
-    const monthReimbursementCollections = Object.keys(
-      monthToPersonIdToReimbursements
-    ).reduce((monthReimbursementCollections, monthNumberString) => {
-      const personIdToReimbursements =
-        monthToPersonIdToReimbursements[monthNumberString];
-      const collections = Object.keys(personIdToReimbursements)
-        .map((id) => personIdToReimbursements[id])
-        .sortBy('firstObject.person.name');
-
-      collections.forEach(([nonDonations, donations]) => {
-        if (nonDonations.reimbursements.get('length') === 0) {
-          donations.set('showName', true);
-        } else {
-          nonDonations.set('showName', true);
-        }
-      });
-
-      const flattenedCollections = collections.reduce(
-        (flattenedCollections, collectionPair) => {
-          return flattenedCollections.concat(collectionPair);
+          return monthToPersonIdToReimbursements;
         },
-        []
+        {}
       );
 
-      monthReimbursementCollections.push(
-        MonthReimbursementCollections.create({
-          monthNumberString,
-          monthName: monthNumberStringToMonthName[monthNumberString],
-          reimbursementCollections: flattenedCollections,
-        })
-      );
+      const monthReimbursementCollections = Object.keys(
+        monthToPersonIdToReimbursements
+      ).reduce((monthReimbursementCollections, monthNumberString) => {
+        const personIdToReimbursements =
+          monthToPersonIdToReimbursements[monthNumberString];
+        const collections = Object.keys(personIdToReimbursements)
+          .map((id) => personIdToReimbursements[id])
+          .sortBy('firstObject.person.name');
 
-      return monthReimbursementCollections;
-    }, []);
+        collections.forEach(([nonDonations, donations]) => {
+          if (nonDonations.reimbursements.get('length') === 0) {
+            donations.set('showName', true);
+          } else {
+            nonDonations.set('showName', true);
+          }
+        });
 
-    return monthReimbursementCollections.sortBy('monthNumberString');
-  }
+        const flattenedCollections = collections.reduce(
+          (flattenedCollections, collectionPair) => {
+            return flattenedCollections.concat(collectionPair);
+          },
+          []
+        );
 
-  @action
-  processReimbursements(personAndReimbursements, donation) {
-    personAndReimbursements.get('reimbursements').forEach((reimbursement) => {
-      reimbursement.set('processed', true);
+        monthReimbursementCollections.push(
+          MonthReimbursementCollections.create({
+            monthNumberString,
+            monthName: monthNumberStringToMonthName[monthNumberString],
+            reimbursementCollections: flattenedCollections,
+          })
+        );
 
-      if (donation === true) {
-        reimbursement.set('donation', true);
-      }
+        return monthReimbursementCollections;
+      }, []);
 
-      reimbursement.save();
-    });
-  }
-}
+      return monthReimbursementCollections.sortBy('monthNumberString');
+    }
+  ),
 
-@classic
-class MonthReimbursementCollections extends EmberObject {
-  @computed('reimbursementCollections', 'reimbursementCollectionsClipboardText')
-  get clipboardText() {
-    return this.reimbursementCollections
-      .reduce(function (collections, collection) {
-        if (collection.reimbursements.length) {
-          collections.push(collection.clipboardText);
+  actions: {
+    processReimbursements(personAndReimbursements, donation) {
+      personAndReimbursements.get('reimbursements').forEach((reimbursement) => {
+        reimbursement.set('processed', true);
+
+        if (donation === true) {
+          reimbursement.set('donation', true);
         }
-        return collections;
-      }, [])
-      .join('\n');
-  }
 
-  @computed('clipboardText')
-  get copyIconTitle() {
+        reimbursement.save();
+      });
+    },
+  },
+});
+
+const MonthReimbursementCollections = EmberObject.extend({
+  clipboardText: computed(
+    'reimbursementCollections',
+    'reimbursementCollectionsClipboardText',
+    function () {
+      return this.reimbursementCollections
+        .reduce(function (collections, collection) {
+          if (collection.reimbursements.length) {
+            collections.push(collection.clipboardText);
+          }
+          return collections;
+        }, [])
+        .join('\n');
+    }
+  ),
+
+  copyIconTitle: computed('clipboardText', function () {
     return `This will copy the following to the clipboard:\n${this.clipboardText}`;
-  }
-}
+  }),
+});

@@ -193,7 +193,9 @@ function parseQueryString(query) {
   if (qPos !== -1 || query.indexOf('=') !== -1) {
     for (; i >= 0; i--) {
       var s = tokens[i].split('=');
-      obj[unescape(s[0])] = s.hasOwnProperty(1) ? unescape(s[1]) : null;
+      obj[unescape(s[0])] = Object.prototype.hasOwnProperty.call(s, 1)
+        ? unescape(s[1])
+        : null;
     }
   }
   return obj;

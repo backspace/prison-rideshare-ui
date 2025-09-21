@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes, ember/no-get, ember/use-ember-data-rfc-395-imports */
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import DS from 'ember-data';

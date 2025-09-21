@@ -1,3 +1,4 @@
+/* eslint-disable ember/no-classic-classes */
 import EmberObject from '@ember/object';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
 

@@ -1,29 +1,20 @@
-import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
+/* eslint-disable ember/no-classic-classes, ember/no-get */
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
+import { computed } from '@ember/object';
 
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
+let ObjectPromiseProxy = ObjectProxy.extend(PromiseProxyMixin);
 
-@classic
-class ObjectPromiseProxy extends ObjectProxy.extend(PromiseProxyMixin) {}
+export default Service.extend({
+  overlaps: service(),
+  store: service(),
+  userSocket: service(),
 
-@classic
-export default class SidebarService extends Service {
-  @service
-  overlaps;
+  open: false,
 
-  @service
-  store;
-
-  @service
-  userSocket;
-
-  open = false;
-
-  @computed('userSocket.present.length')
-  get userCount() {
+  userCount: computed('userSocket.present.length', function () {
     const count = this.get('userSocket.present.length');
 
     if (count > 1) {
@@ -31,10 +22,9 @@ export default class SidebarService extends Service {
     } else {
       return 0;
     }
-  }
+  }),
 
-  @computed
-  get postsRequest() {
+  postsRequest: computed(function () {
     return ObjectPromiseProxy.create({
       promise: this.store.findAll('post').then((posts) => {
         return {
@@ -42,10 +32,9 @@ export default class SidebarService extends Service {
         };
       }),
     });
-  }
+  }),
 
-  @computed('postsRequest.posts.@each.unread')
-  get unreadCount() {
+  unreadCount: computed('postsRequest.posts.@each.unread', function () {
     let posts = this.get('postsRequest.posts');
 
     if (posts) {
@@ -53,11 +42,15 @@ export default class SidebarService extends Service {
     } else {
       return 0;
     }
-  }
+  }),
 
-  @computed('userCount', 'unreadCount', 'overlaps.count')
-  get notificationCount() {
-    // TODO this is untested
-    return this.userCount + this.unreadCount + this.get('overlaps.count');
-  }
-}
+  notificationCount: computed(
+    'userCount',
+    'unreadCount',
+    'overlaps.count',
+    function () {
+      // TODO this is untested
+      return this.userCount + this.unreadCount + this.get('overlaps.count');
+    }
+  ),
+});

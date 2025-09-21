@@ -1,5 +1,4 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
 import Component from '@ember/component';
 
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
@@ -15,24 +14,23 @@ const shortcutReasonToIcon = shortcuts.reduce(
   {}
 );
 
-@classic
-export default class CancellationForm extends Component {
-  reasons = reasons;
-  shortcutReasonToIcon = shortcutReasonToIcon;
+export default Component.extend({
+  reasons,
+  shortcutReasonToIcon,
 
-  @action
-  cancelledChanged(cancelled) {
-    if (!cancelled) {
-      this.set('ride.cancellationReason', null);
-    }
+  actions: {
+    cancelledChanged(cancelled) {
+      if (!cancelled) {
+        this.set('ride.cancellationReason', null);
+      }
 
-    this.set('ride.cancelled', cancelled);
-  }
+      this.set('ride.cancelled', cancelled);
+    },
 
-  @action
-  cancelViaShortcut(reason) {
-    this.set('ride.cancelled', true);
-    this.set('ride.cancellationReason', reason);
-    this.save();
-  }
-}
+    cancelViaShortcut(reason) {
+      this.set('ride.cancelled', true);
+      this.set('ride.cancellationReason', reason);
+      this.save();
+    },
+  },
+});

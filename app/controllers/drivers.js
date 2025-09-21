@@ -1,54 +1,49 @@
-import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+/* eslint-disable ember/no-actions-hash, ember/no-classic-classes, ember/no-get */
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { inject as service } from '@ember/service';
 
-@classic
-export default class DriversController extends Controller {
-  @service
-  store;
+export default Controller.extend({
+  store: service(),
 
-  showInactive = false;
+  showInactive: false,
 
-  @action
-  newPerson() {
-    this.set(
-      'editingPerson',
-      BufferedProxy.create({
-        content: this.store.createRecord('person'),
-      })
-    );
-  }
+  actions: {
+    newPerson() {
+      this.set(
+        'editingPerson',
+        BufferedProxy.create({
+          content: this.store.createRecord('person'),
+        })
+      );
+    },
 
-  @action
-  editPerson(person) {
-    const proxy = BufferedProxy.create({ content: person });
+    editPerson(person) {
+      const proxy = BufferedProxy.create({ content: person });
 
-    this.set('editingPerson', proxy);
-  }
+      this.set('editingPerson', proxy);
+    },
 
-  @action
-  savePerson() {
-    const proxy = this.editingPerson;
-    proxy.applyBufferedChanges();
-    return proxy
-      .get('content')
-      .save()
-      .then(() => this.set('editingPerson', undefined))
-      .catch(() => {
-        // FIXME this is handled for ride-saving failures, how to generalise?
-      });
-  }
+    savePerson() {
+      const proxy = this.editingPerson;
+      proxy.applyBufferedChanges();
+      return proxy
+        .get('content')
+        .save()
+        .then(() => this.set('editingPerson', undefined))
+        .catch(() => {
+          // FIXME this is handled for ride-saving failures, how to generalise?
+        });
+    },
 
-  @action
-  cancelPerson() {
-    const model = this.get('editingPerson.content');
+    cancelPerson() {
+      const model = this.get('editingPerson.content');
 
-    if (model.get('isNew')) {
-      model.destroyRecord();
-    }
+      if (model.get('isNew')) {
+        model.destroyRecord();
+      }
 
-    this.set('editingPerson', undefined);
-  }
-}
+      this.set('editingPerson', undefined);
+    },
+  },
+});
