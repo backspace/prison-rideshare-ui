@@ -5,6 +5,7 @@ import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 export default Route.extend(AuthenticatedRoute, {
   account: service(),
+  router: service(),
   session: service(),
 
   beforeModel() {
@@ -16,11 +17,11 @@ export default Route.extend(AuthenticatedRoute, {
           this.get('session.isAuthenticated') &&
           this.get('session.currentUser.admin')
         ) {
-          this.transitionTo('rides');
+          this.router.transitionTo('rides');
         } else {
-          this.transitionTo('reports.new');
+          this.router.transitionTo('reports.new');
         }
       })
-      .catch(() => this.transitionTo('reports.new'));
+      .catch(() => this.router.transitionTo('reports.new'));
   },
 });
