@@ -7,7 +7,9 @@ import PaperDialogContent from "ember-paper/components/paper-dialog-content";
 import PaperDialogActions from "ember-paper/components/paper-dialog-actions";
 import { action } from "@ember/object";
 import { fn } from "@ember/helper";
+import { pageTitle } from 'ember-page-title';
 export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}}
+  {{pageTitle "Reset password"}}
 <PaperDialog>
   <PaperToolbar>
     <PaperToolbarTools>
@@ -33,7 +35,7 @@ export default RouteTemplate(<template>{{!-- template-lint-disable no-action --}
 
     <PaperDialogActions @class="layout-row">
       <div class="layout layout-row">
-        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{this.submitReset}}>
+        <form.submit-button @class="submit" @primary={{true}} @raised={{true}} @onClick={{@controller.submitReset}}>
           Update password
         </form.submit-button>
       </div>
