@@ -32,6 +32,13 @@ module.exports = function (defaults) {
       includeHighCharts: true,
       includeModules: ['heatmap'],
     },
+    sassOptions: {
+      precision: 4,
+      includePaths: [
+        './node_modules/@hashicorp/design-system-tokens/dist/products/css',
+        './node_modules/@hashicorp/design-system-components/dist/styles',
+      ],
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated
