@@ -70,7 +70,7 @@ module('Acceptance | reports', function (hooks) {
 
     assert.equal(
       page.rides[0].label,
-      'francine: Sun, Dec 25 at 10:15a to Remand Centre (33¢⁄km )',
+      'francine: Sun, Dec 25 at 10:15a to Remand Centre (33 ¢⁄km )',
     );
     assert.equal(
       page.rides[1].label,

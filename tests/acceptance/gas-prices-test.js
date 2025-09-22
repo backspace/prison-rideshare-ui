@@ -51,8 +51,8 @@ module('Acceptance | reports', function (hooks) {
     page.gasPrices[0].as((latest) => {
       assert.equal(latest.date, 'Sat, Jul 7');
       assert.equal(latest.price, '101¢⁄L');
-      assert.equal(latest.closeRate, '84¢⁄km');
-      assert.equal(latest.farRate, '48¢⁄km');
+      assert.equal(latest.closeRate, '84 ¢⁄km');
+      assert.equal(latest.farRate, '48 ¢⁄km');
     });
 
     assert.equal(page.gasPrices[1].date, 'Fri, Jul 6');

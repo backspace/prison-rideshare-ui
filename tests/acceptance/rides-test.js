@@ -304,7 +304,7 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(page.reports.length, 2, 'expected the reports to be rendered');
     assert.equal(page.reports[0].distance, '44');
     assert.equal(page.reports[0].carExpenses, '10.1');
-    assert.equal(page.reports[0].rate, '26¢⁄km');
+    assert.equal(page.reports[0].rate, '26 ¢⁄km');
     assert.equal(page.reports[0].foodExpenses, '55.55');
     assert.equal(page.reports[0].notes, 'Some report notes?');
 
