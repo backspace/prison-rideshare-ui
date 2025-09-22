@@ -10,6 +10,7 @@ import paperIcon from 'ember-paper/components/paper-icon';
 import pluralize from 'ember-inflector/lib/helpers/pluralize';
 import PaperChips from 'ember-paper/components/paper-chips/component';
 import { pageTitle } from 'ember-page-title';
+import { HdsAppHeader } from '@hashicorp/design-system-components/components';
 
 @classic
 export default class ToolbarHeader extends Component {
@@ -19,6 +20,21 @@ export default class ToolbarHeader extends Component {
     {{else}}
       {{pageTitle this.title}}
     {{/if}}
+    <HdsAppHeader>
+      <:globalActions>
+        <h2>
+          {{this.title}}
+        </h2>
+      </:globalActions>
+      <:utilityActions>
+        <PaperChips @readOnly={{true}} @content={{this.chips}} as |item|>
+          <span title={{item.title}}>
+            {{item.label}}
+          </span>
+        </PaperChips>
+        {{yield}}
+      </:utilityActions>
+    </HdsAppHeader>
     <PaperToolbar as |toolbar|>
       <toolbar.tools>
         <PaperButton
@@ -41,16 +57,6 @@ export default class ToolbarHeader extends Component {
             </span>
           {{/if}}
         {{/if}}
-        <h2>
-          {{this.title}}
-        </h2>
-        <PaperChips @readOnly={{true}} @content={{this.chips}} as |item|>
-          <span title={{item.title}}>
-            {{item.label}}
-          </span>
-        </PaperChips>
-        <span class='flex'></span>
-        {{yield}}
       </toolbar.tools>
     </PaperToolbar>
   </template>
