@@ -1,5 +1,6 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
+import { HdsButton } from '@hashicorp/design-system-components/components';
 import PaperButton from 'ember-paper/components/paper-button';
 import paperIcon from 'ember-paper/components/paper-icon';
 import PaperSwitch from 'ember-paper/components/paper-switch';
@@ -14,19 +15,18 @@ import PaperForm from 'ember-paper/components/paper-form';
 import PaperRadioGroup from 'ember-paper/components/paper-radio-group';
 import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
 import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
 
 export default RouteTemplate(
   <template>
     <ToolbarHeader @title='Drivers'>
-      <PaperButton
-        @mini={{true}}
-        @aria-label='New driver'
-        @title='New driver'
+      <HdsButton
+        {{on 'click' @controller.newPerson}}
+        @text='New driver'
         @class='new'
-        @onClick={{@controller.newPerson}}
-      >
-        {{paperIcon 'add'}}
-      </PaperButton>
+        @isIconOnly={{true}}
+        @icon='plus'
+      />
     </ToolbarHeader>
 
     <div class='switch-container layout-row layout-align-start-center'>
