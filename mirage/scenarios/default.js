@@ -17,7 +17,7 @@ export default function (server) {
   ];
 
   const institutions = institutionNames.map((name) =>
-    server.create('institution', { name })
+    server.create('institution', { name }),
   );
 
   for (let i = 0; i < 25; i++) {
@@ -54,8 +54,8 @@ export default function (server) {
           start,
           end,
         },
-        reportAttributes
-      )
+        reportAttributes,
+      ),
     );
 
     if (reportAttributes.carExpenses && faker.datatype.boolean()) {
