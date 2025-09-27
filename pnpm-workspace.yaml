@@ -1,9 +1,0 @@
-ignoredBuiltDependencies:
-  - sharp
-supportedArchitectures:
-  os:
-    - current
-    - linux
-  cpu:
-    - x64
-    - arm64
