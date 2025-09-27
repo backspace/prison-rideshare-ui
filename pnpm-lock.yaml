@@ -224,6 +224,9 @@ importers:
       eslint-plugin-qunit:
         specifier: ^6.2.0
         version: 6.2.0(eslint@8.57.1)
+      highcharts:
+        specifier: ^12.4.0
+        version: 12.4.0
       lint-to-the-future:
         specifier: ^2.6.3
         version: 2.6.4
