@@ -242,6 +242,9 @@ importers:
       miragejs:
         specifier: 0.1.48
         version: 0.1.48
+      mobiledoc-kit:
+        specifier: ^0.15.0
+        version: 0.15.0
       moment:
         specifier: ^2.29.4
         version: 2.30.1
