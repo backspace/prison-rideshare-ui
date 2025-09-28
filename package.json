@@ -59,7 +59,6 @@
     "ember-cli-terser": "^4.0.2",
     "ember-composable-helpers": "^5.0.0",
     "ember-concurrency": "^4.0.2",
-    "ember-cpm": "3.2.0",
     "ember-custom-actions": "^3.3.0",
     "ember-data": "~3.28.6",
     "ember-decorators": "^6.1.1",

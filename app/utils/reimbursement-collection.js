@@ -3,7 +3,6 @@ import classic from 'ember-classic-decorator';
 import { filterBy, mapBy } from '@ember/object/computed';
 import EmberObject, { computed } from '@ember/object';
 
-import sum from 'ember-cpm/macros/sum';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import moment from 'moment';
@@ -13,8 +12,10 @@ export default class ReimbursementCollection extends EmberObject {
   @mapBy('reimbursements', 'foodExpenses')
   foodExpenses;
 
-  @sum('foodExpenses')
-  foodExpensesSum;
+  @computed('foodExpenses')
+  get foodExpensesSum() {
+    return this.foodExpenses.reduce((sum, amount) => sum + amount, 0);
+  }
 
   @dollars('foodExpensesSum')
   foodExpensesDollars;
@@ -22,14 +23,18 @@ export default class ReimbursementCollection extends EmberObject {
   @mapBy('reimbursements', 'carExpenses')
   carExpenses;
 
-  @sum('carExpenses')
-  carExpensesSum;
+  @computed('carExpenses')
+  get carExpensesSum() {
+    return this.carExpenses.reduce((sum, amount) => sum + amount, 0);
+  }
 
   @dollars('carExpensesSum')
   carExpensesDollars;
 
-  @sum('foodExpensesSum', 'carExpensesSum')
-  totalExpenses;
+  @computed('foodExpensesSum', 'carExpensesSum')
+  get totalExpenses() {
+    return this.foodExpensesSum + this.carExpensesSum;
+  }
 
   @dollars('totalExpenses')
   totalExpensesDollars;

@@ -5,8 +5,6 @@ import { sort, mapBy } from '@ember/object/computed';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
-import sum from 'ember-cpm/macros/sum';
-
 export default Model.extend({
   person: belongsTo(),
 
@@ -23,7 +21,9 @@ export default Model.extend({
     },
   ),
   rideFoodExpenses: mapBy('ridesWithFoodExpenses', 'outstandingFoodExpenses'),
-  foodExpenses: sum('rideFoodExpenses'),
+  foodExpenses: computed('rideFoodExpenses', function () {
+    return this.rideFoodExpenses.reduce((sum, amount) => sum + amount, 0);
+  }),
   foodExpensesDollars: dollars('foodExpenses'),
 
   ridesWithCarExpenses: computed(
@@ -34,9 +34,13 @@ export default Model.extend({
     },
   ),
   rideCarExpenses: mapBy('ridesWithCarExpenses', 'outstandingCarExpenses'),
-  carExpenses: sum('rideCarExpenses'),
+  carExpenses: computed('rideCarExpenses', function () {
+    return this.rideCarExpenses.reduce((sum, amount) => sum + amount, 0);
+  }),
   carExpensesDollars: dollars('carExpenses'),
 
-  totalExpenses: sum('foodExpenses', 'carExpenses'),
+  totalExpenses: computed('foodExpenses', 'carExpenses', function () {
+    return this.foodExpenses + this.carExpenses;
+  }),
   totalExpensesDollars: dollars('totalExpenses'),
 });

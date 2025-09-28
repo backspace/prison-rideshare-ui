@@ -116,9 +116,6 @@ importers:
       ember-concurrency:
         specifier: ^4.0.2
         version: 4.0.6(@babel/core@7.28.4)
-      ember-cpm:
-        specifier: 3.2.0
-        version: 3.2.0(@babel/core@7.28.4)
       ember-custom-actions:
         specifier: ^3.3.0
         version: 3.3.0(@babel/core@7.28.4)
@@ -3602,10 +3599,6 @@ packages:
     resolution: {integrity: sha512-N/XFvZszrzyyX4IcNoeK4mJvIItNuONumhPLqi64T8NDjJkxBj4Pq61rvMkJx/9eZ8alzE4I8vYKOLxT0FvRuQ==}
     engines: {node: 10.* || >= 12}
 
-  ember-cpm@3.2.0:
-    resolution: {integrity: sha512-OGeS7kgnT7MSunU0bms+mlTgVknlr4HKeJSE7WY+BcGvL09NySYH3HNMEpgsYxo/q1pH8033ZEv7EFVuK/pAfg==}
-    engines: {node: 6.* || 8.* || >= 10.*}
-
   ember-css-transitions@2.1.1:
     resolution: {integrity: sha512-Kue3tMUHlmeEQvnV1YXoJSjk/wIKiywAT72ny89Yl7rRzEjgjOMcUD69HSg3ShsQNOpyzU0eOCANVtk00FjJig==}
     engines: {node: 10.* || >= 12}
@@ -3712,10 +3705,6 @@ packages:
   ember-load@0.0.17:
     resolution: {integrity: sha512-gyJrGwUHOri9En8QG/v2NIwxHFC5DFifar+1TRLwsNSeyJaUSwoFExLCVN8xYoDrI5CX1lmRoOUcfcrEApKwfg==}
     engines: {node: 6.* || 8.* || >= 10.*}
-
-  ember-macro-helpers@1.0.0:
-    resolution: {integrity: sha512-6XJTMrCsEk7W8DhfjO2E4NPoPiyLzERGivKY5+hI7bIwskXa9qaXzGaEOlSXo65oI753rdfO1y+RiXfwCIp6Dg==}
-    engines: {node: ^4.5 || 6.* || >= 7.*}
 
   ember-maybe-in-element@2.1.0:
     resolution: {integrity: sha512-6WAzPbf4BNQIQzkur2+zRJJJ/PKQoujIYgFjrpj3fOPy8iRlxVUm0/B41qbFyg1LE6bVbg0cWbuESWEvJ9Rswg==}
@@ -3876,10 +3865,6 @@ packages:
     resolution: {integrity: sha512-T6Ogd3pk9FxYiZfSxdjgn3Hb3Ksqgw7CD23V9qfig9jktNdkNEHo4+3PA3cSD/+3a2kdH3KmNvKyarVuzdtEkA==}
     peerDependencies:
       ember-source: '>=3.28.0'
-
-  ember-weakmap@3.3.2:
-    resolution: {integrity: sha512-AFECvDuKaxMvi/kMl18sRDUwoB+WKxDdLXfEAOJ8JbjcYhGE/6cWXELSNIshIIwmuLRyDC9xwfhd7PpMnRohYA==}
-    engines: {node: 6.* || 8.* || >= 10.*}
 
   ember-wormhole@0.6.1:
     resolution: {integrity: sha512-PIKLhWsWaw6W9a6kRGLFRVLdzw5f2wRkaTXOlM19PvakvchV969l67Ee52YwwKS69iYv2052TNaJ9pA3AeWmuw==}
@@ -12948,15 +12933,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-cpm@3.2.0(@babel/core@7.28.4):
-    dependencies:
-      ember-cli-babel: 6.18.0(@babel/core@7.28.4)
-      ember-macro-helpers: 1.0.0(@babel/core@7.28.4)
-      inflection: 1.13.4
-    transitivePeerDependencies:
-      - '@babel/core'
-      - supports-color
-
   ember-css-transitions@2.1.1(@babel/core@7.28.4):
     dependencies:
       ember-cli-babel: 7.26.11
@@ -13180,16 +13156,6 @@ snapshots:
       ember-cli-htmlbars: 3.1.0
       ember-cli-version-checker: 3.1.3
     transitivePeerDependencies:
-      - supports-color
-
-  ember-macro-helpers@1.0.0(@babel/core@7.28.4):
-    dependencies:
-      ember-cli-babel: 6.18.0(@babel/core@7.28.4)
-      ember-cli-string-utils: 1.1.0
-      ember-cli-test-info: 1.0.0
-      ember-weakmap: 3.3.2(@babel/core@7.28.4)
-    transitivePeerDependencies:
-      - '@babel/core'
       - supports-color
 
   ember-maybe-in-element@2.1.0:
@@ -13595,15 +13561,6 @@ snapshots:
       ember-functions-as-helper-polyfill: 2.1.3(ember-source@3.28.12(@babel/core@7.28.4))
       ember-source: 3.28.12(@babel/core@7.28.4)
     transitivePeerDependencies:
-      - supports-color
-
-  ember-weakmap@3.3.2(@babel/core@7.28.4):
-    dependencies:
-      browserslist: 3.2.8
-      debug: 3.2.7
-      ember-cli-babel: 6.18.0(@babel/core@7.28.4)
-    transitivePeerDependencies:
-      - '@babel/core'
       - supports-color
 
   ember-wormhole@0.6.1:
