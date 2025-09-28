@@ -72,7 +72,5 @@ module('Acceptance | statistics', function (hooks) {
       moment().format(format),
       'expected the end date to be today',
     );
-
-    percySnapshot(assert);
   });
 });
