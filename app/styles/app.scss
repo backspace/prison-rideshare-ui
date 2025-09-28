@@ -340,3 +340,8 @@ md-toast {
 md-option[aria-current] {
   font-weight: bold;
 }
+
+/* ng-enter is mysteriously present with pnpm migration, but is its original opacity: 0 ever needed? */
+md-backdrop.md-opaque.ng-enter {
+  opacity: 0.48;
+}
