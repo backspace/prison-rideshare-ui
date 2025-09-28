@@ -16,8 +16,11 @@ export default Model.extend({
 
   isPresent: computed.gt('presenceCount', 0),
 
-  presenceCount: computed('id', 'userSocket.present.length', function () {
-    const myId = this.id;
-    return this.get('userSocket.present').filter((id) => myId === id).length;
-  }),
+  // TODO restore in #202
+  presenceCount: 0,
+
+  // presenceCount: computed('id', 'userSocket.present.length', function () {
+  //   const myId = this.id;
+  //   return this.get('userSocket.present').filter((id) => myId === id).length;
+  // }),
 });
