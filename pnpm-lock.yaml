@@ -32,6 +32,9 @@ importers:
       '@hashicorp/design-system-components':
         specifier: ^4.23.1
         version: 4.24.0(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@4.0.5(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))
+      '@hashicorp/design-system-tokens':
+        specifier: ^3.0.0
+        version: 3.0.0
       babel-eslint:
         specifier: ^8.2.6
         version: 8.2.6

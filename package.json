@@ -31,6 +31,7 @@
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
     "@hashicorp/design-system-components": "^4.23.1",
+    "@hashicorp/design-system-tokens": "^3.0.0",
     "babel-eslint": "^8.2.6",
     "bluebird": "^3.7.2",
     "broccoli-asset-rev": "^3.0.0",
