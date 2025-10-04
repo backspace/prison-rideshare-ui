@@ -6,7 +6,7 @@ import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import PersonBadge from 'prison-rideshare-ui/components/person-badge';
-import PaperSelect from 'ember-paper/components/paper-select/component';
+import PaperSelect from 'prison-rideshare-ui/components/placeholder';
 
 @classic
 @tagName('')

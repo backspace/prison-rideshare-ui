@@ -1,14 +1,14 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperContent from 'ember-paper/components/paper-content/component';
-import PaperCard from 'ember-paper/components/paper-card';
-import PaperForm from 'ember-paper/components/paper-form';
-import PaperRadioGroup from 'ember-paper/components/paper-radio-group';
+import PaperContent from 'prison-rideshare-ui/components/placeholder';
+import PaperCard from 'prison-rideshare-ui/components/placeholder';
+import PaperForm from 'prison-rideshare-ui/components/placeholder';
+import PaperRadioGroup from 'prison-rideshare-ui/components/placeholder';
 import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
-import PaperCheckbox from 'ember-paper/components/paper-checkbox';
-import PaperButton from 'ember-paper/components/paper-button';
+import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
+import PaperButton from 'prison-rideshare-ui/components/placeholder';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 

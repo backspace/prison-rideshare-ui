@@ -1,19 +1,19 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import { HdsButton } from '@hashicorp/design-system-components/components';
-import PaperButton from 'ember-paper/components/paper-button';
-import paperIcon from 'ember-paper/components/paper-icon';
-import PaperSwitch from 'ember-paper/components/paper-switch';
-import PaperDataTable from 'paper-data-table/components/paper-data-table';
+import PaperButton from 'prison-rideshare-ui/components/placeholder';
+import paperIcon from 'prison-rideshare-ui/components/placeholder';
+import PaperSwitch from 'prison-rideshare-ui/components/placeholder';
+import PaperDataTable from 'prison-rideshare-ui/components/placeholder';
 import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import or from 'ember-truth-helpers/helpers/or';
 import PersonRow from 'prison-rideshare-ui/components/person-row';
 import ReimbursementForm from 'prison-rideshare-ui/components/reimbursement-form';
-import PaperDialog from 'ember-paper/components/paper-dialog';
-import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
-import PaperForm from 'ember-paper/components/paper-form';
-import PaperRadioGroup from 'ember-paper/components/paper-radio-group';
-import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
+import PaperDialog from 'prison-rideshare-ui/components/placeholder';
+import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
+import PaperForm from 'prison-rideshare-ui/components/placeholder';
+import PaperRadioGroup from 'prison-rideshare-ui/components/placeholder';
+import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 

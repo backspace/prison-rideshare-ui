@@ -1,12 +1,12 @@
 import RouteTemplate from 'ember-route-template';
-import PaperDialog from 'ember-paper/components/paper-dialog';
-import PaperToolbar from 'ember-paper/components/paper-toolbar';
-import PaperToolbarTools from 'ember-paper/components/paper-toolbar-tools';
-import PaperForm from 'ember-paper/components/paper-form';
-import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
-import PaperCard from 'ember-paper/components/paper-card';
-import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
-import PaperButton from 'ember-paper/components/paper-button';
+import PaperDialog from 'prison-rideshare-ui/components/placeholder';
+import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
+import PaperToolbarTools from 'prison-rideshare-ui/components/placeholder';
+import PaperForm from 'prison-rideshare-ui/components/placeholder';
+import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
+import PaperCard from 'prison-rideshare-ui/components/placeholder';
+import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
+import PaperButton from 'prison-rideshare-ui/components/placeholder';
 import { fn } from '@ember/helper';
 export default RouteTemplate(
   <template>

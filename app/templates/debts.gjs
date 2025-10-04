@@ -1,7 +1,7 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperDataTable from 'paper-data-table/components/paper-data-table';
-import PaperButton from 'ember-paper/components/paper-button';
+import PaperDataTable from 'prison-rideshare-ui/components/placeholder';
+import PaperButton from 'prison-rideshare-ui/components/placeholder';
 import eq from 'ember-truth-helpers/helpers/eq';
 import DonationIcon from 'prison-rideshare-ui/components/donation-icon';
 import { fn } from '@ember/helper';

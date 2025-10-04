@@ -2,7 +2,7 @@
 import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import Component from '@ember/component';
-import paperIcon from 'ember-paper/components/paper-icon';
+import paperIcon from 'prison-rideshare-ui/components/placeholder';
 
 @classic
 @tagName('')

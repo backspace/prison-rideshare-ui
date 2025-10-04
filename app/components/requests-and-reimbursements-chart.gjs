@@ -6,7 +6,7 @@ import Component from '@ember/component';
 import moment from 'moment';
 import HighCharts from 'ember-highcharts/components/high-charts';
 // import EmberWormhole from 'ember-wormhole/components/ember-wormhole';
-// import PaperButton from 'ember-paper/components/paper-button';
+// import PaperButton from 'prison-rideshare-ui/components/placeholder';
 // import eq from 'ember-truth-helpers/helpers/eq';
 
 function countRidesOrVisitors(rides, grouping) {

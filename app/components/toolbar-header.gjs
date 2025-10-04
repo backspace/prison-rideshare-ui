@@ -4,11 +4,11 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
-import PaperToolbar from 'ember-paper/components/paper-toolbar';
-import PaperButton from 'ember-paper/components/paper-button';
-import paperIcon from 'ember-paper/components/paper-icon';
+import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
+import PaperButton from 'prison-rideshare-ui/components/placeholder';
+import paperIcon from 'prison-rideshare-ui/components/placeholder';
 import pluralize from 'ember-inflector/lib/helpers/pluralize';
-import PaperChips from 'ember-paper/components/paper-chips/component';
+import PaperChips from 'prison-rideshare-ui/components/placeholder';
 import { pageTitle } from 'ember-page-title';
 import { HdsAppHeader } from '@hashicorp/design-system-components/components';
 

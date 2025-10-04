@@ -1,9 +1,9 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperDataTable from 'paper-data-table/components/paper-data-table';
+import PaperDataTable from 'prison-rideshare-ui/components/placeholder';
 import momentFormat from 'ember-moment/helpers/moment-format';
-import paperIcon from 'ember-paper/components/paper-icon';
-import PaperCheckbox from 'ember-paper/components/paper-checkbox';
+import paperIcon from 'prison-rideshare-ui/components/placeholder';
+import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
 import eq from 'ember-truth-helpers/helpers/eq';
 import { fn } from '@ember/helper';
 export default RouteTemplate(
