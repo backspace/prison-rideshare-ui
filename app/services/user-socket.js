@@ -1,42 +1,39 @@
 /* eslint-disable ember/no-get */
 import classic from 'ember-classic-decorator';
-import { inject as service } from '@ember/service';
-import { A } from '@ember/array';
-import PhoenixSocket from 'ember-phoenix/services/phoenix-socket';
-import Ember from 'ember';
-import config from '../config/environment';
+import Service, { inject as service } from '@ember/service';
+// TODO restore in #202
+// import { A } from '@ember/array';
+// import PhoenixSocket from 'ember-phoenix/app/services/phoenix-socket';
+// import Ember from 'ember';
+// import config from '../config/environment';
 
 @classic
-export default class UserSocketService extends PhoenixSocket {
+export default class UserSocketService extends Service /*extends PhoenixSocket*/ {
   @service('session')
   session;
 
-  init() {
-    super.init(...arguments);
-    this.set('present', A());
-    this.connect();
-  }
+  // init() {
+  //   super.init(...arguments);
+  //   this.set('present', A());
+  //   this.connect();
+  // }
 
   connect() {
-    if (Ember.testing || !this.get('session.isAuthenticated')) {
-      return;
-    }
-
-    const guardian_token = this.get('session.data.authenticated.access_token');
-
-    super.connect(`${config.DS.socketHost}/socket`, {
-      params: { guardian_token },
-    });
-
-    // TODO is this a sensible channel name?
-    const channel = this.joinChannel('user:presence');
-
-    channel.on('presence_state', (presenceState) =>
-      this._onPresenceState(presenceState),
-    );
-    channel.on('presence_diff', (presenceDiff) =>
-      this._onPresenceDiff(presenceDiff),
-    );
+    // if (Ember.testing || !this.get('session.isAuthenticated')) {
+    //   return;
+    // }
+    // const guardian_token = this.get('session.data.authenticated.access_token');
+    // super.connect(`${config.DS.socketHost}/socket`, {
+    //   params: { guardian_token },
+    // });
+    // // TODO is this a sensible channel name?
+    // const channel = this.joinChannel('user:presence');
+    // channel.on('presence_state', (presenceState) =>
+    //   this._onPresenceState(presenceState),
+    // );
+    // channel.on('presence_diff', (presenceDiff) =>
+    //   this._onPresenceDiff(presenceDiff),
+    // );
   }
 
   _onPresenceState(users) {

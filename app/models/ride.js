@@ -7,9 +7,6 @@ import { inject as service } from '@ember/service';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 
-import sum from 'ember-cpm/macros/sum';
-import difference from 'ember-cpm/macros/difference';
-
 import anonymiseAddress from 'prison-rideshare-ui/utils/anonymise-address';
 
 export default Model.extend({
@@ -87,24 +84,48 @@ export default Model.extend({
   carExpenses: attr({ defaultValue: 0 }),
   carExpensesDollars: dollars('carExpenses'),
 
-  totalExpenses: sum('foodExpenses', 'carExpenses'),
+  totalExpenses: computed('foodExpenses', 'carExpenses', function () {
+    return this.foodExpenses + this.carExpenses;
+  }),
   totalExpensesDollars: dollars('totalExpenses'),
 
   donation: attr('boolean'),
   donatable: attr('boolean'),
 
   reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
-  reimbursementFoodExpensesSum: sum('reimbursementFoodExpenses'),
-  outstandingFoodExpenses: difference(
+  reimbursementFoodExpensesSum: computed(
+    'reimbursementFoodExpenses',
+    function () {
+      return this.reimbursementFoodExpenses.reduce(
+        (sum, amount) => sum + amount,
+        0,
+      );
+    },
+  ),
+  outstandingFoodExpenses: computed(
     'foodExpenses',
     'reimbursementFoodExpensesSum',
+    function () {
+      return this.foodExpenses - this.reimbursementFoodExpensesSum;
+    },
   ),
 
   reimbursementCarExpenses: mapBy('reimbursements', 'carExpenses'),
-  reimbursementCarExpensesSum: sum('reimbursementCarExpenses'),
-  outstandingCarExpenses: difference(
+  reimbursementCarExpensesSum: computed(
+    'reimbursementCarExpenses',
+    function () {
+      return this.reimbursementCarExpenses.reduce(
+        (sum, amount) => sum + amount,
+        0,
+      );
+    },
+  ),
+  outstandingCarExpenses: computed(
     'carExpenses',
     'reimbursementCarExpensesSum',
+    function () {
+      return this.carExpenses - this.reimbursementCarExpensesSum;
+    },
   ),
 
   reimbursementExpensesSum: computed(
@@ -117,9 +138,12 @@ export default Model.extend({
     },
   ),
 
-  outstandingTotalExpenses: sum(
+  outstandingTotalExpenses: computed(
     'outstandingFoodExpenses',
     'outstandingCarExpenses',
+    function () {
+      return this.outstandingFoodExpenses + this.outstandingCarExpenses;
+    },
   ),
 
   namePlusPassengers: computed('name', 'passengers', function () {

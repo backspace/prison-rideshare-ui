@@ -1,11 +1,10 @@
-import { discoverEmberDataModels } from 'ember-cli-mirage';
 import { createServer, Response } from 'miragejs';
 import { isEmpty } from '@ember/utils';
 
 export default function (config) {
   let finalConfig = {
     ...config,
-    models: { ...discoverEmberDataModels(), ...config.models },
+    models: { ...config.models },
     routes() {
       this.passthrough('/write-coverage');
 

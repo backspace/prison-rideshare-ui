@@ -1,7 +1,6 @@
 /* eslint-disable qunit/require-expect */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -72,7 +71,5 @@ module('Acceptance | statistics', function (hooks) {
       moment().format(format),
       'expected the end date to be today',
     );
-
-    percySnapshot(assert);
   });
 });

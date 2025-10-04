@@ -12,9 +12,9 @@ module.exports = function (deployTarget) {
     },
     redis: {
       allowOverwrite: true,
-      host: 'localhost',
+      host: process.env.REDIS_HOST,
       password: process.env.REDIS_PASSWORD,
-      port: 6699,
+      port: process.env.REDIS_PORT,
     },
     s3: {
       bucket: `prison-rideshare-${deployTarget}`,

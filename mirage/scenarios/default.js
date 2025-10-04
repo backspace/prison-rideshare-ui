@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker';
 faker.seed(1919);
 
-import RidesController from 'prison-rideshare-ui/controllers/rides';
+import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+
+const cancellationReasons = Object.keys(reasonToIcon).sort();
 
 export default function (server) {
   const people = server.createList('person', 8);
@@ -19,19 +21,17 @@ export default function (server) {
   );
 
   for (let i = 0; i < 25; i++) {
-    const start = faker.date.recent(i * 2);
+    const start = faker.date.recent((i + 1) * 2);
     const end = new Date(start.getTime() + 1000 * 60 * 60);
 
     let reportAttributes = {};
-    let randomlyCancelled = faker.random.boolean();
-    let randomlyReportedOn = faker.random.boolean();
+    let randomlyCancelled = faker.datatype.boolean();
+    let randomlyReportedOn = faker.datatype.boolean();
 
     if (randomlyCancelled) {
       reportAttributes = {
         enabled: false,
-        cancellationReason: faker.random.arrayElement(
-          RidesController.create().get('cancellationReasons'),
-        ),
+        cancellationReason: faker.helpers.arrayElement(cancellationReasons),
       };
     } else if (randomlyReportedOn) {
       const carExpenses = randomCurrency();
@@ -47,9 +47,9 @@ export default function (server) {
       'ride',
       Object.assign(
         {
-          institution: faker.random.arrayElement(institutions),
-          driver: faker.random.arrayElement(people),
-          carOwner: faker.random.arrayElement(people),
+          institution: faker.helpers.arrayElement(institutions),
+          driver: faker.helpers.arrayElement(people),
+          carOwner: faker.helpers.arrayElement(people),
 
           start,
           end,
@@ -58,26 +58,26 @@ export default function (server) {
       ),
     );
 
-    if (reportAttributes.carExpenses && faker.random.boolean()) {
+    if (reportAttributes.carExpenses && faker.datatype.boolean()) {
       server.create('reimbursement', {
         person: ride.carOwner,
         amount: reportAttributes.carExpenses,
-        donation: faker.random.boolean(),
+        donation: faker.datatype.boolean(),
       });
     }
 
-    if (reportAttributes.foodExpenses && faker.random.boolean()) {
+    if (reportAttributes.foodExpenses && faker.datatype.boolean()) {
       server.create('reimbursement', {
         person: ride.driver,
         amount: reportAttributes.foodExpenses,
-        donation: faker.random.boolean(),
+        donation: faker.datatype.boolean(),
       });
     }
   }
 }
 
 function randomCurrency() {
-  const currency = faker.random.number({ min: 0, max: 4000 });
+  const currency = faker.number.int({ min: 0, max: 4000 });
 
   return currency;
 }
