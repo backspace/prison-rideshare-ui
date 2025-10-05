@@ -1,3 +1,14 @@
+diff --git a/dist/components/hds/dismiss-button/index.js b/dist/components/hds/dismiss-button/index.js
+index 4fa6474b19d4ee1aa853c3ff357571fc993ac1dd..c17fd9cc90e4b4ab2d7578cbaba44a78a638e875 100644
+--- a/dist/components/hds/dismiss-button/index.js
++++ b/dist/components/hds/dismiss-button/index.js
+@@ -1,5 +1,5 @@
+ import Component from '@glimmer/component';
+-import { service } from '@ember/service';
++import { inject as service } from '@ember/service';
+ import { precompileTemplate } from '@ember/template-compilation';
+ import { g, i } from 'decorator-transforms/runtime';
+ import { setComponentTemplate } from '@ember/component';
 diff --git a/dist/helpers/hds-t.js b/dist/helpers/hds-t.js
 index d624cbfd07e27eb5427040cba5ddd2533364e78a..0463fe999cc80626e85abe465922e4b0679955d5 100644
 --- a/dist/helpers/hds-t.js

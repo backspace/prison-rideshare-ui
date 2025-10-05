@@ -6,6 +6,8 @@ import Controller, { inject as controller } from '@ember/controller';
 
 @classic
 export default class ApplicationController extends Controller {
+  @service paperToaster;
+
   @service
   overlaps;
 

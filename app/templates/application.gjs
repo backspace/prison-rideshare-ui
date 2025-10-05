@@ -2,7 +2,8 @@ import RouteTemplate from 'ember-route-template';
 import HeadLayout from 'ember-cli-head/components/head-layout';
 import EmberLoadRemover from 'ember-load/components/ember-load-remover';
 import { action } from '@ember/object';
-import { concat } from '@ember/helper';
+import { concat, fn } from '@ember/helper';
+import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import {
   HdsAppFrame,
@@ -11,12 +12,15 @@ import {
   HdsBadgeCount,
   HdsButton,
   HdsSeparator,
+  HdsToast,
 } from '@hashicorp/design-system-components/components';
 import { pageTitle } from 'ember-page-title';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import now from 'ember-moment/helpers/now';
 
 class ApplicationComponent extends Component {
+  @service paperToaster;
+
   constructor(owner, args) {
     super(owner, args);
 
@@ -39,10 +43,28 @@ class ApplicationComponent extends Component {
     this.args.controller.sidebar.open = !isMinimized;
   }
 
+  get activeToast() {
+    return this.paperToaster.activeToast;
+  }
+
   <template>
     {{pageTitle 'Prison Rideshare' separator=' · '}}
     <HeadLayout />
     <EmberLoadRemover />
+
+    {{! FIXME replace }}
+    {{! Adapted from https://github.com/adopted-ember-addons/ember-paper/blob/002fa43fd64a609b55d90daeecc0e151085b40e3/addon/components/paper-toaster.hbs }}
+    {{#if this.activeToast.show}}
+      <HdsToast
+        @onDismiss={{fn this.paperToaster.cancelToast this.activeToast}}
+        data-test-toast
+        as |toast|
+      >
+        <toast.Title
+          data-test-toast-text
+        >{{this.activeToast.text}}</toast.Title>
+      </HdsToast>
+    {{/if}}
 
     <HdsAppFrame @hasHeader={{false}} @hasFooter={{false}} as |Frame|>
       <Frame.Sidebar>

@@ -10,6 +10,9 @@ export default class DriversController extends Controller {
   @service
   store;
 
+  @service
+  toasts;
+
   showInactive = false;
 
   @action
@@ -30,7 +33,9 @@ export default class DriversController extends Controller {
   }
 
   @action
-  savePerson() {
+  savePerson(event) {
+    event?.preventDefault();
+
     const proxy = this.editingPerson;
     proxy.applyBufferedChanges();
     return proxy
@@ -51,5 +56,38 @@ export default class DriversController extends Controller {
     }
 
     this.set('editingPerson', undefined);
+  }
+
+  @action
+  toggleShowInactive(event) {
+    const checked = event?.target?.checked ?? false;
+    this.set('showInactive', checked);
+  }
+
+  @action
+  updatePersonActiveness(person, event) {
+    const checked = event?.target?.checked ?? false;
+
+    person.set('active', checked);
+    person.save().catch(() => {
+      this.toasts.show(
+        `There was an error saving the active status of ${person.name}`,
+      );
+    });
+  }
+
+  @action
+  updateEditingPerson(field, event) {
+    const value = event?.target?.value ?? '';
+
+    const editingPerson = this.editingPerson;
+    if (editingPerson) {
+      editingPerson.set(field, value);
+    }
+  }
+
+  @action
+  copyAddressSuccess() {
+    this.toasts.show('Copied address');
   }
 }
