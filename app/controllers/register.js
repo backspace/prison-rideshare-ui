@@ -1,13 +1,32 @@
 /* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { get, action } from '@ember/object';
 
-@classic
 export default class RegisterController extends Controller {
   @service
   session;
+
+  @action
+  updateEmail(valueOrEvent) {
+    const value = valueOrEvent?.target?.value ?? valueOrEvent;
+
+    this.model.set('email', value);
+  }
+
+  @action
+  updatePassword(valueOrEvent) {
+    const value = valueOrEvent?.target?.value ?? valueOrEvent;
+
+    this.model.set('password', value);
+  }
+
+  @action
+  updatePasswordConfirmation(valueOrEvent) {
+    const value = valueOrEvent?.target?.value ?? valueOrEvent;
+
+    this.model.set('passwordConfirmation', value);
+  }
 
   @action
   register(event) {

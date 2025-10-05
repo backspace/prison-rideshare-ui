@@ -1,78 +1,90 @@
 import RouteTemplate from 'ember-route-template';
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbarTools from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
-import PaperCard from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
-import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
+import { LinkTo } from '@ember/routing';
+import {
+  HdsAlert,
+  HdsButton,
+  HdsCardContainer,
+  HdsForm,
+  HdsFormTextInputField,
+} from '@hashicorp/design-system-components/components';
 export default RouteTemplate(
   <template>
-    <PaperDialog>
-      <PaperToolbar>
-        <PaperToolbarTools>
-          <h2 class='md-title'>
-            Register
-          </h2>
-        </PaperToolbarTools>
-      </PaperToolbar>
-      <PaperForm @onSubmit={{this.register}} as |form|>
-        <PaperDialogContent>
-          {{#if @controller.error}}
-            <PaperCard @class='error' as |card|>
-              <card.content>
-                {{@controller.error}}
-              </card.content>
-            </PaperCard>
-          {{/if}}
-          <div class='layout layout-row'>
-            <form.input
-              @class='email'
-              @type='email'
-              @label='Email'
-              @autofocus={{true}}
-              @value={{@controller.model.email}}
-              @onChange={{fn (mut @controller.model.email)}}
-            />
-          </div>
-          <div class='layout layout-row'>
-            <form.input
-              @class='password'
-              @type='password'
-              @label='Password'
-              @value={{@controller.model.password}}
-              @onChange={{fn (mut @controller.model.password)}}
-            />
-          </div>
-          <div class='layout layout-row'>
-            <form.input
-              @class='password-confirmation'
-              @type='password'
-              @label='Password confirmation'
-              @value={{@controller.model.passwordConfirmation}}
-              @onChange={{fn (mut @controller.model.passwordConfirmation)}}
-            />
-          </div>
-        </PaperDialogContent>
+    <div class='login-page' data-test-register-page>
+      <HdsCardContainer
+        @level='mid'
+        class='login-card'
+        data-test-register-card
+      >
+        <HdsForm {{on 'submit' @controller.register}} as |Form|>
+          <Form.Header>
+            <Form.HeaderTitle>Register</Form.HeaderTitle>
+          </Form.Header>
 
-        <PaperDialogActions @class='layout-row'>
-          <div class='layout layout-row'>
-            <form.submit-button
-              @class='submit'
-              @primary={{true}}
-              @raised={{true}}
-              @onClick={{@controller.register}}
+          <Form.Section>
+            {{#if @controller.error}}
+              <HdsAlert
+                @color='critical'
+                @type='inline'
+                data-test-register-error
+                as |Alert|
+              >
+                <Alert.Title>
+                  {{@controller.error}}
+                </Alert.Title>
+              </HdsAlert>
+            {{/if}}
+
+            <HdsFormTextInputField
+              @value={{@controller.model.email}}
+              @type='email'
+              autofocus
+              data-test-register-email
+              {{on 'input' @controller.updateEmail}}
+              as |Field|
             >
-              Register
-            </form.submit-button>
-            <PaperButton @href='/login' @class='flex-order--1'>
-              Log in
-            </PaperButton>
-          </div>
-        </PaperDialogActions>
-      </PaperForm>
-    </PaperDialog>
+              <Field.Label>Email</Field.Label>
+            </HdsFormTextInputField>
+
+            <HdsFormTextInputField
+              @value={{@controller.model.password}}
+              @type='password'
+              data-test-register-password
+              {{on 'input' @controller.updatePassword}}
+              as |Field|
+            >
+              <Field.Label>Password</Field.Label>
+            </HdsFormTextInputField>
+
+            <HdsFormTextInputField
+              @value={{@controller.model.passwordConfirmation}}
+              @type='password'
+              data-test-register-password-confirmation
+              {{on 'input' @controller.updatePasswordConfirmation}}
+              as |Field|
+            >
+              <Field.Label>Password confirmation</Field.Label>
+            </HdsFormTextInputField>
+          </Form.Section>
+
+          <Form.Footer as |Footer|>
+            <Footer.ButtonSet>
+              <HdsButton
+                type='submit'
+                @color='primary'
+                @text='Register'
+                data-test-register-submit
+              />
+              <HdsButton
+                @color='secondary'
+                @route='login'
+                @text='Log in'
+                data-test-register-login
+              />
+            </Footer.ButtonSet>
+          </Form.Footer>
+        </HdsForm>
+      </HdsCardContainer>
+    </div>
   </template>,
 );
