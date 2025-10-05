@@ -69,7 +69,7 @@ module('Acceptance | login', function (hooks) {
     );
 
     await page.visit();
-    await page.fillEmail('x');
+    await page.fillEmail('x@example.com');
     await page.fillPassword('x');
     await page.submit();
 
@@ -86,7 +86,7 @@ module('Acceptance | login', function (hooks) {
     );
 
     await page.visit();
-    await page.fillEmail('x');
+    await page.fillEmail('x@example.com');
     await page.submit();
 
     percySnapshot(assert);

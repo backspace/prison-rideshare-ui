@@ -1,73 +1,87 @@
 import RouteTemplate from 'ember-route-template';
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbarTools from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
+import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
+import {
+  HdsAlert,
+  HdsButton,
+  HdsCardContainer,
+  HdsForm,
+  HdsFormTextInputField,
+} from '@hashicorp/design-system-components/components';
 
 export default RouteTemplate(
   <template>
-    <PaperDialog>
-      <PaperToolbar>
-        <PaperToolbarTools>
-          <h2 class='md-title'>
-            Log in
-          </h2>
-        </PaperToolbarTools>
-      </PaperToolbar>
-      <PaperForm @onSubmit={{this.login}} as |form|>
-        <PaperDialogContent>
-          <div class='layout layout-row'>
-            <form.input
-              @class='email'
-              @type='email'
-              @label='Email'
-              @autofocus={{true}}
+    <div class='login-page' data-test-login-page>
+      <HdsCardContainer
+        @level='mid'
+        class='login-card'
+        data-test-login-card
+      >
+        <HdsForm {{on 'submit' @controller.login}} as |Form|>
+          <Form.Header>
+            <Form.HeaderTitle>Log in</Form.HeaderTitle>
+          </Form.Header>
+
+          <Form.Section>
+            <HdsFormTextInputField
               @value={{@controller.model.email}}
-              @onChange={{@controller.updateEmail}}
-            />
-          </div>
-          <div class='layout layout-row'>
-            <form.input
-              @class='password'
-              @type='password'
-              @label='Password'
-              @value={{@controller.model.password}}
-              @onChange={{@controller.updatePassword}}
+              @type='email'
+              autofocus
+              data-test-login-email
+              {{on 'input' @controller.updateEmail}}
+              as |Field|
             >
-              <div class='hint'>
+              <Field.Label>Email</Field.Label>
+            </HdsFormTextInputField>
+
+            <HdsFormTextInputField
+              @value={{@controller.model.password}}
+              @type='password'
+              data-test-login-password
+              {{on 'input' @controller.updatePassword}}
+              as |Field|
+            >
+              <Field.Label>Password</Field.Label>
+              <Field.HelperText>
                 <LinkTo @route='forgot'>
                   Forgot?
                 </LinkTo>
-              </div>
-            </form.input>
-          </div>
-          {{#if @controller.error}}
-            <div class='error'>
-              There was an error logging you in.
-            </div>
-          {{/if}}
-        </PaperDialogContent>
+              </Field.HelperText>
+            </HdsFormTextInputField>
 
-        <PaperDialogActions @class='layout-row'>
-          <div class='layout layout-row'>
-            <form.submit-button
-              @class='submit'
-              @primary={{true}}
-              @raised={{true}}
-              @onClick={{@controller.login}}
-            >
-              Log in
-            </form.submit-button>
-            <PaperButton @href='/register' @class='flex-order--1'>
-              Register
-            </PaperButton>
-          </div>
-        </PaperDialogActions>
-      </PaperForm>
-    </PaperDialog>
+            {{#if @controller.error}}
+              <HdsAlert
+                @color='critical'
+                @type='inline'
+                class='login-error'
+                data-test-login-error
+                as |Alert|
+              >
+                <Alert.Title>
+                  There was an error logging you in.
+                </Alert.Title>
+              </HdsAlert>
+            {{/if}}
+          </Form.Section>
+
+          <Form.Footer as |Footer|>
+            <Footer.ButtonSet class='login-actions'>
+              <HdsButton
+                type='submit'
+                @color='primary'
+                @text='Log in'
+                data-test-login-submit
+              />
+              <HdsButton
+                @color='secondary'
+                @route='register'
+                @text='Register'
+                data-test-login-register
+              />
+            </Footer.ButtonSet>
+          </Form.Footer>
+        </HdsForm>
+      </HdsCardContainer>
+    </div>
   </template>,
 );

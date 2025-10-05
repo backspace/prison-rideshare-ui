@@ -2,7 +2,7 @@ import { clickable, create } from 'ember-cli-page-object';
 
 export default create({
   session: {
-    scope: '.site-nav-container .session',
+    scope: '[data-test-session]',
     click: clickable('button'),
   },
 

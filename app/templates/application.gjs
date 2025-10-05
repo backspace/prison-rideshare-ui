@@ -150,7 +150,11 @@ class ApplicationComponent extends Component {
                 </PaperItem>
                 <PaperDivider />
               {{/if}}
-              <PaperItem @onClick={{@controller.logout}} @class='session'>
+              <PaperItem
+                @onClick={{@controller.logout}}
+                @class='session'
+                data-test-session
+              >
                 Log out
                 {{@controller.session.currentUser.email}}
               </PaperItem>
