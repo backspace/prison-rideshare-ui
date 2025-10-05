@@ -1,54 +1,70 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperDataTable from 'prison-rideshare-ui/components/placeholder';
 import momentFormat from 'ember-moment/helpers/moment-format';
-import paperIcon from 'prison-rideshare-ui/components/placeholder';
-import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
 import eq from 'ember-truth-helpers/helpers/eq';
 import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
+import {
+  HdsBadgeCount,
+  HdsIcon,
+  HdsTable,
+  HdsFormCheckboxBase,
+} from '@hashicorp/design-system-components/components';
 export default RouteTemplate(
   <template>
     <ToolbarHeader @title='Users' />
 
-    <PaperDataTable as |table|>
-      <table.head as |head|>
-        <head.column>
-          Email
-        </head.column>
-        <head.column>
-          Last seen
-        </head.column>
-        <head.column>
-          Present
-        </head.column>
-        <head.column>
-          Admin?
-        </head.column>
-      </table.head>
-      <table.body as |body|>
+    <HdsTable data-test-users-table>
+      <:head as |Head|>
+        <Head.Tr>
+          <Head.Th>Email</Head.Th>
+          <Head.Th>Last seen</Head.Th>
+          <Head.Th>Present</Head.Th>
+          <Head.Th>Admin?</Head.Th>
+        </Head.Tr>
+      </:head>
+
+      <:body as |Body|>
         {{#each @controller.model as |user|}}
-          <body.row @class='user' as |row|>
-            <row.cell @class='email'>
+          <Body.Tr class='user' data-test-user-row>
+            <Body.Td class='email' data-test-user-email>
               {{user.email}}
-            </row.cell>
-            <row.cell @class='last-seen'>
+            </Body.Td>
+            <Body.Td class='last-seen' data-test-user-last-seen>
               {{momentFormat user.lastSeenAt 'MMM D YYYY'}}
-            </row.cell>
-            <row.cell @class='present'>
+            </Body.Td>
+            <Body.Td class='present' data-test-user-present>
               {{#if user.isPresent}}
-                {{paperIcon 'done'}}
+                <HdsIcon
+                  @name='check'
+                  @size='16'
+                  data-test-user-present-icon
+                  aria-label='Present'
+                />
               {{/if}}
-            </row.cell>
-            <row.cell>
-              <PaperCheckbox
-                @value={{user.admin}}
-                @disabled={{eq user @controller.session.currentUser}}
-                @onChange={{fn @controller.updateUserAdmin user}}
+              {{#if user.presenceCount}}
+                <HdsBadgeCount
+                  @text={{user.presenceCount}}
+                  @type='outlined'
+                  @size='small'
+                  class='count'
+                  data-test-user-presence-count
+                />
+              {{/if}}
+            </Body.Td>
+            <Body.Td data-test-user-admin>
+              <HdsFormCheckboxBase
+                class='user-admin-toggle'
+                checked={{user.admin}}
+                disabled={{eq user @controller.session.currentUser}}
+                aria-label='Toggle admin'
+                data-test-user-admin-toggle
+                {{on 'change' (fn @controller.updateUserAdmin user)}}
               />
-            </row.cell>
-          </body.row>
+            </Body.Td>
+          </Body.Tr>
         {{/each}}
-      </table.body>
-    </PaperDataTable>
+      </:body>
+    </HdsTable>
   </template>,
 );
