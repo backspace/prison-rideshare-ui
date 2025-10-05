@@ -123,5 +123,10 @@
   "volta": {
     "node": "18.20.8",
     "pnpm": "10.17.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "ember-focus-trap": "0.8.0"
+    }
   }
 }

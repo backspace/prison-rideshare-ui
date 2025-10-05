@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  ember-focus-trap: 0.8.0
+
 patchedDependencies:
   '@hashicorp/design-system-components':
     hash: daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e
@@ -39,7 +42,7 @@ importers:
         version: 1.1.2
       '@hashicorp/design-system-components':
         specifier: ^4.24.0
-        version: 4.24.0(patch_hash=daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@4.0.5(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))
+        version: 4.24.0(patch_hash=daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@4.0.5(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))(webpack@5.101.3)
       '@hashicorp/design-system-tokens':
         specifier: ^3.0.0
         version: 3.0.0
@@ -1035,6 +1038,10 @@ packages:
     resolution: {integrity: sha512-gcJuHiXgnrzaU8NyU+2bMbtS6PNOr5v5B8OXBqaBvTCsMpXLvKo8OBOQFCoUN0rPX2J6VaFqrbi/371sMvzZug==}
     engines: {node: 12.* || 14.* || >= 16}
 
+  '@embroider/macros@0.47.2':
+    resolution: {integrity: sha512-ViNWluJCeM5OPlM3rs8kdOz3RV5rpfXX5D2rDnc/q86xRS0xf4NFEjYRV7W6fBcD0b3v5jSHDTwrjq9Kee4rHg==}
+    engines: {node: 12.* || 14.* || >= 16}
+
   '@embroider/macros@1.18.2':
     resolution: {integrity: sha512-mkgk0yjcYgujZQv9IGLD3yPb4a+d6EDKm22GK6TUyBCF8veTeg6HBXwHfu6K2DCnG0LEwnb2MJ0WCFGmTiatPw==}
     engines: {node: 12.* || 14.* || >= 16}
@@ -1043,6 +1050,10 @@ packages:
     peerDependenciesMeta:
       '@glint/template':
         optional: true
+
+  '@embroider/shared-internals@0.47.2':
+    resolution: {integrity: sha512-SxdZYjAE0fiM5zGDz+12euWIsQZ1tsfR1k+NKmiWMyLhA5T3pNgbR2/Djvx/cVIxOtEavGGSllYbzRKBtV4xMg==}
+    engines: {node: 12.* || 14.* || >= 16}
 
   '@embroider/shared-internals@1.8.3':
     resolution: {integrity: sha512-N5Gho6Qk8z5u+mxLCcMYAoQMbN4MmH+z2jXwQHVs859bxuZTxwF6kKtsybDAASCtd2YGxEmzcc1Ja/wM28824w==}
@@ -1963,6 +1974,10 @@ packages:
 
   babel-helpers@6.24.1:
     resolution: {integrity: sha512-n7pFrqQm44TCYvrCDb0MqabAF+JUBq+ijBvNMUxpkLjJaAu32faIexewMumrH5KLLJ1HDyT0PTEqRyAe/GwwuQ==}
+
+  babel-import-util@0.2.0:
+    resolution: {integrity: sha512-CtWYYHU/MgK88rxMrLfkD356dApswtR/kWZ/c6JifG1m10e7tBBrs/366dFzWMAoqYmG5/JSh+94tUSpIwh+ag==}
+    engines: {node: '>= 12.*'}
 
   babel-import-util@1.4.1:
     resolution: {integrity: sha512-TNdiTQdPhXlx02pzG//UyVPSKE7SNWjY0n4So/ZnjQpWwaM5LvWBLkWa1JKll5u06HNscHD91XZPuwrMg1kadQ==}
@@ -3672,11 +3687,9 @@ packages:
     resolution: {integrity: sha512-TVx24/jrvDIuPL296DV0hBwp7BWLcSMf0I8464KGz01sPytAB+ZAePbc9ooBTJDkKZEGFgatJa4nj3yF1S9Bpw==}
     engines: {node: '>= 10'}
 
-  ember-focus-trap@1.1.1:
-    resolution: {integrity: sha512-5tOWu6eV1UoNZE+P9Gl9lJXNrENZVCoOXi52ePb7JOrOZ3ckOk1OkPsFwR4Jym9VJ7vZ6S3Z3D8BrkFa2aCpYw==}
-    engines: {node: 12.* || >= 14}
-    peerDependencies:
-      ember-source: '>= 4.0.0'
+  ember-focus-trap@0.8.0:
+    resolution: {integrity: sha512-Iaqi8lmsVXEtW5gQIWa8x3jXGhdpLrq4HRdZl1GHzHL4ys3b7oaPsJl/CS/jjeJPGSQ+tv5IT3Rn36BUZe5Pig==}
+    engines: {node: '>= 10.*'}
 
   ember-functions-as-helper-polyfill@2.1.3:
     resolution: {integrity: sha512-Hte8jfOmSNzrz/vOchf68CGaBWXN2/5qKgFaylqr9omW2i4Wt9JmaBWRkeR0AJ53N57q3DX2TOb166Taq6QjiA==}
@@ -9053,6 +9066,18 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@embroider/macros@0.47.2':
+    dependencies:
+      '@embroider/shared-internals': 0.47.2
+      assert-never: 1.4.0
+      ember-cli-babel: 7.26.11
+      find-up: 5.0.0
+      lodash: 4.17.21
+      resolve: 1.22.10
+      semver: 7.7.2
+    transitivePeerDependencies:
+      - supports-color
+
   '@embroider/macros@1.18.2(@glint/template@1.6.1)':
     dependencies:
       '@embroider/shared-internals': 3.0.1
@@ -9067,6 +9092,16 @@ snapshots:
       '@glint/template': 1.6.1
     transitivePeerDependencies:
       - supports-color
+
+  '@embroider/shared-internals@0.47.2':
+    dependencies:
+      babel-import-util: 0.2.0
+      ember-rfc176-data: 0.3.18
+      fs-extra: 9.1.0
+      lodash: 4.17.21
+      resolve-package-path: 4.0.3
+      semver: 7.7.2
+      typescript-memoize: 1.1.1
 
   '@embroider/shared-internals@1.8.3':
     dependencies:
@@ -9261,7 +9296,7 @@ snapshots:
 
   '@handlebars/parser@2.2.1': {}
 
-  '@hashicorp/design-system-components@4.24.0(patch_hash=daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@4.0.5(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))':
+  '@hashicorp/design-system-components@4.24.0(patch_hash=daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@4.0.5(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))(webpack@5.101.3)':
     dependencies:
       '@codemirror/commands': 6.9.0
       '@codemirror/lang-go': 6.0.1
@@ -9293,7 +9328,7 @@ snapshots:
       ember-cli-sass: 11.0.1
       ember-concurrency: 4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1)
       ember-element-helper: 0.8.8
-      ember-focus-trap: 1.1.1(ember-source@3.28.12(@babel/core@7.28.4))
+      ember-focus-trap: 0.8.0(@babel/core@7.28.4)(@glint/template@1.6.1)(webpack@5.101.3)
       ember-get-config: 2.1.1(@glint/template@1.6.1)
       ember-modifier: 4.2.2(@babel/core@7.28.4)
       ember-power-select: 8.11.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-basic-dropdown@4.0.5(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4))
@@ -9316,6 +9351,7 @@ snapshots:
       - ember-basic-dropdown
       - ember-source
       - supports-color
+      - webpack
 
   '@hashicorp/design-system-tokens@3.0.0': {}
 
@@ -10269,6 +10305,8 @@ snapshots:
       babel-template: 6.26.0
     transitivePeerDependencies:
       - supports-color
+
+  babel-import-util@0.2.0: {}
 
   babel-import-util@1.4.1: {}
 
@@ -13114,13 +13152,18 @@ snapshots:
       - encoding
       - supports-color
 
-  ember-focus-trap@1.1.1(ember-source@3.28.12(@babel/core@7.28.4)):
+  ember-focus-trap@0.8.0(@babel/core@7.28.4)(@glint/template@1.6.1)(webpack@5.101.3):
     dependencies:
-      '@embroider/addon-shim': 1.10.0
-      ember-source: 3.28.12(@babel/core@7.28.4)
+      '@embroider/macros': 0.47.2
+      ember-auto-import: 2.11.0(@glint/template@1.6.1)(webpack@5.101.3)
+      ember-cli-babel: 7.26.11
+      ember-modifier-manager-polyfill: 1.2.0(@babel/core@7.28.4)
       focus-trap: 6.9.4
     transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
       - supports-color
+      - webpack
 
   ember-functions-as-helper-polyfill@2.1.3(ember-source@3.28.12(@babel/core@7.28.4)):
     dependencies:
