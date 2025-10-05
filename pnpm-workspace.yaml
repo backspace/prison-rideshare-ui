@@ -1,0 +1,2 @@
+patchedDependencies:
+  decorator-transforms: patches/decorator-transforms.patch

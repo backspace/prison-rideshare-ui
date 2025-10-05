@@ -20,9 +20,13 @@ module.exports = function (defaults) {
     autoImport,
     babel: {
       plugins: [
+        require.resolve('decorator-transforms'),
         require.resolve('ember-concurrency/async-arrow-task-transform'),
         ...require('ember-cli-code-coverage').buildBabelPlugin(),
       ],
+    },
+    'ember-cli-babel': {
+      disableDecoratorTransforms: true,
     },
     fingerprint,
     sourcemaps: {
