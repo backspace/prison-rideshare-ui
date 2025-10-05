@@ -1,180 +1,137 @@
 import RouteTemplate from 'ember-route-template';
 import HeadLayout from 'ember-cli-head/components/head-layout';
 import EmberLoadRemover from 'ember-load/components/ember-load-remover';
-import PaperToaster from 'prison-rideshare-ui/components/placeholder';
-import PaperSidenavContainer from 'prison-rideshare-ui/components/placeholder';
-import PaperSidenav from 'prison-rideshare-ui/components/placeholder';
-import PaperContent from 'prison-rideshare-ui/components/placeholder';
-import PaperList from 'prison-rideshare-ui/components/placeholder';
-import PaperItem from 'prison-rideshare-ui/components/placeholder';
-import { LinkTo } from '@ember/routing';
+import { action } from '@ember/object';
+import { concat } from '@ember/helper';
+import Component from '@glimmer/component';
+import {
+  HdsAppFrame,
+  HdsAppSideNav,
+  HdsAppSideNavList,
+  HdsBadgeCount,
+  HdsButton,
+  HdsSeparator,
+} from '@hashicorp/design-system-components/components';
+import { pageTitle } from 'ember-page-title';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import now from 'ember-moment/helpers/now';
-import PaperDivider from 'prison-rideshare-ui/components/placeholder';
-import { action } from '@ember/object';
-import Component from '@glimmer/component';
-import { pageTitle } from 'ember-page-title';
 
 class ApplicationComponent extends Component {
-  @action toggleSidebar() {
-    this.args.controller.sidebar.open = !this.args.controller.sidebar.open;
+  constructor(owner, args) {
+    super(owner, args);
+
+    if (typeof window !== 'undefined') {
+      const isDesktop = window.matchMedia('(min-width: 1088px)').matches;
+      this.args.controller.sidebar.open = isDesktop;
+    }
   }
+
+  get sideNavKey() {
+    return this.args.controller.sidebar.open ? 'open' : 'closed';
+  }
+
+  get isSidebarMinimized() {
+    return !this.args.controller.sidebar.open;
+  }
+
+  @action
+  synchronizeSidebar(isMinimized) {
+    this.args.controller.sidebar.open = !isMinimized;
+  }
+
   <template>
     {{pageTitle 'Prison Rideshare' separator=' · '}}
     <HeadLayout />
     <EmberLoadRemover />
 
-    <PaperToaster />
-
-    <PaperSidenavContainer @class='site-nav-container'>
-      <PaperSidenav
-        @lockedOpen='gt-sm'
-        @open={{@controller.sidebar.open}}
-        @onToggle={{this.toggleSidebar}}
-      >
-        <PaperContent>
-          <PaperList>
-            {{#if @controller.session.currentUser.admin}}
-              <PaperItem>
-                <LinkTo @route='drivers'>
-                  <span>
-                    Drivers
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='reimbursements'>
-                  <span>
-                    Reimbursements
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='debts'>
-                  <span>
-                    Debts
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='rides'>
-                  <span class='rides'>
-                    <span>
-                      Rides
-                    </span>
-                    {{#if @controller.ridesBadgeCount}}
-                      <span
-                        class='count'
-                        title='How many rides require attention'
-                      >
-                        {{@controller.ridesBadgeCount}}
-                      </span>
-                    {{/if}}
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='institutions'>
-                  <span>
-                    Institutions
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo
+    <HdsAppFrame @hasHeader={{false}} @hasFooter={{false}} as |Frame|>
+      <Frame.Sidebar>
+        {{#unless this.isSidebarMinimized}}
+          <HdsAppSideNav
+            data-test-app-sidenav
+            @isCollapsible={{true}}
+            @isResponsive={{true}}
+            @isMinimized={{this.isSidebarMinimized}}
+            @onToggleMinimizedStatus={{this.synchronizeSidebar}}
+          >
+            <HdsAppSideNavList as |List|>
+              {{#if @controller.session.currentUser.admin}}
+                <List.Link @route='drivers' @text='Drivers' />
+                <List.Link @route='reimbursements' @text='Reimbursements' />
+                <List.Link @route='debts' @text='Debts' />
+                <List.Link @route='rides' @text='Rides'>
+                  {{#if @controller.ridesBadgeCount}}
+                    <HdsBadgeCount
+                      @text={{@controller.ridesBadgeCount}}
+                      @type='outlined'
+                      @size='small'
+                      data-test-nav-rides-count
+                    />
+                  {{/if}}
+                </List.Link>
+                <List.Link @route='institutions' @text='Institutions' />
+                <List.Link
                   @route='admin-calendar'
                   @model={{momentFormat (now) 'YYYY-MM'}}
-                >
-                  <span>
-                    Calendar
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='statistics'>
-                  <span>
-                    Statistics
-                  </span>
-                </LinkTo>
-              </PaperItem>
-            {{/if}}
-            <PaperItem>
-              <LinkTo @route='reports.new'>
-                <span>
-                  Report
-                </span>
-              </LinkTo>
-            </PaperItem>
-            <PaperItem>
-              <LinkTo @route='gas-prices'>
-                <span>
-                  Gas prices
-                </span>
-              </LinkTo>
-            </PaperItem>
-            {{#if @controller.session.isAuthenticated}}
-              {{#if @controller.session.currentUser.admin}}
-                <PaperItem>
-                  <LinkTo @route='log'>
-                    <span class='log'>
-                      <span>
-                        Log
-                      </span>
-                      {{#if @controller.sidebar.unreadCount}}
-                        <span
-                          class='count'
-                          title='How many unread posts you have'
-                        >
-                          {{@controller.sidebar.unreadCount}}
-                        </span>
-                      {{/if}}
-                    </span>
-                  </LinkTo>
-                </PaperItem>
-                <PaperItem>
-                  <LinkTo @route='users'>
-                    <span class='users'>
-                      <span>
-                        Users
-                      </span>
-                      {{#if @controller.sidebar.userCount}}
-                        <span
-                          class='count'
-                          title='How many users are connected'
-                        >
-                          {{@controller.sidebar.userCount}}
-                        </span>
-                      {{/if}}
-                    </span>
-                  </LinkTo>
-                </PaperItem>
-                <PaperDivider />
+                  @text='Calendar'
+                />
+                <List.Link @route='statistics' @text='Statistics' />
               {{/if}}
-              <PaperItem
-                @onClick={{@controller.logout}}
-                @class='session'
-                data-test-session
-              >
-                Log out
-                {{@controller.session.currentUser.email}}
-              </PaperItem>
-            {{else}}
-              <PaperItem>
-                <LinkTo @route='login'>
-                  <span>
-                    Admin log in
-                  </span>
-                </LinkTo>
-              </PaperItem>
-            {{/if}}
-          </PaperList>
-        </PaperContent>
-      </PaperSidenav>
 
-      <main class='flex layout-column'>
+              <List.Link @route='reports.new' @text='Report' />
+              <List.Link @route='gas-prices' @text='Gas prices' />
+
+              {{#if @controller.session.isAuthenticated}}
+                {{#if @controller.session.currentUser.admin}}
+                  <List.Link @route='log' @text='Log'>
+                    {{#if @controller.sidebar.unreadCount}}
+                      <HdsBadgeCount
+                        @text={{@controller.sidebar.unreadCount}}
+                        @type='outlined'
+                        @size='small'
+                        data-test-nav-log-count
+                      />
+                    {{/if}}
+                  </List.Link>
+                  <List.Link @route='users' @text='Users'>
+                    {{#if @controller.sidebar.userCount}}
+                      <HdsBadgeCount
+                        @text={{@controller.sidebar.userCount}}
+                        @type='outlined'
+                        @size='small'
+                        data-test-nav-users-count
+                      />
+                    {{/if}}
+                  </List.Link>
+                  <List.Item>
+                    <HdsSeparator @spacing='0' />
+                  </List.Item>
+                {{/if}}
+                <List.Item data-test-session>
+                  <HdsButton
+                    @color='secondary'
+                    @text={{concat
+                      'Log out '
+                      @controller.session.currentUser.email
+                    }}
+                    @onClick={{@controller.logout}}
+                    @size='small'
+                    type='button'
+                    data-test-session-button
+                  />
+                </List.Item>
+              {{else}}
+                <List.Link @route='login' @text='Admin log in' />
+              {{/if}}
+            </HdsAppSideNavList>
+          </HdsAppSideNav>
+        {{/unless}}
+      </Frame.Sidebar>
+
+      <Frame.Main class='flex layout-column'>
         {{outlet}}
-      </main>
-    </PaperSidenavContainer>
+      </Frame.Main>
+    </HdsAppFrame>
   </template>
 }
 

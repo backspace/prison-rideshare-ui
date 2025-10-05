@@ -1,0 +1,13 @@
+diff --git a/dist/helpers/hds-t.js b/dist/helpers/hds-t.js
+index d624cbfd07e27eb5427040cba5ddd2533364e78a..0463fe999cc80626e85abe465922e4b0679955d5 100644
+--- a/dist/helpers/hds-t.js
++++ b/dist/helpers/hds-t.js
+@@ -17,7 +17,7 @@ class HdsTHelper extends Helper {
+   compute(positional, named) {
+     const key = positional[0];
+     assert('Hds::T helper requires a key as the first positional argument', typeof key === 'string' && isPresent(key));
+-    return this.hdsIntl.t(key, named);
++    return named.default;
+   }
+ }
+ 
