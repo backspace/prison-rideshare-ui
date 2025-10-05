@@ -6,8 +6,9 @@ function setupApplicationTest(hooks) {
   setupMirage(hooks);
 
   hooks.afterEach(function () {
-    let toasts = this.owner.lookup('service:paperToaster');
-    toasts.get('queue').forEach((toast) => toasts.cancelToast(toast));
+    // FIXME restore or maybe not needed
+    // let toasts = this.owner.lookup('service:paperToaster');
+    // toasts.get('queue').forEach((toast) => toasts.cancelToast(toast));
   });
 }
 
