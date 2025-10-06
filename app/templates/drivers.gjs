@@ -5,7 +5,7 @@ import momentFormat from 'ember-moment/helpers/moment-format';
 import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import or from 'ember-truth-helpers/helpers/or';
 import ReimbursementForm from 'prison-rideshare-ui/components/reimbursement-form';
-import { fn } from '@ember/helper';
+import { get, fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import eq from 'ember-truth-helpers/helpers/eq';
 import {
@@ -183,161 +183,147 @@ export default RouteTemplate(
         @size='large'
         @onDismiss={{@controller.cancelPerson}}
         data-test-driver-modal
+        as |Modal|
       >
-        <:header as |Header|>
-          <Header>
-            {{if @controller.editingPerson.isNew 'New' 'Edit'}}
-            person
-          </Header>
-        </:header>
+        <Modal.Header>
+          {{if @controller.editingPerson.isNew 'New' 'Edit'}}
+          person
+        </Modal.Header>
 
-        <:body as |Body|>
-          <Body>
-            <HdsForm
-              data-test-driver-form
-              {{on 'submit' @controller.savePerson}}
-              as |Form|
-            >
-              <Form.Section>
-                <HdsFormTextInputField
-                  @value={{@controller.editingPerson.name}}
-                  @isRequired={{true}}
-                  @isInvalid={{@controller.editingPerson.validationErrors.name.length}}
-                  autofocus
-                  data-test-driver-form-name-input
-                  {{on 'input' (fn @controller.updateEditingPerson 'name')}}
-                  as |Field|
-                >
-                  <Field.Label>Name</Field.Label>
-                  {{#if @controller.editingPerson.validationErrors.name.length}}
-                    <Field.Error data-test-driver-form-name-error>
-                      {{get @controller.editingPerson.validationErrors.name 0}}
-                    </Field.Error>
-                  {{/if}}
-                </HdsFormTextInputField>
+        <Modal.Body>
+          <HdsForm
+            data-test-driver-form
+            {{on 'submit' @controller.savePerson}}
+            as |Form|
+          >
+            <Form.Section>
+              <HdsFormTextInputField
+                @value={{@controller.editingPerson.name}}
+                @isRequired={{true}}
+                @isInvalid={{@controller.editingPerson.validationErrors.name.length}}
+                autofocus
+                data-test-driver-form-name-input
+                {{on 'input' (fn @controller.updateEditingPerson 'name')}}
+                as |Field|
+              >
+                <Field.Label>Name</Field.Label>
+                {{#if @controller.editingPerson.validationErrors.name.length}}
+                  <Field.Error data-test-driver-form-name-error>
+                    {{get @controller.editingPerson.validationErrors.name 0}}
+                  </Field.Error>
+                {{/if}}
+              </HdsFormTextInputField>
 
-                <HdsFormTextInputField
-                  @type='email'
-                  @value={{@controller.editingPerson.email}}
-                  @isInvalid={{@controller.editingPerson.validationErrors.email.length}}
-                  data-test-driver-form-email-input
-                  {{on 'input' (fn @controller.updateEditingPerson 'email')}}
+              <HdsFormTextInputField
+                @type='email'
+                @value={{@controller.editingPerson.email}}
+                @isInvalid={{@controller.editingPerson.validationErrors.email.length}}
+                data-test-driver-form-email-input
+                {{on 'input' (fn @controller.updateEditingPerson 'email')}}
+                as |Field|
+              >
+                <Field.Label>Email</Field.Label>
+                {{#if @controller.editingPerson.validationErrors.email.length}}
+                  <Field.Error data-test-driver-form-email-error>
+                    {{get @controller.editingPerson.validationErrors.email 0}}
+                  </Field.Error>
+                {{/if}}
+              </HdsFormTextInputField>
+
+              <HdsFormTextInputField
+                @value={{@controller.editingPerson.mobile}}
+                data-test-driver-form-mobile-input
+                {{on 'input' (fn @controller.updateEditingPerson 'mobile')}}
+                as |Field|
+              >
+                <Field.Label>Mobile</Field.Label>
+              </HdsFormTextInputField>
+
+              <HdsFormTextInputField
+                @value={{@controller.editingPerson.landline}}
+                data-test-driver-form-landline-input
+                {{on 'input' (fn @controller.updateEditingPerson 'landline')}}
+                as |Field|
+              >
+                <Field.Label>Landline</Field.Label>
+              </HdsFormTextInputField>
+
+              <HdsFormRadioGroup
+                name='preferred-medium'
+                data-test-driver-form-medium
+                as |Group|
+              >
+                <Group.Legend>Preferred contact</Group.Legend>
+
+                <Group.RadioField
+                  @value='email'
+                  checked={{eq @controller.editingPerson.medium 'email'}}
+                  data-test-driver-form-medium-email
+                  {{on 'change' (fn @controller.updateEditingPerson 'medium')}}
                   as |Field|
                 >
                   <Field.Label>Email</Field.Label>
-                  {{#if
-                    @controller.editingPerson.validationErrors.email.length
-                  }}
-                    <Field.Error data-test-driver-form-email-error>
-                      {{get @controller.editingPerson.validationErrors.email 0}}
-                    </Field.Error>
-                  {{/if}}
-                </HdsFormTextInputField>
+                </Group.RadioField>
 
-                <HdsFormTextInputField
-                  @value={{@controller.editingPerson.mobile}}
-                  data-test-driver-form-mobile-input
-                  {{on 'input' (fn @controller.updateEditingPerson 'mobile')}}
+                <Group.RadioField
+                  @value='mobile'
+                  checked={{eq @controller.editingPerson.medium 'mobile'}}
+                  data-test-driver-form-medium-mobile
+                  {{on 'change' (fn @controller.updateEditingPerson 'medium')}}
                   as |Field|
                 >
                   <Field.Label>Mobile</Field.Label>
-                </HdsFormTextInputField>
+                </Group.RadioField>
 
-                <HdsFormTextInputField
-                  @value={{@controller.editingPerson.landline}}
-                  data-test-driver-form-landline-input
-                  {{on 'input' (fn @controller.updateEditingPerson 'landline')}}
+                <Group.RadioField
+                  @value='landline'
+                  checked={{eq @controller.editingPerson.medium 'landline'}}
+                  data-test-driver-form-medium-landline
+                  {{on 'change' (fn @controller.updateEditingPerson 'medium')}}
                   as |Field|
                 >
                   <Field.Label>Landline</Field.Label>
-                </HdsFormTextInputField>
+                </Group.RadioField>
+              </HdsFormRadioGroup>
 
-                <HdsFormRadioGroup
-                  name='preferred-medium'
-                  data-test-driver-form-medium
-                  as |Group|
-                >
-                  <Group.Legend>Preferred contact</Group.Legend>
+              <HdsFormTextareaField
+                @value={{@controller.editingPerson.address}}
+                data-test-driver-form-address-input
+                {{on 'input' (fn @controller.updateEditingPerson 'address')}}
+                as |Field|
+              >
+                <Field.Label>Mailing address</Field.Label>
+              </HdsFormTextareaField>
 
-                  <Group.RadioField
-                    @value='email'
-                    checked={{eq @controller.editingPerson.medium 'email'}}
-                    data-test-driver-form-medium-email
-                    {{on
-                      'change'
-                      (fn @controller.updateEditingPerson 'medium')
-                    }}
-                    as |Field|
-                  >
-                    <Field.Label>Email</Field.Label>
-                  </Group.RadioField>
+              <HdsFormTextareaField
+                @value={{@controller.editingPerson.notes}}
+                data-test-driver-form-notes-input
+                {{on 'input' (fn @controller.updateEditingPerson 'notes')}}
+                as |Field|
+              >
+                <Field.Label>Notes</Field.Label>
+              </HdsFormTextareaField>
+            </Form.Section>
 
-                  <Group.RadioField
-                    @value='mobile'
-                    checked={{eq @controller.editingPerson.medium 'mobile'}}
-                    data-test-driver-form-medium-mobile
-                    {{on
-                      'change'
-                      (fn @controller.updateEditingPerson 'medium')
-                    }}
-                    as |Field|
-                  >
-                    <Field.Label>Mobile</Field.Label>
-                  </Group.RadioField>
-
-                  <Group.RadioField
-                    @value='landline'
-                    checked={{eq @controller.editingPerson.medium 'landline'}}
-                    data-test-driver-form-medium-landline
-                    {{on
-                      'change'
-                      (fn @controller.updateEditingPerson 'medium')
-                    }}
-                    as |Field|
-                  >
-                    <Field.Label>Landline</Field.Label>
-                  </Group.RadioField>
-                </HdsFormRadioGroup>
-
-                <HdsFormTextareaField
-                  @value={{@controller.editingPerson.address}}
-                  data-test-driver-form-address-input
-                  {{on 'input' (fn @controller.updateEditingPerson 'address')}}
-                  as |Field|
-                >
-                  <Field.Label>Mailing address</Field.Label>
-                </HdsFormTextareaField>
-
-                <HdsFormTextareaField
-                  @value={{@controller.editingPerson.notes}}
-                  data-test-driver-form-notes-input
-                  {{on 'input' (fn @controller.updateEditingPerson 'notes')}}
-                  as |Field|
-                >
-                  <Field.Label>Notes</Field.Label>
-                </HdsFormTextareaField>
-              </Form.Section>
-
-              <Form.Footer as |Footer|>
-                <Footer.ButtonSet>
-                  <HdsButton
-                    @text='Cancel'
-                    @color='secondary'
-                    type='button'
-                    data-test-driver-form-cancel
-                    {{on 'click' @controller.cancelPerson}}
-                  />
-                  <HdsButton
-                    @text='Save'
-                    @color='primary'
-                    type='submit'
-                    data-test-driver-form-submit
-                  />
-                </Footer.ButtonSet>
-              </Form.Footer>
-            </HdsForm>
-          </Body>
-        </:body>
+            <Form.Footer as |Footer|>
+              <Footer.ButtonSet>
+                <HdsButton
+                  @text='Cancel'
+                  @color='secondary'
+                  type='button'
+                  data-test-driver-form-cancel
+                  {{on 'click' @controller.cancelPerson}}
+                />
+                <HdsButton
+                  @text='Save'
+                  @color='primary'
+                  type='submit'
+                  data-test-driver-form-submit
+                />
+              </Footer.ButtonSet>
+            </Form.Footer>
+          </HdsForm>
+        </Modal.Body>
       </HdsModal>
     {{/if}}
   </template>,

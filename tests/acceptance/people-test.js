@@ -229,6 +229,7 @@ module('Acceptance | people', function (hooks) {
 
     await page.visit();
     await page.newPerson();
+    await page.form.nameField.fill('William');
     await page.form.submit();
 
     assert.equal(page.form.nameError.text, "Name can't be blank");
