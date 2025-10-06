@@ -110,7 +110,9 @@ export default create({
       field: {
         scope: '[data-test-driver-form-email-input]',
       },
-      desiredMedium: clickable('[data-test-driver-form-medium-email]'),
+      desiredMedium: {
+        scope: '[data-test-driver-form-medium-email]',
+      },
       error: {
         scope: '[data-test-driver-form-email-error]',
         text: text(),
@@ -122,7 +124,9 @@ export default create({
       field: {
         scope: '[data-test-driver-form-mobile-input]',
       },
-      desiredMedium: clickable('[data-test-driver-form-medium-mobile]'),
+      desiredMedium: {
+        scope: '[data-test-driver-form-medium-mobile]',
+      },
     },
 
     landline: {
@@ -130,14 +134,15 @@ export default create({
       field: {
         scope: '[data-test-driver-form-landline-input]',
       },
-      desiredMedium: clickable('[data-test-driver-form-medium-landline]'),
+      desiredMedium: {
+        scope: '[data-test-driver-form-medium-landline]',
+      },
     },
 
     address: {
       fill: fillable('[data-test-driver-form-address-input]'),
       field: {
         scope: '[data-test-driver-form-address-input]',
-        value: attribute('value'),
       },
     },
 

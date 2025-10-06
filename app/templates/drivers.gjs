@@ -181,7 +181,7 @@ export default RouteTemplate(
       <HdsModal
         @color='neutral'
         @size='large'
-        @onDismiss={{@controller.cancelPerson}}
+        @onClose={{@controller.cancelPerson}}
         data-test-driver-modal
         as |Modal|
       >
