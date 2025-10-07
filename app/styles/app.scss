@@ -345,3 +345,12 @@ md-option[aria-current] {
 md-backdrop.md-opaque.ng-enter {
   opacity: 0.48;
 }
+
+/* The dropdowns are mysteriously tiny…? And all bold. But probably abandoning Ember Paper */
+#ember-basic-dropdown-wormhole .ember-basic-dropdown-content {
+  transform: none !important;
+}
+
+md-option[aria-current] {
+  font-weight: inherit;
+}
