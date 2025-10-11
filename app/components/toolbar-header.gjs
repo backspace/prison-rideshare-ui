@@ -4,13 +4,14 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
-import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
-import paperIcon from 'prison-rideshare-ui/components/placeholder';
+import { on } from '@ember/modifier';
 import pluralize from 'ember-inflector/lib/helpers/pluralize';
-import PaperChips from 'prison-rideshare-ui/components/placeholder';
 import { pageTitle } from 'ember-page-title';
-import { HdsAppHeader } from '@hashicorp/design-system-components/components';
+import {
+  HdsAppHeader,
+  HdsButton,
+  HdsTag,
+} from '@hashicorp/design-system-components/components';
 
 @classic
 export default class ToolbarHeader extends Component {
@@ -27,23 +28,18 @@ export default class ToolbarHeader extends Component {
         </h2>
       </:globalActions>
       <:utilityActions>
-        <PaperChips @readOnly={{true}} @content={{this.chips}} as |item|>
-          <span title={{item.title}}>
-            {{item.label}}
-          </span>
-        </PaperChips>
+        <HdsButton
+          @text='Toggle sidebar'
+          @icon='menu'
+          @isIconOnly={{true}}
+          @size='small'
+          class='hide-gt-sm'
+          {{on 'click' this.toggleSidebar}}
+        />
+        {{#each this.chips as |chip|}}
+          <HdsTag @text={{chip.label}} title={{chip.title}} />
+        {{/each}}
         {{yield}}
-      </:utilityActions>
-    </HdsAppHeader>
-    <PaperToolbar as |toolbar|>
-      <toolbar.tools>
-        <PaperButton
-          @iconButton={{true}}
-          @onClick={{this.toggleSidebar}}
-          @class='hide-gt-sm'
-        >
-          {{paperIcon 'menu'}}
-        </PaperButton>
         {{#if this.session.currentUser.admin}}
           {{#if this.sidebar.notificationCount}}
             <span
@@ -57,8 +53,8 @@ export default class ToolbarHeader extends Component {
             </span>
           {{/if}}
         {{/if}}
-      </toolbar.tools>
-    </PaperToolbar>
+      </:utilityActions>
+    </HdsAppHeader>
   </template>
   @service
   session;
