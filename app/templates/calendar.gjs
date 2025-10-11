@@ -1,224 +1,100 @@
 import RouteTemplate from 'ember-route-template';
 import PowerCalendar from 'ember-power-calendar/components/power-calendar';
-import PaperCard from 'prison-rideshare-ui/components/placeholder';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
 import perform from 'ember-concurrency/helpers/perform';
-import not from 'ember-truth-helpers/helpers/not';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperRadioGroup from 'prison-rideshare-ui/components/placeholder';
-import PaperSwitch from 'prison-rideshare-ui/components/placeholder';
-import PaperTooltip from 'prison-rideshare-ui/components/placeholder';
-import CalendarDay from 'prison-rideshare-ui/components/calendar-day';
+import { on } from '@ember/modifier';
+import { fn } from '@ember/helper';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
-import { fn } from '@ember/helper';
+import eq from 'ember-truth-helpers/helpers/eq';
+import gt from 'ember-truth-helpers/helpers/gt';
+import CalendarDay from 'prison-rideshare-ui/components/calendar-day';
+import {
+  HdsButton,
+  HdsCardContainer,
+  HdsFormRadioField,
+  HdsFormRadioGroup,
+  HdsFormTextInputField,
+  HdsFormTextareaField,
+  HdsFormToggleField,
+  HdsIcon,
+  HdsTooltipButton,
+} from '@hashicorp/design-system-components/components';
+
+import About from 'prison-rideshare-ui/components/calendar/about';
+import EditPerson from 'prison-rideshare-ui/components/calendar/edit-person';
 
 class CalendarComponent extends Component {
   @action toggleShowPerson() {
     this.args.controller.set('showPerson', !this.args.controller.showPerson);
   }
 
-  @action updatePersonAttribute(attribute, value) {
-    this.args.controller.person.set(attribute, value);
+  @action submitPersonForm(event) {
+    event.preventDefault();
+    this.args.controller.savePerson.perform();
   }
 
   <template>
+    <HdsCardContainer class='person-card' data-test-person-card>
+      <div>
+        <header>
+          <div class='person-session' data-test-person-session>
+            Logged in as
+            {{@controller.person.email}}
+          </div>
+          {{#if @controller.showPerson}}
+            <div class='person-actions'>
+              <HdsButton
+                @text='Cancel'
+                @color='secondary'
+                @size='small'
+                data-test-person-cancel
+                {{on 'click' @controller.cancel}}
+                disabled={{@controller.savePerson.isRunning}}
+              />
+              <HdsButton
+                @text={{if @controller.savePerson.isRunning 'Saving…' 'Save'}}
+                @color={{if
+                  @controller.person.hasDirtyAttributes
+                  'primary'
+                  'secondary'
+                }}
+                @size='small'
+                data-test-person-save
+                {{on 'click' (perform @controller.savePerson)}}
+                disabled={{@controller.savePerson.isRunning}}
+              />
+            </div>
+          {{else}}
+            <HdsButton
+              @text='Edit communication details'
+              @color='primary'
+              @size='small'
+              class='toggle'
+              data-test-person-toggle
+              {{on 'click' this.toggleShowPerson}}
+            />
+          {{/if}}
+        </header>
+
+        {{#if @controller.showPerson}}
+          <EditPerson
+            @person={{@controller.person}}
+            @submitPersonForm={{this.submitPersonForm}}
+          />
+        {{/if}}
+      </div>
+    </HdsCardContainer>
+
+    <About
+      @webcalUrl={{@controller.webcalSubscriptionUrl}}
+      @httpUrl={{@controller.httpSubscriptionUrl}}
+    />
+
     <PowerCalendar
       @center={{@controller.monthMoment}}
       @daysComponent='calendar-days'
       as |calendar|
     >
-      <PaperCard @class='person-card' as |card|>
-        <card.content>
-          <header>
-            <div class='person-session'>
-              Logged in as
-              {{@controller.person.email}}
-            </div>
-            {{#if @controller.showPerson}}
-              <div>
-                <PaperButton
-                  @class='cancel'
-                  @onClick={{@controller.cancel}}
-                  @disabled={{@controller.savePerson.isRunning}}
-                >
-                  Cancel
-                </PaperButton>
-                <PaperButton
-                  @class='submit'
-                  @primary={{@controller.person.hasDirtyAttributes}}
-                  @raised={{@controller.person.hasDirtyAttributes}}
-                  @onClick={{perform @controller.savePerson}}
-                  @disabled={{@controller.savePerson.isRunning}}
-                >
-                  {{if @controller.savePerson.isRunning '…' 'Save'}}
-                </PaperButton>
-              </div>
-            {{else}}
-              <PaperButton
-                @class='toggle'
-                @label='Edit communication details'
-                @onClick={{this.toggleShowPerson}}
-              />
-            {{/if}}
-          </header>
-          {{#if @controller.showPerson}}
-            <PaperForm @onSubmit={{@controller.save}} as |form|>
-              <PaperRadioGroup
-                @groupValue={{readonly @controller.person.medium}}
-                @onChange={{fn this.updatePersonAttribute 'medium'}}
-                as |group|
-              >
-                <div class='layout-row'>
-                  <div class='layout-column flex-50'>
-                    <form.input
-                      @class='name'
-                      @label='Name'
-                      @autofocus={{true}}
-                      @value={{@controller.person.name}}
-                      @onChange={{fn this.updatePersonAttribute 'name'}}
-                      @errors={{@controller.person.validationErrors.name}}
-                      @isTouched={{readonly
-                        @controller.person.validationErrors.name.length
-                      }}
-                    />
-                  </div>
-                  <div class='layout-column flex-50'>
-                    <PaperSwitch
-                      @value={{@controller.person.active}}
-                      @onChange={{fn
-                        this.updatePersonAttribute
-                        'active'
-                        (not @controller.person.active)
-                      }}
-                    >
-                      Available for rides
-                    </PaperSwitch>
-                  </div>
-                </div>
-                <div class='layout-row'>
-                  <div class='layout-column flex-50'>
-                    <div class='layout-row text-radio mobile'>
-                      <form.input
-                        @type='mobile'
-                        @label='Mobile'
-                        @value={{@controller.person.mobile}}
-                        @onChange={{fn this.updatePersonAttribute 'mobile'}}
-                        @errors={{@controller.person.validationErrors.mobile}}
-                        @isTouched={{readonly
-                          @controller.person.validationErrors.mobile.length
-                        }}
-                      />
-                      <group.radio @value='mobile'>
-                        preferred
-                      </group.radio>
-                    </div>
-                    <div class='layout-row text-radio landline'>
-                      <form.input
-                        @type='mobile'
-                        @label='Landline'
-                        @value={{@controller.person.landline}}
-                        @onChange={{fn this.updatePersonAttribute 'landline'}}
-                        @errors={{@controller.person.validationErrors.landline}}
-                        @isTouched={{readonly
-                          @controller.person.validationErrors.landline.length
-                        }}
-                      />
-                      <group.radio @value='landline'>
-                        preferred
-                      </group.radio>
-                    </div>
-                  </div>
-                  <div class='layout-column email flex-50'>
-                    <div class='layout-row text-radio'>
-                      <PaperTooltip>
-                        Email us if you need to change this
-                      </PaperTooltip>
-                      <form.input
-                        @type='email'
-                        @label='Email'
-                        @disabled={{true}}
-                        @value={{@controller.person.email}}
-                        @onChange={{fn this.updatePersonAttribute 'email'}}
-                        @errors={{@controller.person.validationErrors.email}}
-                        @isTouched={{readonly
-                          @controller.person.validationErrors.email.length
-                        }}
-                      />
-                      <group.radio @value='email'>
-                        preferred
-                      </group.radio>
-                    </div>
-                  </div>
-                </div>
-                <div class='layout-row'>
-                  <div class='layout-column flex-100'>
-                    <form.input
-                      @class='address'
-                      @textarea={{true}}
-                      @label='Mailing address'
-                      @value={{@controller.person.address}}
-                      @onChange={{fn this.updatePersonAttribute 'address'}}
-                    >
-                      <div class='hint'>
-                        To send you our quarterly newsletter and very
-                        occasionally, invitations or other such communications
-                      </div>
-                    </form.input>
-                  </div>
-                </div>
-                <div class='layout-row'>
-                  <div class='layout-column flex-100'>
-                    <form.input
-                      @class='self-notes'
-                      @textarea={{true}}
-                      @label='Notes'
-                      @value={{@controller.person.selfNotes}}
-                      @onChange={{fn this.updatePersonAttribute 'selfNotes'}}
-                    >
-                      <div class='hint'>
-                        Vehicle capacity, institutions you don’t want to drive
-                        to, etc
-                      </div>
-                    </form.input>
-                  </div>
-                </div>
-              </PaperRadioGroup>
-            </PaperForm>
-          {{/if}}
-        </card.content>
-      </PaperCard>
-
-      <PaperCard as |card|>
-        <card.content>
-          <p>
-            Let us know in advance when you can take people to visit their loved
-            ones. Click a time slot below to commit. If you can’t commit
-            anymore, click the slot again.
-          </p>
-          <p>
-            Use the button above to access a form to change your communication
-            preferences.
-          </p>
-
-          <p class='subscription'>
-            You can subscribe to a live-updating calendar that shows what times
-            you’ve committed to as well as rides assigned to you. On Apple
-            platforms, tap
-            <a href={{@controller.webcalSubscriptionUrl}}>
-              here
-            </a>
-            to subscribe; on other platforms, you’ll have to copy
-            <a href={{@controller.httpSubscriptionUrl}}>
-              this URL
-            </a>
-            into a calendar subscription field. Please be careful with these
-            links, as they show contact information for riders. If they’re ever
-            exposed, let us know and we can change the secret token.
-          </p>
-        </card.content>
-      </PaperCard>
-
       <calendar.Nav />
 
       <calendar.Days @showDaysAround={{false}} as |day|>

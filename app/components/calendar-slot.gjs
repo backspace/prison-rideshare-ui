@@ -3,22 +3,22 @@ import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
+import { action, get, computed } from '@ember/object';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment';
 import { task } from 'ember-concurrency';
 import gt from 'ember-truth-helpers/helpers/gt';
-import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
 import perform from 'ember-concurrency/helpers/perform';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
+import { HdsFormCheckboxField } from '@hashicorp/design-system-components/components';
 
 @classic
 export default class CalendarSlot extends Component {
   <template>
-    <div class='slot {{if this.hidden "hidden"}}'>
+    <div class='slot {{if this.hidden "hidden"}}' data-test-calendar-slot>
       {{#if this.count}}
-        <span class='hours'>
+        <span class='hours' data-test-slot-hours>
           {{this.timespan}}
         </span>
         <button
@@ -26,20 +26,25 @@ export default class CalendarSlot extends Component {
             {{if (gt this.slot.commitments.length 0) "committed-to"}}'
           {{on 'click' (fn this.setViewingSlot this.slot)}}
           type='button'
+          data-test-slot-count
         >
           {{this.capacity}}
         </button>
       {{else}}
-        <PaperCheckbox
-          @value={{this.isCommittedTo}}
-          @disabled={{this.disabled}}
-          @indeterminate={{this.toggle.isRunning}}
-          @onChange={{perform this.toggle}}
+        <HdsFormCheckboxField
+          checked={{this.isCommittedTo}}
+          disabled={{this.disabled}}
+          aria-busy={{this.toggle.isRunning}}
+          data-test-slot-checkbox
+          {{on 'input' (perform this.toggle)}}
+          as |Field|
         >
-          <span class='hours'>
-            {{this.timespan}}
-          </span>
-        </PaperCheckbox>
+          <Field.Label>
+            <span class='hours' data-test-slot-hours>
+              {{this.timespan}}
+            </span>
+          </Field.Label>
+        </HdsFormCheckboxField>
       {{/if}}
     </div>
   </template>
@@ -106,7 +111,9 @@ export default class CalendarSlot extends Component {
     return `${dividend}/${divisor}`;
   }
 
-  @(task(function* () {
+  @(task(function* (event) {
+    event.preventDefault();
+
     if (this.isCommittedTo) {
       try {
         yield this.commitment.destroyRecord();

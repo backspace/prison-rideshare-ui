@@ -215,7 +215,7 @@ module('Acceptance | calendar', function (hooks) {
       'expected the past committed slot to be disabled',
     );
 
-    await page.days[9].slots[0].click();
+    assert.rejects(page.days[9].slots[0].click());
 
     assert.notOk(
       page.days[9].slots[0].isCommittedTo,
@@ -394,12 +394,12 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(page.person.email.field.value, 'jorts@jants.ca');
 
     assert.ok(
-      page.person.mobile.desiredMedium,
+      page.person.mobile.desiredMedium.isChecked,
       'expected mobile to be the desired medium',
     );
 
-    assert.equal(page.person.selfNotes.field.value, 'My self notes');
-    assert.equal(page.person.address.field.value, '91 Albert');
+    assert.equal(page.person.selfNotes.value, 'My self notes');
+    assert.equal(page.person.address.value, '91 Albert');
 
     assert.notOk(
       page.person.submitButton.isHighlighted,
@@ -426,8 +426,8 @@ module('Acceptance | calendar', function (hooks) {
     await page.person.activeSwitch.click();
     await page.person.mobile.field.fillIn('1234');
     await page.person.email.desiredMedium.click();
-    await page.person.selfNotes.field.fillIn('Updated self notes');
-    await page.person.address.field.fillIn('A new address');
+    await page.person.selfNotes.fillIn('Updated self notes');
+    await page.person.address.fillIn('A new address');
 
     assert.ok(
       page.person.submitButton.isHighlighted,
@@ -502,7 +502,7 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(shared.toast.text, 'Couldn’t save your details');
     assert.equal(page.person.name.error.text, "Name can't be blank");
     assert.ok(
-      page.person.name.isError,
+      page.person.name.field.isError,
       'expected the name field to show as being invalid',
     );
   });
@@ -627,22 +627,20 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.days[9].slots[1].count.click();
     await page.peopleSearch.fillIn('commit');
-    await waitUntil(() => page.peopleSearch.options.length === 3);
 
     assert.equal(
       page.peopleSearch.options.length,
       3,
       'expected three people to show for possible commitments',
     );
-    assert.equal(page.peopleSearch.options[0].name, 'Also non-committal');
+    assert.equal(page.peopleSearch.options[0].text, 'Also non-committal');
     assert.equal(
-      page.peopleSearch.options[1].name,
+      page.peopleSearch.options[1].text,
       'Fully Committed Slot Person',
     );
-    assert.equal(page.peopleSearch.options[2].name, 'Non-committal');
+    assert.equal(page.peopleSearch.options[2].text, 'Non-committal');
 
     await page.peopleSearch.fillIn('also');
-    await waitUntil(() => page.peopleSearch.options.length === 1);
 
     assert.equal(
       page.peopleSearch.options.length,

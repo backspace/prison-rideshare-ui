@@ -1,10 +1,11 @@
 @import '@hashicorp/design-system-components';
 
-$primary: 'indigo';
-$primary-color: 'indigo';
-$dark-contrast-color: 'black';
-$color-indigo: 'indigo';
-$color-pink: 'pink';
+$primary: indigo;
+$primary-color: indigo;
+$dark-contrast-color: black;
+$light-contrast-color: rgba(0, 0, 0, 0.12);
+$color-indigo: indigo;
+$color-pink: pink;
 
 @import 'ember-power-calendar';
 
@@ -229,17 +230,6 @@ md-table-container.debts .person .name {
 
 .switch-container {
   padding: 16px;
-}
-
-.hint {
-  position: absolute;
-  left: 2px;
-  right: auto;
-  bottom: 7px;
-  font-size: 12px;
-  line-height: 14px;
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
-  color: grey;
 }
 
 .visitor-autocomplete-option {
