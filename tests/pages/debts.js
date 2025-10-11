@@ -1,8 +1,8 @@
 import {
+  attribute,
   clickable,
   collection,
   create,
-  isVisible,
   text,
   visitable,
 } from 'ember-cli-page-object';
@@ -10,25 +10,13 @@ import {
 export default create({
   visit: visitable('/debts'),
 
-  people: collection('tbody', {
-    name: text('.name'),
-    foodExpenses: text('.person .food-expenses'),
-    carExpenses: text('.person .car-expenses'),
-    totalExpenses: text('.person .total-expenses'),
+  people: collection('[data-test-debt-person-row]', {
+    id: attribute(['data-test-person-id']),
+    name: text('[data-test-debt-person-name]'),
+    foodExpenses: text('[data-test-debt-person-food]'),
+    carExpenses: text('[data-test-debt-person-car]'),
+    totalExpenses: text('[data-test-debt-person-total]'),
 
-    reimburse: clickable('.person .reimburse'),
-
-    rides: collection('tr.ride', {
-      date: text('.date'),
-      foodExpenses: text('.food-expenses'),
-      carExpenses: text('.car-expenses'),
-      carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]'),
-    }),
-
-    // TODO this should be nested but table rows 😢
-    reimbursements: collection('tr.reimbursement', {
-      foodExpenses: text('.food-expenses'),
-      carExpenses: text('.car-expenses'),
-    }),
+    reimburse: clickable('[data-test-debt-reimburse]'),
   }),
 });

@@ -11,12 +11,14 @@ import { getPageTitle } from 'ember-page-title/test-support';
 module('Acceptance | debts', function (hooks) {
   setupApplicationTest(hooks);
 
-  hooks.beforeEach(async function () {
-    const sun = this.server.create('person', { name: 'Sun' });
-    const kala = this.server.create('person', { name: 'Kala' });
-    const will = this.server.create('person', { name: 'Will' });
+  let sun, firstSunRide, secondSunRide, will, willRide;
 
-    const sunRide = this.server.create('ride', {
+  hooks.beforeEach(async function () {
+    sun = this.server.create('person', { name: 'Sun' });
+    const kala = this.server.create('person', { name: 'Kala' });
+    will = this.server.create('person', { name: 'Will' });
+
+    firstSunRide = this.server.create('ride', {
       driver: sun,
       foodExpenses: 15400,
 
@@ -27,7 +29,7 @@ module('Acceptance | debts', function (hooks) {
       end: new Date(2016, 11, 25, 12, 0),
     });
 
-    const secondSunRide = this.server.create('ride', {
+    secondSunRide = this.server.create('ride', {
       driver: sun,
       foodExpenses: 1000,
 
@@ -38,7 +40,7 @@ module('Acceptance | debts', function (hooks) {
       end: new Date(2016, 11, 26, 12, 0),
     });
 
-    const willRide = this.server.create('ride', {
+    willRide = this.server.create('ride', {
       driver: will,
       foodExpenses: 1919,
 
@@ -49,13 +51,13 @@ module('Acceptance | debts', function (hooks) {
 
     this.server.create('reimbursement', {
       person: sun,
-      ride: sunRide,
+      ride: firstSunRide,
       foodExpenses: 4400,
     });
 
     this.server.create('reimbursement', {
       person: kala,
-      ride: sunRide,
+      ride: firstSunRide,
       carExpenses: 4400,
     });
 
@@ -64,7 +66,7 @@ module('Acceptance | debts', function (hooks) {
       person: sun,
     });
     // FIXME is this a Mirage bug? This was formerly within the creation but the mock server was returning *both* rides.
-    firstDebt.rides = [sunRide, secondSunRide];
+    firstDebt.rides = [firstSunRide, secondSunRide];
     firstDebt.save();
 
     const secondDebt = this.server.create('debt', {
@@ -93,34 +95,50 @@ module('Acceptance | debts', function (hooks) {
     assert.equal(sun.carExpenses, '0');
     assert.equal(sun.totalExpenses, '120');
 
-    assert.equal(sun.rides.length, '2');
+    assert
+      .dom(`[data-test-debt-ride-row][data-test-driver-id="${sun.id}"]`)
+      .exists({ count: 2 });
 
-    const recentSunRide = sun.rides[0];
-    assert.equal(recentSunRide.date, 'Mon Dec 26 2016 10:15a — 12p');
-    assert.equal(recentSunRide.foodExpenses, '10');
+    let recentSunRideSelector = `[data-test-debt-ride-row][data-test-ride-id="${secondSunRide.id}"]`;
 
-    const sunRide = sun.rides[1];
-    assert.equal(sunRide.date, 'Sun Dec 25 2016 10:15a — 12p');
-    assert.equal(sunRide.foodExpenses, '154');
-    assert.equal(sunRide.carExpenses, '');
+    assert
+      .dom(`${recentSunRideSelector} [data-test-debt-ride-date]`)
+      .hasText('Mon Dec 26 2016 10:15a — 12p');
+    assert
+      .dom(`${recentSunRideSelector} [data-test-debt-ride-food]`)
+      .hasText('10');
+    assert.dom(`${recentSunRideSelector} [data-test-debt-ride-car]`);
 
-    assert.equal(
-      sun.reimbursements.length,
-      '1',
-      'expected the Kala reimbursement to be hidden',
-    );
-    assert.equal(sun.reimbursements[0].foodExpenses, '-44');
-    assert.equal(sun.reimbursements[0].carExpenses, '');
+    let olderSunRideSelector = `[data-test-debt-ride-row][data-test-ride-id="${firstSunRide.id}"]`;
+
+    assert
+      .dom(`${olderSunRideSelector} [data-test-debt-ride-date]`)
+      .hasText('Sun Dec 25 2016 10:15a — 12p');
+    assert
+      .dom(`${olderSunRideSelector} [data-test-debt-ride-food]`)
+      .hasText('154');
+    assert.dom(`${olderSunRideSelector} [data-test-debt-ride-car]`).hasText('');
+    assert
+      .dom(`${olderSunRideSelector} [data-test-debt-ride-food-reimbursed]`)
+      .hasText('-44');
+    assert
+      .dom(`${olderSunRideSelector} [data-test-debt-ride-food-reimbursed]`)
+      .hasAttribute('title', '44 has already been reimbursed');
 
     const will = page.people[1];
     assert.equal(will.foodExpenses, '19.19');
     assert.equal(will.carExpenses, '19.19');
     assert.equal(will.totalExpenses, '38.38');
-    assert.equal(will.rides.length, '1');
-    assert.ok(
-      will.rides[0].carExpenseIsDonation,
-      'expected the ride’s car expenses to be marked a donation',
-    );
+
+    assert
+      .dom(`[data-test-debt-ride-row][data-test-driver-id="${will.id}"]`)
+      .exists({ count: 1 });
+
+    assert
+      .dom(
+        `[data-test-debt-ride-row][data-test-driver-id="${will.id}"] [data-test-debt-ride-donation]`,
+      )
+      .exists();
   });
 
   test('a debt can be reimbursed', async function (assert) {
