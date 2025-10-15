@@ -16,7 +16,7 @@ module('Acceptance | forgot', function (hooks) {
     this.server.post(
       '/users/reset',
       function (schema, { queryParams: { email } }) {
-        assert.equal(email, 'hello');
+        assert.equal(email, 'hello@example.com');
 
         return done();
       },
@@ -26,7 +26,7 @@ module('Acceptance | forgot', function (hooks) {
 
     percySnapshot(assert);
 
-    await forgotPage.fillEmail('hello');
+    await forgotPage.fillEmail('hello@example.com');
     await forgotPage.submit();
 
     assert.equal(getPageTitle(), 'Forgot password · Prison Rideshare');

@@ -15,7 +15,10 @@ export default class ForgotController extends Controller {
   @service
   toasts;
 
-  @action editEmail(value) {
+  @action
+  updateEmail(event) {
+    const value = event?.target?.value ?? '';
+
     this.set('email', value);
   }
 

@@ -7,13 +7,15 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: 'md-dialog',
+  testContainer: '[data-test-forgot-modal]',
+
+  scope: '[data-test-forgot-form]',
 
   visit: visitable('/forgot'),
 
-  fillEmail: fillable('.email input'),
+  fillEmail: fillable('[data-test-forgot-email]'),
 
-  error: text('.error'),
+  error: text('[data-test-forgot-error]'),
 
-  submit: clickable('button'),
+  submit: clickable('[data-test-forgot-submit]'),
 });

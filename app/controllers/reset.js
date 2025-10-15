@@ -8,6 +8,10 @@ import fetch from 'fetch';
 
 @classic
 export default class ResetController extends Controller {
+  password = '';
+
+  passwordConfirmation = '';
+
   @service
   session;
 
@@ -16,6 +20,20 @@ export default class ResetController extends Controller {
 
   @service
   toasts;
+
+  @action
+  updatePassword(event) {
+    const value = event?.target?.value ?? '';
+
+    this.set('password', value);
+  }
+
+  @action
+  updatePasswordConfirmation(event) {
+    const value = event?.target?.value ?? '';
+
+    this.set('passwordConfirmation', value);
+  }
 
   @action
   submitReset(event) {

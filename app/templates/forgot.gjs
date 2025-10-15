@@ -1,55 +1,56 @@
 import RouteTemplate from 'ember-route-template';
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbarTools from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
+import { on } from '@ember/modifier';
+import {
+  HdsAlert,
+  HdsButton,
+  HdsFormTextInputField,
+  HdsModal,
+} from '@hashicorp/design-system-components/components';
 import { pageTitle } from 'ember-page-title';
 
 export default RouteTemplate(
   <template>
     {{pageTitle 'Forgot password'}}
-    <PaperDialog>
-      <PaperToolbar>
-        <PaperToolbarTools>
-          <h2 class='md-title'>
-            Forgot password
-          </h2>
-        </PaperToolbarTools>
-      </PaperToolbar>
-      <PaperForm @onSubmit={{this.submitForgot}} as |form|>
-        <PaperDialogContent>
-          <div class='layout layout-row'>
-            <form.input
-              @class='email'
-              @type='email'
-              @label='Email'
-              @autofocus={{true}}
-              @value={{@controller.email}}
-              @onChange={{@controller.editEmail}}
-            />
-          </div>
-          {{#if @controller.error}}
-            <div class='error'>
-              FIXME
-            </div>
-          {{/if}}
-        </PaperDialogContent>
+    <HdsModal @size='small' data-test-forgot-modal as |Modal|>
+      <Modal.Header>
+        <h2>Forgot password</h2>
+      </Modal.Header>
 
-        <PaperDialogActions @class='layout-row'>
-          <div class='layout layout-row'>
-            <form.submit-button
-              @class='submit'
-              @primary={{true}}
-              @raised={{true}}
-              @onClick={{@controller.submitForgot}}
+      <Modal.Body>
+        <form
+          data-test-forgot-form
+          {{on 'submit' @controller.submitForgot}}
+        >
+          <HdsFormTextInputField
+            @value={{@controller.email}}
+            @type='email'
+            autofocus
+            data-test-forgot-email
+            {{on 'input' @controller.updateEmail}}
+            as |Field|
+          >
+            <Field.Label>Email</Field.Label>
+          </HdsFormTextInputField>
+
+          {{#if @controller.error}}
+            <HdsAlert
+              @color='critical'
+              @type='inline'
+              data-test-forgot-error
+              as |Alert|
             >
-              Send reset email
-            </form.submit-button>
-          </div>
-        </PaperDialogActions>
-      </PaperForm>
-    </PaperDialog>
+              <Alert.Title>{{@controller.error}}</Alert.Title>
+            </HdsAlert>
+          {{/if}}
+
+          <HdsButton
+            type='submit'
+            @color='primary'
+            @text='Send reset email'
+            data-test-forgot-submit
+          />
+        </form>
+      </Modal.Body>
+    </HdsModal>
   </template>,
 );

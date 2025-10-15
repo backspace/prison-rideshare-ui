@@ -1,64 +1,66 @@
 import RouteTemplate from 'ember-route-template';
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbar from 'prison-rideshare-ui/components/placeholder';
-import PaperToolbarTools from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
-import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
+import {
+  HdsAlert,
+  HdsButton,
+  HdsFormTextInputField,
+  HdsModal,
+} from '@hashicorp/design-system-components/components';
 import { pageTitle } from 'ember-page-title';
+
 export default RouteTemplate(
   <template>
     {{pageTitle 'Reset password'}}
-    <PaperDialog>
-      <PaperToolbar>
-        <PaperToolbarTools>
-          <h2 class='md-title'>
-            Reset password
-          </h2>
-        </PaperToolbarTools>
-      </PaperToolbar>
-      <PaperForm @onSubmit={{this.submitReset}} as |form|>
-        <PaperDialogContent>
-          <div class='layout layout-row'>
-            <form.input
-              @class='password'
-              @type='password'
-              @label='Password'
-              @autofocus={{true}}
-              @value={{@controller.password}}
-              @onChange={{fn (mut @controller.password)}}
-            />
-          </div>
-          <div class='layout layout-row'>
-            <form.input
-              @class='password-confirmation'
-              @type='password'
-              @label='Password confirmation'
-              @value={{@controller.passwordConfirmation}}
-              @onChange={{fn (mut @controller.passwordConfirmation)}}
-            />
-          </div>
-          {{#if @controller.error}}
-            <div class='error'>
-              FIXME
-            </div>
-          {{/if}}
-        </PaperDialogContent>
+    <HdsModal @size='small' data-test-reset-modal as |Modal|>
+      <Modal.Header>
+        <h2>Reset password</h2>
+      </Modal.Header>
 
-        <PaperDialogActions @class='layout-row'>
-          <div class='layout layout-row'>
-            <form.submit-button
-              @class='submit'
-              @primary={{true}}
-              @raised={{true}}
-              @onClick={{@controller.submitReset}}
+      <Modal.Body>
+        <form
+          data-test-reset-form
+          {{on 'submit' @controller.submitReset}}
+        >
+          <HdsFormTextInputField
+            @value={{@controller.password}}
+            @type='password'
+            autofocus
+            data-test-reset-password
+            {{on 'input' @controller.updatePassword}}
+            as |Field|
+          >
+            <Field.Label>Password</Field.Label>
+          </HdsFormTextInputField>
+
+          <HdsFormTextInputField
+            @value={{@controller.passwordConfirmation}}
+            @type='password'
+            data-test-reset-password-confirmation
+            {{on 'input' @controller.updatePasswordConfirmation}}
+            as |Field|
+          >
+            <Field.Label>Password confirmation</Field.Label>
+          </HdsFormTextInputField>
+
+          {{#if @controller.error}}
+            <HdsAlert
+              @color='critical'
+              @type='inline'
+              data-test-reset-error
+              as |Alert|
             >
-              Update password
-            </form.submit-button>
-          </div>
-        </PaperDialogActions>
-      </PaperForm>
-    </PaperDialog>
+              <Alert.Title>{{@controller.error}}</Alert.Title>
+            </HdsAlert>
+          {{/if}}
+
+          <HdsButton
+            type='submit'
+            @color='primary'
+            @text='Update password'
+            data-test-reset-submit
+          />
+        </form>
+      </Modal.Body>
+    </HdsModal>
   </template>,
 );

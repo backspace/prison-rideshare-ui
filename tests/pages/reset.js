@@ -7,14 +7,18 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: 'md-dialog',
+  testContainer: '[data-test-reset-modal]',
+
+  scope: '[data-test-reset-form]',
 
   visit: visitable('/reset/:token'),
 
-  fillPassword: fillable('.password input'),
-  fillPasswordConfirmation: fillable('.password-confirmation input'),
+  fillPassword: fillable('[data-test-reset-password]'),
+  fillPasswordConfirmation: fillable(
+    '[data-test-reset-password-confirmation]',
+  ),
 
-  error: text('.error'),
+  error: text('[data-test-reset-error]'),
 
-  submit: clickable('button'),
+  submit: clickable('[data-test-reset-submit]'),
 });
