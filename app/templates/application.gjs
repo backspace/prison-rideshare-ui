@@ -17,6 +17,7 @@ import {
 import { pageTitle } from 'ember-page-title';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import now from 'ember-moment/helpers/now';
+import BasicDropdownWormhole from 'ember-basic-dropdown/components/basic-dropdown-wormhole';
 
 class ApplicationComponent extends Component {
   @service paperToaster;
@@ -154,6 +155,8 @@ class ApplicationComponent extends Component {
         {{outlet}}
       </Frame.Main>
     </HdsAppFrame>
+
+    <BasicDropdownWormhole />
   </template>
 }
 

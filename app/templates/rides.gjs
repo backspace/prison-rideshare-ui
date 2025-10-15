@@ -1,106 +1,98 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
-import paperIcon from 'prison-rideshare-ui/components/placeholder';
-import PaperInput from 'prison-rideshare-ui/components/placeholder';
-import PaperSwitch from 'prison-rideshare-ui/components/placeholder';
-import PaperContent from 'prison-rideshare-ui/components/placeholder';
-import PaperDataTable from 'prison-rideshare-ui/components/placeholder';
-import filterBy from 'ember-composable-helpers/helpers/filter-by';
-import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import RideRow from 'prison-rideshare-ui/components/ride-row';
 import RideForm from 'prison-rideshare-ui/components/ride-form';
 import CancellationForm from 'prison-rideshare-ui/components/cancellation-form';
+import {
+  HdsButton,
+  HdsFormToggleField,
+} from '@hashicorp/design-system-components/components';
+import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
+
 export default RouteTemplate(
   <template>
     <ToolbarHeader @title='Rides'>
-      <PaperButton
-        @mini={{true}}
-        @aria-label='New ride'
-        @title='New ride'
-        class='new'
-        @onClick={{@controller.newRide}}
-      >
-        {{paperIcon 'add'}}
-      </PaperButton>
+      <HdsButton
+        @icon='plus'
+        @text='New ride'
+        data-test-new-ride
+        {{on 'click' @controller.newRide}}
+      />
     </ToolbarHeader>
 
-    <div class='switch-container layout-row layout-align-start-center'>
-      <PaperInput
-        class='search'
-        @type='search'
-        @icon='search'
-        @placeholder='Institution, driver, visitor, address'
-        @value={{@controller.search}}
-        @onChange={{@controller.updateSearch}}
-        as |input|
-      >
-        {{#if input.hasValue}}
-          <PaperButton
-            @icon={{true}}
-            @aria-label='Clear search'
-            @title='Clear search'
-            @onClick={{@controller.clearSearch}}
-          >
-            {{paperIcon 'clear' size=14}}
-          </PaperButton>
-        {{/if}}
-      </PaperInput>
-      <PaperSwitch
-        class='completed'
-        @value={{@controller.showCompleted}}
-        @onChange={{fn @controller.toggle 'showCompleted'}}
-      >
-        Reported-on
-      </PaperSwitch>
-      <PaperSwitch
-        class='cancelled'
-        @value={{@controller.showCancelled}}
-        @onChange={{fn @controller.toggle 'showCancelled'}}
-      >
-        Cancelled
-      </PaperSwitch>
+    <div data-test-ride-search>
+      <label class='sr-only' for='ride-search-input'>Search</label>
+      <input
+        id='ride-search-input'
+        type='search'
+        placeholder='Institution, driver, visitor, address'
+        value={{if @controller.search @controller.search ''}}
+        {{on 'input' @controller.updateSearchInput}}
+      />
+      {{#if @controller.search}}
+        <HdsButton
+          @icon='x'
+          @text='Clear search'
+          data-test-ride-search-clear
+          {{on 'click' @controller.clearSearch}}
+        />
+      {{/if}}
     </div>
+    <HdsFormToggleField
+      data-test-show-completed
+      checked={{if @controller.showCompleted true undefined}}
+      {{on 'change' (fn @controller.toggle 'showCompleted')}}
+      as |Field|
+    >
+      <Field.Label>Reported-on</Field.Label>
+    </HdsFormToggleField>
+    <HdsFormToggleField
+      data-test-show-cancelled
+      checked={{if @controller.showCancelled true undefined}}
+      {{on 'change' (fn @controller.toggle 'showCancelled')}}
+      as |Field|
+    >
+      <Field.Label>Cancelled</Field.Label>
+    </HdsFormToggleField>
 
-    <PaperContent class='layout-column flex no-overflow-scroll'>
-      <PaperDataTable
-        @sortProp={{@controller.sortProp}}
-        @sortDir={{@controller.sortDir}}
-        class='rides'
-        as |table|
-      >
-        <table.head as |head|>
+    <table>
+      <thead>
+        <tr>
           {{#if @controller.showCreation}}
-            <head.column>
-              Created
-            </head.column>
+            <th scope='col'>Created</th>
           {{/if}}
-          <head.column @sortProp='start' class='date'>
+          <th
+            scope='col'
+            class='date'
+            data-test-rides-head-date
+            {{on 'click' (fn @controller.sort 'start')}}
+          >
             Date
-          </head.column>
-          <head.column>
-            Institution
-          </head.column>
-          <head.column>
-            Visitor
-          </head.column>
-          <head.column>
-            Pickup address
-          </head.column>
-          <head.column>
-            Driver/car owner
-          </head.column>
-          <head.column />
-        </table.head>
-        <table.body as |body|>
-          {{#each
-            (filterBy 'id' (sortBy table.sortDesc @controller.filteredRides))
-            as |ride|
-          }}
+          </th>
+          <th scope='col'>Institution</th>
+          <th scope='col'>Visitor</th>
+          <th scope='col'>Pickup address</th>
+          <th scope='col'>Driver/car owner</th>
+          <th scope='col'></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each @controller.filteredRides as |ride|}}
+          <RideRow
+            @ride={{ride}}
+            @showCreation={{@controller.showCreation}}
+            @editCancellation={{@controller.editCancellation}}
+            @editRide={{@controller.editRide}}
+            @combineRide={{@controller.combineRide}}
+            @uncombineRide={{@controller.uncombineRide}}
+            @people={{@controller.people}}
+            @rideToCombine={{@controller.rideToCombine}}
+          />
+          {{#each ride.children as |child|}}
             <RideRow
-              @body={{body}}
-              @ride={{ride}}
+              @ride={{child}}
+              @combined={{true}}
               @showCreation={{@controller.showCreation}}
               @editCancellation={{@controller.editCancellation}}
               @editRide={{@controller.editRide}}
@@ -109,52 +101,37 @@ export default RouteTemplate(
               @people={{@controller.people}}
               @rideToCombine={{@controller.rideToCombine}}
             />
-            {{#each ride.children as |child|}}
-              <RideRow
-                @body={{body}}
-                @ride={{child}}
-                @combined={{true}}
-                @showCreation={{@controller.showCreation}}
-                @editCancellation={{@controller.editCancellation}}
-                @editRide={{@controller.editRide}}
-                @combineRide={{@controller.combineRide}}
-                @uncombineRide={{@controller.uncombineRide}}
-                @people={{@controller.people}}
-                @rideToCombine={{@controller.rideToCombine}}
-              />
-            {{/each}}
-          {{else}}
-            <body.row class='no-matches' as |row|>
-              <row.cell @colspan={{6}}>
-                {{! template-lint-disable no-html-comments }}
-                No rides matched your criteria. 😭<!-- FIXME WTF! Without this, the institutions select in the dialogue has no options? {{filteredRides.length}} -->
-              </row.cell>
-            </body.row>
           {{/each}}
-        </table.body>
-      </PaperDataTable>
+        {{else}}
+          <tr data-test-no-matches>
+            <td colspan='7'>
+              No rides matched your criteria.
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
 
-      {{#if @controller.editingRide}}
-        <RideForm
-          @ride={{@controller.editingRide}}
-          @cancel={{fn @controller.cancel @controller.editingRide}}
-          @save={{fn @controller.submitRide @controller.editingRide}}
-        />
-      {{/if}}
+    {{#if @controller.editingRide}}
+      <RideForm
+        @ride={{@controller.editingRide}}
+        @cancel={{fn @controller.cancel @controller.editingRide}}
+        @save={{fn @controller.submitRide @controller.editingRide}}
+      />
+    {{/if}}
 
-      {{#if @controller.editingCancellation}}
-        <CancellationForm
-          @ride={{@controller.editingCancellation}}
-          @save={{fn
-            @controller.submitCancellation
-            @controller.editingCancellation
-          }}
-          @cancel={{fn
-            @controller.cancelCancellation
-            @controller.editingCancellation
-          }}
-        />
-      {{/if}}
-    </PaperContent>
+    {{#if @controller.editingCancellation}}
+      <CancellationForm
+        @ride={{@controller.editingCancellation}}
+        @save={{fn
+          @controller.submitCancellation
+          @controller.editingCancellation
+        }}
+        @cancel={{fn
+          @controller.cancelCancellation
+          @controller.editingCancellation
+        }}
+      />
+    {{/if}}
   </template>,
 );

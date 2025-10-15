@@ -6,7 +6,7 @@ import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import PersonBadge from 'prison-rideshare-ui/components/person-badge';
-import PaperSelect from 'prison-rideshare-ui/components/placeholder';
+import { HdsFormSuperSelectSingleField } from '@hashicorp/design-system-components/components';
 
 @classic
 @tagName('')
@@ -21,16 +21,21 @@ export default class RidePerson extends Component {
         />
       </span>
     {{else}}
-      <PaperSelect
-        @selected={{this.person}}
+      <HdsFormSuperSelectSingleField
+        data-test-ride-person-select={{this.property}}
         @options={{this.people}}
-        @onChange={{this.onChange}}
-        @allowClear={{true}}
+        @selected={{this.person}}
         @searchField='name'
-        as |person|
+        @allowClear={{true}}
+        @onChange={{this.onChange}}
+        as |F|
       >
-        {{person.name}}
-      </PaperSelect>
+        <F.Options>
+          {{#let F.options as |option|}}
+            {{option.name}}
+          {{/let}}
+        </F.Options>
+      </HdsFormSuperSelectSingleField>
     {{/if}}
   </template>
   @service('people')

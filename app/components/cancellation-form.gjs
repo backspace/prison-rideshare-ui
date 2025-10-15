@@ -3,15 +3,16 @@ import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
 import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
-import PaperCard from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
-import paperIcon from 'prison-rideshare-ui/components/placeholder';
-import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
-import PaperSelect from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
+import PowerSelect from 'ember-power-select/components/power-select';
+import {
+  HdsModal,
+  HdsButton,
+  HdsFormCheckboxField,
+  HdsFormTextInputField,
+  HdsFormField,
+  HdsIcon,
+} from '@hashicorp/design-system-components/components';
+import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 
 const reasons = Object.keys(reasonToIcon).sort();
@@ -27,100 +28,133 @@ const shortcutReasonToIcon = shortcuts.reduce(
 
 @classic
 export default class CancellationForm extends Component {
+  reasons = reasons;
+  shortcutReasonToIcon = shortcutReasonToIcon;
+
   <template>
-    <PaperDialog @onClose={{this.cancel}} @clickOutsideToClose={{true}}>
-      <PaperDialogContent>
+    <HdsModal
+      data-test-cancellation-form
+      {{on 'cancel' this.handleDialogCancel}}
+      as |M|
+    >
+      <M.Header>
         {{#if this.ride.children}}
-          <PaperCard as |card|>
-            <card.content>
-              Cancelling a ride with rides combined into it will cause the
-              combined rides to also disappear. Uncombine them if this is
-              undesirable.
-            </card.content>
-          </PaperCard>
+          <div data-test-cancellation-notice>
+            <HdsIcon @name='alert-triangle' @size='16' />
+            Cancelling a ride with rides combined into it will cause the
+            combined rides to also disappear. Uncombine them if this is
+            undesirable.
+          </div>
         {{/if}}
+        <h2>Cancel a ride</h2>
+      </M.Header>
 
-        <h2 class='md-title'>
-          Cancel a ride
-        </h2>
-
-        <PaperForm @onSubmit={{this.save}} as |form|>
-          <div class='layout layout-sm-column'>
+      <M.Body>
+        <form {{on 'submit' this.handleSubmit}}>
+          <div data-test-cancellation-shortcuts>
             {{#each-in this.shortcutReasonToIcon as |reason icon|}}
-              <PaperButton
-                @raised={{true}}
-                @class='shortcut'
-                @onClick={{fn this.cancelViaShortcut reason}}
-              >
-                {{paperIcon icon}}
-                {{reason}}
-              </PaperButton>
+              <HdsButton
+                @text={{reason}}
+                @icon={{icon}}
+                @color='secondary'
+                @size='small'
+                data-test-cancellation-shortcut
+                {{on 'click' (fn this.cancelViaShortcut reason)}}
+              />
             {{/each-in}}
           </div>
 
           <hr />
 
-          <div class='layout layout-sm-column'>
-            <PaperCheckbox
-              @value={{this.ride.cancelled}}
-              @onChange={{this.cancelledChanged}}
-            >
-              Cancelled?
-            </PaperCheckbox>
-          </div>
+          <HdsFormCheckboxField
+            data-test-cancellation-cancelled
+            checked={{if this.ride.cancelled true undefined}}
+            {{on 'change' (fn this.toggleCheckbox 'cancelled')}}
+            as |Field|
+          >
+            <Field.Label>Cancelled?</Field.Label>
+          </HdsFormCheckboxField>
 
-          <div class='layout layout-sm-column'>
-            <PaperSelect
-              @class='reason'
-              @placeholder='Reason'
-              @selected={{this.ride.cancellationReason}}
-              @options={{this.reasons}}
-              @onChange={{this.updateCancellationReason}}
-              as |reason|
-            >
-              {{reason}}
-            </PaperSelect>
-          </div>
+          <HdsFormField as |Field|>
+            <Field.Label>Reason</Field.Label>
+            <Field.Control>
+              <PowerSelect
+                data-test-cancellation-reason-select
+                @options={{this.reasons}}
+                @selected={{this.ride.cancellationReason}}
+                @onChange={{this.updateCancellationReason}}
+                as |reason|
+              >
+                {{reason}}
+              </PowerSelect>
+            </Field.Control>
+          </HdsFormField>
 
-          <form.input
-            @class='other'
-            @label='Other reason'
+          <HdsFormTextInputField
+            data-test-cancellation-other
             @value={{this.ride.cancellationReason}}
-            @onChange={{this.updateCancellationReason}}
-          />
-        </PaperForm>
-      </PaperDialogContent>
+            @isInvalid={{false}}
+            {{on 'input' this.updateCancellationReason}}
+            as |Field|
+          >
+            <Field.Label>Other reason</Field.Label>
+          </HdsFormTextInputField>
+        </form>
+      </M.Body>
 
-      <PaperDialogActions @class='layout-row'>
-        <PaperButton @class='cancel' @onClick={{this.cancel}}>
-          Cancel
-        </PaperButton>
-        <PaperButton @class='submit' @primary={{true}} @onClick={{this.save}}>
-          Save
-        </PaperButton>
-      </PaperDialogActions>
-    </PaperDialog>
+      <M.Footer>
+        <HdsButton
+          @text='Cancel'
+          @color='secondary'
+          data-test-cancellation-form-cancel
+          {{on 'click' this.handleCancel}}
+        />
+        <HdsButton
+          @text='Save'
+          @color='primary'
+          data-test-cancellation-form-save
+          {{on 'click' this.handleSubmit}}
+        />
+      </M.Footer>
+    </HdsModal>
   </template>
-  reasons = reasons;
-  shortcutReasonToIcon = shortcutReasonToIcon;
 
   @action
-  cancelledChanged(cancelled) {
-    if (!cancelled) {
+  handleDialogCancel(event) {
+    event?.preventDefault?.();
+    this.handleCancel();
+  }
+
+  @action
+  handleSubmit(event) {
+    event?.preventDefault?.();
+    this.save?.();
+  }
+
+  @action
+  handleCancel(event) {
+    event?.preventDefault?.();
+    this.cancel?.();
+  }
+
+  @action
+  toggleCheckbox(property, event) {
+    const checked = event?.target?.checked ?? false;
+    this.set(`ride.${property}`, checked);
+    if (!checked) {
       this.set('ride.cancellationReason', null);
     }
-
-    this.set('ride.cancelled', cancelled);
   }
 
   @action
   cancelViaShortcut(reason) {
     this.set('ride.cancelled', true);
     this.set('ride.cancellationReason', reason);
-    this.save();
+    this.save?.();
   }
 
-  @action updateCancellationReason(reason) {
-    this.set('ride.cancellationReason', reason);
+  @action
+  updateCancellationReason(event) {
+    this.set('ride.cancellationReason', event?.target?.value);
   }
 }

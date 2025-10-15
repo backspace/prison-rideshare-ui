@@ -46,7 +46,7 @@ export default class RidesController extends Controller {
   @computed(
     'showCompleted',
     'showCancelled',
-    'model.@each.{complete,enabled,isCombined}',
+    'model.@each.{complete,enabled,isCombined,isNew}',
     'search',
     'sortDir',
   )
@@ -55,7 +55,7 @@ export default class RidesController extends Controller {
       showCancelled = this.showCancelled;
     const search = this.search;
 
-    let rides = this.model.rejectBy('isCombined');
+    let rides = this.model.rejectBy('isCombined').rejectBy('isNew');
 
     if (!showCompleted) {
       rides = rides.filterBy('complete', false);
@@ -71,9 +71,13 @@ export default class RidesController extends Controller {
 
     rides.setEach('isDivider', false);
 
-    const sorted = rides.sortBy('start');
+    let sorted = rides.sortBy('start');
     const sortDir = this.sortDir;
     const now = new Date();
+
+    if (sortDir === 'desc') {
+      sorted = sorted.slice().reverse();
+    }
 
     if (sortDir === 'asc') {
       const firstAfterNow = sorted.find((ride) => ride.get('start') > now);
@@ -82,15 +86,14 @@ export default class RidesController extends Controller {
         firstAfterNow.set('isDivider', true);
       }
     } else {
-      const reversed = sorted.reverse();
-      const firstBeforeNow = reversed.find((ride) => ride.get('start') < now);
+      const firstBeforeNow = sorted.find((ride) => ride.get('start') < now);
 
       if (firstBeforeNow) {
         firstBeforeNow.set('isDivider', true);
       }
     }
 
-    return rides;
+    return sorted;
   }
 
   @action
@@ -210,6 +213,22 @@ export default class RidesController extends Controller {
   @action
   clearSearch() {
     this.set('search', undefined);
+  }
+
+  @action
+  updateSearchInput(event) {
+    const value = event?.target?.value ?? '';
+    this.updateSearch(value);
+  }
+
+  @action
+  sort(property) {
+    if (this.sortProp === property) {
+      this.set('sortDir', this.sortDir === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.set('sortProp', property);
+      this.set('sortDir', 'asc');
+    }
   }
 
   @action toggle(propertyName) {

@@ -6,122 +6,120 @@ import {
   fillable,
   hasClass,
   isVisible,
+  property,
   text,
   triggerable,
   value,
   visitable,
 } from 'ember-cli-page-object';
-
-import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
+import { getter } from 'ember-cli-page-object/macros';
 
 export default create({
   visit: visitable('/rides'),
-  newRide: clickable('button.new'),
+  newRide: clickable('[data-test-new-ride]'),
 
   head: {
     cancelledSwitch: {
-      scope: '.paper-switch.cancelled',
-      enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', {
-        eventProperties: { keyCode: 13 },
-      }),
+      scope: '[data-test-show-cancelled]',
+      enabled: property('checked'),
     },
 
     completedSwitch: {
-      scope: '.paper-switch.completed',
-      enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', {
-        eventProperties: { keyCode: 13 },
-      }),
+      scope: '[data-test-show-completed]',
+      enabled: property('checked'),
     },
 
     search: {
-      scope: 'md-input-container.search',
+      scope: '[data-test-ride-search]',
 
       fillIn: fillable('input'),
       value: value('input'),
 
       clear: {
-        scope: 'button',
-        click: triggerable('click'),
+        scope: '[data-test-ride-search-clear]',
+        click: clickable(),
       },
     },
   },
 
   ridesHead: {
-    scope: 'thead',
-    clickDate: clickable('.date'),
+    scope: '[data-test-rides-head-date]',
+    clickDate: clickable(),
   },
 
   rides: collection('tbody tr.ride', {
     enabled: hasClass('enabled'),
     isUncombinable: hasClass('uncombinable'),
     isHighlighted: hasClass('highlighted'),
-
     isDivider: hasClass('divider'),
 
     cancellation: {
-      scope: '.cancellation',
-      click: clickable('button'),
-      showsLockdown: isVisible(
-        `button md-icon[md-font-icon='${reasonToIcon['lockdown']}']`,
-      ),
-      showsVisitor: isVisible(
-        `button md-icon[md-font-icon='${reasonToIcon['visitor']}']`,
-      ),
-      showsDriverNotFound: isVisible(
-        `button md-icon[md-font-icon='${reasonToIcon['driver not found']}']`,
-      ),
-      showsNotCancelled: isVisible(
-        'button md-icon[md-font-icon="highlight off"]',
-      ),
-      showsOther: isVisible('button md-icon[md-font-icon="help"]'),
-
-      title: attribute('title', 'button'),
+      scope: '[data-test-cancellation-button]',
+      state: attribute('data-cancellation-state'),
+      title: attribute('title'),
+      showsLockdown: getter(function () {
+        return this.state === 'lockdown';
+      }),
+      showsVisitor: getter(function () {
+        return this.state === 'visitor';
+      }),
+      showsDriverNotFound: getter(function () {
+        return this.state === 'driver not found';
+      }),
+      showsNotCancelled: getter(function () {
+        return this.state === 'not-cancelled';
+      }),
+      showsOther: getter(function () {
+        return this.state === 'other!';
+      }),
     },
 
-    name: text('.name-and-contact .name'),
-    isFirstTimer: isVisible(
-      '.name-and-contact md-icon[md-font-icon=announcement]',
-    ),
-    date: text('.date'),
-    clickDate: clickable('.date-cell'),
-    institution: text('.institution'),
-    address: text('.address'),
-    contact: text('.contact'),
-    contactPhoneHref: attribute('href', '.contact a'),
-    passengers: text('.passengers'),
+    name: text('[data-test-ride-name]'),
+    isFirstTimer: isVisible('[data-test-ride-first-time]'),
+    date: text('[data-test-ride-date]'),
+    clickDate: clickable('[data-test-ride-date-cell]'),
+    institution: text('[data-test-ride-institution]'),
+    address: text('[data-test-ride-address]'),
+    contact: text('[data-test-ride-contact]'),
+    contactPhoneHref: attribute('href', '[data-test-ride-contact] a'),
 
     medium: {
-      scope: '.medium-and-contact',
-      isTxt: isVisible('md-icon[md-font-icon=textsms]'),
-      isEmail: isVisible('md-icon[md-font-icon=email]'),
-      isPhone: isVisible('md-icon[md-font-icon=phone]'),
+      scope: '[data-test-ride-medium]',
+      medium: attribute('data-medium'),
+      isTxt: getter(function () {
+        return this.medium === 'txt';
+      }),
+      isEmail: getter(function () {
+        return this.medium === 'email';
+      }),
+      isPhone: getter(function () {
+        return this.medium === 'phone';
+      }),
     },
 
     driver: {
-      scope: '.driver',
-      text: text('.name'),
+      scope: '[data-test-driver]',
+      text: text('[data-test-person-badge-name]'),
       click: clickable(),
-      reveal: clickable('.name-container'),
-      clear: clickable('.remove-container button'),
+      reveal: clickable('[data-test-person-badge-toggle]'),
+      clear: clickable('[data-test-person-badge-clear]'),
 
-      email: text('.email'),
-      landline: text('.landline'),
-
-      selfNotes: text('.self-notes'),
+      email: text('[data-test-person-badge-email]'),
+      landline: text('[data-test-person-badge-landline]'),
+      selfNotes: text('[data-test-person-badge-self-notes]'),
     },
 
     carOwner: {
-      scope: '.car-owner',
-      text: text('.name'),
+      scope: '[data-test-car-owner]',
+      text: text('[data-test-person-badge-name]'),
       click: clickable(),
-      clear: clickable('.remove-container button'),
+      clear: clickable('[data-test-person-badge-clear]'),
 
       select: {
-        scope: 'md-select',
+        scope: '[data-test-ride-person-select="carOwner"]',
+        click: clickable(),
         type: triggerable('keydown'),
-        enter: triggerable('keydown', '.md-power-select-options', {
+        enter: triggerable('keydown', '.ember-basic-dropdown-trigger', {
           testContainer: 'html',
           resetScope: true,
           eventProperties: { keyCode: 13 },
@@ -129,75 +127,72 @@ export default create({
       },
     },
 
-    isOverridable: isVisible('md-icon[md-font-icon=directions_bus]'),
+    isOverridable: isVisible('[data-test-overridable-indicator]'),
 
     combineButton: {
-      scope: 'button.combine',
-      isActive: hasClass('md-raised'),
+      scope: '[data-test-combine-button]',
+
+      activeAttribute: attribute('data-active'),
+      isActive: getter(function () {
+        return this.activeAttribute === 'true';
+      }),
+
       title: attribute('title'),
     },
 
-    isCombined: isVisible(
-      '.driver-and-car-owner md-icon[md-font-icon="call split"]',
-    ),
+    isCombined: hasClass('combined'),
 
-    edit: clickable('button.edit'),
+    edit: clickable('[data-test-edit-ride]'),
 
     creationDate: {
-      scope: '.creation',
+      scope: '[data-test-ride-creation]',
     },
   }),
 
   noMatchesRow: {
-    scope: 'tr.no-matches',
+    scope: '[data-test-no-matches]',
   },
 
-  notes: collection('tr.notes', {
-    text: text('td.notes'),
+  notes: collection('[data-test-notes-row]', {
+    text: text('[data-test-notes]'),
   }),
 
   reports: collection('tr.report', {
-    distance: text('.distance'),
-    carExpenses: text('.car-expenses'),
-    rate: text('.rate'),
-    foodExpenses: text('.food-expenses'),
-    notes: text('.notes'),
+    distance: text('[data-test-report-distance]'),
+    carExpenses: text('[data-test-report-car-expenses]'),
+    rate: text('[data-test-report-rate]'),
+    foodExpenses: text('[data-test-report-food]'),
+    notes: text('[data-test-report-notes]'),
 
-    clear: clickable('button'),
-    clearConfirm: { scope: '.clear-confirm' },
-    clearCancel: { scope: '.clear-cancel' },
+    clear: clickable('[data-test-report-clear]'),
+    clearConfirm: { scope: '[data-test-report-clear-confirm]' },
+    clearCancel: { scope: '[data-test-report-clear-cancel]' },
   }),
 
   overlaps: collection('tr.overlap', {
-    text: text('.text'),
-    assign: clickable('.assign'),
-    ignore: clickable('.ignore'),
+    text: text('[data-test-overlap-text]'),
+    assign: clickable('[data-test-overlap-assign]'),
+    ignore: clickable('[data-test-overlap-ignore]'),
   }),
 
-  confirmationNotifications: collection('tr.confirmation-notification', {
-    text: text('.text'),
-    medium: {
-      scope: '.medium',
-      isTxt: isVisible('md-icon[md-font-icon=textsms]'),
-      isEmail: isVisible('md-icon[md-font-icon=email]'),
-      isPhone: isVisible('md-icon[md-font-icon=phone]'),
-    },
-    markConfirmed: clickable('.mark-confirmed'),
+  confirmationNotifications: collection('[data-test-confirmation-row]', {
+    text: text('[data-test-confirmation-text]'),
+    markConfirmed: clickable('[data-test-confirmation-mark]'),
   }),
 
   form: {
-    testContainer: 'md-dialog',
+    testContainer: '[data-test-ride-form]',
 
-    notice: text('.editing-warning'),
+    notice: text('[data-test-editing-warning]'),
 
     timespan: {
-      scope: '.timespan textarea',
+      scope: '[data-test-timespan]',
     },
 
     timespanResult: {
-      scope: '.timespan-result',
+      scope: '[data-test-timespan-result]',
       value: value('input'),
-      hasWarning: isVisible('.timespan-warning'),
+      hasWarning: isVisible('[data-test-timespan-warning]'),
     },
 
     timespanOverrideButton: {
@@ -205,40 +200,51 @@ export default create({
     },
 
     timespanStart: {
-      scope: '[data-test-timespan-start] input',
+      scope: '[data-test-timespan-start]',
     },
 
     timespanEnd: {
-      scope: '[data-test-timespan-end] input',
+      scope: '[data-test-timespan-end]',
     },
 
     timespanEndError: {
-      scope: '[data-test-timespan-end] .paper-input-error',
+      scope: '[data-test-timespan-end-error]',
     },
 
     medium: {
-      scope: '.medium-row',
-      txt: { scope: '.txt' },
-      email: { scope: '.email' },
-      phone: { scope: '.phone' },
+      txt: {
+        scope: '[data-test-medium-txt]',
+      },
+      email: {
+        scope: '[data-test-medium-email]',
+      },
+      phone: {
+        scope: '[data-test-medium-phone]',
+      },
     },
 
     requestConfirmed: {
-      scope: 'md-checkbox.request-confirmed',
-      checked: hasClass('md-checked'),
-      click: clickable(),
+      scope: '[data-test-request-confirmed]',
+      checked: property('checked'),
     },
 
     overridable: {
-      scope: 'md-checkbox.overridable',
-      checked: hasClass('md-checked'),
-      click: clickable(),
+      scope: '[data-test-overridable]',
+      checked: property('checked'),
     },
 
     name: {
-      scope: 'md-autocomplete',
+      scope: '[data-test-visitor-select]',
 
-      fillIn: fillable('input'),
+      searchInput: {
+        scope: '.ember-power-select-search-input',
+        resetScope: true,
+      },
+
+      async fillIn(value) {
+        await this.click();
+        await this.searchInput.fillIn(value);
+      },
 
       suggestions: collection('.ember-power-select-option', {
         testContainer: '.ember-power-select-options',
@@ -251,64 +257,65 @@ export default create({
     },
 
     nameError: {
-      scope: 'md-autocomplete .paper-input-error',
+      scope: '[data-test-name-error]',
     },
 
     institutionError: {
-      scope: '.institution .paper-input-error',
+      scope: '[data-test-institution-error]',
     },
 
     address: {
-      scope: '.address input',
+      scope: '[data-test-address]',
     },
 
     contact: {
-      scope: '.contact input',
+      scope: '[data-test-contact]',
     },
 
     firstTime: {
-      scope: 'md-checkbox.first-time',
-      checked: hasClass('md-checked'),
-      click: clickable(),
+      scope: '[data-test-first-time]',
+      checked: property('checked'),
     },
 
     firstTimePoints: {
-      scope: '.first-time-points',
+      scope: '[data-test-first-time-points]',
     },
 
     passengers: {
-      scope: '.passengers input',
+      scope: '[data-test-passengers]',
     },
 
     notes: {
-      scope: '.request-notes textarea',
+      scope: '[data-test-request-notes]',
     },
 
-    submit: clickable('button.submit'),
-    cancel: clickable('button.cancel'),
+    submit: clickable('[data-test-ride-form-submit]'),
+    cancel: clickable('[data-test-ride-form-cancel]'),
   },
 
   cancellationForm: {
-    testContainer: 'md-dialog',
+    testContainer: '[data-test-cancellation-form]',
 
-    notice: text('md-card-content'),
+    notice: text('[data-test-cancellation-notice]'),
 
-    shortcutButtons: collection('button.shortcut'),
+    shortcutButtons: collection('[data-test-cancellation-shortcut]'),
 
     cancelled: {
-      scope: 'md-checkbox',
-      checked: hasClass('md-checked'),
+      scope: '[data-test-cancellation-cancelled]',
+      checked: property('checked'),
       click: clickable(),
     },
 
     reason: {
-      value: text('.ember-power-select-selected-item'),
+      value: text(
+        '[data-test-cancellation-reason-select] .ember-power-select-selected-item',
+      ),
     },
 
     other: {
-      scope: '.md-input',
+      scope: '[data-test-cancellation-other]',
     },
 
-    save: clickable('button.submit'),
+    save: clickable('[data-test-cancellation-form-save]'),
   },
 });

@@ -5,7 +5,7 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { selectChoose } from 'ember-power-select/test-support/helpers';
+import { selectChoose } from 'ember-power-select/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -411,7 +411,7 @@ module('Acceptance | rides', function (hooks) {
     );
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    await selectChoose('md-input-container.institution', 'Rockwood');
+    await selectChoose('[data-test-institution-select]', 'Rockwood');
 
     percySnapshot(assert);
 
@@ -456,7 +456,7 @@ module('Acceptance | rides', function (hooks) {
     assert.ok(lastRide.overridable);
 
     await page.rides[0].driver.click();
-    await selectChoose('.driver md-input-container', 'Sun');
+    await selectChoose('[data-test-ride-person-select="driver"]', 'Sun');
 
     assert.equal(page.rides[0].driver.text, 'Sun');
     assert.equal(
@@ -570,7 +570,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.contact.fillIn('jants@example.com');
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    await selectChoose('md-input-container.institution', 'Rockwood');
+    await selectChoose('[data-test-institution-select]', 'Rockwood');
 
     await page.form.submit();
 
@@ -613,9 +613,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.name.suggestions[1].click();
 
-    // FIXME the page object field value is "" but it works via jQuery? 🤔
-    assert.equal(find('md-autocomplete input').value, 'frank');
-    // assert.equal(page.form.name.value, 'frank');
+    assert.equal(page.form.name.text, 'frank');
     assert.equal(page.form.contact.value, 'frank@jants.ca');
     assert.equal(page.form.address.value, '91 Albert St.');
   });
@@ -651,6 +649,9 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
     await page.newRide();
     await page.form.timespanOverrideButton.click();
+
+    assert.true(page.form.nameError.isHidden);
+    assert.true(page.form.institutionError.isHidden);
 
     await page.form.submit();
 
