@@ -1,47 +1,106 @@
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
-import { fn } from '@ember/helper';
-<template>
-  <PaperDialog @clickOutsideToClose={{true}} @onClose={{this.cancel}}>
-    <PaperDialogContent>
-      <h2 class='md-title'>
-        {{if this.reimbursement.isNew 'Create' 'Edit'}}
+import Component from '@glimmer/component';
+import { action } from '@ember/object';
+import { on } from '@ember/modifier';
+import {
+  HdsButton,
+  HdsForm,
+  HdsFormCheckboxField,
+  HdsFormTextInputField,
+  HdsModal,
+} from '@hashicorp/design-system-components/components';
+
+class ReimbursementForm extends Component {
+  @action
+  updateAmount(event) {
+    const value = event?.target?.value ?? '';
+
+    this.args.reimbursement?.set?.('amountDollars', value);
+  }
+
+  @action
+  updateDonation(event) {
+    const checked = event?.target?.checked ?? false;
+
+    this.args.reimbursement?.set?.('donation', checked);
+  }
+
+  @action
+  handleSubmit(event) {
+    event?.preventDefault?.();
+    this.args.save?.(event);
+  }
+
+  @action
+  handleCancel(event) {
+    event?.preventDefault?.();
+    this.args.cancel?.(event);
+  }
+
+  @action
+  handleClose(event) {
+    event?.preventDefault?.();
+    this.args.cancel?.(event);
+  }
+
+  <template>
+    <HdsModal
+      @color='neutral'
+      @size='small'
+      @onClose={{this.handleClose}}
+      data-test-reimbursement-modal
+      as |Modal|
+    >
+      <Modal.Header>
+        {{if @reimbursement.isNew 'Create' 'Edit'}}
         a reimbursement
-      </h2>
-      <PaperForm @onSubmit={{this.save}} as |form|>
-        <div class='layout layout-sm-column'>
-          <form.input
-            @class='amount'
-            @label='Amount'
-            @type='number'
-            @autofocus={{true}}
-            @value={{this.reimbursement.amountDollars}}
-            @onChange={{fn (mut this.reimbursement.amountDollars)}}
-          />
-        </div>
+      </Modal.Header>
 
-        <div class='layout layout-sm-column'>
-          <PaperCheckbox
-            @value={{this.reimbursement.donation}}
-            @onChange={{fn (mut this.reimbursement.donation)}}
-          >
-            Donation?
-          </PaperCheckbox>
-        </div>
-      </PaperForm>
-    </PaperDialogContent>
+      <Modal.Body>
+        <HdsForm {{on 'submit' this.handleSubmit}} as |Form|>
+          <Form.Section>
+            <HdsFormTextInputField
+              @value={{@reimbursement.amountDollars}}
+              @type='number'
+              @isRequired={{true}}
+              autofocus
+              data-test-reimbursement-amount
+              {{on 'input' this.updateAmount}}
+              as |Field|
+            >
+              <Field.Label>Amount</Field.Label>
+            </HdsFormTextInputField>
 
-    <PaperDialogActions @class='layout-row'>
-      <PaperButton @class='cancel' @onClick={{this.cancel}}>
-        Cancel
-      </PaperButton>
-      <PaperButton @class='submit' @primary={{true}} @onClick={{this.save}}>
-        Save
-      </PaperButton>
-    </PaperDialogActions>
-  </PaperDialog>
-</template>
+            <HdsFormCheckboxField
+              checked={{if @reimbursement.donation true undefined}}
+              data-test-reimbursement-donation
+              {{on 'change' this.updateDonation}}
+              as |Field|
+            >
+              <Field.Label>Donation?</Field.Label>
+            </HdsFormCheckboxField>
+          </Form.Section>
+
+          <Form.Footer as |Footer|>
+            <Footer.ButtonSet>
+              <HdsButton
+                type='button'
+                @color='secondary'
+                @text='Cancel'
+                data-test-reimbursement-cancel
+                {{on 'click' this.handleCancel}}
+              />
+              <HdsButton
+                type='submit'
+                @color='primary'
+                @text='Save'
+                data-test-reimbursement-save
+              />
+            </Footer.ButtonSet>
+          </Form.Footer>
+        </HdsForm>
+      </Modal.Body>
+    </HdsModal>
+  </template>
+}
+
+export default ReimbursementForm;

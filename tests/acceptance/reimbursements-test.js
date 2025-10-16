@@ -124,12 +124,14 @@ module('Acceptance | reimbursements', function (hooks) {
     );
     assert.equal(kala.carExpenses, '22');
     assert.equal(kala.totalExpenses, '22');
-    assert.ok(
-      kala.processButton.isPrimary,
+    assert.equal(
+      kala.processButton.variant,
+      'primary',
       'expected the process button to be default for non-donations',
     );
-    assert.notOk(
-      kala.donateButton.isPrimary,
+    assert.equal(
+      kala.donateButton.variant,
+      'secondary',
       'expected the donate button to not be default for non-donations',
     );
 
@@ -141,12 +143,14 @@ module('Acceptance | reimbursements', function (hooks) {
         kalaDonation.carExpenseIsDonation,
         'expected the donation to be thus marked',
       );
-      assert.notOk(
-        kalaDonation.processButton.isPrimary,
+      assert.equal(
+        kalaDonation.processButton.variant,
+        'secondary',
         'expected the process button to not be default for donations',
       );
-      assert.ok(
-        kalaDonation.donateButton.isPrimary,
+      assert.equal(
+        kalaDonation.donateButton.variant,
+        'primary',
         'expected the donate button to be default for donations',
       );
     });

@@ -3,83 +3,85 @@ import {
   clickable,
   collection,
   create,
-  fillable,
-  hasClass,
   isVisible,
+  property,
   text,
-  triggerable,
-  value,
   visitable,
 } from 'ember-cli-page-object';
 
 export default create({
   visit: visitable('/reimbursements'),
 
-  rows: collection('tbody tr', {
-    month: text('.month'),
+  rows: collection('[data-test-reimbursement-row]', {
+    rowType: attribute('data-row-type'),
+    month: text('[data-test-reimbursement-month]'),
 
-    name: text('.name'),
-    foodExpenses: text('.food-expenses'),
-    carExpenses: text('.car-expenses'),
-    carExpenseIsDonation: isVisible('md-icon[md-font-icon="card giftcard"]'),
-    totalExpenses: text('.total-expenses'),
+    name: text('[data-test-reimbursement-name]'),
+    foodExpenses: text('[data-test-reimbursement-food]'),
+    carExpenses: text('[data-test-reimbursement-car-value]'),
+    carExpenseIsDonation: isVisible('[data-test-reimbursement-donation]'),
+    totalExpenses: text('[data-test-reimbursement-total]'),
 
     processButton: {
-      scope: '.process',
-      isPrimary: hasClass('md-primary'),
+      scope: '[data-test-reimbursement-process]',
+      variant: attribute('data-variant'),
     },
 
     donateButton: {
-      scope: '.donate',
-      isPrimary: hasClass('md-primary'),
+      scope: '[data-test-reimbursement-donate]',
+      variant: attribute('data-variant'),
     },
 
     copyButton: {
-      scope: '.copy-btn',
-      clipboardText: attribute('data-clipboard-text'),
+      scope: '[data-test-reimbursement-copy]',
+      clipboardText: attribute('data-test-clipboard-text'),
     },
   }),
 
-  reimbursements: collection('tbody tr.reimbursement', {
-    date: text('.date'),
-    name: text('.name'),
-    ride: text('.ride'),
+  reimbursements: collection('[data-test-processed-row]', {
+    date: text('[data-test-processed-date]'),
+    name: text('[data-test-processed-name]'),
+    ride: text('[data-test-processed-ride]'),
 
-    expenses: text('.expenses span'),
-    isFoodExpense: isVisible('.paper-icon[md-font-icon="local cafe"]'),
-    isCarExpense: isVisible('.paper-icon[md-font-icon="local gas station"]'),
+    expenses: text('[data-test-processed-expense-value]'),
+    expenseIcon: attribute(
+      'data-test-processed-expense-icon',
+      '[data-test-processed-expense-icon]',
+    ),
 
-    isDonation: isVisible('.donation .paper-icon'),
+    isFoodExpense() {
+      return this.expenseIcon === 'food';
+    },
 
-    edit: clickable('button'),
+    isCarExpense() {
+      return this.expenseIcon === 'car';
+    },
+
+    isDonation: isVisible('[data-test-processed-donation-icon]'),
   }),
 
   processedSwitch: {
-    scope: '.paper-switch.processed',
-    enabled: hasClass('md-checked'),
-    click: triggerable('keypress', '.md-container', {
-      eventProperties: { keyCode: 13 },
-    }),
+    scope: '[data-test-reimbursements-processed-toggle]',
+    enabled: property('checked'),
   },
 
   form: {
+    scope: '[data-test-reimbursement-modal]',
+
     amountField: {
-      scope: '.amount input',
-      value: value(),
-      fill: fillable(),
+      scope: '[data-test-reimbursement-amount]',
     },
 
     donationCheckbox: {
-      scope: 'md-checkbox',
-      checked: hasClass('md-checked'),
-      click: clickable(),
+      scope: '[data-test-reimbursement-donation]',
+      checked: property('checked', 'input'),
     },
 
-    submit: clickable('button.submit'),
-    cancel: clickable('button.cancel'),
+    submit: clickable('[data-test-reimbursement-save]'),
+    cancel: clickable('[data-test-reimbursement-cancel]'),
   },
 
   noReimbursementsMessage: {
-    scope: '.no-reimbursements',
+    scope: '[data-test-no-reimbursements]',
   },
 });
