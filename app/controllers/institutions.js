@@ -10,6 +10,40 @@ export default class InstitutionsController extends Controller {
   @service
   store;
 
+  get tableColumns() {
+    return [
+      { key: 'name', label: 'Name' },
+      { key: 'far', label: 'Far' },
+      { key: 'actions', label: '' },
+    ];
+  }
+
+  get tableRows() {
+    const institutions = this.model;
+
+    return institutions
+      .filter((institution) => !institution.isNew)
+      .sort((a, b) => {
+        const aName = (a?.name ?? '').toLowerCase();
+        const bName = (b?.name ?? '').toLowerCase();
+
+        if (aName < bName) {
+          return -1;
+        }
+
+        if (aName > bName) {
+          return 1;
+        }
+
+        return 0;
+      })
+      .map((institution) => {
+        return {
+          institution,
+        };
+      });
+  }
+
   @action
   newInstitution() {
     this.set(
@@ -28,7 +62,9 @@ export default class InstitutionsController extends Controller {
   }
 
   @action
-  saveInstitution() {
+  saveInstitution(event) {
+    event?.preventDefault?.();
+
     const proxy = this.editingInstitution;
     proxy.applyBufferedChanges();
     return proxy
@@ -39,7 +75,9 @@ export default class InstitutionsController extends Controller {
   }
 
   @action
-  cancelInstitution() {
+  cancelInstitution(event) {
+    event?.preventDefault?.();
+
     const model = this.get('editingInstitution.content');
 
     if (model.get('isNew')) {

@@ -1,130 +1,150 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperButton from 'prison-rideshare-ui/components/placeholder';
-import paperIcon from 'prison-rideshare-ui/components/placeholder';
-import PaperDataTable from 'prison-rideshare-ui/components/placeholder';
-import sortBy from 'ember-composable-helpers/helpers/sort-by';
-import PaperDialog from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogContent from 'prison-rideshare-ui/components/placeholder';
-import PaperForm from 'prison-rideshare-ui/components/placeholder';
-import PaperCheckbox from 'prison-rideshare-ui/components/placeholder';
-import PaperDialogActions from 'prison-rideshare-ui/components/placeholder';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
-import { fn } from '@ember/helper';
+import { fn, hash } from '@ember/helper';
+import { on } from '@ember/modifier';
+import {
+  HdsAdvancedTable,
+  HdsButton,
+  HdsForm,
+  HdsFormCheckboxField,
+  HdsFormTextInputField,
+  HdsIcon,
+  HdsModal,
+} from '@hashicorp/design-system-components/components';
 
 class InstitutionsComponent extends Component {
-  @action updateName(value) {
+  @action
+  updateName(event) {
+    const value = event?.target?.value ?? '';
+
     this.args.controller.editingInstitution.set('name', value);
   }
 
-  @action updateFar(value) {
-    this.args.controller.editingInstitution.set('far', value);
+  @action
+  updateFar(event) {
+    const checked = event?.target?.checked ?? false;
+
+    this.args.controller.editingInstitution.set('far', checked);
   }
 
   <template>
     <ToolbarHeader @title='Institutions'>
-      <PaperButton
-        @mini={{true}}
-        @aria-label='New institution'
-        @title='New institution'
-        @class='new'
-        @onClick={{@controller.newInstitution}}
-      >
-        {{paperIcon 'add'}}
-      </PaperButton>
+      <HdsButton
+        @icon='plus'
+        @text='New institution'
+        @isIconOnly={{true}}
+        data-test-new-institution
+        {{on 'click' @controller.newInstitution}}
+      />
     </ToolbarHeader>
 
-    <PaperDataTable @sortProp='name' @sortDir='asc' as |table|>
-      <table.head as |head|>
-        <head.column @sortProp='name' @class='name'>
-          Name
-        </head.column>
-        <head.column>
-          Far
-        </head.column>
-        {{head.column}}
-      </table.head>
-      <table.body as |body|>
-        {{#each (sortBy table.sortDesc @controller.model) as |institution|}}
-          {{#unless institution.isNew}}
-            <body.row @class='institution' as |row|>
-              <row.cell @class='name'>
-                {{institution.name}}
-              </row.cell>
-              <row.cell @class='far'>
-                {{#if institution.far}}
-                  {{paperIcon 'done'}}
-                {{/if}}
-              </row.cell>
-              <row.cell>
-                <PaperButton
-                  @iconButton={{true}}
-                  @aria-label='Edit institution'
-                  @title='Edit institution'
-                  @class='edit'
-                  @onClick={{fn @controller.editInstitution institution}}
-                >
-                  {{paperIcon 'mode edit'}}
-                </PaperButton>
-              </row.cell>
-            </body.row>
-          {{/unless}}
-        {{/each}}
-      </table.body>
-    </PaperDataTable>
+    <HdsAdvancedTable
+      @columns={{@controller.tableColumns}}
+      @model={{@controller.tableRows}}
+      @options={{hash hasStickyHeader=true}}
+      data-test-institutions-table
+    >
+      <:body as |Body|>
+        <Body.Tr
+          data-test-institution-row
+          data-test-institution-id={{Body.data.institution.id}}
+        >
+          <Body.Th class='name' data-test-institution-name>
+            {{Body.data.institution.name}}
+          </Body.Th>
+          <Body.Td class='far'>
+            {{#if Body.data.institution.far}}
+              <HdsIcon @name='check' @size='16' data-test-institution-far />
+            {{/if}}
+          </Body.Td>
+          <Body.Td class='actions'>
+            <HdsButton
+              @icon='edit'
+              @text='Edit institution'
+              @isIconOnly={{true}}
+              @size='small'
+              data-test-institution-edit
+              {{on
+                'click'
+                (fn @controller.editInstitution Body.data.institution)
+              }}
+            />
+          </Body.Td>
+        </Body.Tr>
+      </:body>
+    </HdsAdvancedTable>
 
     {{#if @controller.editingInstitution}}
-      <PaperDialog
-        @clickOutsideToClose={{true}}
-        @onClose={{this.cancelInstitution}}
+      <HdsModal
+        @color='neutral'
+        @size='small'
+        @onClose={{@controller.cancelInstitution}}
+        data-test-institution-modal
+        as |Modal|
       >
-        <PaperDialogContent>
-          <h2 class='md-title'>
-            {{if @controller.editingInstitution.isNew 'New' 'Edit'}}
-            institution
-          </h2>
-          <PaperForm @onSubmit={{@controller.saveInstitution}} as |form|>
-            <div class='layout layout-sm-column'>
-              <form.input
-                @class='name'
-                @label='Name'
-                @autofocus={{true}}
+        <Modal.Header>
+          {{if @controller.editingInstitution.isNew 'New' 'Edit'}}
+          institution
+        </Modal.Header>
+
+        <Modal.Body>
+          <HdsForm
+            data-test-institution-form
+            {{on 'submit' @controller.saveInstitution}}
+            as |Form|
+          >
+            <Form.Section>
+              <HdsFormTextInputField
                 @value={{@controller.editingInstitution.name}}
-                @onChange={{this.updateName}}
-                @errors={{@controller.editingInstitution.validationErrors.name}}
-                @isTouched={{readonly
+                @isInvalid={{@controller.editingInstitution.validationErrors.name.length}}
+                @isRequired={{true}}
+                autofocus
+                data-test-institution-name-field
+                {{on 'input' this.updateName}}
+                as |Field|
+              >
+                <Field.Label>Name</Field.Label>
+                {{#if
                   @controller.editingInstitution.validationErrors.name.length
                 }}
-              />
-            </div>
-            <div class='layout layout-sm-column'>
-              <PaperCheckbox
-                @value={{@controller.editingInstitution.far}}
-                @onChange={{this.updateFar}}
-              >
-                Far?
-              </PaperCheckbox>
-            </div>
-          </PaperForm>
-        </PaperDialogContent>
+                  <Field.Error data-test-institution-name-error>
+                    {{@controller.editingInstitution.validationErrors.name.firstObject}}
+                  </Field.Error>
+                {{/if}}
+              </HdsFormTextInputField>
 
-        <PaperDialogActions @class='layout-row'>
-          <PaperButton
-            @class='cancel'
-            @onClick={{@controller.cancelInstitution}}
-          >
-            Cancel
-          </PaperButton>
-          <PaperButton
-            @class='submit'
-            @primary={{true}}
-            @onClick={{@controller.saveInstitution}}
-          >
-            Save
-          </PaperButton>
-        </PaperDialogActions>
-      </PaperDialog>
+              <HdsFormCheckboxField
+                checked={{if @controller.editingInstitution.far true undefined}}
+                data-test-institution-far-checkbox
+                {{on 'change' this.updateFar}}
+                as |Field|
+              >
+                <Field.Label>Far?</Field.Label>
+              </HdsFormCheckboxField>
+            </Form.Section>
+
+            <Form.Footer as |Footer|>
+              <Footer.ButtonSet>
+                <HdsButton
+                  type='button'
+                  @color='secondary'
+                  @text='Cancel'
+                  data-test-institution-cancel
+                  {{on 'click' @controller.cancelInstitution}}
+                />
+                <HdsButton
+                  type='submit'
+                  @color='primary'
+                  @text='Save'
+                  data-test-institution-submit
+                />
+              </Footer.ButtonSet>
+            </Form.Footer>
+          </HdsForm>
+        </Modal.Body>
+      </HdsModal>
     {{/if}}
   </template>
 }

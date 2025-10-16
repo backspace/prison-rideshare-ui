@@ -2,7 +2,7 @@ import {
   clickable,
   collection,
   create,
-  hasClass,
+  fillable,
   isVisible,
   text,
   visitable,
@@ -10,28 +10,27 @@ import {
 
 export default create({
   visit: visitable('/institutions'),
-  newInstitution: clickable('button.new'),
+  newInstitution: clickable('[data-test-new-institution]'),
 
-  institutions: collection('tbody tr.institution', {
-    name: text('.name'),
-    isFar: isVisible('.far md-icon'),
+  institutions: collection('[data-test-institution-row]', {
+    name: text('[data-test-institution-name]'),
+    isFar: isVisible('[data-test-institution-far]'),
 
-    edit: clickable('button.edit'),
+    edit: clickable('[data-test-institution-edit]'),
   }),
 
   form: {
-    testContainer: 'md-dialog',
+    scope: '[data-test-institution-modal]',
 
     nameField: {
-      scope: '.name input',
+      scope: '[data-test-institution-name-field]',
     },
 
     farField: {
-      scope: 'md-checkbox',
-      isChecked: hasClass('md-checked'),
+      scope: '[data-test-institution-far-checkbox]',
     },
 
-    submit: clickable('button.submit'),
-    cancel: clickable('button.cancel'),
+    submit: clickable('[data-test-institution-submit]'),
+    cancel: clickable('[data-test-institution-cancel]'),
   },
 });
