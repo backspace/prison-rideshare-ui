@@ -30,12 +30,15 @@ export default class LogController extends Controller {
     this.set('editingPost', proxy);
   }
 
-  @action updatePostBody(body) {
+  @action
+  updatePostBody(body) {
     this.editingPost.set('body', JSON.stringify(body));
   }
 
   @action
-  savePost() {
+  savePost(event) {
+    event?.preventDefault?.();
+
     const proxy = this.editingPost;
     proxy.applyBufferedChanges();
     return proxy
@@ -46,7 +49,9 @@ export default class LogController extends Controller {
   }
 
   @action
-  cancelPost() {
+  cancelPost(event) {
+    event?.preventDefault?.();
+
     const model = this.get('editingPost.content');
 
     if (model.get('isNew')) {
