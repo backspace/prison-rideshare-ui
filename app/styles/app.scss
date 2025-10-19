@@ -34,16 +34,8 @@ body > div.ember-view {
   display: flex;
 }
 
-main {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  overflow-x: scroll;
-
-  md-content.no-overflow-scroll {
-    overflow-y: hidden;
-  }
+.app-frame {
+  width: 100%;
 }
 
 .site-nav-container {

@@ -68,7 +68,12 @@ class ApplicationComponent extends Component {
       </HdsToast>
     {{/if}}
 
-    <HdsAppFrame @hasHeader={{false}} @hasFooter={{false}} as |Frame|>
+    <HdsAppFrame
+      class='app-frame'
+      @hasHeader={{false}}
+      @hasFooter={{false}}
+      as |Frame|
+    >
       <Frame.Sidebar>
         {{#unless this.isSidebarMinimized}}
           <HdsAppSideNav
