@@ -51,15 +51,15 @@ class InstitutionsComponent extends Component {
           data-test-institution-row
           data-test-institution-id={{Body.data.institution.id}}
         >
-          <Body.Th class='name' data-test-institution-name>
+          <Body.Th data-test-institution-name>
             {{Body.data.institution.name}}
           </Body.Th>
-          <Body.Td class='far'>
+          <Body.Td>
             {{#if Body.data.institution.far}}
               <HdsIcon @name='check' @size='16' data-test-institution-far />
             {{/if}}
           </Body.Td>
-          <Body.Td class='actions'>
+          <Body.Td>
             <HdsButton
               @icon='edit'
               @text='Edit institution'
