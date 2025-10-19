@@ -14,6 +14,7 @@ import {
   HdsModal,
   HdsButton,
   HdsButtonSet,
+  HdsForm,
   HdsFormSuperSelectSingleField,
   HdsFormTextInputField,
   HdsFormTextareaField,
@@ -73,11 +74,12 @@ export default class RideForm extends Component {
       </M.Header>
 
       <M.Body>
-        <form {{on 'submit' this.handleSubmit}}>
-          <div>
+        <HdsForm {{on 'submit' this.handleSubmit}} as |Form|>
+          <Form.Section>
             <HdsFormTextareaField
+              rows='1'
               @value={{this.ride.timespan}}
-              @isInvalid={{false}}
+              @isInvalid={{this.timespanWarning}}
               @id='ride-form-timespan'
               {{on 'input' this.timespanUpdated}}
               data-test-timespan
@@ -90,23 +92,22 @@ export default class RideForm extends Component {
                 </div>
               </Field.HelperText>
             </HdsFormTextareaField>
-          </div>
+          </Form.Section>
 
           <div data-test-timespan-result>
-            {{#if this.timespanWarning}}
-              <div data-test-timespan-warning>
-                <HdsIcon @name='alert-triangle' @size='16' />
-                This request is in the past
-              </div>
-            {{/if}}
             <HdsFormTextInputField
               @value={{this.rideTimes}}
-              @isInvalid={{false}}
+              @isInvalid={{this.timespanWarning}}
               disabled={{true}}
               data-test-timespan-result
               as |Field|
             >
               <Field.Label>Ride times</Field.Label>
+              {{#if this.timespanWarning}}
+                <Field.Error data-test-timespan-warning>
+                  This request is in the past
+                </Field.Error>
+              {{/if}}
             </HdsFormTextInputField>
             {{#unless this.overrideTimespan}}
               <HdsButton
@@ -193,7 +194,7 @@ export default class RideForm extends Component {
           </div>
 
           <div>
-            <HdsFormRadioGroup as |Group|>
+            <HdsFormRadioGroup @layout='horizontal' as |Group|>
               <Group.RadioField
                 @value='txt'
                 title='ride was requested via txt'
@@ -203,8 +204,16 @@ export default class RideForm extends Component {
                   'change'
                   (fn this.updateRidePropertyWithValue 'medium' 'txt')
                 }}
+                as |Field|
               >
-                <HdsIcon @name='message-circle' @size='16' />
+                <Field.Label>
+                  <HdsIcon
+                    @name='message-circle'
+                    @size='16'
+                    @isInline={{true}}
+                  />
+                  txt
+                </Field.Label>
               </Group.RadioField>
               <Group.RadioField
                 @value='email'
@@ -215,8 +224,12 @@ export default class RideForm extends Component {
                   'change'
                   (fn this.updateRidePropertyWithValue 'medium' 'email')
                 }}
+                as |Field|
               >
-                <HdsIcon @name='mail' @size='16' />
+                <Field.Label>
+                  <HdsIcon @name='mail' @size='16' @isInline={{true}} />
+                  email
+                </Field.Label>
               </Group.RadioField>
               <Group.RadioField
                 @value='phone'
@@ -227,8 +240,12 @@ export default class RideForm extends Component {
                   'change'
                   (fn this.updateRidePropertyWithValue 'medium' 'phone')
                 }}
+                as |Field|
               >
-                <HdsIcon @name='phone' @size='16' />
+                <Field.Label>
+                  <HdsIcon @name='phone' @size='16' @isInline={{true}} />
+                  voice
+                </Field.Label>
               </Group.RadioField>
             </HdsFormRadioGroup>
           </div>
@@ -246,161 +263,170 @@ export default class RideForm extends Component {
             </div>
           </div>
 
-          <h3>Visitor details</h3>
+          <Form.Section>
+            <Form.SectionHeader>
+              <Form.SectionHeaderTitle @tag='h3'>
+                Visitor details
+              </Form.SectionHeaderTitle>
+            </Form.SectionHeader>
 
-          <div>
-            <HdsFormSuperSelectSingleField
-              data-test-visitor-select
-              @searchEnabled={{true}}
-              @search={{this.searchRides}}
-              @selected={{this.visitorSelection}}
-              @selectedItemComponent={{SelectedRideVisitor}}
-              @showAfterOptions={{true}}
-              @afterOptionsComponent={{NoMatchesComponent}}
-              @onChange={{this.visitorSelected}}
-              @onBlur={{this.maybeStoreUnmatchedVisitorName}}
-              @onClose={{this.maybeStoreUnmatchedVisitorName}}
-              @onInput={{this.storeVisitorName}}
-              as |F|
+            <div>
+              <HdsFormSuperSelectSingleField
+                data-test-visitor-select
+                @searchEnabled={{true}}
+                @search={{this.searchRides}}
+                @selected={{this.visitorSelection}}
+                @selectedItemComponent={{SelectedRideVisitor}}
+                @showAfterOptions={{true}}
+                @afterOptionsComponent={{NoMatchesComponent}}
+                @onChange={{this.visitorSelected}}
+                @onBlur={{this.maybeStoreUnmatchedVisitorName}}
+                @onClose={{this.maybeStoreUnmatchedVisitorName}}
+                @onInput={{this.storeVisitorName}}
+                as |F|
+              >
+                <F.Label>Name</F.Label>
+                <F.Options>
+                  {{#let F.options as |ride|}}
+                    <div>
+                      <span class='name'>{{ride.name}}</span>
+                      <address>{{ride.address}}</address>
+                      <span class='contact'>{{ride.contact}}</span>
+                    </div>
+                  {{/let}}
+                </F.Options>
+                {{#if (gt this.ride.validationErrors.name.length 0)}}
+                  <F.Error data-test-name-error as |E|>
+                    {{#each this.ride.validationErrors.name as |error|}}
+                      <E.Message><span>{{error}}</span></E.Message>
+                    {{/each}}
+                  </F.Error>
+                {{/if}}
+              </HdsFormSuperSelectSingleField>
+            </div>
+
+            <div>
+              <div>
+                <HdsFormTextInputField
+                  data-test-address
+                  @value={{this.ride.address}}
+                  @isInvalid={{gt this.ride.validationErrors.address.length 0}}
+                  {{on 'input' (fn this.updateRideProperty 'address')}}
+                  as |Field|
+                >
+                  <Field.Label>Address</Field.Label>
+                  {{#if (gt this.ride.validationErrors.address.length 0)}}
+                    <Field.Error>
+                      {{#each this.ride.validationErrors.address as |error|}}
+                        <span>{{error}}</span>
+                      {{/each}}
+                    </Field.Error>
+                  {{/if}}
+                </HdsFormTextInputField>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <HdsFormTextInputField
+                  data-test-contact
+                  @value={{this.ride.contact}}
+                  @isInvalid={{gt this.ride.validationErrors.contact.length 0}}
+                  {{on 'input' (fn this.updateRideProperty 'contact')}}
+                  as |Field|
+                >
+                  <Field.Label>Contact</Field.Label>
+                  {{#if (gt this.ride.validationErrors.contact.length 0)}}
+                    <Field.Error>
+                      {{#each this.ride.validationErrors.contact as |error|}}
+                        <span>{{error}}</span>
+                      {{/each}}
+                    </Field.Error>
+                  {{/if}}
+                </HdsFormTextInputField>
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <HdsFormTextInputField
+                  data-test-passengers
+                  @value={{this.ride.passengers}}
+                  @isInvalid={{gt
+                    this.ride.validationErrors.passengers.length
+                    0
+                  }}
+                  {{on 'input' (fn this.updateRideProperty 'passengers')}}
+                  as |Field|
+                >
+                  <Field.Label>Passengers</Field.Label>
+                  {{#if (gt this.ride.validationErrors.passengers.length 0)}}
+                    <Field.Error>
+                      {{#each this.ride.validationErrors.passengers as |error|}}
+                        <span>{{error}}</span>
+                      {{/each}}
+                    </Field.Error>
+                  {{/if}}
+                </HdsFormTextInputField>
+              </div>
+              <div>
+                <HdsFormCheckboxField
+                  data-test-first-time
+                  checked={{if this.ride.firstTime true undefined}}
+                  {{on 'change' (fn this.toggleCheckbox 'firstTime')}}
+                  as |Field|
+                >
+                  <Field.Label>First time?</Field.Label>
+                </HdsFormCheckboxField>
+              </div>
+            </div>
+
+            {{#if this.ride.firstTime}}
+              <div data-test-first-time-points>
+                Some notes for first-time riders:
+                <ul>
+                  <li>
+                    the drivers and coordinators are all volunteering
+                  </li>
+                  <li>
+                    we don’t screen drivers, but please let us know if you have
+                    any concerns
+                  </li>
+                  <li>
+                    it’s more likely you’ll get a ride if you request early; you
+                    can even do it before you have a visit scheduled
+                  </li>
+                  <li>
+                    open meetings happen monthly; share date and location of the
+                    next
+                  </li>
+                  <li>
+                    do you need help figuring out how to sign up for a visit?
+                    <ul>
+                      <li>
+                        if you are a coordinator and are unsure how to help,
+                        contact your buddy or
+                        <a href='mailto:barnone.wpg@gmail.com'>
+                          barnone.wpg@gmail.com
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            {{/if}}
+
+            <HdsFormTextareaField
+              data-test-request-notes
+              @value={{this.ride.requestNotes}}
+              @isInvalid={{false}}
+              {{on 'input' (fn this.updateRideProperty 'requestNotes')}}
+              as |Field|
             >
-              <F.Label>Name</F.Label>
-              <F.Options>
-                {{#let F.options as |ride|}}
-                  <div>
-                    <span class='name'>{{ride.name}}</span>
-                    <address>{{ride.address}}</address>
-                    <span class='contact'>{{ride.contact}}</span>
-                  </div>
-                {{/let}}
-              </F.Options>
-              {{#if (gt this.ride.validationErrors.name.length 0)}}
-                <F.Error data-test-name-error as |E|>
-                  {{#each this.ride.validationErrors.name as |error|}}
-                    <E.Message><span>{{error}}</span></E.Message>
-                  {{/each}}
-                </F.Error>
-              {{/if}}
-            </HdsFormSuperSelectSingleField>
-          </div>
-
-          <div>
-            <div>
-              <HdsFormTextInputField
-                data-test-address
-                @value={{this.ride.address}}
-                @isInvalid={{gt this.ride.validationErrors.address.length 0}}
-                {{on 'input' (fn this.updateRideProperty 'address')}}
-                as |Field|
-              >
-                <Field.Label>Address</Field.Label>
-                {{#if (gt this.ride.validationErrors.address.length 0)}}
-                  <Field.Error>
-                    {{#each this.ride.validationErrors.address as |error|}}
-                      <span>{{error}}</span>
-                    {{/each}}
-                  </Field.Error>
-                {{/if}}
-              </HdsFormTextInputField>
-            </div>
-          </div>
-
-          <div>
-            <div>
-              <HdsFormTextInputField
-                data-test-contact
-                @value={{this.ride.contact}}
-                @isInvalid={{gt this.ride.validationErrors.contact.length 0}}
-                {{on 'input' (fn this.updateRideProperty 'contact')}}
-                as |Field|
-              >
-                <Field.Label>Contact</Field.Label>
-                {{#if (gt this.ride.validationErrors.contact.length 0)}}
-                  <Field.Error>
-                    {{#each this.ride.validationErrors.contact as |error|}}
-                      <span>{{error}}</span>
-                    {{/each}}
-                  </Field.Error>
-                {{/if}}
-              </HdsFormTextInputField>
-            </div>
-          </div>
-
-          <div>
-            <div>
-              <HdsFormTextInputField
-                data-test-passengers
-                @value={{this.ride.passengers}}
-                @isInvalid={{gt this.ride.validationErrors.passengers.length 0}}
-                {{on 'input' (fn this.updateRideProperty 'passengers')}}
-                as |Field|
-              >
-                <Field.Label>Passengers</Field.Label>
-                {{#if (gt this.ride.validationErrors.passengers.length 0)}}
-                  <Field.Error>
-                    {{#each this.ride.validationErrors.passengers as |error|}}
-                      <span>{{error}}</span>
-                    {{/each}}
-                  </Field.Error>
-                {{/if}}
-              </HdsFormTextInputField>
-            </div>
-            <div>
-              <HdsFormCheckboxField
-                data-test-first-time
-                checked={{if this.ride.firstTime true undefined}}
-                {{on 'change' (fn this.toggleCheckbox 'firstTime')}}
-                as |Field|
-              >
-                <Field.Label>First time?</Field.Label>
-              </HdsFormCheckboxField>
-            </div>
-          </div>
-
-          {{#if this.ride.firstTime}}
-            <div data-test-first-time-points>
-              Some notes for first-time riders:
-              <ul>
-                <li>
-                  the drivers and coordinators are all volunteering
-                </li>
-                <li>
-                  we don’t screen drivers, but please let us know if you have
-                  any concerns
-                </li>
-                <li>
-                  it’s more likely you’ll get a ride if you request early; you
-                  can even do it before you have a visit scheduled
-                </li>
-                <li>
-                  open meetings happen monthly; share date and location of the
-                  next
-                </li>
-                <li>
-                  do you need help figuring out how to sign up for a visit?
-                  <ul>
-                    <li>
-                      if you are a coordinator and are unsure how to help,
-                      contact your buddy or
-                      <a href='mailto:barnone.wpg@gmail.com'>
-                        barnone.wpg@gmail.com
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-          {{/if}}
-
-          <HdsFormTextareaField
-            data-test-request-notes
-            @value={{this.ride.requestNotes}}
-            @isInvalid={{false}}
-            {{on 'input' (fn this.updateRideProperty 'requestNotes')}}
-            as |Field|
-          >
-            <Field.Label>Notes</Field.Label>
-          </HdsFormTextareaField>
-        </form>
+              <Field.Label>Notes</Field.Label>
+            </HdsFormTextareaField>
+          </Form.Section>
+        </HdsForm>
       </M.Body>
 
       <M.Footer>
