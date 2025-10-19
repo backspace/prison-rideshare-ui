@@ -37,7 +37,7 @@ export default RouteTemplate(
               >
                 <Body.Th
                   class='month'
-                  colspan={{4}}
+                  @colspan={{4}}
                   data-test-reimbursement-month
                 >
                   {{Body.data.monthName}}
