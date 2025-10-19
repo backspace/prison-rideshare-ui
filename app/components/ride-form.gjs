@@ -13,6 +13,7 @@ import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate
 import {
   HdsModal,
   HdsButton,
+  HdsButtonSet,
   HdsFormSuperSelectSingleField,
   HdsFormTextInputField,
   HdsFormTextareaField,
@@ -403,18 +404,20 @@ export default class RideForm extends Component {
       </M.Body>
 
       <M.Footer>
-        <HdsButton
-          @text='Cancel'
-          @color='secondary'
-          data-test-ride-form-cancel
-          {{on 'click' this.handleCancel}}
-        />
-        <HdsButton
-          @text='Save'
-          @color='primary'
-          data-test-ride-form-submit
-          {{on 'click' this.handleSubmit}}
-        />
+        <HdsButtonSet>
+          <HdsButton
+            @text='Save'
+            @color='primary'
+            data-test-ride-form-submit
+            {{on 'click' this.handleSubmit}}
+          />
+          <HdsButton
+            @text='Cancel'
+            @color='secondary'
+            data-test-ride-form-cancel
+            {{on 'click' this.handleCancel}}
+          />
+        </HdsButtonSet>
       </M.Footer>
     </HdsModal>
   </template>
