@@ -98,6 +98,7 @@ export default RouteTemplate(
                   <HdsButton
                     type='button'
                     @text='Process'
+                    @size='small'
                     @color={{if Body.data.isDonation 'secondary' 'primary'}}
                     data-test-reimbursement-process
                     data-variant={{if
@@ -116,6 +117,7 @@ export default RouteTemplate(
                   <HdsButton
                     type='button'
                     @text='Donate'
+                    @size='small'
                     @color={{if Body.data.isDonation 'primary' 'secondary'}}
                     data-test-reimbursement-donate
                     data-variant={{if
