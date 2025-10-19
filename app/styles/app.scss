@@ -38,6 +38,11 @@ body > div.ember-view {
   width: 100%;
 }
 
+/* TODO why? */
+.hds-advanced-table__tbody {
+  padding-top: 41px;
+}
+
 .site-nav-container {
   position: absolute;
   top: 0;
