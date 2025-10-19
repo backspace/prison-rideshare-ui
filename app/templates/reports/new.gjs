@@ -78,6 +78,7 @@ export default RouteTemplate(
                     as |hasDistanceErrors distanceErrors|
                   }}
                     <HdsFormTextInputField
+                      type='number'
                       @value={{@controller.editingRide.distance}}
                       @isInvalid={{hasDistanceErrors}}
                       @isRequired={{true}}
@@ -116,6 +117,7 @@ export default RouteTemplate(
 
                 <Form.Section>
                   <HdsFormTextInputField
+                    type='number'
                     @value={{@controller.editingRide.foodExpensesDollars}}
                     data-test-report-food-expenses
                     {{on 'input' @controller.updateFoodExpenses}}
@@ -128,6 +130,7 @@ export default RouteTemplate(
                 {{#if @controller.editingRide.overridable}}
                   <Form.Section>
                     <HdsFormTextInputField
+                      type='number'
                       @value={{@controller.editingRide.carExpensesDollars}}
                       data-test-report-car-expenses
                       {{on 'input' @controller.updateCarExpenses}}
