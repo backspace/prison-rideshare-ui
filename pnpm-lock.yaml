@@ -174,7 +174,7 @@ importers:
         version: 0.8.1(@glint/template@1.6.1)(webpack@5.101.3)
       ember-moment:
         specifier: ^10.0.0
-        version: 10.0.2(moment@2.30.1)
+        version: 10.0.2(moment-timezone@0.6.0)(moment@2.30.1)
       ember-page-title:
         specifier: ^8.2.4
         version: 8.2.4(ember-source@3.28.12(@babel/core@7.28.4))
@@ -189,7 +189,7 @@ importers:
         version: 1.8.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4))
       ember-power-calendar-moment:
         specifier: ^1.0.2
-        version: 1.0.4(@glint/template@1.6.1)(ember-power-calendar@1.8.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4)))(moment@2.30.1)
+        version: 1.0.4(@glint/template@1.6.1)(ember-power-calendar@1.8.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4)))(moment-timezone@0.6.0)(moment@2.30.1)
       ember-power-select:
         specifier: ^8.11.0
         version: 8.11.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-basic-dropdown@8.7.0(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4))
@@ -268,6 +268,9 @@ importers:
       moment:
         specifier: ^2.29.4
         version: 2.30.1
+      moment-timezone:
+        specifier: 0.6.0
+        version: 0.6.0
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -5791,6 +5794,9 @@ packages:
 
   mobiledoc-text-renderer@0.4.1:
     resolution: {integrity: sha512-lTu8zCjcBJPRMaHeqoS1vECw3hczxQQjdmqtGSKa3yGHIuozmcWqOGPGrrIcsc4W018dAG/nPdsJiUp+9UkWGw==}
+
+  moment-timezone@0.6.0:
+    resolution: {integrity: sha512-ldA5lRNm3iJCWZcBCab4pnNL3HSZYXVb/3TYr75/1WCTWYuTqYUb5f/S384pncYjJ88lbO8Z4uPDvmoluHJc8Q==}
 
   moment@2.30.1:
     resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
@@ -13269,11 +13275,12 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-moment@10.0.2(moment@2.30.1):
+  ember-moment@10.0.2(moment-timezone@0.6.0)(moment@2.30.1):
     dependencies:
       '@embroider/addon-shim': 1.10.0
     optionalDependencies:
       moment: 2.30.1
+      moment-timezone: 0.6.0
     transitivePeerDependencies:
       - supports-color
 
@@ -13305,13 +13312,14 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-power-calendar-moment@1.0.4(@glint/template@1.6.1)(ember-power-calendar@1.8.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4)))(moment@2.30.1):
+  ember-power-calendar-moment@1.0.4(@glint/template@1.6.1)(ember-power-calendar@1.8.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4)))(moment-timezone@0.6.0)(moment@2.30.1):
     dependencies:
       '@embroider/addon-shim': 1.10.0
       '@embroider/macros': 1.18.2(@glint/template@1.6.1)
       ember-power-calendar: 1.8.0(@babel/core@7.28.4)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-concurrency@4.0.6(@babel/core@7.28.4)(@glint/template@1.6.1))(ember-source@3.28.12(@babel/core@7.28.4))
     optionalDependencies:
       moment: 2.30.1
+      moment-timezone: 0.6.0
     transitivePeerDependencies:
       - '@glint/template'
       - supports-color
@@ -15804,6 +15812,10 @@ snapshots:
       mobiledoc-text-renderer: 0.4.1
 
   mobiledoc-text-renderer@0.4.1: {}
+
+  moment-timezone@0.6.0:
+    dependencies:
+      moment: 2.30.1
 
   moment@2.30.1: {}
 
