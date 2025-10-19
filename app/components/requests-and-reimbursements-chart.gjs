@@ -3,7 +3,7 @@ import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import Component from '@ember/component';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import HighCharts from 'ember-highcharts/components/high-charts';
 // import EmberWormhole from 'ember-wormhole/components/ember-wormhole';
 // import PaperButton from 'prison-rideshare-ui/components/placeholder';

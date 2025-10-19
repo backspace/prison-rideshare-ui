@@ -6,7 +6,7 @@ import Controller from '@ember/controller';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
 // import BufferedProxy from 'ember-buffered-proxy/proxy';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 @classic
 export default class ReimbursementsController extends Controller {

@@ -5,7 +5,7 @@ import EmberObject, { computed } from '@ember/object';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 @classic
 export default class ReimbursementCollection extends EmberObject {

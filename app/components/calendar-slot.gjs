@@ -5,7 +5,7 @@ import { reads } from '@ember/object/computed';
 import Component from '@ember/component';
 import { action, get, computed } from '@ember/object';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { task } from 'ember-concurrency';
 import gt from 'ember-truth-helpers/helpers/gt';
 import perform from 'ember-concurrency/helpers/perform';

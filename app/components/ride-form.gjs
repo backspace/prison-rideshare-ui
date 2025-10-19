@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
 import GlimmerComponent from '@glimmer/component';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import PowerSelect from 'ember-power-select/components/power-select';
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';

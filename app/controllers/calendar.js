@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Controller from '@ember/controller';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { task } from 'ember-concurrency';
 
 @classic

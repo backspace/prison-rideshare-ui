@@ -2,7 +2,7 @@
 import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
 import Controller from '@ember/controller';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 // Sunset theme adapted from here: https://github.com/highcharts/highcharts/blob/master/js/themes/sunset.js
 const theme = {

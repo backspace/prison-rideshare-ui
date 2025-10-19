@@ -3,7 +3,7 @@ import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
 @classic

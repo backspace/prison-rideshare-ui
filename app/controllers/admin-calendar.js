@@ -5,7 +5,7 @@ import CalendarController from './calendar';
 import { alias, mapBy, setDiff, sum } from '@ember/object/computed';
 import { A } from '@ember/array';
 import fetch from 'fetch';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { get, action, computed } from '@ember/object';
 import RSVP from 'rsvp';
 

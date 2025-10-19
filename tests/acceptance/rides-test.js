@@ -11,7 +11,7 @@ import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 module('Acceptance | rides', function (hooks) {
   setupApplicationTest(hooks);
