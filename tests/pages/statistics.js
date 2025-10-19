@@ -3,12 +3,13 @@ import { collection, create, visitable } from 'ember-cli-page-object';
 export default create({
   visit: visitable('/statistics'),
 
-  start: { scope: '.start input' },
-  end: { scope: '.end input' },
+  start: { scope: '[data-test-statistics-start]' },
 
-  pastYear: { scope: '.past-year' },
-  pastTwoWeeks: { scope: '.past-two-weeks' },
-  thisYear: { scope: '.this-year' },
+  end: { scope: '[data-test-statistics-end]' },
+
+  pastYear: { scope: '[data-test-statistics-past-year]' },
+  pastTwoWeeks: { scope: '[data-test-statistics-past-two-weeks]' },
+  thisYear: { scope: '[data-test-statistics-this-year]' },
 
   times: {
     scope: 'table',
