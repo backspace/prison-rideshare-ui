@@ -3,6 +3,7 @@ import HeadLayout from 'ember-cli-head/components/head-layout';
 import EmberLoadRemover from 'ember-load/components/ember-load-remover';
 import { action } from '@ember/object';
 import { concat, fn } from '@ember/helper';
+import { on } from '@ember/modifier';
 import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import {
@@ -137,8 +138,8 @@ class ApplicationComponent extends Component {
                       'Log out '
                       @controller.session.currentUser.email
                     }}
-                    @onClick={{@controller.logout}}
                     @size='small'
+                    {{on 'click' @controller.logout}}
                     type='button'
                     data-test-session-button
                   />
