@@ -69,15 +69,15 @@ module('Acceptance | reports', function (hooks) {
     assert.ok(page.noSession.isHidden);
 
     assert.equal(
-      page.rides[0].label,
+      page.rides[0].text,
       'francine: Sun, Dec 25 at 10:15a to Remand Centre (33 ¢⁄km )',
     );
     assert.equal(
-      page.rides[1].label,
+      page.rides[1].text,
       'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
 
-    await page.rides[0].choose();
+    await page.rides[0].click();
     await page.distance.fillIn(75);
     await page.foodExpenses.fillIn(25.5);
     await page.carExpenses.fillIn(52.05);
@@ -105,7 +105,7 @@ module('Acceptance | reports', function (hooks) {
       'expected the reported-on ride to have disappeared',
     );
     assert.equal(
-      page.rides[0].label,
+      page.rides[0].text,
       'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
   });
@@ -131,7 +131,7 @@ module('Acceptance | reports', function (hooks) {
 
   test('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', async function (assert) {
     await page.visit();
-    await page.rides[1].choose();
+    await page.rides[1].click();
 
     assert.ok(
       page.donation.isHidden,
@@ -146,11 +146,11 @@ module('Acceptance | reports', function (hooks) {
   test('unsaved changes are discarded when the selected ride changes', async function (assert) {
     await page.visit();
 
-    await page.rides[0].choose();
+    await page.rides[0].click();
     await page.distance.fillIn(75);
 
-    await page.rides[1].choose();
-    await page.rides[0].choose();
+    await page.rides[1].click();
+    await page.rides[0].click();
 
     assert.equal(page.distance.value, '');
   });
@@ -166,7 +166,7 @@ module('Acceptance | reports', function (hooks) {
 
     await page.visit();
 
-    await page.rides[0].choose();
+    await page.rides[0].click();
     await page.distance.fillIn(75);
 
     await page.submitButton.click();

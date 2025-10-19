@@ -18,6 +18,19 @@ export default class NewController extends Controller {
 
   editingRide;
 
+  _setNumberProperty(property, event) {
+    const ride = this.editingRide;
+
+    if (!ride) {
+      return;
+    }
+
+    const rawValue = event?.target?.value ?? '';
+    const parsedValue = rawValue === '' ? null : Number(rawValue);
+
+    ride.set(property, Number.isNaN(parsedValue) ? null : parsedValue);
+  }
+
   @action
   setRide(ride) {
     if (this.editingRide) {
@@ -28,7 +41,50 @@ export default class NewController extends Controller {
   }
 
   @action
-  submitReport() {
+  updateDistance(event) {
+    this._setNumberProperty('distance', event);
+  }
+
+  @action
+  updateDonation(event) {
+    const ride = this.editingRide;
+
+    if (!ride) {
+      return;
+    }
+
+    const checked = event?.target?.checked ?? false;
+
+    ride.set('donation', checked);
+  }
+
+  @action
+  updateFoodExpenses(event) {
+    this._setNumberProperty('foodExpensesDollars', event);
+  }
+
+  @action
+  updateCarExpenses(event) {
+    this._setNumberProperty('carExpensesDollars', event);
+  }
+
+  @action
+  updateReportNotes(event) {
+    const ride = this.editingRide;
+
+    if (!ride) {
+      return;
+    }
+
+    const value = event?.target?.value ?? '';
+
+    ride.set('reportNotes', value);
+  }
+
+  @action
+  submitReport(event) {
+    event?.preventDefault?.();
+
     let editingRide = this.editingRide;
 
     if (editingRide) {
