@@ -7,8 +7,6 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: '[data-test-login-card]',
-
   visit: visitable('/login'),
 
   fillEmail: fillable('[data-test-login-email]'),
