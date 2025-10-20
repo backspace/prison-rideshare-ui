@@ -60,26 +60,25 @@ export default RouteTemplate(
                 </HdsAlert>
               {{/if}}
             </Form.Section>
-
+            <Form.Footer>
+              <HdsButtonSet>
+                <HdsButton
+                  type='submit'
+                  @color='primary'
+                  @text='Log in'
+                  {{on 'click' @controller.login}}
+                  data-test-login-submit
+                />
+                <HdsButton
+                  @color='secondary'
+                  @route='register'
+                  @text='Register'
+                  data-test-login-register
+                />
+              </HdsButtonSet>
+            </Form.Footer>
           </HdsForm>
         </Modal.Body>
-        <Modal.Footer>
-          <HdsButtonSet>
-            <HdsButton
-              type='submit'
-              @color='primary'
-              @text='Log in'
-              {{on 'click' @controller.login}}
-              data-test-login-submit
-            />
-            <HdsButton
-              @color='secondary'
-              @route='register'
-              @text='Register'
-              data-test-login-register
-            />
-          </HdsButtonSet>
-        </Modal.Footer>
       </HdsModal>
     </div>
   </template>,
