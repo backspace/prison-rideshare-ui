@@ -307,9 +307,7 @@ export default create({
     },
 
     reason: {
-      value: text(
-        '[data-test-cancellation-reason-select] .ember-power-select-selected-item',
-      ),
+      scope: '[data-test-cancellation-reason-select]',
     },
 
     other: {

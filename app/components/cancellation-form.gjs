@@ -3,17 +3,17 @@ import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
 import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
-import PowerSelect from 'ember-power-select/components/power-select';
 import {
   HdsModal,
   HdsButton,
   HdsFormCheckboxField,
   HdsFormTextInputField,
-  HdsFormField,
+  HdsFormSelectField,
   HdsIcon,
 } from '@hashicorp/design-system-components/components';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
+import eq from 'ember-truth-helpers/helpers/eq';
 
 const reasons = Object.keys(reasonToIcon).sort();
 const shortcuts = ['driver not found', 'visitor'];
@@ -75,20 +75,21 @@ export default class CancellationForm extends Component {
             <Field.Label>Cancelled?</Field.Label>
           </HdsFormCheckboxField>
 
-          <HdsFormField as |Field|>
+          <HdsFormSelectField
+            name='reason'
+            data-test-cancellation-reason-select
+            as |Field|
+          >
             <Field.Label>Reason</Field.Label>
-            <Field.Control>
-              <PowerSelect
-                data-test-cancellation-reason-select
-                @options={{this.reasons}}
-                @selected={{this.ride.cancellationReason}}
-                @onChange={{this.updateCancellationReason}}
-                as |reason|
-              >
-                {{reason}}
-              </PowerSelect>
-            </Field.Control>
-          </HdsFormField>
+            <Field.Options>
+              {{#each this.reasons as |optionText|}}
+                <option
+                  value={{optionText}}
+                  selected={{eq optionText this.ride.cancellationReason}}
+                >{{optionText}}</option>
+              {{/each}}
+            </Field.Options>
+          </HdsFormSelectField>
 
           <HdsFormTextInputField
             data-test-cancellation-other
