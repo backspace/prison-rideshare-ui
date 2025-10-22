@@ -25,17 +25,17 @@ import eq from 'ember-truth-helpers/helpers/eq';
 @tagName('')
 export default class RideRow extends Component {
   <template>
-    <tr
+    <@table.Tr
       class={{this.rowClass}}
       data-test-ride-row
       data-ride-id={{this.ride.id}}
     >
       {{#if this.showCreation}}
-        <td data-test-ride-creation>
+        <@table.Td data-test-ride-creation>
           {{this.creation}}
-        </td>
+        </@table.Td>
       {{/if}}
-      <td
+      <@table.Td
         class='date-cell'
         data-test-ride-date-cell
         {{on 'click' this.toggleCreation}}
@@ -46,11 +46,11 @@ export default class RideRow extends Component {
         <span class='date' data-test-ride-date>
           {{this.ride.rideTimes}}
         </span>
-      </td>
-      <td class='institution' data-test-ride-institution>
+      </@table.Td>
+      <@table.Td class='institution' data-test-ride-institution>
         {{this.ride.institution.name}}
-      </td>
-      <td>
+      </@table.Td>
+      <@table.Td>
         <span class='name' data-test-ride-name>
           {{this.ride.namePlusPassengers}}
         </span>
@@ -69,11 +69,11 @@ export default class RideRow extends Component {
             <LinkedContact @contact={{this.ride.contact}} />
           </span>
         </div>
-      </td>
-      <td data-test-ride-address>
+      </@table.Td>
+      <@table.Td data-test-ride-address>
         {{this.ride.address}}
-      </td>
-      <td data-test-ride-assignments>
+      </@table.Td>
+      <@table.Td data-test-ride-assignments>
         {{#if @combined}}
           {{#unless this.rideToCombine}}
             <button
@@ -125,8 +125,8 @@ export default class RideRow extends Component {
             </button>
           {{/if}}
         {{/if}}
-      </td>
-      <td>
+      </@table.Td>
+      <@table.Td>
         <HdsButton
           data-test-cancellation-button
           data-cancellation-state={{this.cancellationState}}
@@ -144,23 +144,23 @@ export default class RideRow extends Component {
           @icon='edit'
           {{on 'click' (fn this.editRide this.ride)}}
         />
-      </td>
-    </tr>
+      </@table.Td>
+    </@table.Tr>
 
     {{#each this.commitments as |commitment|}}
-      <tr class='overlap highlighted' data-test-overlap-row>
+      <@table.Tr class='overlap highlighted' data-test-overlap-row>
         {{#if this.showCreation}}
-          <td></td>
+          <@table.Td />
         {{/if}}
-        <td colspan='3'>
+        <@table.Td colspan='3'>
           <HdsIcon @name='calendar' @size='16' />
           <span data-test-overlap-text>
             {{commitment.person.name}}
             committed to slot
             {{commitment.timespan}}
           </span>
-        </td>
-        <td colspan='3'>
+        </@table.Td>
+        <@table.Td colspan='3'>
           <button
             type='button'
             data-test-overlap-assign
@@ -175,24 +175,24 @@ export default class RideRow extends Component {
           >
             Ignore
           </button>
-        </td>
-      </tr>
+        </@table.Td>
+      </@table.Tr>
     {{/each}}
 
     {{#if this.ride.requiresConfirmation}}
-      <tr class='highlighted' data-test-confirmation-row>
+      <@table.Tr class='highlighted' data-test-confirmation-row>
         {{#if this.showCreation}}
-          <td></td>
+          <@table.Td />
         {{/if}}
-        <td colspan='3'>
+        <@table.Td colspan='3'>
           {{#if this.mediumIcon}}
             <HdsIcon @name={{this.mediumIcon}} @size='16' />
           {{/if}}
           <span class='text' data-test-confirmation-text>
             Contact visitor to confirm receipt of ride request
           </span>
-        </td>
-        <td colspan='3'>
+        </@table.Td>
+        <@table.Td colspan='3'>
           <button
             type='button'
             data-test-confirmation-mark
@@ -200,27 +200,27 @@ export default class RideRow extends Component {
           >
             Mark as contacted
           </button>
-        </td>
-      </tr>
+        </@table.Td>
+      </@table.Tr>
     {{/if}}
 
     {{#if this.ride.requestNotes}}
-      <tr data-test-notes-row>
+      <@table.Tr class='notes' data-test-notes-row>
         {{#if this.showCreation}}
-          <td></td>
+          <@table.Td />
         {{/if}}
-        <td data-test-notes colspan='6'>
+        <@table.Td data-test-notes colspan='6'>
           {{this.ride.requestNotes}}
-        </td>
-      </tr>
+        </@table.Td>
+      </@table.Tr>
     {{/if}}
 
     {{#if this.ride.complete}}
-      <tr class='report' data-test-report-row>
+      <@table.Tr class='report' data-test-report-row>
         {{#if this.showCreation}}
-          <td></td>
+          <@table.Td />
         {{/if}}
-        <td colspan='6'>
+        <@table.Td colspan='6'>
           <span class='distance' data-test-report-distance>
             {{this.ride.distance}}
           </span>
@@ -268,8 +268,8 @@ export default class RideRow extends Component {
               Clear report
             </button>
           {{/if}}
-        </td>
-      </tr>
+        </@table.Td>
+      </@table.Tr>
     {{/if}}
   </template>
 

@@ -144,8 +144,12 @@ md-sidenav {
   }
 }
 
-.rides table .ride {
-  opacity: 0.5;
+
+table.rides tr {
+  td {
+    border-left-style: none;
+    border-right-style: none;
+  }
 
   .date-cell {
     .paper-icon {
@@ -158,8 +162,18 @@ md-sidenav {
     }
   }
 
-  &+.notes {
+  &:has(+ .notes) {
+    td {
+        border-bottom-style: none;
+    }
+  }
+
+  &.notes {
     opacity: 0.5;
+
+    td {
+      border-top-style: none;
+    }
   }
 
   &.enabled {
@@ -175,7 +189,7 @@ md-sidenav {
   }
 
   &.overlaps {
-    background-color: paper-color($color-pink, '100');
+    background-color: pink;
   }
 
   md-input-container {
@@ -198,7 +212,7 @@ md-sidenav {
 }
 
 tr.highlighted {
-  background-color: paper-color($color-pink, '100');
+  background-color: pink;
 }
 
 .search {

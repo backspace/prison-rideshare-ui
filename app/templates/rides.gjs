@@ -9,9 +9,11 @@ import {
   HdsFormSectionMultiFieldGroup,
   HdsFormTextInputBase,
   HdsFormToggleField,
+  HdsTable,
 } from '@hashicorp/design-system-components/components';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
+import eq from 'ember-truth-helpers/helpers/eq';
 
 export default RouteTemplate(
   <template>
@@ -60,28 +62,37 @@ export default RouteTemplate(
       </Group.Item>
     </HdsFormSectionMultiFieldGroup>
 
-    <table>
-      <thead>
-        <tr>
+    <HdsTable
+      class='rides'
+      @isSortable={{true}}
+      @sortBy={{@controller.sortProp}}
+      @sortOrder={{@controller.sortDir}}
+    >
+      <:head as |Head|>
+        <Head.Tr>
           {{#if @controller.showCreation}}
-            <th scope='col'>Created</th>
+            <Head.Th>Created</Head.Th>
           {{/if}}
-          <th
-            scope='col'
+          <Head.ThSort
             class='date'
             data-test-rides-head-date
-            {{on 'click' (fn @controller.sort 'start')}}
+            @sortOrder={{if
+              (eq @controller.sortProp 'start')
+              @controller.sortDir
+            }}
+            @onClickSort={{fn @controller.sort 'start'}}
           >
             Date
-          </th>
-          <th scope='col'>Institution</th>
-          <th scope='col'>Visitor</th>
-          <th scope='col'>Pickup address</th>
-          <th scope='col'>Driver/car owner</th>
-          <th scope='col'></th>
-        </tr>
-      </thead>
-      <tbody>
+          </Head.ThSort>
+          <Head.Th>Institution</Head.Th>
+          <Head.Th>Visitor</Head.Th>
+          <Head.Th>Pickup address</Head.Th>
+          <Head.Th>Driver/car owner</Head.Th>
+          <Head.Th />
+        </Head.Tr>
+      </:head>
+
+      <:body as |Body|>
         {{#each @controller.filteredRides as |ride|}}
           <RideRow
             @ride={{ride}}
@@ -92,6 +103,7 @@ export default RouteTemplate(
             @uncombineRide={{@controller.uncombineRide}}
             @people={{@controller.people}}
             @rideToCombine={{@controller.rideToCombine}}
+            @table={{Body}}
           />
           {{#each ride.children as |child|}}
             <RideRow
@@ -104,17 +116,18 @@ export default RouteTemplate(
               @uncombineRide={{@controller.uncombineRide}}
               @people={{@controller.people}}
               @rideToCombine={{@controller.rideToCombine}}
+              @table={{Body}}
             />
           {{/each}}
         {{else}}
-          <tr data-test-no-matches>
-            <td colspan='7'>
+          <Body.Tr data-test-no-matches>
+            <Body.Td colspan={{if @controller.showCreation '7' '6'}}>
               No rides matched your criteria.
-            </td>
-          </tr>
+            </Body.Td>
+          </Body.Tr>
         {{/each}}
-      </tbody>
-    </table>
+      </:body>
+    </HdsTable>
 
     {{#if @controller.editingRide}}
       <RideForm

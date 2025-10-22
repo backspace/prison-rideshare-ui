@@ -44,7 +44,7 @@ export default create({
 
   ridesHead: {
     scope: '[data-test-rides-head-date]',
-    clickDate: clickable(),
+    clickDate: clickable('button'),
   },
 
   rides: collection('tbody tr.ride', {

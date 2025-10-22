@@ -130,6 +130,10 @@
   "pnpm": {
     "overrides": {
       "ember-focus-trap": "0.8.0"
+    },
+    "patchedDependencies": {
+      "@hashicorp/design-system-components": "patches/@hashicorp__design-system-components.patch",
+      "decorator-transforms": "patches/decorator-transforms.patch"
     }
   }
 }

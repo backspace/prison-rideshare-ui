@@ -9,7 +9,7 @@ overrides:
 
 patchedDependencies:
   '@hashicorp/design-system-components':
-    hash: daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e
+    hash: fdd37c1f2b693ce834016a5e4d64d8935e1dc495259de08ee2a3da251e56aa34
     path: patches/@hashicorp__design-system-components.patch
   decorator-transforms:
     hash: daaf70dcf904cf2d805d085a6528bf51c0554bb9a602cfdd5025c76d86e07eb9
@@ -42,7 +42,7 @@ importers:
         version: 1.1.2
       '@hashicorp/design-system-components':
         specifier: ^4.24.0
-        version: 4.24.0(patch_hash=daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@8.7.0(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))(webpack@5.101.3)
+        version: 4.24.0(patch_hash=fdd37c1f2b693ce834016a5e4d64d8935e1dc495259de08ee2a3da251e56aa34)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@8.7.0(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))(webpack@5.101.3)
       '@hashicorp/design-system-tokens':
         specifier: ^3.0.0
         version: 3.0.0
@@ -9284,7 +9284,7 @@ snapshots:
 
   '@handlebars/parser@2.2.1': {}
 
-  '@hashicorp/design-system-components@4.24.0(patch_hash=daa967795c0bda7f88341663452a4ff0baaf3e83a46d8f4efb61081729c9703e)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@8.7.0(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))(webpack@5.101.3)':
+  '@hashicorp/design-system-components@4.24.0(patch_hash=fdd37c1f2b693ce834016a5e4d64d8935e1dc495259de08ee2a3da251e56aa34)(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glimmer/tracking@1.1.2)(@glint/template@1.6.1)(ember-basic-dropdown@8.7.0(@babel/core@7.28.4)(@ember/string@3.1.1)(@ember/test-helpers@2.9.6(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4)))(ember-source@3.28.12(@babel/core@7.28.4))(webpack@5.101.3)':
     dependencies:
       '@codemirror/commands': 6.9.0
       '@codemirror/lang-go': 6.0.1
