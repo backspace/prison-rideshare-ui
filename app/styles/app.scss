@@ -20,6 +20,10 @@ $color-pink: pink;
 body {
   max-width: 100%;
   max-height: 100%;
+
+  font-family: var(--token-typography-body-200-font-family);
+  font-size: var(--token-typography-body-200-font-size);
+  line-height: var(--token-typography-body-200-line-height);
 }
 
 body.ember-application {
