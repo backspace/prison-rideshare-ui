@@ -162,15 +162,13 @@ table.rides tr {
     }
   }
 
-  &:has(+ .notes) {
+  &:has(+ .notes), &:has(+ .overlap) {
     td {
         border-bottom-style: none;
     }
   }
 
-  &.notes {
-    opacity: 0.5;
-
+  &.notes, &.overlap {
     td {
       border-top-style: none;
     }
