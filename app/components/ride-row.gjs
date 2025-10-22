@@ -225,10 +225,24 @@ export default class RideRow extends Component {
           <@table.Td />
         {{/if}}
         <@table.Td colspan='6'>
+          <HdsIcon
+            @name='map'
+            @size='16'
+            @isInline={{true}}
+            data-test-ride-first-time
+          />
+
           <span class='distance' data-test-report-distance>
             {{this.ride.distance}}
           </span>
           {{#if this.ride.carExpenses}}
+            <HdsIcon
+              @name='truck'
+              @size='16'
+              @isInline={{true}}
+              data-test-ride-first-time
+            />
+
             <span data-test-report-car-expenses>
               {{this.ride.carExpensesDollars}}
             </span>
@@ -238,6 +252,13 @@ export default class RideRow extends Component {
             {{/if}}
           {{/if}}
           {{#if this.ride.foodExpenses}}
+            <HdsIcon
+              @name='tools'
+              @size='16'
+              @isInline={{true}}
+              data-test-ride-first-time
+            />
+
             <span data-test-report-food>
               {{this.ride.foodExpensesDollars}}
             </span>
