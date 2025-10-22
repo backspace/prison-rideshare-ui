@@ -148,7 +148,10 @@ export default class RideRow extends Component {
     </@table.Tr>
 
     {{#each this.commitments as |commitment|}}
-      <@table.Tr class='overlap highlighted' data-test-overlap-row>
+      <@table.Tr
+        class='overlap highlighted no-top-border'
+        data-test-overlap-row
+      >
         {{#if this.showCreation}}
           <@table.Td />
         {{/if}}
@@ -180,7 +183,7 @@ export default class RideRow extends Component {
     {{/each}}
 
     {{#if this.ride.requiresConfirmation}}
-      <@table.Tr class='highlighted' data-test-confirmation-row>
+      <@table.Tr class='highlighted no-top-border' data-test-confirmation-row>
         {{#if this.showCreation}}
           <@table.Td />
         {{/if}}
@@ -205,7 +208,7 @@ export default class RideRow extends Component {
     {{/if}}
 
     {{#if this.ride.requestNotes}}
-      <@table.Tr class='notes' data-test-notes-row>
+      <@table.Tr class='notes no-top-border' data-test-notes-row>
         {{#if this.showCreation}}
           <@table.Td />
         {{/if}}
