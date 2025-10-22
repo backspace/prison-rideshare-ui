@@ -78,7 +78,8 @@ export default class RideRow extends Component {
           {{#unless this.rideToCombine}}
             <button
               type='button'
-              data-test-uncombine-button
+              data-test-combine-button
+              title='Uncombine this ride'
               {{on 'click' (fn this.uncombineRide this.ride)}}
             >
               Uncombine
