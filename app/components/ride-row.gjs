@@ -58,6 +58,7 @@ export default class RideRow extends Component {
           <HdsIcon
             @name='alert-triangle'
             @size='16'
+            @isInline={{true}}
             data-test-ride-first-time
           />
         {{/if}}
@@ -102,7 +103,7 @@ export default class RideRow extends Component {
           </span>
           {{#if this.ride.overridable}}
             <span data-test-overridable-indicator>
-              <HdsIcon @name='truck' @size='16' />
+              <HdsIcon @name='truck' @size='16' @isInline={{true}} />
             </span>
           {{/if}}
           {{#if (or (not this.ride.children) this.rideToCombine)}}
@@ -156,7 +157,7 @@ export default class RideRow extends Component {
           <@table.Td />
         {{/if}}
         <@table.Td colspan='3'>
-          <HdsIcon @name='calendar' @size='16' />
+          <HdsIcon @name='calendar' @size='16' @isInline={{true}} />
           <span data-test-overlap-text>
             {{commitment.person.name}}
             committed to slot
@@ -189,7 +190,7 @@ export default class RideRow extends Component {
         {{/if}}
         <@table.Td colspan='3'>
           {{#if this.mediumIcon}}
-            <HdsIcon @name={{this.mediumIcon}} @size='16' />
+            <HdsIcon @name={{this.mediumIcon}} @size='16' @isInline={{true}} />
           {{/if}}
           <span class='text' data-test-confirmation-text>
             Contact visitor to confirm receipt of ride request
