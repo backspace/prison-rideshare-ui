@@ -10,7 +10,10 @@ import ScrollTo from 'prison-rideshare-ui/components/scroll-to';
 import LinkedContact from 'prison-rideshare-ui/components/linked-contact';
 import RidePerson from 'prison-rideshare-ui/components/ride-person';
 import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
-import { HdsIcon } from '@hashicorp/design-system-components/components';
+import {
+  HdsButton,
+  HdsIcon,
+} from '@hashicorp/design-system-components/components';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import or from 'ember-truth-helpers/helpers/or';
@@ -123,26 +126,23 @@ export default class RideRow extends Component {
         {{/if}}
       </td>
       <td>
-        <button
-          type='button'
+        <HdsButton
           data-test-cancellation-button
           data-cancellation-state={{this.cancellationState}}
-          title={{this.cancellationButtonLabel}}
+          @text={{this.cancellationButtonLabel}}
+          @color='tertiary'
+          @isIconOnly={{true}}
+          @icon={{if this.ride.enabled 'x-circle' this.cancellationIcon}}
           {{on 'click' (fn this.editCancellation this.ride)}}
-        >
-          {{#if this.ride.enabled}}
-            <HdsIcon @name='slash' @size='16' />
-          {{else}}
-            <HdsIcon @name={{this.cancellationIcon}} @size='16' />
-          {{/if}}
-        </button>
-        <button
-          type='button'
+        />
+        <HdsButton
           data-test-edit-ride
+          @text='Edit ride'
+          @color='secondary'
+          @isIconOnly={{true}}
+          @icon='edit'
           {{on 'click' (fn this.editRide this.ride)}}
-        >
-          Edit
-        </button>
+        />
       </td>
     </tr>
 
