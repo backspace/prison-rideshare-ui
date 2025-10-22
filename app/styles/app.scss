@@ -47,6 +47,12 @@ body > div.ember-view {
   padding-top: 41px;
 }
 
+.rides-filters {
+  align-items: center;
+  gap: 16px;
+  margin: 1rem;
+}
+
 #ride-form-timespan {
   resize: none;
 }

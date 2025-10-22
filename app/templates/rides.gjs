@@ -5,6 +5,9 @@ import RideForm from 'prison-rideshare-ui/components/ride-form';
 import CancellationForm from 'prison-rideshare-ui/components/cancellation-form';
 import {
   HdsButton,
+  HdsForm,
+  HdsFormSectionMultiFieldGroup,
+  HdsFormTextInputBase,
   HdsFormToggleField,
 } from '@hashicorp/design-system-components/components';
 import { on } from '@ember/modifier';
@@ -21,40 +24,41 @@ export default RouteTemplate(
       />
     </ToolbarHeader>
 
-    <div data-test-ride-search>
-      <label class='sr-only' for='ride-search-input'>Search</label>
-      <input
-        id='ride-search-input'
-        type='search'
-        placeholder='Institution, driver, visitor, address'
-        value={{if @controller.search @controller.search ''}}
-        {{on 'input' @controller.updateSearchInput}}
-      />
-      {{#if @controller.search}}
-        <HdsButton
-          @icon='x'
-          @text='Clear search'
-          data-test-ride-search-clear
-          {{on 'click' @controller.clearSearch}}
-        />
-      {{/if}}
-    </div>
-    <HdsFormToggleField
-      data-test-show-completed
-      checked={{if @controller.showCompleted true undefined}}
-      {{on 'change' (fn @controller.toggle 'showCompleted')}}
-      as |Field|
-    >
-      <Field.Label>Reported-on</Field.Label>
-    </HdsFormToggleField>
-    <HdsFormToggleField
-      data-test-show-cancelled
-      checked={{if @controller.showCancelled true undefined}}
-      {{on 'change' (fn @controller.toggle 'showCancelled')}}
-      as |Field|
-    >
-      <Field.Label>Cancelled</Field.Label>
-    </HdsFormToggleField>
+    <HdsFormSectionMultiFieldGroup class='rides-filters' as |Group|>
+      <Group.Item @width='30rem'>
+        <div>
+          <label class='sr-only' for='ride-search-input'>Search</label>
+          <HdsFormTextInputBase
+            data-test-ride-search
+            id='ride-search-input'
+            type='search'
+            placeholder='Institution, driver, visitor, address'
+            value={{if @controller.search @controller.search ''}}
+            {{on 'input' @controller.updateSearchInput}}
+          />
+        </div>
+      </Group.Item>
+      <Group.Item>
+        <HdsFormToggleField
+          data-test-show-completed
+          checked={{if @controller.showCompleted true undefined}}
+          {{on 'change' (fn @controller.toggle 'showCompleted')}}
+          as |Field|
+        >
+          <Field.Label>Reported-on</Field.Label>
+        </HdsFormToggleField>
+      </Group.Item>
+      <Group.Item>
+        <HdsFormToggleField
+          data-test-show-cancelled
+          checked={{if @controller.showCancelled true undefined}}
+          {{on 'change' (fn @controller.toggle 'showCancelled')}}
+          as |Field|
+        >
+          <Field.Label>Cancelled</Field.Label>
+        </HdsFormToggleField>
+      </Group.Item>
+    </HdsFormSectionMultiFieldGroup>
 
     <table>
       <thead>
