@@ -219,7 +219,7 @@ export default class RideRow extends Component {
     {{/if}}
 
     {{#if this.ride.complete}}
-      <@table.Tr class='report' data-test-report-row>
+      <@table.Tr class='report no-top-border' data-test-report-row>
         {{#if this.showCreation}}
           <@table.Td />
         {{/if}}
