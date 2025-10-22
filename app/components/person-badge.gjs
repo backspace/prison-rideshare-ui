@@ -4,7 +4,11 @@ import { action } from '@ember/object';
 import { classNames } from '@ember-decorators/component';
 import Component from '@ember/component';
 import eq from 'ember-truth-helpers/helpers/eq';
-import { HdsIcon } from '@hashicorp/design-system-components/components';
+import {
+  HdsButton,
+  HdsIcon,
+} from '@hashicorp/design-system-components/components';
+import { on } from '@ember/modifier';
 
 @classic
 @classNames('person-badge')
@@ -13,28 +17,41 @@ export default class PersonBadge extends Component {
     {{! template-lint-disable no-invalid-interactive }}
     <div data-test-person-badge-toggle onclick={{this.toggleContact}}>
       {{#if (eq this.property 'driver')}}
-        <HdsIcon @name='user' @size='14' @title='driver' />
+        <HdsIcon @name='user' @size='14' @title='driver' @isInline={{true}} />
       {{else if (eq this.property 'carOwner')}}
-        <HdsIcon @name='truck' @size='14' @title='car owner' />
+        <HdsIcon
+          @name='truck'
+          @size='14'
+          @title='car owner'
+          @isInline={{true}}
+        />
       {{/if}}
       <span data-test-person-badge-name>
         {{this.person.name}}
       </span>
       {{#if this.clear}}
-        <button
-          onclick={{this.clear}}
-          type='button'
+        <HdsButton
           data-test-person-badge-clear
-        >
-          <HdsIcon @name='x' @size='14' @title='remove' />
-        </button>
+          {{on 'click' this.clear}}
+          @isIconOnly={{true}}
+          @isInline={{true}}
+          @icon='x'
+          @text='Remove'
+          @size='small'
+          @color='tertiary'
+        />
       {{/if}}
     </div>
     {{#if this.showContact}}
       <div class='contact-container'>
         {{#if this.person.email}}
           <a href='mailto:{{this.person.email}}'>
-            <HdsIcon @name='mail' @size='14' @title='email address' />
+            <HdsIcon
+              @name='mail'
+              @size='14'
+              @title='email address'
+              @isInline={{true}}
+            />
             <span data-test-person-badge-email>
               {{this.person.email}}
             </span>
@@ -46,6 +63,7 @@ export default class PersonBadge extends Component {
               @name='smartphone'
               @size='14'
               @title='mobile phone number'
+              @isInline={{true}}
             />
             <span data-test-person-badge-mobile>
               {{this.person.mobile}}
@@ -54,14 +72,24 @@ export default class PersonBadge extends Component {
         {{/if}}
         {{#if this.person.landline}}
           <a href='tel:{{this.person.landline}}'>
-            <HdsIcon @name='phone' @size='14' @title='landline number' />
+            <HdsIcon
+              @name='phone'
+              @size='14'
+              @title='landline number'
+              @isInline={{true}}
+            />
             <span data-test-person-badge-landline>
               {{this.person.landline}}
             </span>
           </a>
         {{/if}}
         {{#if this.person.selfNotes}}
-          <HdsIcon @name='file-text' @size='14' @title='notes about self' />
+          <HdsIcon
+            @name='file-text'
+            @size='14'
+            @title='notes about self'
+            @isInline={{true}}
+          />
           <span data-test-person-badge-self-notes>
             {{this.person.selfNotes}}
           </span>
