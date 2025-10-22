@@ -57,13 +57,13 @@ export default class RideRow extends Component {
         {{#if this.ride.firstTime}}
           <HdsIcon
             @name='alert-triangle'
-            @size='12'
+            @size='16'
             data-test-ride-first-time
           />
         {{/if}}
         <div data-test-ride-medium data-medium={{this.ride.medium}}>
           {{#if this.mediumIcon}}
-            <HdsIcon @name={{this.mediumIcon}} @size='12' @isInline={{true}} />
+            <HdsIcon @name={{this.mediumIcon}} @size='16' @isInline={{true}} />
           {{/if}}
           <span data-test-ride-contact>
             <LinkedContact @contact={{this.ride.contact}} />
@@ -101,7 +101,7 @@ export default class RideRow extends Component {
           </span>
           {{#if this.ride.overridable}}
             <span data-test-overridable-indicator>
-              <HdsIcon @name='truck' @size='12' />
+              <HdsIcon @name='truck' @size='16' />
             </span>
           {{/if}}
           {{#if (or (not this.ride.children) this.rideToCombine)}}
@@ -152,7 +152,7 @@ export default class RideRow extends Component {
           <td></td>
         {{/if}}
         <td colspan='3'>
-          <HdsIcon @name='calendar' @size='12' />
+          <HdsIcon @name='calendar' @size='16' />
           <span data-test-overlap-text>
             {{commitment.person.name}}
             committed to slot
@@ -185,7 +185,7 @@ export default class RideRow extends Component {
         {{/if}}
         <td colspan='3'>
           {{#if this.mediumIcon}}
-            <HdsIcon @name={{this.mediumIcon}} @size='12' />
+            <HdsIcon @name={{this.mediumIcon}} @size='16' />
           {{/if}}
           <span class='text' data-test-confirmation-text>
             Contact visitor to confirm receipt of ride request

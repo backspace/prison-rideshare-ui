@@ -17,11 +17,11 @@ export default class PersonBadge extends Component {
     {{! template-lint-disable no-invalid-interactive }}
     <div data-test-person-badge-toggle onclick={{this.toggleContact}}>
       {{#if (eq this.property 'driver')}}
-        <HdsIcon @name='user' @size='14' @title='driver' @isInline={{true}} />
+        <HdsIcon @name='user' @size='16' @title='driver' @isInline={{true}} />
       {{else if (eq this.property 'carOwner')}}
         <HdsIcon
           @name='truck'
-          @size='14'
+          @size='16'
           @title='car owner'
           @isInline={{true}}
         />
@@ -48,7 +48,7 @@ export default class PersonBadge extends Component {
           <a href='mailto:{{this.person.email}}'>
             <HdsIcon
               @name='mail'
-              @size='14'
+              @size='16'
               @title='email address'
               @isInline={{true}}
             />
@@ -61,7 +61,7 @@ export default class PersonBadge extends Component {
           <a href='tel:{{this.person.mobile}}'>
             <HdsIcon
               @name='smartphone'
-              @size='14'
+              @size='16'
               @title='mobile phone number'
               @isInline={{true}}
             />
@@ -74,7 +74,7 @@ export default class PersonBadge extends Component {
           <a href='tel:{{this.person.landline}}'>
             <HdsIcon
               @name='phone'
-              @size='14'
+              @size='16'
               @title='landline number'
               @isInline={{true}}
             />
@@ -86,7 +86,7 @@ export default class PersonBadge extends Component {
         {{#if this.person.selfNotes}}
           <HdsIcon
             @name='file-text'
-            @size='14'
+            @size='16'
             @title='notes about self'
             @isInline={{true}}
           />
