@@ -63,7 +63,7 @@ export default class RideRow extends Component {
         {{/if}}
         <div data-test-ride-medium data-medium={{this.ride.medium}}>
           {{#if this.mediumIcon}}
-            <HdsIcon @name={{this.mediumIcon}} @size='12' />
+            <HdsIcon @name={{this.mediumIcon}} @size='12' @isInline={{true}} />
           {{/if}}
           <span data-test-ride-contact>
             <LinkedContact @contact={{this.ride.contact}} />
