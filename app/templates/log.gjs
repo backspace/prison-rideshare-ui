@@ -64,9 +64,11 @@ export default RouteTemplate(
                   </div>
                 </Body.Td>
 
-                <Body.Td class='content' data-test-log-post-content>
-                  <MobiledocRenderer @mobiledoc={{post.bodyJson}} />
-                </Body.Td>
+                <Body.Td
+                  class='content'
+                  {{renderMobiledoc post.bodyJson}}
+                  data-test-log-post-content
+                />
 
                 <Body.Td class='controls'>
                   {{#if post.unread}}
@@ -206,10 +208,6 @@ export default RouteTemplate(
     </div>
   </template>,
 );
-
-const MobiledocRenderer = <template>
-  <section {{renderMobiledoc @mobiledoc}}></section>
-</template>;
 
 const renderMobiledoc = modifier((element, [mobiledoc]) => {
   if (!mobiledoc) {
