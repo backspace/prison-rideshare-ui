@@ -62,8 +62,6 @@ export default class ToolbarHeader extends Component {
           </:utilityActions>
         </HdsAppHeader>
       {{/in-element}}
-    {{else}}
-      header element not exist
     {{/if}}
   </template>
   @service
