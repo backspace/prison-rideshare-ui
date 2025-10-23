@@ -139,6 +139,24 @@ module('Acceptance | people', function (hooks) {
     assert.equal(will.medium, 'mobile');
   });
 
+  test('people can be sorted by name and last ride', async function (assert) {
+    await page.visit();
+
+    assert.deepEqual(page.peopleNames, ['Kala', 'Sun']);
+
+    await page.head.nameSort.click();
+    assert.deepEqual(page.peopleNames, ['Sun', 'Kala']);
+
+    await page.head.nameSort.click();
+    assert.deepEqual(page.peopleNames, ['Kala', 'Sun']);
+
+    await page.head.lastRideSort.click();
+    assert.deepEqual(page.peopleNames, ['Sun', 'Kala']);
+
+    await page.head.lastRideSort.click();
+    assert.deepEqual(page.peopleNames, ['Kala', 'Sun']);
+  });
+
   test('a person can be created and chosen for a ride', async function (assert) {
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();

@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get */
 import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
@@ -14,6 +14,67 @@ export default class DriversController extends Controller {
   toasts;
 
   showInactive = false;
+  sortProp = 'name';
+  sortDir = 'asc';
+
+  @computed('model.@each.{name,lastRide}', 'sortProp', 'sortDir')
+  get sortedPeople() {
+    const people = this.model ? this.model.toArray() : [];
+    const sorted = people.slice().sort((a, b) => {
+      let comparison;
+
+      switch (this.sortProp) {
+        case 'lastRide':
+          comparison = this.compareByLastRide(a, b);
+          break;
+        case 'name':
+        default:
+          comparison = this.compareByName(a, b);
+          break;
+      }
+
+      if (comparison !== 0) {
+        return comparison;
+      }
+
+      return this.compareByName(a, b);
+    });
+
+    if (this.sortDir === 'desc') {
+      sorted.reverse();
+    }
+
+    return sorted;
+  }
+
+  compareByName(a, b) {
+    return (a.name || '')
+      .toLowerCase()
+      .localeCompare((b.name || '').toLowerCase());
+  }
+
+  compareByLastRide(a, b) {
+    const aStart = a.lastRide?.start
+      ? new Date(a.lastRide.start).getTime()
+      : null;
+    const bStart = b.lastRide?.start
+      ? new Date(b.lastRide.start).getTime()
+      : null;
+
+    if (aStart === bStart) {
+      return 0;
+    }
+
+    if (aStart === null) {
+      return 1;
+    }
+
+    if (bStart === null) {
+      return -1;
+    }
+
+    return aStart - bStart;
+  }
 
   @action
   newPerson() {
@@ -89,5 +150,15 @@ export default class DriversController extends Controller {
   @action
   copyAddressSuccess() {
     this.toasts.show('Copied address');
+  }
+
+  @action
+  sort(property) {
+    if (this.sortProp === property) {
+      this.set('sortDir', this.sortDir === 'asc' ? 'desc' : 'asc');
+    } else {
+      this.set('sortProp', property);
+      this.set('sortDir', 'asc');
+    }
   }
 }

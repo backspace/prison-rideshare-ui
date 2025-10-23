@@ -2,7 +2,6 @@ import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import CopyButton from 'ember-cli-clipboard/components/copy-button';
 import momentFormat from 'ember-moment/helpers/moment-format';
-import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import or from 'ember-truth-helpers/helpers/or';
 import ReimbursementForm from 'prison-rideshare-ui/components/reimbursement-form';
 import { get, fn } from '@ember/helper';
@@ -47,23 +46,42 @@ export default RouteTemplate(
       </HdsFormToggleField>
     </div>
 
-    <HdsTable data-test-drivers-table>
+    <HdsTable
+      data-test-drivers-table
+      @isSortable={{true}}
+      @sortBy={{@controller.sortProp}}
+      @sortOrder={{@controller.sortDir}}
+    >
       <:head as |Head|>
         <Head.Tr>
           <Head.Th>Active</Head.Th>
-          <Head.Th class='name'>Name</Head.Th>
+          <Head.ThSort
+            class='name'
+            data-test-drivers-head-name
+            @sortOrder={{if (eq @controller.sortProp 'name') @controller.sortDir}}
+            @onClickSort={{fn @controller.sort 'name'}}
+          >
+            Name
+          </Head.ThSort>
           <Head.Th class='email'>Email</Head.Th>
           <Head.Th class='mobile'>Mobile</Head.Th>
           <Head.Th class='landline'>Landline</Head.Th>
           <Head.Th class='address'>Address</Head.Th>
-          <Head.Th class='last-ride'>Last ride</Head.Th>
+          <Head.ThSort
+            class='last-ride'
+            data-test-drivers-head-last-ride
+            @sortOrder={{if (eq @controller.sortProp 'lastRide') @controller.sortDir}}
+            @onClickSort={{fn @controller.sort 'lastRide'}}
+          >
+            Last ride
+          </Head.ThSort>
           <Head.Th class='notes'>Notes</Head.Th>
           <Head.Th class='actions'>Actions</Head.Th>
         </Head.Tr>
       </:head>
 
       <:body as |Body|>
-        {{#each (sortBy 'name' @controller.model) as |person|}}
+        {{#each @controller.sortedPeople as |person|}}
           {{#if (or person.active @controller.showInactive)}}
             {{#unless person.isNew}}
               <Body.Tr class='person' data-test-driver-row>

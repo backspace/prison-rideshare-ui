@@ -41,6 +41,14 @@ export default create({
       enabled: isChecked(),
       click: clickable(),
     },
+    nameSort: {
+      scope: '[data-test-drivers-head-name]',
+      click: clickable('button'),
+    },
+    lastRideSort: {
+      scope: '[data-test-drivers-head-last-ride]',
+      click: clickable('button'),
+    },
   },
 
   people: collection('[data-test-driver-row]', {
@@ -156,4 +164,8 @@ export default create({
     submit: clickable('[data-test-driver-form-submit]'),
     cancel: clickable('[data-test-driver-form-cancel]'),
   },
+
+  peopleNames: getter(function () {
+    return this.people.toArray().map((person) => person.name);
+  }),
 });
