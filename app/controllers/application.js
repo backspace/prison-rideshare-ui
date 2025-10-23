@@ -3,6 +3,7 @@ import classic from 'ember-classic-decorator';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
+import { tracked } from '@glimmer/tracking';
 
 @classic
 export default class ApplicationController extends Controller {
@@ -25,6 +26,8 @@ export default class ApplicationController extends Controller {
 
   @controller
   rides;
+
+  @tracked headerElement;
 
   @computed('overlaps.count', 'rides.model.@each.requiresConfirmation')
   get ridesBadgeCount() {

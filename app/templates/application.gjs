@@ -19,6 +19,7 @@ import { pageTitle } from 'ember-page-title';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import now from 'ember-moment/helpers/now';
 import BasicDropdownWormhole from 'ember-basic-dropdown/components/basic-dropdown-wormhole';
+import { modifier } from 'ember-modifier';
 
 class ApplicationComponent extends Component {
   @service paperToaster;
@@ -30,6 +31,10 @@ class ApplicationComponent extends Component {
       const isDesktop = window.matchMedia('(min-width: 1088px)').matches;
       this.args.controller.sidebar.open = isDesktop;
     }
+  }
+
+  @action storeHeaderElement(headerElement) {
+    this.args.controller.headerElement = headerElement;
   }
 
   get sideNavKey() {
@@ -68,12 +73,8 @@ class ApplicationComponent extends Component {
       </HdsToast>
     {{/if}}
 
-    <HdsAppFrame
-      class='app-frame'
-      @hasHeader={{false}}
-      @hasFooter={{false}}
-      as |Frame|
-    >
+    <HdsAppFrame class='app-frame' @hasFooter={{false}} as |Frame|>
+      <Frame.Header {{storeHeaderElement this.storeHeaderElement}} />
       <Frame.Sidebar>
         {{#unless this.isSidebarMinimized}}
           <HdsAppSideNav
@@ -165,5 +166,9 @@ class ApplicationComponent extends Component {
     <BasicDropdownWormhole />
   </template>
 }
+
+const storeHeaderElement = modifier((element, [storeHeaderElement]) => {
+  storeHeaderElement(element);
+});
 
 export default RouteTemplate(ApplicationComponent);
