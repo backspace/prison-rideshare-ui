@@ -65,7 +65,7 @@ export default RouteTemplate(
                 </Body.Td>
 
                 <Body.Td
-                  class='content'
+                  class='log-content'
                   {{renderMobiledoc post.bodyJson}}
                   data-test-log-post-content
                 />

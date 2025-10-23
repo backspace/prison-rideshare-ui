@@ -21,3 +21,9 @@ md-table-container.posts {
     }
   }
 }
+
+.log-content {
+  *:first-child {
+    margin-top: 0;
+  }
+}
