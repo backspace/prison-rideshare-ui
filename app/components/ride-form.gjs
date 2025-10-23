@@ -15,6 +15,7 @@ import {
   HdsButton,
   HdsButtonSet,
   HdsForm,
+  HdsFormSectionMultiFieldGroup,
   HdsFormSuperSelectSingleField,
   HdsFormTextInputField,
   HdsFormTextareaField,
@@ -23,6 +24,7 @@ import {
   HdsFormRadioField,
   HdsFormField,
   HdsIcon,
+  HdsSegmentedGroup,
 } from '@hashicorp/design-system-components/components';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
@@ -94,70 +96,73 @@ export default class RideForm extends Component {
             </HdsFormTextareaField>
           </Form.Section>
 
-          <div data-test-timespan-result>
-            <HdsFormTextInputField
-              @value={{this.rideTimes}}
-              @isInvalid={{this.timespanWarning}}
-              disabled={{true}}
-              data-test-timespan-result
-              as |Field|
-            >
-              <Field.Label>Ride times</Field.Label>
-              {{#if this.timespanWarning}}
-                <Field.Error data-test-timespan-warning>
-                  This request is in the past
-                </Field.Error>
-              {{/if}}
-            </HdsFormTextInputField>
-            {{#unless this.overrideTimespan}}
-              <HdsButton
-                @text='Manual times'
-                @color='secondary'
-                data-test-timespan-override-button
-                {{on 'click' (fn (mut this.overrideTimespan) true)}}
-              />
-            {{/unless}}
-          </div>
+          <HdsFormField @layout='vertical' as |Field|>
+            <Field.Label>Ride times</Field.Label>
+            <Field.Control>
+              <HdsSegmentedGroup as |SegmentedGroup|>
+                <SegmentedGroup.TextInput
+                  id={{Field.id}}
+                  aria-describedby={{Field.ariaDescribedBy}}
+                  @value={{this.rideTimes}}
+                  @isInvalid={{this.timespanWarning}}
+                  disabled={{true}}
+                  data-test-timespan-result
+                />
+                <SegmentedGroup.Button
+                  @text='Manual times'
+                  @color='secondary'
+                  disabled={{this.overrideTimespan}}
+                  data-test-timespan-override-button
+                  {{on 'click' (fn (mut this.overrideTimespan) true)}}
+                />
+              </HdsSegmentedGroup>
+            </Field.Control>
+            {{#if this.timespanWarning}}
+              <Field.Error data-test-timespan-warning>
+                This request is in the past
+              </Field.Error>
+            {{/if}}
+          </HdsFormField>
 
           {{#if this.overrideTimespan}}
-            <div>
-              <HdsFormTextInputField
-                @value={{this.startTimeString}}
-                @type='datetime-local'
-                @isInvalid={{gt this.ride.validationErrors.start.length 0}}
-                data-test-timespan-start
-                {{on 'change' this.updateStartTime}}
-                as |Field|
-              >
-                <Field.Label>Start time</Field.Label>
-                {{#if (gt this.ride.validationErrors.start.length 0)}}
-                  <Field.Error>
-                    {{#each this.ride.validationErrors.start as |error|}}
-                      <span>{{error}}</span>
-                    {{/each}}
-                  </Field.Error>
-                {{/if}}
-              </HdsFormTextInputField>
-            </div>
-            <div>
-              <HdsFormTextInputField
-                @value={{this.endTimeString}}
-                @type='datetime-local'
-                @isInvalid={{gt this.ride.validationErrors.end.length 0}}
-                data-test-timespan-end
-                {{on 'change' this.updateEndTime}}
-                as |Field|
-              >
-                <Field.Label>End time</Field.Label>
-                {{#if (gt this.ride.validationErrors.end.length 0)}}
-                  <Field.Error data-test-timespan-end-error>
-                    {{#each this.ride.validationErrors.end as |error|}}
-                      <span>{{error}}</span>
-                    {{/each}}
-                  </Field.Error>
-                {{/if}}
-              </HdsFormTextInputField>
-            </div>
+            <Form.Section>
+              <HdsFormSectionMultiFieldGroup>
+                <HdsFormTextInputField
+                  @value={{this.startTimeString}}
+                  @type='datetime-local'
+                  @isInvalid={{gt this.ride.validationErrors.start.length 0}}
+                  data-test-timespan-start
+                  {{on 'change' this.updateStartTime}}
+                  as |Field|
+                >
+                  <Field.Label>Start time</Field.Label>
+                  {{#if (gt this.ride.validationErrors.start.length 0)}}
+                    <Field.Error>
+                      {{#each this.ride.validationErrors.start as |error|}}
+                        <span>{{error}}</span>
+                      {{/each}}
+                    </Field.Error>
+                  {{/if}}
+                </HdsFormTextInputField>
+                <HdsFormTextInputField
+                  @value={{this.endTimeString}}
+                  @type='datetime-local'
+                  @isInvalid={{gt this.ride.validationErrors.end.length 0}}
+                  data-test-timespan-end
+                  {{on 'change' this.updateEndTime}}
+                  as |Field|
+                >
+                  <Field.Label>End time</Field.Label>
+                  {{#if (gt this.ride.validationErrors.end.length 0)}}
+                    <Field.Error data-test-timespan-end-error>
+                      {{#each this.ride.validationErrors.end as |error|}}
+                        <span>{{error}}</span>
+                      {{/each}}
+                    </Field.Error>
+                  {{/if}}
+                </HdsFormTextInputField>
+              </HdsFormSectionMultiFieldGroup>
+            </Form.Section>
           {{/if}}
 
           <HdsFormSuperSelectSingleField
