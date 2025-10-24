@@ -128,17 +128,17 @@ class InstitutionsComponent extends Component {
             <Form.Footer as |Footer|>
               <Footer.ButtonSet>
                 <HdsButton
+                  type='submit'
+                  @color='primary'
+                  @text='Save'
+                  data-test-institution-submit
+                />
+                <HdsButton
                   type='button'
                   @color='secondary'
                   @text='Cancel'
                   data-test-institution-cancel
                   {{on 'click' @controller.cancelInstitution}}
-                />
-                <HdsButton
-                  type='submit'
-                  @color='primary'
-                  @text='Save'
-                  data-test-institution-submit
                 />
               </Footer.ButtonSet>
             </Form.Footer>

@@ -326,17 +326,17 @@ export default RouteTemplate(
             <Form.Footer as |Footer|>
               <Footer.ButtonSet>
                 <HdsButton
+                  @text='Save'
+                  @color='primary'
+                  type='submit'
+                  data-test-driver-form-submit
+                />
+                <HdsButton
                   @text='Cancel'
                   @color='secondary'
                   type='button'
                   data-test-driver-form-cancel
                   {{on 'click' @controller.cancelPerson}}
-                />
-                <HdsButton
-                  @text='Save'
-                  @color='primary'
-                  type='submit'
-                  data-test-driver-form-submit
                 />
               </Footer.ButtonSet>
             </Form.Footer>
