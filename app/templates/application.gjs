@@ -63,13 +63,14 @@ class ApplicationComponent extends Component {
     {{! Adapted from https://github.com/adopted-ember-addons/ember-paper/blob/002fa43fd64a609b55d90daeecc0e151085b40e3/addon/components/paper-toaster.hbs }}
     {{#if this.activeToast.show}}
       <HdsToast
+        class='toast'
         @onDismiss={{fn this.paperToaster.cancelToast this.activeToast}}
         data-test-toast
         as |toast|
       >
-        <toast.Title
-          data-test-toast-text
-        >{{this.activeToast.text}}</toast.Title>
+        <toast.Title data-test-toast-text>
+          {{this.activeToast.text}}
+        </toast.Title>
       </HdsToast>
     {{/if}}
 

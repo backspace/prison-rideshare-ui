@@ -2,7 +2,7 @@
 // Adapted from https://github.com/adopted-ember-addons/ember-paper/blob/002fa43fd64a609b55d90daeecc0e151085b40e3/addon/services/paper-toaster.js
 import { reads } from '@ember/object/computed';
 import { assign } from '@ember/polyfills';
-import { later } from '@ember/runloop';
+import { cancel, later } from '@ember/runloop';
 import { A } from '@ember/array';
 import Service from '@ember/service';
 import EObject from '@ember/object';
@@ -24,6 +24,7 @@ export default Service.extend({
       assign({ text, show: true }, this.buildOptions(options)),
     );
     this.queue.pushObject(t);
+    this.scheduleAutoDismiss(t);
     return t;
   },
 
@@ -32,11 +33,13 @@ export default Service.extend({
       assign({ componentName, show: true }, this.buildOptions(options)),
     );
     this.queue.pushObject(t);
+    this.scheduleAutoDismiss(t);
     return t;
   },
 
   @action
   cancelToast(toast) {
+    this.clearScheduledDismiss(toast);
     toast.set('show', false);
 
     if (this.activeToast === toast) {
@@ -51,6 +54,35 @@ export default Service.extend({
         toast.onClose();
       }
       this.queue.removeObject(toast);
+    }
+  },
+
+  scheduleAutoDismiss(toast) {
+    let { duration } = toast;
+
+    if (duration === false || duration === null || duration === undefined) {
+      return;
+    }
+
+    if (typeof duration === 'number' && duration > 0) {
+      toast.set(
+        '_dismissTimer',
+        later(() => {
+          // Only close if still visible and in queue to avoid canceling a replaced toast.
+          if (this.queue.includes(toast) && toast.show !== false) {
+            this.cancelToast(toast);
+          }
+        }, duration),
+      );
+    }
+  },
+
+  clearScheduledDismiss(toast) {
+    let dismissTimer = toast.get('_dismissTimer');
+
+    if (dismissTimer) {
+      cancel(dismissTimer);
+      toast.set('_dismissTimer', null);
     }
   },
 
