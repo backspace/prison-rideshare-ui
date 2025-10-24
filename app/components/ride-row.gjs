@@ -134,6 +134,7 @@ export default class RideRow extends Component {
           @text={{this.cancellationButtonLabel}}
           @color='tertiary'
           @isIconOnly={{true}}
+          @isInline={{true}}
           @icon={{if this.ride.enabled 'x-circle' this.cancellationIcon}}
           {{on 'click' (fn this.editCancellation this.ride)}}
         />
@@ -142,6 +143,7 @@ export default class RideRow extends Component {
           @text='Edit ride'
           @color='tertiary'
           @isIconOnly={{true}}
+          @isInline={{true}}
           @icon='edit'
           {{on 'click' (fn this.editRide this.ride)}}
         />
