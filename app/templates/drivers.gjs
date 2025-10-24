@@ -182,6 +182,7 @@ export default RouteTemplate(
                     @text='Edit person'
                     @isIconOnly={{true}}
                     @size='small'
+                    @color='tertiary'
                     data-test-driver-edit
                     {{on 'click' (fn @controller.editPerson person)}}
                   />

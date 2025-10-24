@@ -140,7 +140,7 @@ export default class RideRow extends Component {
         <HdsButton
           data-test-edit-ride
           @text='Edit ride'
-          @color='secondary'
+          @color='tertiary'
           @isIconOnly={{true}}
           @icon='edit'
           {{on 'click' (fn this.editRide this.ride)}}

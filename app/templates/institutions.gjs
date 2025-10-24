@@ -65,6 +65,7 @@ class InstitutionsComponent extends Component {
               @text='Edit institution'
               @isIconOnly={{true}}
               @size='small'
+              @color='tertiary'
               data-test-institution-edit
               {{on
                 'click'
