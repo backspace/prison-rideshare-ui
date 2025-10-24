@@ -356,3 +356,7 @@ md-option[aria-current] {
 md-backdrop.md-opaque.ng-enter {
   opacity: 0.48;
 }
+
+.hds-modal input {
+  box-sizing: border-box;
+}
