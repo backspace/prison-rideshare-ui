@@ -59,6 +59,7 @@ export default class RideRow extends Component {
             @name='alert-triangle'
             @size='16'
             @isInline={{true}}
+            @title='First-time rider'
             data-test-ride-first-time
           />
         {{/if}}
