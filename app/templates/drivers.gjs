@@ -58,7 +58,10 @@ export default RouteTemplate(
           <Head.ThSort
             class='name'
             data-test-drivers-head-name
-            @sortOrder={{if (eq @controller.sortProp 'name') @controller.sortDir}}
+            @sortOrder={{if
+              (eq @controller.sortProp 'name')
+              @controller.sortDir
+            }}
             @onClickSort={{fn @controller.sort 'name'}}
           >
             Name
@@ -70,7 +73,10 @@ export default RouteTemplate(
           <Head.ThSort
             class='last-ride'
             data-test-drivers-head-last-ride
-            @sortOrder={{if (eq @controller.sortProp 'lastRide') @controller.sortDir}}
+            @sortOrder={{if
+              (eq @controller.sortProp 'lastRide')
+              @controller.sortDir
+            }}
             @onClickSort={{fn @controller.sort 'lastRide'}}
           >
             Last ride
