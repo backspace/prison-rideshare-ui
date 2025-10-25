@@ -130,6 +130,7 @@ export default class RideRow extends Component {
         <HdsButton
           data-test-cancellation-button
           data-cancellation-state={{this.cancellationState}}
+          title={{this.cancellationButtonLabel}}
           @text={{this.cancellationButtonLabel}}
           @color='tertiary'
           @isIconOnly={{true}}
