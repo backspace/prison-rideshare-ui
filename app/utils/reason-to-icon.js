@@ -1,8 +1,8 @@
 const reasonToIcon = {
   lockdown: 'lock',
   visitor: 'user',
-  'no car': 'truck',
-  'driver not found': 'alert-triangle',
+  'no car': 'car',
+  'driver not found': 'user-round-search',
   'at capacity': 'users',
   weather: 'cloud',
   transfer: 'shuffle',

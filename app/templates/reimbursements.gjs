@@ -189,7 +189,7 @@ export default RouteTemplate(
                 <Body.Td class='expenses' data-test-processed-expense>
                   {{#if row.foodExpensesDollars}}
                     <HdsIcon
-                      @name='wall'
+                      @name='coffee'
                       @size='16'
                       data-test-processed-expense-icon='food'
                     />
@@ -198,7 +198,7 @@ export default RouteTemplate(
                     </span>
                   {{else}}
                     <HdsIcon
-                      @name='truck'
+                      @name='fuel'
                       @size='16'
                       data-test-processed-expense-icon='car'
                     />

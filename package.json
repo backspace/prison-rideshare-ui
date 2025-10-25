@@ -132,7 +132,8 @@
     },
     "patchedDependencies": {
       "@hashicorp/design-system-components": "patches/@hashicorp__design-system-components.patch",
-      "decorator-transforms": "patches/decorator-transforms.patch"
+      "decorator-transforms": "patches/decorator-transforms.patch",
+      "@hashicorp/flight-icons": "patches/@hashicorp__flight-icons.patch"
     }
   }
 }

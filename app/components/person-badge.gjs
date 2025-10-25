@@ -29,12 +29,7 @@ export default class PersonBadge extends Component {
       {{#if (eq @property 'driver')}}
         <HdsIcon @name='user' @size='16' @title='driver' @isInline={{true}} />
       {{else if (eq @property 'carOwner')}}
-        <HdsIcon
-          @name='truck'
-          @size='16'
-          @title='car owner'
-          @isInline={{true}}
-        />
+        <HdsIcon @name='car' @size='16' @title='car owner' @isInline={{true}} />
       {{/if}}
       <span data-test-person-badge-name>
         {{@person.name}}

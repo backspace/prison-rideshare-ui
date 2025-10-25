@@ -102,7 +102,7 @@ export default class RideRow extends Component {
           />
           {{#if this.ride.overridable}}
             <span data-test-overridable-indicator>
-              <HdsIcon @name='truck' @size='16' @isInline={{true}} />
+              <HdsIcon @name='car' @size='16' @isInline={{true}} />
             </span>
           {{/if}}
           {{#if (or (not this.ride.children) this.rideToCombine)}}
@@ -233,7 +233,7 @@ export default class RideRow extends Component {
             {{this.ride.distance}}
           </span>
           {{#if this.ride.carExpenses}}
-            <HdsIcon @name='truck' @size='16' @isInline={{true}} />
+            <HdsIcon @name='fuel' @size='16' @isInline={{true}} />
 
             <span data-test-report-car-expenses>
               {{this.ride.carExpensesDollars}}
@@ -244,7 +244,7 @@ export default class RideRow extends Component {
             {{/if}}
           {{/if}}
           {{#if this.ride.foodExpenses}}
-            <HdsIcon @name='tools' @size='16' @isInline={{true}} />
+            <HdsIcon @name='coffee' @size='16' @isInline={{true}} />
 
             <span data-test-report-food>
               {{this.ride.foodExpensesDollars}}
