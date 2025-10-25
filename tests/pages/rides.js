@@ -116,7 +116,6 @@ export default create({
       clear: clickable('[data-test-person-badge-clear]'),
 
       select: {
-        scope: '[data-test-ride-person-select="carOwner"]',
         click: clickable(),
         type: triggerable('keydown'),
         enter: triggerable('keydown', '.ember-basic-dropdown-trigger', {
