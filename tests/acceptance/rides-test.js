@@ -5,7 +5,6 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { selectChoose } from 'ember-power-select/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -415,7 +414,7 @@ module('Acceptance | rides', function (hooks) {
     );
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    await selectChoose('[data-test-institution-select]', 'Rockwood');
+    await page.form.institution.choose('Rockwood');
 
     percySnapshot(assert);
 
@@ -460,7 +459,7 @@ module('Acceptance | rides', function (hooks) {
     assert.ok(lastRide.overridable);
 
     await page.rides[0].driver.click();
-    await selectChoose('[data-test-ride-person-select="driver"]', 'Sun');
+    await page.rides[0].driver.choose('Sun');
 
     assert.equal(page.rides[0].driver.text, 'Sun');
     assert.equal(
@@ -574,7 +573,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.contact.fillIn('jants@example.com');
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    await selectChoose('[data-test-institution-select]', 'Rockwood');
+    await page.form.institution.choose('Rockwood');
 
     await page.form.submit();
 

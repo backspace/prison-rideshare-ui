@@ -12,6 +12,7 @@ import {
   visitable,
 } from 'ember-cli-page-object';
 import { getter } from 'ember-cli-page-object/macros';
+import { selectChoose } from 'ember-power-select/test-support';
 
 export default create({
   visit: visitable('/rides'),
@@ -94,6 +95,9 @@ export default create({
       click: clickable(),
       reveal: clickable('[data-test-person-badge-toggle]'),
       clear: clickable('[data-test-person-badge-clear]'),
+      async choose(option) {
+        await selectChoose('[data-test-ride-person-select="driver"]', option);
+      },
 
       email: text('[data-test-person-badge-email]'),
       landline: text('[data-test-person-badge-landline]'),
@@ -251,6 +255,12 @@ export default create({
       scope: '[data-test-name-error]',
     },
 
+    institution: {
+      scope: '[data-test-institution-select]',
+      async choose(option) {
+        await selectChoose('[data-test-institution-select]', option);
+      },
+    },
     institutionError: {
       scope: '[data-test-institution-error]',
     },

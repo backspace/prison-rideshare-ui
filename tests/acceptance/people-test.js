@@ -4,7 +4,6 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { selectChoose } from 'ember-power-select/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
@@ -180,7 +179,7 @@ module('Acceptance | people', function (hooks) {
 
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();
-    await selectChoose('[data-test-ride-person-select="driver"]', 'Capheus');
+    await ridesPage.rides[0].driver.choose('Capheus');
 
     assert.equal(ridesPage.rides[0].driver.text, 'Capheus');
   });
