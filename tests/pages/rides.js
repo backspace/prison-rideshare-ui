@@ -31,13 +31,6 @@ export default create({
 
     search: {
       scope: '[data-test-ride-search]',
-
-      fillIn: fillable(),
-      value: value(),
-
-      clear: {
-        scope: '#search-clear',
-      },
     },
   },
 
