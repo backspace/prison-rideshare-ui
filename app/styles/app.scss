@@ -35,6 +35,12 @@ body.ember-application {
   display: flex;
 }
 
+.hds-app-frame__main {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+}
+
 body > div.ember-view {
   flex-direction: row;
   flex: 1;
