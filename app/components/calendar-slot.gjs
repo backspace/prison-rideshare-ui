@@ -1,9 +1,5 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-get, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
-import Component from '@ember/component';
-import { action, get, computed } from '@ember/object';
+import Component from '@glimmer/component';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 import moment from 'moment-timezone';
 import { task } from 'ember-concurrency';
@@ -13,7 +9,6 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import { HdsFormCheckboxField } from '@hashicorp/design-system-components/components';
 
-@classic
 export default class CalendarSlot extends Component {
   <template>
     <div class='slot {{if this.hidden "hidden"}}' data-test-calendar-slot>
@@ -57,38 +52,51 @@ export default class CalendarSlot extends Component {
   @service
   store;
 
-  @reads('commitment')
-  isCommittedTo;
+  get slot() {
+    return this.args.slot;
+  }
 
-  @computed('person.id', 'slot.commitments.@each.person')
+  get person() {
+    return this.args.person;
+  }
+
+  get count() {
+    return this.args.count;
+  }
+
+  get setViewingSlot() {
+    return this.args.setViewingSlot;
+  }
+
+  get isCommittedTo() {
+    return Boolean(this.commitment);
+  }
+
   get commitment() {
-    const personId = this.get('person.id');
+    const personId = this.person?.id;
 
-    return this.get('slot.commitments').find(
+    return this.slot?.commitments?.find(
       (slot) => slot.belongsTo('person').id() == personId,
     );
   }
 
-  @computed('slot.{start,end}')
   get timespan() {
     return formatBriefTimespan(
       this.moment,
-      this.get('slot.start'),
-      this.get('slot.end'),
+      this.slot?.start,
+      this.slot?.end,
       false,
     );
   }
 
-  @computed('slot.isNotFull', 'isCommittedTo')
   get hidden() {
-    return !this.get('slot.isNotFull') && !this.isCommittedTo;
+    return !this.slot?.isNotFull && !this.isCommittedTo;
   }
 
-  @computed('isCommittedTo', 'slot.{isNotFull,start}', 'toggle.isRunning')
   get disabled() {
-    const isNotFull = this.get('slot.isNotFull');
-    const start = this.get('slot.start');
-    const toggleIsRunning = this.get('toggle.isRunning');
+    const isNotFull = this.slot?.isNotFull;
+    const start = this.slot?.start;
+    const toggleIsRunning = this.toggle.isRunning;
 
     if (toggleIsRunning) {
       return true;
@@ -101,11 +109,10 @@ export default class CalendarSlot extends Component {
     }
   }
 
-  @computed('slot.{count,commitments.length}')
   get capacity() {
-    const dividend = this.get('slot.commitments.length');
+    const dividend = this.slot?.commitments?.length ?? 0;
 
-    const count = this.get('slot.count');
+    const count = this.slot?.count;
     const divisor = count === 0 ? '∞' : count;
 
     return `${dividend}/${divisor}`;
@@ -120,14 +127,14 @@ export default class CalendarSlot extends Component {
 
         this.toasts.show(
           `Cancelled your agreement to drive on ${moment(
-            this.get('slot.start'),
+            this.slot?.start,
           ).format('MMMM D')}`,
         );
       } catch (error) {
-        const errorDetail = get(error, 'errors.firstObject.detail');
+        const errorDetail = error?.errors?.[0]?.detail;
         this.toasts.show(errorDetail || 'Couldn’t save your change');
       }
-    } else if (this.get('slot.isNotFull')) {
+    } else if (this.slot?.isNotFull) {
       const newRecord = this.store.createRecord('commitment', {
         slot: this.slot,
         person: this.person,
@@ -137,12 +144,12 @@ export default class CalendarSlot extends Component {
         yield newRecord.save();
 
         this.toasts.show(
-          `Thanks for agreeing to drive on ${moment(
-            this.get('slot.start'),
-          ).format('MMMM D')}!`,
+          `Thanks for agreeing to drive on ${moment(this.slot?.start).format(
+            'MMMM D',
+          )}!`,
         );
       } catch (error) {
-        const errorDetail = get(error, 'errors.firstObject.detail');
+        const errorDetail = error?.errors?.[0]?.detail;
         this.toasts.show(errorDetail || 'Couldn’t save your change');
         newRecord.destroyRecord();
       }
