@@ -28,7 +28,7 @@ import { fn } from '@ember/helper';
 import eq from 'ember-truth-helpers/helpers/eq';
 import gt from 'ember-truth-helpers/helpers/gt';
 import { tracked } from '@glimmer/tracking';
-import { schedule } from '@ember/runloop';
+import { scheduleTask } from 'ember-lifeline';
 
 const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
 
@@ -575,7 +575,7 @@ export default class RideForm extends Component {
   }
 
   @action maybeStoreUnmatchedVisitorName() {
-    schedule('actions', () => {
+    scheduleTask(this, 'actions', () => {
       let existingName = this.get('ride.name');
 
       if (
