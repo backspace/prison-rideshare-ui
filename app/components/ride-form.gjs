@@ -96,7 +96,7 @@ export default class RideForm extends Component {
             </HdsFormTextareaField>
           </Form.Section>
 
-          <HdsFormField @layout='vertical' as |Field|>
+          <HdsFormField @layout='vertical' data-test-timespan-result as |Field|>
             <Field.Label>Ride times</Field.Label>
             <Field.Control>
               <HdsSegmentedGroup as |SegmentedGroup|>
@@ -106,7 +106,6 @@ export default class RideForm extends Component {
                   @value={{this.rideTimes}}
                   @isInvalid={{this.timespanWarning}}
                   disabled={{true}}
-                  data-test-timespan-result
                 />
                 <SegmentedGroup.Button
                   @text='Manual times'
