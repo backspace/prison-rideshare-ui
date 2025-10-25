@@ -1,6 +1,5 @@
 import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
-import { LinkTo } from '@ember/routing';
 import {
   HdsAlert,
   HdsButton,

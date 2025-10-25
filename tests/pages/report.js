@@ -1,11 +1,4 @@
-import {
-  clickable,
-  collection,
-  create,
-  property,
-  text,
-  visitable,
-} from 'ember-cli-page-object';
+import { collection, create, property, visitable } from 'ember-cli-page-object';
 
 export default create({
   visit: visitable('/reports/new'),

@@ -2,30 +2,31 @@
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { get, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class RegisterController extends Controller {
-  @service
-  session;
+  @service session;
+
+  @tracked error;
 
   @action
-  updateEmail(valueOrEvent) {
-    const value = valueOrEvent?.target?.value ?? valueOrEvent;
+  updateEmail(event) {
+    const value = event?.target?.value;
+    this.model.email = value;
 
     this.model.set('email', value);
   }
 
   @action
-  updatePassword(valueOrEvent) {
-    const value = valueOrEvent?.target?.value ?? valueOrEvent;
-
-    this.model.set('password', value);
+  updatePassword(event) {
+    const value = event?.target?.value;
+    this.model.password = value;
   }
 
   @action
-  updatePasswordConfirmation(valueOrEvent) {
-    const value = valueOrEvent?.target?.value ?? valueOrEvent;
-
-    this.model.set('passwordConfirmation', value);
+  updatePasswordConfirmation(event) {
+    const value = event?.target?.value;
+    this.model.passwordConfirmation = value;
   }
 
   @action
@@ -47,7 +48,7 @@ export default class RegisterController extends Controller {
         const errorText =
           get(error, 'errors.firstObject.detail') ??
           'There was an error registering you';
-        this.set('error', errorText);
+        this.error = errorText;
       });
   }
 }

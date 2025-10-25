@@ -2,7 +2,6 @@ import {
   clickable,
   collection,
   create,
-  fillable,
   isVisible,
   text,
   visitable,

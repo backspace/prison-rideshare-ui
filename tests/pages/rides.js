@@ -3,7 +3,6 @@ import {
   clickable,
   collection,
   create,
-  fillable,
   hasClass,
   isVisible,
   property,

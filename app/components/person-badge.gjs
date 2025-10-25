@@ -1,5 +1,4 @@
 import { action } from '@ember/object';
-import { classNames } from '@ember-decorators/component';
 import Component from '@glimmer/component';
 import eq from 'ember-truth-helpers/helpers/eq';
 import {

@@ -7,7 +7,6 @@ import { get, fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import eq from 'ember-truth-helpers/helpers/eq';
 import {
-  HdsBadgeCount,
   HdsButton,
   HdsCopyButton,
   HdsForm,
@@ -16,7 +15,6 @@ import {
   HdsFormTextareaField,
   HdsFormToggleBase,
   HdsFormToggleField,
-  HdsIcon,
   HdsModal,
   HdsTable,
 } from '@hashicorp/design-system-components/components';

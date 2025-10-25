@@ -4,9 +4,7 @@ import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
 import Component from '@ember/component';
-import GlimmerComponent from '@glimmer/component';
 import moment from 'moment-timezone';
-import PowerSelect from 'ember-power-select/components/power-select';
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
@@ -21,7 +19,6 @@ import {
   HdsFormTextareaField,
   HdsFormCheckboxField,
   HdsFormRadioGroup,
-  HdsFormRadioField,
   HdsFormField,
   HdsIcon,
   HdsSegmentedGroup,
@@ -31,8 +28,6 @@ import { fn } from '@ember/helper';
 import eq from 'ember-truth-helpers/helpers/eq';
 import gt from 'ember-truth-helpers/helpers/gt';
 import { tracked } from '@glimmer/tracking';
-import { task } from 'ember-concurrency';
-import perform from 'ember-concurrency/helpers/perform';
 import { schedule } from '@ember/runloop';
 
 const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';

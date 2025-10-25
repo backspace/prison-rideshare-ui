@@ -23,10 +23,10 @@ export default class DebtsController extends Controller {
   get tableRows() {
     const debts = this.model ?? [];
 
-    return debts.map((debt, index) => {
+    return debts.map((debt) => {
       const person = debt.get('person');
 
-      const rideRows = (debt.descendingRides ?? []).map((ride, rideIndex) => {
+      const rideRows = (debt.descendingRides ?? []).map((ride) => {
         const matchingReimbursements = (ride.reimbursements ?? []).filter(
           (reimbursement) => {
             return reimbursement.get('person.id') === debt.get('person.id');

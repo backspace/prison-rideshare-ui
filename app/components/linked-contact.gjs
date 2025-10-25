@@ -1,6 +1,3 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import { tagName } from '@ember-decorators/component';
-import { computed } from '@ember/object';
 import Ember from 'ember';
 import Component from '@glimmer/component';
 import { htmlSafe } from '@ember/string';

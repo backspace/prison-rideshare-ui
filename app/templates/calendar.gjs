@@ -2,22 +2,12 @@ import RouteTemplate from 'ember-route-template';
 import PowerCalendar from 'ember-power-calendar/components/power-calendar';
 import perform from 'ember-concurrency/helpers/perform';
 import { on } from '@ember/modifier';
-import { fn } from '@ember/helper';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
-import eq from 'ember-truth-helpers/helpers/eq';
-import gt from 'ember-truth-helpers/helpers/gt';
 import CalendarDay from 'prison-rideshare-ui/components/calendar-day';
 import {
   HdsButton,
   HdsCardContainer,
-  HdsFormRadioField,
-  HdsFormRadioGroup,
-  HdsFormTextInputField,
-  HdsFormTextareaField,
-  HdsFormToggleField,
-  HdsIcon,
-  HdsTooltipButton,
 } from '@hashicorp/design-system-components/components';
 
 import About from 'prison-rideshare-ui/components/calendar/about';

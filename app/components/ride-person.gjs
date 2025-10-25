@@ -1,7 +1,5 @@
-import { tagName } from '@ember-decorators/component';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
 import Component from '@glimmer/component';
 import PersonBadge from 'prison-rideshare-ui/components/person-badge';
 import { HdsFormSuperSelectSingleField } from '@hashicorp/design-system-components/components';

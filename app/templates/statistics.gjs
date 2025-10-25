@@ -11,7 +11,6 @@ import {
   HdsCardContainer,
   HdsCopyButton,
   HdsForm,
-  HdsFormRadioField,
   HdsFormRadioGroup,
   HdsFormTextInputField,
 } from '@hashicorp/design-system-components/components';
