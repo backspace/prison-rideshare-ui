@@ -22,8 +22,8 @@ export default class RidePerson extends Component {
 
   @action
   clear() {
-    const ride = this.ride;
-    ride.set(this.property, null);
+    const ride = this.args.ride;
+    ride.set(this.args.property, null);
     return ride.save();
   }
 
