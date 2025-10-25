@@ -1,5 +1,4 @@
 import RouteTemplate from 'ember-route-template';
-import Component from '@glimmer/component';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import eq from 'ember-truth-helpers/helpers/eq';
 import { on } from '@ember/modifier';
@@ -93,14 +92,12 @@ export default RouteTemplate(
   </template>,
 );
 
-class ReimbursementBadge extends Component {
-  <template>
-    <HdsBadge
-      @text='-{{@amount}}'
-      @type='outlined'
-      @size='small'
-      title='{{@amount}} has already been reimbursed'
-      ...attributes
-    />
-  </template>
-}
+const ReimbursementBadge = <template>
+  <HdsBadge
+    @text='-{{@amount}}'
+    @type='outlined'
+    @size='small'
+    title='{{@amount}} has already been reimbursed'
+    ...attributes
+  />
+</template>;

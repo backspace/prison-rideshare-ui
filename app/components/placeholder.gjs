@@ -1,9 +1,7 @@
-import Component from '@glimmer/component';
+const Placeholder = <template>
+  <span ...attributes>
+    {{yield}}
+  </span>
+</template>;
 
-export default class Placeholder extends Component {
-  <template>
-    <span ...attributes>
-      {{yield}}
-    </span>
-  </template>
-}
+export default Placeholder;
