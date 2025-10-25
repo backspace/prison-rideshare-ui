@@ -204,8 +204,6 @@ module('Acceptance | rides', function (hooks) {
     );
     assert.equal(page.cancellationForm.reason.value, 'lockdown');
 
-    // FIXME why did this stop working with Ember Paper beta 2?
-    // selectChoose('md-input-container.reason', 'visitor');
     await page.cancellationForm.other.fillIn('visitor');
     await page.cancellationForm.save();
 
