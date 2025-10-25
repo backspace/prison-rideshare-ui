@@ -183,6 +183,8 @@ export default create({
       scope: '[data-test-timespan]',
     },
 
+    timespanErrors: collection('[data-test-timespan-error]'),
+
     timespanResult: {
       scope: '[data-test-timespan-result]',
       value: value('input'),

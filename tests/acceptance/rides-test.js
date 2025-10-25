@@ -627,6 +627,47 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(page.form.address.value, '91 Albert St.');
   });
 
+  test('timespan validation errors are shown when manual overrides are not used', async function (assert) {
+    this.server.post(
+      '/rides',
+      {
+        errors: [
+          {
+            source: {
+              pointer: '/data/attributes/start',
+            },
+            detail: 'Start must be present',
+          },
+          {
+            source: {
+              pointer: '/data/attributes/end',
+            },
+            detail: 'End must be present',
+          },
+        ],
+      },
+      422,
+    );
+
+    await page.visit();
+    await page.newRide();
+
+    assert.ok(
+      page.form.timespanStart.isHidden,
+      'expected manual start time field to be hidden before override',
+    );
+    assert.ok(page.form.timespanEnd.isHidden);
+
+    await page.form.submit();
+
+    assert.equal(page.form.timespanErrors.length, 2);
+
+    assert.equal(page.form.timespanErrors[0].text, 'Start must be present');
+    assert.equal(page.form.timespanErrors[1].text, 'End must be present');
+
+    this.server.post('/rides');
+  });
+
   test('ride validation errors are displayed but can be recovered from', async function (assert) {
     this.server.post(
       '/rides',

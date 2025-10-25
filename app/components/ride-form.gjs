@@ -84,7 +84,7 @@ export default class RideForm extends Component {
             <HdsFormTextareaField
               rows='1'
               @value={{this.ride.timespan}}
-              @isInvalid={{this.timespanWarning}}
+              @isInvalid={{this.timespanFieldIsInvalid}}
               @id='ride-form-timespan'
               {{on 'input' this.timespanUpdated}}
               data-test-timespan
@@ -96,6 +96,13 @@ export default class RideForm extends Component {
                   “friday from 2 to 4” or “tomorrow 11am to noon”
                 </div>
               </Field.HelperText>
+              {{#if this.shouldShowTimespanValidationErrors}}
+                {{#each this.timespanValidationErrors as |error|}}
+                  <Field.Error data-test-timespan-error>
+                    <span>{{error}}</span>
+                  </Field.Error>
+                {{/each}}
+              {{/if}}
             </HdsFormTextareaField>
           </Form.Section>
 
@@ -491,6 +498,27 @@ export default class RideForm extends Component {
     const end = this.get('ride.end');
 
     return start && end && start < new Date();
+  }
+
+  @computed('ride.validationErrors.start.[]', 'ride.validationErrors.end.[]')
+  get timespanValidationErrors() {
+    const validationErrors = this.get('ride.validationErrors') || {};
+    const startErrors = validationErrors.start || [];
+    const endErrors = validationErrors.end || [];
+
+    return [...startErrors, ...endErrors];
+  }
+
+  @computed('overrideTimespan', 'timespanValidationErrors.length')
+  get shouldShowTimespanValidationErrors() {
+    return !this.overrideTimespan && this.timespanValidationErrors.length > 0;
+  }
+
+  @computed('timespanWarning', 'shouldShowTimespanValidationErrors')
+  get timespanFieldIsInvalid() {
+    return Boolean(
+      this.timespanWarning || this.shouldShowTimespanValidationErrors,
+    );
   }
 
   @computed('ride.{start,end}')
