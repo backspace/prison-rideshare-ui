@@ -17,13 +17,6 @@ function resolveElement(context, selector, pageObjectKey) {
   return findOne(context, scopedSelector, { pageObjectKey });
 }
 
-function isDisabled(selector) {
-  return getter(function (pageObjectKey) {
-    const element = resolveElement(this, selector, pageObjectKey);
-    return element.disabled ?? element.getAttribute('disabled') !== null;
-  });
-}
-
 function isChecked(selector) {
   return getter(function (pageObjectKey) {
     const element = resolveElement(this, selector, pageObjectKey);
@@ -93,7 +86,7 @@ export default create({
 
     copyButton: {
       scope: '[data-test-driver-copy-button]',
-      clipboardText: attribute('data-clipboard-text'),
+      clipboardText: attribute('data-test-clipboard-text'),
       isVisible: isVisible(),
     },
 

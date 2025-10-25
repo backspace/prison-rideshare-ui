@@ -1,6 +1,5 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import CopyButton from 'ember-cli-clipboard/components/copy-button';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import or from 'ember-truth-helpers/helpers/or';
 import ReimbursementForm from 'prison-rideshare-ui/components/reimbursement-form';
@@ -10,6 +9,7 @@ import eq from 'ember-truth-helpers/helpers/eq';
 import {
   HdsBadgeCount,
   HdsButton,
+  HdsCopyButton,
   HdsForm,
   HdsFormRadioGroup,
   HdsFormTextInputField,
@@ -159,13 +159,16 @@ export default RouteTemplate(
                 </Body.Td>
                 <Body.Td class='address' data-test-driver-address>
                   {{#if person.address}}
-                    <CopyButton
-                      @text={{person.address}}
+                    <HdsCopyButton
+                      @textToCopy={{person.address}}
+                      @isIconOnly={{true}}
+                      @color='secondary'
+                      @size='small'
                       @onSuccess={{@controller.copyAddressSuccess}}
+                      @text='Copy {{person.address}}'
+                      data-test-clipboard-text={{person.address}}
                       data-test-driver-copy-button
-                    >
-                      <HdsIcon @name='clipboard' @size='16' />
-                    </CopyButton>
+                    />
                   {{/if}}
                 </Body.Td>
                 <Body.Td class='last-ride' data-test-driver-last-ride>
