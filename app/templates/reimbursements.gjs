@@ -63,9 +63,9 @@ export default RouteTemplate(
                 data-test-reimbursement-row
                 data-row-type='person'
               >
-                <Body.Th class='name' data-test-reimbursement-name>
+                <Body.Td class='name' data-test-reimbursement-name>
                   {{Body.data.name}}
-                </Body.Th>
+                </Body.Td>
                 <Body.Td class='food-expenses' data-test-reimbursement-food>
                   {{Body.data.foodExpenses}}
                 </Body.Td>
