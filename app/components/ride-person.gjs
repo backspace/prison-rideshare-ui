@@ -26,6 +26,7 @@ export default class RidePerson extends Component {
     ride.set(this.property, null);
     return ride.save();
   }
+
   <template>
     {{#if this.person}}
       <span class='ride-person' ...attributes>
