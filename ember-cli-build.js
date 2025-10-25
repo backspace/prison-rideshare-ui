@@ -20,6 +20,7 @@ module.exports = function (defaults) {
     autoImport,
     babel: {
       plugins: [
+        // eslint-disable-next-line node/no-missing-require
         require.resolve('decorator-transforms'),
         require.resolve('ember-concurrency/async-arrow-task-transform'),
         ...require('ember-cli-code-coverage').buildBabelPlugin(),
