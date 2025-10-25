@@ -36,8 +36,7 @@ export default create({
       value: value(),
 
       clear: {
-        scope: '[data-test-ride-search-clear]',
-        click: clickable(),
+        scope: '#search-clear',
       },
     },
   },

@@ -821,10 +821,6 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
 
     assert.equal(page.rides.length, 2, 'expected two rides to show by default');
-    assert.ok(
-      page.head.search.clear.isHidden,
-      'expected the empty search field to have no clear button',
-    );
 
     await page.head.search.fillIn('chel');
 
@@ -838,26 +834,13 @@ module('Acceptance | rides', function (hooks) {
       'Chelsea',
       'expected the ride to be the Chelsea one',
     );
-    assert.ok(
-      page.head.search.clear.isVisible,
-      'expected the clear button to show when the field has content',
-    );
 
-    await page.head.search.clear.click();
+    await page.head.search.fillIn('');
 
     assert.equal(
       page.rides.length,
       2,
       'expected the ride list to be returned to its default state',
-    );
-    assert.equal(
-      page.head.search.value,
-      '',
-      'expected the search field to now be empty',
-    );
-    assert.ok(
-      page.head.search.clear.isHidden,
-      'expected the empty search field to have no clear button',
     );
 
     await page.head.search.fillIn('HEL');

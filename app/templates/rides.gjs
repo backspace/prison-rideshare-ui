@@ -33,7 +33,7 @@ export default RouteTemplate(
           <HdsFormTextInputBase
             data-test-ride-search
             id='ride-search-input'
-            type='search'
+            @type='search'
             placeholder='Institution, driver, visitor, address'
             value={{if @controller.search @controller.search ''}}
             {{on 'input' @controller.updateSearchInput}}
