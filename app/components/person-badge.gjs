@@ -1,24 +1,35 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
 import { classNames } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import eq from 'ember-truth-helpers/helpers/eq';
 import {
   HdsButton,
   HdsIcon,
 } from '@hashicorp/design-system-components/components';
 import { on } from '@ember/modifier';
+import { tracked } from '@glimmer/tracking';
 
-@classic
-@classNames('person-badge')
 export default class PersonBadge extends Component {
+  @tracked showContact = false;
+
+  @action
+  toggleContact() {
+    if (!this.isDestroying && !this.isDestroyed) {
+      this.showContact = !this.showContact;
+    }
+  }
+
   <template>
     {{! template-lint-disable no-invalid-interactive }}
-    <div data-test-person-badge-toggle onclick={{this.toggleContact}}>
-      {{#if (eq this.property 'driver')}}
+    <div
+      ...attributes
+      class='person-badge'
+      data-test-person-badge-toggle
+      {{on 'click' this.toggleContact}}
+    >
+      {{#if (eq @property 'driver')}}
         <HdsIcon @name='user' @size='16' @title='driver' @isInline={{true}} />
-      {{else if (eq this.property 'carOwner')}}
+      {{else if (eq @property 'carOwner')}}
         <HdsIcon
           @name='truck'
           @size='16'
@@ -27,12 +38,12 @@ export default class PersonBadge extends Component {
         />
       {{/if}}
       <span data-test-person-badge-name>
-        {{this.person.name}}
+        {{@person.name}}
       </span>
-      {{#if this.clear}}
+      {{#if @clear}}
         <HdsButton
           data-test-person-badge-clear
-          {{on 'click' this.clear}}
+          {{on 'click' @clear}}
           @isIconOnly={{true}}
           @isInline={{true}}
           @icon='x'
@@ -44,8 +55,8 @@ export default class PersonBadge extends Component {
     </div>
     {{#if this.showContact}}
       <div class='contact-container'>
-        {{#if this.person.email}}
-          <a href='mailto:{{this.person.email}}'>
+        {{#if @person.email}}
+          <a href='mailto:{{@person.email}}'>
             <HdsIcon
               @name='mail'
               @size='16'
@@ -53,12 +64,12 @@ export default class PersonBadge extends Component {
               @isInline={{true}}
             />
             <span data-test-person-badge-email>
-              {{this.person.email}}
+              {{@person.email}}
             </span>
           </a>
         {{/if}}
-        {{#if this.person.mobile}}
-          <a href='tel:{{this.person.mobile}}'>
+        {{#if @person.mobile}}
+          <a href='tel:{{@person.mobile}}'>
             <HdsIcon
               @name='smartphone'
               @size='16'
@@ -66,12 +77,12 @@ export default class PersonBadge extends Component {
               @isInline={{true}}
             />
             <span data-test-person-badge-mobile>
-              {{this.person.mobile}}
+              {{@person.mobile}}
             </span>
           </a>
         {{/if}}
-        {{#if this.person.landline}}
-          <a href='tel:{{this.person.landline}}'>
+        {{#if @person.landline}}
+          <a href='tel:{{@person.landline}}'>
             <HdsIcon
               @name='phone'
               @size='16'
@@ -79,11 +90,11 @@ export default class PersonBadge extends Component {
               @isInline={{true}}
             />
             <span data-test-person-badge-landline>
-              {{this.person.landline}}
+              {{@person.landline}}
             </span>
           </a>
         {{/if}}
-        {{#if this.person.selfNotes}}
+        {{#if @person.selfNotes}}
           <HdsIcon
             @name='file-text'
             @size='16'
@@ -91,18 +102,10 @@ export default class PersonBadge extends Component {
             @isInline={{true}}
           />
           <span data-test-person-badge-self-notes>
-            {{this.person.selfNotes}}
+            {{@person.selfNotes}}
           </span>
         {{/if}}
       </div>
     {{/if}}
   </template>
-  showContact = false;
-
-  @action
-  toggleContact() {
-    if (!this.isDestroying && !this.isDestroyed) {
-      this.toggleProperty('showContact');
-    }
-  }
 }

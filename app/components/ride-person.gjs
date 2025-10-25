@@ -28,7 +28,7 @@ export default class RidePerson extends Component {
   }
   <template>
     {{#if this.person}}
-      <span class='ride-person'>
+      <span class='ride-person' ...attributes>
         <PersonBadge
           @person={{this.person}}
           @property={{@property}}
@@ -44,6 +44,7 @@ export default class RidePerson extends Component {
         @searchField='name'
         @allowClear={{true}}
         @onChange={{@onChange}}
+        ...attributes
         as |F|
       >
         <F.Options>
