@@ -14,7 +14,7 @@ export default create({
   fillEmail: fillable('[data-test-register-email]'),
   fillPassword: fillable('[data-test-register-password]'),
   fillPasswordConfirmation: fillable(
-    '[data-test-register-password-confirmation]'
+    '[data-test-register-password-confirmation]',
   ),
 
   error: text('[data-test-register-error]'),

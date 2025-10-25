@@ -25,10 +25,7 @@ export default RouteTemplate(
         </HdsTextBody>
       </HdsCardContainer>
 
-      <HdsTable
-        class='gas-prices'
-        data-test-gas-prices-table
-      >
+      <HdsTable class='gas-prices' data-test-gas-prices-table>
         <:head as |Head|>
           <Head.Tr>
             <Head.Th>Date</Head.Th>
@@ -44,29 +41,17 @@ export default RouteTemplate(
             as |gasPrice|
           }}
             <Body.Tr data-test-gas-prices-row>
-              <Body.Td
-                class='date'
-                data-test-gas-prices-date
-              >
+              <Body.Td class='date' data-test-gas-prices-date>
                 {{momentFormat gasPrice.insertedAt 'ddd, MMM D'}}
               </Body.Td>
-              <Body.Td
-                class='price'
-                data-test-gas-prices-price
-              >
+              <Body.Td class='price' data-test-gas-prices-price>
                 {{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub
                   >L</sub></span>
               </Body.Td>
-              <Body.Td
-                class='far'
-                data-test-gas-prices-far-rate
-              >
+              <Body.Td class='far' data-test-gas-prices-far-rate>
                 {{gasPrice.farRate}}<ReimbursementUnit />
               </Body.Td>
-              <Body.Td
-                class='close'
-                data-test-gas-prices-close-rate
-              >
+              <Body.Td class='close' data-test-gas-prices-close-rate>
                 {{gasPrice.closeRate}}<ReimbursementUnit />
               </Body.Td>
             </Body.Tr>

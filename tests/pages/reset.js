@@ -14,9 +14,7 @@ export default create({
   visit: visitable('/reset/:token'),
 
   fillPassword: fillable('[data-test-reset-password]'),
-  fillPasswordConfirmation: fillable(
-    '[data-test-reset-password-confirmation]',
-  ),
+  fillPasswordConfirmation: fillable('[data-test-reset-password-confirmation]'),
 
   error: text('[data-test-reset-error]'),
 

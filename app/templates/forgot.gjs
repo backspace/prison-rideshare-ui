@@ -17,10 +17,7 @@ export default RouteTemplate(
       </Modal.Header>
 
       <Modal.Body>
-        <form
-          data-test-forgot-form
-          {{on 'submit' @controller.submitForgot}}
-        >
+        <form data-test-forgot-form {{on 'submit' @controller.submitForgot}}>
           <HdsFormTextInputField
             @value={{@controller.email}}
             @type='email'

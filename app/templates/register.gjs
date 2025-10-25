@@ -11,11 +11,7 @@ import {
 export default RouteTemplate(
   <template>
     <div class='login-page' data-test-register-page>
-      <HdsCardContainer
-        @level='mid'
-        class='login-card'
-        data-test-register-card
-      >
+      <HdsCardContainer @level='mid' class='login-card' data-test-register-card>
         <HdsForm {{on 'submit' @controller.register}} as |Form|>
           <Form.Header>
             <Form.HeaderTitle>Register</Form.HeaderTitle>

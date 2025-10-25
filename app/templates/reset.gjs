@@ -17,10 +17,7 @@ export default RouteTemplate(
       </Modal.Header>
 
       <Modal.Body>
-        <form
-          data-test-reset-form
-          {{on 'submit' @controller.submitReset}}
-        >
+        <form data-test-reset-form {{on 'submit' @controller.submitReset}}>
           <HdsFormTextInputField
             @value={{@controller.password}}
             @type='password'
