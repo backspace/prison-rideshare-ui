@@ -75,7 +75,7 @@ export default class RideRow extends Component {
       <@table.Td data-test-ride-address>
         {{this.ride.address}}
       </@table.Td>
-      <@table.Td data-test-ride-assignments>
+      <@table.Td class='assignments' data-test-ride-assignments>
         {{#if @combined}}
           {{#unless this.rideToCombine}}
             <button
@@ -88,20 +88,18 @@ export default class RideRow extends Component {
             </button>
           {{/unless}}
         {{else}}
-          <span data-test-driver>
-            <RidePerson
-              @ride={{this.ride}}
-              @property='driver'
-              @onChange={{this.setDriver}}
-            />
-          </span>
-          <span data-test-car-owner>
-            <RidePerson
-              @ride={{this.ride}}
-              @property='carOwner'
-              @onChange={{this.setCarOwner}}
-            />
-          </span>
+          <RidePerson
+            data-test-driver
+            @ride={{this.ride}}
+            @property='driver'
+            @onChange={{this.setDriver}}
+          />
+          <RidePerson
+            data-test-car-owner
+            @ride={{this.ride}}
+            @property='carOwner'
+            @onChange={{this.setCarOwner}}
+          />
           {{#if this.ride.overridable}}
             <span data-test-overridable-indicator>
               <HdsIcon @name='truck' @size='16' @isInline={{true}} />

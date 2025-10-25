@@ -197,6 +197,11 @@ table.rides tr {
     margin: 18px 0 0;
   }
 
+  .assignments {
+    display: flex;
+    gap: 1rem;
+  }
+
   &.combined {
     .date, .institution {
       color: rgba(0, 0, 0, 0.5);

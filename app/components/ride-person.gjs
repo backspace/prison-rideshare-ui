@@ -1,33 +1,49 @@
-/* eslint-disable ember/no-classic-components */
-import classic from 'ember-classic-decorator';
 import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import PersonBadge from 'prison-rideshare-ui/components/person-badge';
 import { HdsFormSuperSelectSingleField } from '@hashicorp/design-system-components/components';
+import { tracked } from '@glimmer/tracking';
 
-@classic
-@tagName('')
 export default class RidePerson extends Component {
+  @service('people') peopleService;
+
+  @tracked showContact = false;
+
+  get person() {
+    return this.args.ride.get(this.args.property);
+  }
+
+  get placeholder() {
+    return this.args.property === 'driver' ? 'Driver' : 'Car Owner';
+  }
+
+  @action
+  clear() {
+    const ride = this.ride;
+    ride.set(this.property, null);
+    return ride.save();
+  }
   <template>
     {{#if this.person}}
       <span class='ride-person'>
         <PersonBadge
           @person={{this.person}}
-          @property={{this.property}}
-          @clear={{this.clear}}
+          @property={{@property}}
+          @clear={{@clear}}
         />
       </span>
     {{else}}
       <HdsFormSuperSelectSingleField
-        data-test-ride-person-select={{this.property}}
-        @options={{this.people}}
+        data-test-ride-person-select={{@property}}
+        @placeholder={{this.placeholder}}
+        @options={{this.peopleService.active}}
         @selected={{this.person}}
         @searchField='name'
         @allowClear={{true}}
-        @onChange={{this.onChange}}
+        @onChange={{@onChange}}
         as |F|
       >
         <F.Options>
@@ -38,23 +54,4 @@ export default class RidePerson extends Component {
       </HdsFormSuperSelectSingleField>
     {{/if}}
   </template>
-  @service('people')
-  peopleService;
-
-  @alias('peopleService.active')
-  people;
-
-  @computed('ride', 'property', 'ride.{carOwner.id,driver.id}')
-  get person() {
-    return this.ride.get(this.property);
-  }
-
-  showContact = false;
-
-  @action
-  clear() {
-    const ride = this.ride;
-    ride.set(this.property, null);
-    return ride.save();
-  }
 }
