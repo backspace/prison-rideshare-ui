@@ -76,7 +76,7 @@ export default class CalendarSlot extends Component {
     const personId = this.person?.id;
 
     return this.slot?.commitments?.find(
-      (slot) => slot.belongsTo('person').id() == personId,
+      (commitment) => commitment.belongsTo('person').id() == personId,
     );
   }
 
@@ -121,6 +121,9 @@ export default class CalendarSlot extends Component {
   @(task(function* (event) {
     event.preventDefault();
 
+    // This is a hack to restore the correct checked status if saving fails.
+    const checkbox = event.target;
+
     if (this.isCommittedTo) {
       try {
         yield this.commitment.destroyRecord();
@@ -131,6 +134,10 @@ export default class CalendarSlot extends Component {
           ).format('MMMM D')}`,
         );
       } catch (error) {
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+
         const errorDetail = error?.errors?.[0]?.detail;
         this.toasts.show(errorDetail || 'Couldn’t save your change');
       }
@@ -152,6 +159,10 @@ export default class CalendarSlot extends Component {
         const errorDetail = error?.errors?.[0]?.detail;
         this.toasts.show(errorDetail || 'Couldn’t save your change');
         newRecord.destroyRecord();
+
+        if (checkbox) {
+          checkbox.checked = false;
+        }
       }
     }
   }).drop())
