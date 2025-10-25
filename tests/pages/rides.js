@@ -196,6 +196,7 @@ export default create({
 
     timespanOverrideButton: {
       scope: '[data-test-timespan-override-button]',
+      isDisabled: property('disabled'),
     },
 
     timespanStart: {

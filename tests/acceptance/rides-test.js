@@ -555,7 +555,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.timespanOverrideButton.click();
 
-    assert.ok(page.form.timespanOverrideButton.isHidden);
+    assert.ok(page.form.timespanOverrideButton.isDisabled);
     assert.ok(page.form.timespanStart.isVisible);
 
     await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
