@@ -408,6 +408,12 @@ module('Acceptance | rides', function (hooks) {
     await page.form.firstTime.click();
     await page.form.passengers.fillIn(2);
 
+    assert.equal(
+      page.form.name.value,
+      'Edward',
+      'expected the typed visitor name to remain visible when no suggestion is chosen',
+    );
+
     assert.ok(
       page.form.firstTimePoints.isVisible,
       'expected the first time tips to show after the checkbox is set',

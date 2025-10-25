@@ -47,8 +47,15 @@ export default class RideForm extends Component {
   @tracked pendingUnmatchedVisitorName = '';
   @tracked visitorSelection = null;
 
+  @computed('ride.name', 'visitorSelection')
   get nameOrVisitorSelection() {
-    return this.visitorSelection ?? { name: this.ride.get('name') };
+    if (this.visitorSelection) {
+      return this.visitorSelection;
+    }
+
+    const name = this.get('ride.name');
+
+    return name ? { name } : null;
   }
 
   <template>
@@ -275,7 +282,7 @@ export default class RideForm extends Component {
                 data-test-visitor-select
                 @searchEnabled={{true}}
                 @search={{this.searchRides}}
-                @selected={{this.visitorSelection}}
+                @selected={{this.nameOrVisitorSelection}}
                 @selectedItemComponent={{SelectedRideVisitor}}
                 @showAfterOptions={{true}}
                 @afterOptionsComponent={{NoMatchesComponent}}

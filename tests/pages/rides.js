@@ -231,6 +231,10 @@ export default create({
     name: {
       scope: '[data-test-visitor-select]',
 
+      value: getter(function () {
+        return this.text;
+      }),
+
       searchInput: {
         scope: '.ember-power-select-search-input',
         resetScope: true,
