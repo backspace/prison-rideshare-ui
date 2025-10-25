@@ -250,6 +250,12 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(page.rides[0].cancellation.showsDriverNotFound);
 
+    await page.rides[2].cancellation.click();
+    await page.cancellationForm.reason.fillIn('lockdown');
+    await page.cancellationForm.save();
+
+    assert.ok(page.rides[2].cancellation.showsLockdown);
+
     this.server.patch('/rides/:id', {}, 500);
 
     await page.rides[2].cancellation.click();

@@ -77,6 +77,7 @@ export default class CancellationForm extends Component {
 
           <HdsFormSelectField
             name='reason'
+            {{on 'change' this.updateCancellationReason}}
             data-test-cancellation-reason-select
             as |Field|
           >
