@@ -33,7 +33,7 @@ export default class RidePerson extends Component {
         <PersonBadge
           @person={{this.person}}
           @property={{@property}}
-          @clear={{@clear}}
+          @clear={{this.clear}}
         />
       </span>
     {{else}}
