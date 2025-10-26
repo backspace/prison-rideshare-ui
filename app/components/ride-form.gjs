@@ -63,7 +63,7 @@ export default class RideForm extends Component {
     <HdsModal
       data-test-ride-form
       @onClose={{this.handleCancel}}
-      {{on 'cancel' this.handleDialogCancel}}
+      {{on 'cancel' this.handleCancel}}
       as |M|
     >
       <M.Header>
@@ -668,12 +668,6 @@ export default class RideForm extends Component {
   toggleCheckbox(property, event) {
     const checked = event?.target?.checked ?? false;
     this.set(`ride.${property}`, checked);
-  }
-
-  @action
-  handleDialogCancel(event) {
-    event?.preventDefault?.();
-    this.handleCancel();
   }
 
   @action

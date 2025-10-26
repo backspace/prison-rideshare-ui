@@ -36,7 +36,7 @@ export default class CancellationForm extends Component {
     <HdsModal
       data-test-cancellation-form
       @onClose={{this.handleCancel}}
-      {{on 'cancel' this.handleDialogCancel}}
+      {{on 'cancel' this.handleCancel}}
       as |M|
     >
       <M.Header>
@@ -126,12 +126,6 @@ export default class CancellationForm extends Component {
       </M.Footer>
     </HdsModal>
   </template>
-
-  @action
-  handleDialogCancel(event) {
-    event?.preventDefault?.();
-    this.handleCancel();
-  }
 
   @action
   handleSubmit(event) {
