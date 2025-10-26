@@ -45,11 +45,6 @@ class ApplicationComponent extends Component {
     return !this.args.controller.sidebar.open;
   }
 
-  @action
-  synchronizeSidebar(isMinimized) {
-    this.args.controller.sidebar.open = !isMinimized;
-  }
-
   get activeToast() {
     return this.paperToaster.activeToast;
   }
@@ -82,7 +77,6 @@ class ApplicationComponent extends Component {
             data-test-app-sidenav
             @isResponsive={{true}}
             @isMinimized={{this.isSidebarMinimized}}
-            @onToggleMinimizedStatus={{this.synchronizeSidebar}}
           >
             <HdsAppSideNavList as |List|>
               {{#if @controller.session.currentUser.admin}}
