@@ -19,6 +19,8 @@ $color-pink: pink;
 @import 'toast';
 
 body {
+  --token-app-header-height: 20px;
+
   max-width: 100%;
   max-height: 100%;
 
@@ -39,6 +41,10 @@ body.ember-application {
   padding-left: 1rem;
   padding-right: 1rem;
   padding-bottom: 1rem;
+}
+
+.hds-app-header__actions h2 {
+  margin: 0;
 }
 
 body > div.ember-view {
