@@ -12,6 +12,7 @@ import { modifier } from 'ember-modifier';
 import { on } from '@ember/modifier';
 import {
   HdsButton,
+  HdsButtonSet,
   HdsForm,
   HdsModal,
   HdsTable,
@@ -71,69 +72,73 @@ export default RouteTemplate(
                 />
 
                 <Body.Td class='controls'>
-                  {{#if post.unread}}
-                    <HdsButton
-                      type='button'
-                      @text='Mark read'
-                      @icon='check'
-                      @color='secondary'
-                      data-test-log-post-mark-read
-                      {{on 'click' (fn @controller.markRead post)}}
-                    />
-                  {{else}}
-                    <HdsButton
-                      type='button'
-                      @text='Mark unread'
-                      @icon='reload'
-                      @color='secondary'
-                      data-test-log-post-mark-unread
-                      {{on 'click' (fn @controller.markUnread post)}}
-                    />
-                  {{/if}}
-
-                  {{#if (eq @controller.session.currentUser.id post.poster.id)}}
-                    <HdsButton
-                      type='button'
-                      @text='Edit'
-                      @icon='edit'
-                      @isIconOnly={{true}}
-                      @color='secondary'
-                      @size='small'
-                      data-test-log-post-edit
-                      {{on 'click' (fn @controller.editPost post)}}
-                    />
-
-                    {{#if (eq @controller.deletingPost post)}}
-                      <span data-test-log-post-delete-confirmation>
-                        Delete this post?
-                      </span>
+                  <HdsButtonSet>
+                    {{#if post.unread}}
                       <HdsButton
                         type='button'
-                        @text='Yes'
-                        @color='critical'
-                        data-test-log-post-delete-confirm
-                        {{on 'click' @controller.deletePost}}
-                      />
-                      <HdsButton
-                        type='button'
-                        @text='No'
+                        @text='Mark read'
+                        @icon='check'
                         @color='secondary'
-                        data-test-log-post-delete-cancel
-                        {{on 'click' (fn @controller.maybeDeletePost null)}}
+                        data-test-log-post-mark-read
+                        {{on 'click' (fn @controller.markRead post)}}
                       />
                     {{else}}
                       <HdsButton
                         type='button'
-                        @text='Delete'
-                        @icon='trash'
+                        @text='Mark unread'
+                        @icon='reload'
+                        @color='secondary'
+                        data-test-log-post-mark-unread
+                        {{on 'click' (fn @controller.markUnread post)}}
+                      />
+                    {{/if}}
+
+                    {{#if
+                      (eq @controller.session.currentUser.id post.poster.id)
+                    }}
+                      <HdsButton
+                        type='button'
+                        @text='Edit'
+                        @icon='edit'
                         @isIconOnly={{true}}
                         @color='secondary'
                         @size='small'
-                        data-test-log-post-delete
-                        {{on 'click' (fn @controller.maybeDeletePost post)}}
+                        data-test-log-post-edit
+                        {{on 'click' (fn @controller.editPost post)}}
                       />
+
+                      {{#if (eq @controller.deletingPost post)}}
+                        <span data-test-log-post-delete-confirmation>
+                          Delete this post?
+                        </span>
+                        <HdsButton
+                          type='button'
+                          @text='Yes'
+                          @color='critical'
+                          data-test-log-post-delete-confirm
+                          {{on 'click' @controller.deletePost}}
+                        />
+                        <HdsButton
+                          type='button'
+                          @text='No'
+                          @color='secondary'
+                          data-test-log-post-delete-cancel
+                          {{on 'click' (fn @controller.maybeDeletePost null)}}
+                        />
+                      {{else}}
+                        <HdsButton
+                          type='button'
+                          @text='Delete'
+                          @icon='trash'
+                          @isIconOnly={{true}}
+                          @color='secondary'
+                          @size='small'
+                          data-test-log-post-delete
+                          {{on 'click' (fn @controller.maybeDeletePost post)}}
+                        />
+                      {{/if}}
                     {{/if}}
-                  {{/if}}
+                  </HdsButtonSet>
                 </Body.Td>
               </Body.Tr>
             {{/unless}}
