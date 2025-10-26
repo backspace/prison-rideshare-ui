@@ -1,5 +1,5 @@
 /* eslint-disable qunit/assert-args, qunit/require-expect */
-import { waitUntil } from '@ember/test-helpers';
+import { currentURL, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
@@ -277,6 +277,28 @@ module('Acceptance | rides', function (hooks) {
     await page.cancellationForm.shortcutButtons[0].click();
 
     assert.notOk(shared.inlineAlert.isPresent);
+
+    await page.head.search.fillIn('Chelsea');
+    await page.head.completedSwitch.click();
+
+    const url = currentURL();
+
+    assert.ok(
+      url.includes('cancelled=true'),
+      'expected the cancelled filter to be reflected in the URL',
+    );
+    assert.ok(
+      url.includes('completed=true'),
+      'expected the completed filter to be reflected in the URL',
+    );
+    assert.ok(
+      url.includes('dir=desc'),
+      'expected the sort direction to be reflected in the URL',
+    );
+    assert.ok(
+      url.includes('search=Chelsea'),
+      'expected the search query to be reflected in the URL',
+    );
   });
 
   test('completed rides can be shown and cleared', async function (assert) {

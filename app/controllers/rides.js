@@ -5,17 +5,15 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 import { tracked } from '@glimmer/tracking';
 
 export default class RidesController extends Controller {
-  queryParams = {
-    showCompleted: 'completed',
-    showCancelled: 'cancelled',
-
-    sortProp: 'sort',
-    sortDir: 'dir',
-
-    search: {
-      replace: true,
+  queryParams = [
+    {
+      showCompleted: { as: 'completed' },
+      showCancelled: { as: 'cancelled' },
+      sortProp: { as: 'sort' },
+      sortDir: { as: 'dir' },
+      search: { replace: true },
     },
-  };
+  ];
 
   @service('overlaps')
   overlapsService;
