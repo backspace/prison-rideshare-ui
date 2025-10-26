@@ -27,8 +27,8 @@ export default RouteTemplate(
         {{on 'click' @controller.newPerson}}
         @text='New driver'
         @class='new'
-        @isIconOnly={{true}}
         @icon='plus'
+        @size='small'
         data-test-new-driver
       />
     </ToolbarHeader>

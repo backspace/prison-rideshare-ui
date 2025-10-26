@@ -34,7 +34,7 @@ class InstitutionsComponent extends Component {
       <HdsButton
         @icon='plus'
         @text='New institution'
-        @isIconOnly={{true}}
+        @size='small'
         data-test-new-institution
         {{on 'click' @controller.newInstitution}}
       />

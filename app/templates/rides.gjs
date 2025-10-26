@@ -20,6 +20,7 @@ export default RouteTemplate(
       <HdsButton
         @icon='plus'
         @text='New ride'
+        @size='small'
         data-test-new-ride
         {{on 'click' @controller.newRide}}
       />

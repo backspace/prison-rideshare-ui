@@ -25,7 +25,7 @@ export default RouteTemplate(
           type='button'
           @icon='plus'
           @text='New post'
-          @isIconOnly={{true}}
+          @size='small'
           data-test-log-new-post
           {{on 'click' @controller.newPost}}
         />
