@@ -43,6 +43,10 @@ body.ember-application {
   padding-bottom: 1rem;
 }
 
+.hds-app-header, .hds-app-header .header-toggle .hds-button {
+  background: #00194d;
+}
+
 .hds-app-header__actions h2 {
   margin: 0;
 }
