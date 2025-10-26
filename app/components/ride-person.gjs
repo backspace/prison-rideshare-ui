@@ -3,12 +3,9 @@ import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
 import PersonBadge from 'prison-rideshare-ui/components/person-badge';
 import { HdsFormSuperSelectSingleField } from '@hashicorp/design-system-components/components';
-import { tracked } from '@glimmer/tracking';
 
 export default class RidePerson extends Component {
   @service('people') peopleService;
-
-  @tracked showContact = false;
 
   get person() {
     return this.args.ride.get(this.args.property);
