@@ -8,6 +8,7 @@ import page from 'prison-rideshare-ui/tests/pages/log';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
+import stringToMobiledoc from 'prison-rideshare-ui/tests/helpers/string-to-mobiledoc';
 
 module('Acceptance | log', function (hooks) {
   setupApplicationTest(hooks);
@@ -171,13 +172,3 @@ module('Acceptance | log', function (hooks) {
     assert.equal(page.posts.length, 1);
   });
 });
-
-function stringToMobiledoc(string) {
-  return JSON.stringify({
-    version: '0.3.2',
-    atoms: [],
-    cards: [],
-    markups: [],
-    sections: [[1, 'p', [[0, [], 0, string]]]],
-  });
-}

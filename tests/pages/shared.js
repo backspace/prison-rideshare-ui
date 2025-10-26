@@ -17,6 +17,18 @@ export default create({
     text: text('[data-test-inline-alert-text]'),
   },
 
+  sidebarToggle: {
+    scope: '[data-test-sidebar-toggle]',
+  },
+
+  sidebarToggleBadge: {
+    scope: '[data-test-sidebar-toggle-badge]',
+  },
+
+  sidebar: {
+    scope: '[data-test-app-sidenav]',
+  },
+
   userCount: {
     scope: '[data-test-nav-users-count]',
     text: text(),

@@ -1,7 +1,9 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get */
 import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import Service, { inject as service } from '@ember/service';
+import { inject as controller } from '@ember/controller';
 
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
@@ -11,16 +13,14 @@ class ObjectPromiseProxy extends ObjectProxy.extend(PromiseProxyMixin) {}
 
 @classic
 export default class SidebarService extends Service {
-  @service
-  overlaps;
-
-  @service
-  store;
+  @service overlaps;
+  @service session;
+  @service store;
 
   @service
   userSocket;
 
-  open = false;
+  @tracked open = false;
 
   @computed('userSocket.present.length')
   get userCount() {
@@ -44,6 +44,17 @@ export default class SidebarService extends Service {
     });
   }
 
+  @computed
+  get ridesRequest() {
+    return ObjectPromiseProxy.create({
+      promise: this.store.findAll('ride').then((rides) => {
+        return {
+          rides,
+        };
+      }),
+    });
+  }
+
   @computed('postsRequest.posts.@each.unread')
   get unreadCount() {
     let posts = this.get('postsRequest.posts');
@@ -55,9 +66,35 @@ export default class SidebarService extends Service {
     }
   }
 
-  @computed('userCount', 'unreadCount', 'overlaps.count')
+  @computed('ridesRequest.rides.@each.requiresConfirmation')
+  get requiresConfirmationCount() {
+    let rides = this.get('ridesRequest.rides');
+
+    if (rides) {
+      return rides.filterBy('requiresConfirmation').length;
+    } else {
+      return 0;
+    }
+  }
+
+  @computed(
+    'session.currentUser.admin',
+    'userCount',
+    'unreadCount',
+    'overlaps.count',
+    'requiresConfirmationCount',
+  )
   get notificationCount() {
-    // TODO this is untested
-    return this.userCount + this.unreadCount + this.get('overlaps.count');
+    window.sss = this;
+    if (this.session.get('currentUser.admin')) {
+      return (
+        this.userCount +
+        this.unreadCount +
+        this.get('overlaps.count') +
+        this.requiresConfirmationCount
+      );
+    }
+
+    return 0;
   }
 }

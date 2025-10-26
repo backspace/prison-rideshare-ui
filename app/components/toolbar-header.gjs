@@ -6,27 +6,31 @@ import pluralize from 'ember-inflector/lib/helpers/pluralize';
 import { pageTitle } from 'ember-page-title';
 import {
   HdsAppHeader,
+  HdsBadgeCount,
   HdsButton,
   HdsTag,
 } from '@hashicorp/design-system-components/components';
 import { inject as controller } from '@ember/controller';
-import { tracked } from '@glimmer/tracking';
 
 export default class ToolbarHeader extends Component {
   @controller application;
-
-  @service session;
   @service sidebar;
-
-  @tracked sidebarOpen = true;
 
   get isSandbox() {
     return window.location.hostname.indexOf('sandbox') > -1;
   }
 
+  get toggleLabel() {
+    return this.sidebar.open ? 'Close navigation menu' : 'Open navigation menu';
+  }
+
+  get showToggleBadge() {
+    return !this.sidebar.open && Boolean(this.sidebar.notificationCount);
+  }
+
   @action
   toggleSidebar() {
-    this.sidebarOpen = !this.sidebarOpen;
+    this.sidebar.open = !this.sidebar.open;
   }
 
   <template>
@@ -39,20 +43,34 @@ export default class ToolbarHeader extends Component {
     {{#if this.application.headerElement}}
       {{#in-element this.application.headerElement}}
         <HdsAppHeader>
+          <:logo>
+            <span class='header-toggle'>
+              <HdsButton
+                @color='secondary'
+                @icon='menu'
+                @isIconOnly={{true}}
+                @size='small'
+                @text={{this.toggleLabel}}
+                {{on 'click' this.toggleSidebar}}
+                data-test-sidebar-toggle
+              />
+              {{#if this.showToggleBadge}}
+                <HdsBadgeCount
+                  @text={{this.sidebar.notificationCount}}
+                  @type='filled'
+                  @size='small'
+                  class='header-toggle-badge'
+                  data-test-sidebar-toggle-badge
+                />
+              {{/if}}
+            </span>
+          </:logo>
           <:globalActions>
             <h2>
               {{@title}}
             </h2>
           </:globalActions>
           <:utilityActions>
-            <HdsButton
-              @text='Toggle sidebar'
-              @icon='menu'
-              @isIconOnly={{true}}
-              @size='small'
-              class='hide-gt-sm'
-              {{on 'click' this.toggleSidebar}}
-            />
             {{#if this.isSandbox}}
               <HdsTag
                 @text='Sandbox'
@@ -60,19 +78,6 @@ export default class ToolbarHeader extends Component {
               />
             {{/if}}
             {{yield}}
-            {{#if this.session.currentUser.admin}}
-              {{#if this.sidebar.notificationCount}}
-                <span
-                  class='count hide-gt-sm'
-                  title='Check on {{pluralize
-                    this.sidebar.notificationCount
-                    "notification"
-                  }}'
-                >
-                  {{this.sidebar.notificationCount}}
-                </span>
-              {{/if}}
-            {{/if}}
           </:utilityActions>
         </HdsAppHeader>
       {{/in-element}}

@@ -80,7 +80,6 @@ class ApplicationComponent extends Component {
         {{#unless this.isSidebarMinimized}}
           <HdsAppSideNav
             data-test-app-sidenav
-            @isCollapsible={{true}}
             @isResponsive={{true}}
             @isMinimized={{this.isSidebarMinimized}}
             @onToggleMinimizedStatus={{this.synchronizeSidebar}}

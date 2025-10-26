@@ -51,6 +51,18 @@ body > div.ember-view {
   width: 100%;
 }
 
+.header-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.header-toggle-badge {
+  position: absolute;
+  top: -1em;
+  right: -1rem;
+}
+
 /* TODO why? */
 .hds-advanced-table__tbody {
   padding-top: 41px;
