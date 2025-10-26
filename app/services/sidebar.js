@@ -3,7 +3,6 @@ import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import Service, { inject as service } from '@ember/service';
-import { inject as controller } from '@ember/controller';
 
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
