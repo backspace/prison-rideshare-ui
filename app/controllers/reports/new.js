@@ -102,10 +102,7 @@ export default class NewController extends Controller {
           window.scrollTo(0, 0);
         },
         () => {
-          this.set(
-            'errorMessage',
-            'There was an error saving your report!',
-          );
+          this.set('errorMessage', 'There was an error saving your report!');
         },
       );
     } else {

@@ -36,8 +36,7 @@ export default class LoginController extends Controller {
       )
       .catch((error) => {
         this.error =
-          error?.errors?.[0]?.detail ??
-          'There was an error logging you in.';
+          error?.errors?.[0]?.detail ?? 'There was an error logging you in.';
       });
   }
 }

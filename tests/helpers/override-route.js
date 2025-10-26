@@ -4,7 +4,9 @@ export function overrideRoute(server, method, path, handler, timing) {
   const interceptor = server.interceptor;
 
   if (!pretender || !interceptor) {
-    throw new Error('overrideRoute requires access to the Mirage pretender and interceptor.');
+    throw new Error(
+      'overrideRoute requires access to the Mirage pretender and interceptor.',
+    );
   }
 
   const patternFullPath = interceptor._getFullPath(path);
@@ -13,9 +15,13 @@ export function overrideRoute(server, method, path, handler, timing) {
 
   let originalMatch;
   try {
-    originalMatch = pretender._handlerFor(method.toUpperCase(), sampleFullPath, {
-      params: {},
-    });
+    originalMatch = pretender._handlerFor(
+      method.toUpperCase(),
+      sampleFullPath,
+      {
+        params: {},
+      },
+    );
   } catch (_error) {
     originalMatch = undefined;
   }
