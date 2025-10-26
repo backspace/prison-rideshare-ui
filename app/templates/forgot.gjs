@@ -13,7 +13,7 @@ export default RouteTemplate(
     {{pageTitle 'Forgot password'}}
     <HdsModal @size='small' data-test-forgot-modal as |Modal|>
       <Modal.Header>
-        <h2>Forgot password</h2>
+        Forgot password
       </Modal.Header>
 
       <Modal.Body>

@@ -40,6 +40,10 @@ export default class CancellationForm extends Component {
       as |M|
     >
       <M.Header>
+        Cancel a ride
+      </M.Header>
+
+      <M.Body>
         {{#if this.ride.children}}
           <div data-test-cancellation-notice>
             <HdsIcon @name='alert-triangle' @size='16' />
@@ -48,10 +52,7 @@ export default class CancellationForm extends Component {
             undesirable.
           </div>
         {{/if}}
-        <h2>Cancel a ride</h2>
-      </M.Header>
 
-      <M.Body>
         {{#if this.errorMessage}}
           <Alert @message={{this.errorMessage}} />
         {{/if}}

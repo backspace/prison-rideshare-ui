@@ -13,7 +13,7 @@ export default RouteTemplate(
     {{pageTitle 'Reset password'}}
     <HdsModal @size='small' data-test-reset-modal as |Modal|>
       <Modal.Header>
-        <h2>Reset password</h2>
+        Reset password
       </Modal.Header>
 
       <Modal.Body>

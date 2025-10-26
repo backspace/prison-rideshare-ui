@@ -15,7 +15,7 @@ export default RouteTemplate(
     <div class='login-page' data-test-login-page>
       <HdsModal @size='small' as |Modal|>
         <Modal.Header>
-          <h2>Log in</h2>
+          Log in
         </Modal.Header>
         <Modal.Body>
           <HdsForm {{on 'submit' @controller.login}} as |Form|>

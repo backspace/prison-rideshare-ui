@@ -67,19 +67,18 @@ export default class RideForm extends Component {
       as |M|
     >
       <M.Header>
+        {{if this.ride.isNew 'Record' 'Edit'}}
+        a ride request
+      </M.Header>
+
+      <M.Body>
         {{#if this.editingWarning}}
           <div data-test-editing-warning>
             <HdsIcon @name='alert-triangle' @size='16' />
             {{this.editingWarning}}
           </div>
         {{/if}}
-        <h2>
-          {{if this.ride.isNew 'Record' 'Edit'}}
-          a ride request
-        </h2>
-      </M.Header>
 
-      <M.Body>
         {{#if this.errorMessage}}
           <Alert @message={{this.errorMessage}} />
         {{/if}}
