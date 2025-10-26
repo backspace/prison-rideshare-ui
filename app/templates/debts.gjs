@@ -54,9 +54,9 @@ export default RouteTemplate(
             data-test-driver-id={{Body.data.ride.driver.id}}
             data-test-car-owner-id={{Body.data.ride.carOwner.id}}
           >
-            <Body.Th data-test-debt-ride-date>
+            <Body.Td data-test-debt-ride-date>
               {{Body.data.ride.rideTimes}}
-            </Body.Th>
+            </Body.Td>
             <Body.Td class='food-expenses'>
               <span data-test-debt-ride-food>{{Body.data.food}}</span>
               {{#if Body.data.foodReimbursed}}
