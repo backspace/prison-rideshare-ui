@@ -37,10 +37,6 @@ class ApplicationComponent extends Component {
     this.args.controller.headerElement = headerElement;
   }
 
-  get sideNavKey() {
-    return this.args.controller.sidebar.open ? 'open' : 'closed';
-  }
-
   get isSidebarMinimized() {
     return !this.args.controller.sidebar.open;
   }
