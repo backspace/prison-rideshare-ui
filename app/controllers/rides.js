@@ -1,12 +1,9 @@
-/* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
 import Controller from '@ember/controller';
 import BufferedProxy from 'ember-buffered-proxy/proxy';
+import { tracked } from '@glimmer/tracking';
 
-@classic
 export default class RidesController extends Controller {
   queryParams = {
     showCompleted: 'completed',
@@ -32,26 +29,22 @@ export default class RidesController extends Controller {
   @service('people')
   peopleService;
 
-  @alias('peopleService.all')
-  people;
+  @tracked editingRide;
+  @tracked editingCancellation;
+  @tracked search = undefined;
+  @tracked showCompleted = false;
+  @tracked showCancelled = false;
+  @tracked sortProp = 'start';
+  @tracked sortDir = 'asc';
+  @tracked showCreation = false;
+  @tracked rideErrorMessage = undefined;
+  @tracked cancellationErrorMessage = undefined;
+  @tracked rideToCombine;
 
-  editingRide;
-  editingCancellation;
-  showCompleted = false;
-  showCancelled = false;
-  sortProp = 'start';
-  sortDir = 'asc';
-  showCreation = false;
-  rideErrorMessage = undefined;
-  cancellationErrorMessage = undefined;
+  get people() {
+    return this.peopleService.all;
+  }
 
-  @computed(
-    'showCompleted',
-    'showCancelled',
-    'model.@each.{complete,enabled,isCombined,isNew}',
-    'search',
-    'sortDir',
-  )
   get filteredRides() {
     const showCompleted = this.showCompleted,
       showCancelled = this.showCancelled;
@@ -82,13 +75,13 @@ export default class RidesController extends Controller {
     }
 
     if (sortDir === 'asc') {
-      const firstAfterNow = sorted.find((ride) => ride.get('start') > now);
+      const firstAfterNow = sorted.find((ride) => ride.start > now);
 
       if (firstAfterNow) {
         firstAfterNow.set('isDivider', true);
       }
     } else {
-      const firstBeforeNow = sorted.find((ride) => ride.get('start') < now);
+      const firstBeforeNow = sorted.find((ride) => ride.start < now);
 
       if (firstBeforeNow) {
         firstBeforeNow.set('isDivider', true);
@@ -100,22 +93,16 @@ export default class RidesController extends Controller {
 
   @action
   newRide() {
-    this.set(
-      'editingRide',
-      BufferedProxy.create({
-        content: this.store.createRecord('ride'),
-      }),
-    );
+    this.editingRide = BufferedProxy.create({
+      content: this.store.createRecord('ride'),
+    });
   }
 
   @action
   editRide(model) {
-    this.set(
-      'editingRide',
-      BufferedProxy.create({
-        content: model,
-      }),
-    );
+    this.editingRide = BufferedProxy.create({
+      content: model,
+    });
   }
 
   @action
@@ -123,45 +110,46 @@ export default class RidesController extends Controller {
     let buffer = proxy.buffer;
     proxy.applyBufferedChanges();
 
-    return proxy
-      .get('content')
+    return proxy.content
       .save()
       .then(() => {
-        this.set('editingRide', undefined);
-        this.set('rideErrorMessage', undefined);
+        this.editingRide = undefined;
+        this.rideErrorMessage = undefined;
         return this.overlapsService.fetch();
       })
       .catch(() => {
-        this.set('rideErrorMessage', 'There was an error saving this ride');
+        this.rideErrorMessage = 'There was an error saving this ride';
         proxy.setProperties(buffer);
       });
   }
 
   @action
   cancel() {
-    const model = this.get('editingRide.content');
+    const model = this.editingRide?.content;
 
-    if (model.get('isNew')) {
+    if (!model) {
+      return;
+    }
+
+    if (model.isNew) {
       model.destroyRecord();
     } else {
       model.rollbackAttributes();
     }
 
-    this.editingRide.discardBufferedChanges();
-    this.set('editingRide', undefined);
+    const editingRide = this.editingRide;
+    editingRide?.discardBufferedChanges();
+    this.editingRide = undefined;
   }
 
   @action
   editCancellation(ride) {
-    this.set(
-      'editingCancellation',
-      BufferedProxy.create({
-        content: ride,
-      }),
-    );
+    this.editingCancellation = BufferedProxy.create({
+      content: ride,
+    });
 
-    if (ride.get('enabled')) {
-      this.set('editingCancellation.cancelled', true);
+    if (ride.enabled) {
+      this.editingCancellation.set('cancelled', true);
     }
   }
 
@@ -170,18 +158,15 @@ export default class RidesController extends Controller {
     let buffer = proxy.buffer;
     proxy.applyBufferedChanges();
 
-    return proxy
-      .get('content')
+    return proxy.content
       .save()
       .then(() => {
-        this.set('editingCancellation', undefined);
-        this.set('cancellationErrorMessage', undefined);
+        this.editingCancellation = undefined;
+        this.cancellationErrorMessage = undefined;
       })
       .catch(() => {
-        this.set(
-          'cancellationErrorMessage',
-          'There was an error cancelling this ride',
-        );
+        this.cancellationErrorMessage =
+          'There was an error cancelling this ride';
         proxy.content.rollbackAttributes();
         proxy.setProperties(buffer);
       });
@@ -189,8 +174,9 @@ export default class RidesController extends Controller {
 
   @action
   cancelCancellation() {
-    this.editingCancellation.discardBufferedChanges();
-    this.set('editingCancellation', undefined);
+    const editingCancellation = this.editingCancellation;
+    editingCancellation?.discardBufferedChanges();
+    this.editingCancellation = undefined;
   }
 
   @action
@@ -199,14 +185,16 @@ export default class RidesController extends Controller {
       const rideToCombine = this.rideToCombine;
 
       if (rideToCombine.id == ride.id) {
-        this.set('rideToCombine', undefined);
+        this.rideToCombine = undefined;
       } else {
         rideToCombine.set('combinedWith', ride);
 
-        rideToCombine.save().then(() => this.set('rideToCombine', undefined));
+        rideToCombine.save().then(() => {
+          this.rideToCombine = undefined;
+        });
       }
     } else {
-      this.set('rideToCombine', ride);
+      this.rideToCombine = ride;
     }
   }
 
@@ -218,12 +206,12 @@ export default class RidesController extends Controller {
 
   @action
   updateSearch(value) {
-    this.set('search', value);
+    this.search = value;
   }
 
   @action
   clearSearch() {
-    this.set('search', undefined);
+    this.search = undefined;
   }
 
   @action
@@ -235,14 +223,14 @@ export default class RidesController extends Controller {
   @action
   sort(property) {
     if (this.sortProp === property) {
-      this.set('sortDir', this.sortDir === 'asc' ? 'desc' : 'asc');
+      this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
     } else {
-      this.set('sortProp', property);
-      this.set('sortDir', 'asc');
+      this.sortProp = property;
+      this.sortDir = 'asc';
     }
   }
 
   @action toggle(propertyName) {
-    this.toggleProperty(propertyName);
+    this[propertyName] = !this[propertyName];
   }
 }
