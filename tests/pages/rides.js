@@ -322,5 +322,6 @@ export default create({
     },
 
     save: clickable('[data-test-cancellation-form-save]'),
+    cancel: clickable('[data-test-cancellation-form-cancel]'),
   },
 });

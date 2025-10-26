@@ -8,6 +8,7 @@ import fetch from 'fetch';
 @classic
 export default class ForgotController extends Controller {
   email = undefined;
+  error = undefined;
 
   @service
   store;
@@ -35,8 +36,25 @@ export default class ForgotController extends Controller {
       method: 'POST',
     });
 
-    query.then(() => {
-      this.toasts.show('Check your email');
-    });
+    this.set('error', undefined);
+
+    query
+      .then((response) => {
+        if (response.ok) {
+          this.toasts.show('Check your email');
+          return;
+        }
+
+        return response.json().then((json) => {
+          const message = json?.errors?.[0]?.detail;
+          this.set(
+            'error',
+            message || 'There was an error sending the reset email.',
+          );
+        });
+      })
+      .catch(() => {
+        this.set('error', 'There was an error sending the reset email.');
+      });
   }
 }

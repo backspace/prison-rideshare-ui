@@ -40,6 +40,8 @@ export default class AdminCalendarController extends CalendarController {
   @service
   toasts;
 
+  errorMessage = undefined;
+
   @computed('month')
   get previousMonth() {
     return moment(this.month).add(-1, 'M').format(format);
@@ -113,6 +115,7 @@ export default class AdminCalendarController extends CalendarController {
     commitment
       .save()
       .then(() => {
+        this.set('errorMessage', undefined);
         this.toasts.show(
           `Committed ${person.get('name')} to drive on ${moment(
             slot.get('start'),
@@ -121,7 +124,7 @@ export default class AdminCalendarController extends CalendarController {
       })
       .catch((error) => {
         const errorDetail = get(error, 'errors.firstObject.detail');
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        this.set('errorMessage', errorDetail || 'Couldn’t save your change');
       });
   }
 
@@ -133,11 +136,12 @@ export default class AdminCalendarController extends CalendarController {
     commitment
       .destroyRecord()
       .then(() => {
+        this.set('errorMessage', undefined);
         this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
       })
       .catch((error) => {
         const errorDetail = get(error, 'errors.firstObject.detail');
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        this.set('errorMessage', errorDetail || 'Couldn’t save your change');
       });
   }
 

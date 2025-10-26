@@ -14,6 +14,7 @@ import {
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import eq from 'ember-truth-helpers/helpers/eq';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 const reasons = Object.keys(reasonToIcon).sort();
 const shortcuts = ['driver not found', 'visitor'];
@@ -51,6 +52,10 @@ export default class CancellationForm extends Component {
       </M.Header>
 
       <M.Body>
+        {{#if this.errorMessage}}
+          <Alert @message={{this.errorMessage}} />
+        {{/if}}
+
         <form {{on 'submit' this.handleSubmit}}>
           <div data-test-cancellation-shortcuts>
             {{#each-in this.shortcutReasonToIcon as |reason icon|}}

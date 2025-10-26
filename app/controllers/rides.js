@@ -42,6 +42,8 @@ export default class RidesController extends Controller {
   sortProp = 'start';
   sortDir = 'asc';
   showCreation = false;
+  rideErrorMessage = undefined;
+  cancellationErrorMessage = undefined;
 
   @computed(
     'showCompleted',
@@ -124,12 +126,15 @@ export default class RidesController extends Controller {
     return proxy
       .get('content')
       .save()
-      .then(() => this.set('editingRide', undefined))
-      .catch(() => {
-        this.toasts.show('There was an error saving this ride');
-        proxy.setProperties(buffer);
+      .then(() => {
+        this.set('editingRide', undefined);
+        this.set('rideErrorMessage', undefined);
+        return this.overlapsService.fetch();
       })
-      .then(() => this.overlapsService.fetch());
+      .catch(() => {
+        this.set('rideErrorMessage', 'There was an error saving this ride');
+        proxy.setProperties(buffer);
+      });
   }
 
   @action
@@ -168,9 +173,15 @@ export default class RidesController extends Controller {
     return proxy
       .get('content')
       .save()
-      .then(() => this.set('editingCancellation'), undefined)
+      .then(() => {
+        this.set('editingCancellation', undefined);
+        this.set('cancellationErrorMessage', undefined);
+      })
       .catch(() => {
-        this.toasts.show('There was an error cancelling this ride');
+        this.set(
+          'cancellationErrorMessage',
+          'There was an error cancelling this ride',
+        );
         proxy.content.rollbackAttributes();
         proxy.setProperties(buffer);
       });

@@ -12,6 +12,7 @@ import {
 
 import About from 'prison-rideshare-ui/components/calendar/about';
 import EditPerson from 'prison-rideshare-ui/components/calendar/edit-person';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 class CalendarComponent extends Component {
   @action toggleShowPerson() {
@@ -24,6 +25,10 @@ class CalendarComponent extends Component {
   }
 
   <template>
+    {{#if @controller.error}}
+      <Alert @message={{@controller.error}} data-test-calendar-slot-error />
+    {{/if}}
+
     <HdsCardContainer class='person-card' data-test-person-card>
       <div>
         <header>
@@ -92,6 +97,7 @@ class CalendarComponent extends Component {
           @day={{day}}
           @slots={{@controller.slots}}
           @person={{@controller.person}}
+          @setError={{@controller.setError}}
         />
       </calendar.Days>
     </PowerCalendar>

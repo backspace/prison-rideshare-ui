@@ -19,6 +19,7 @@ import {
   HdsIcon,
   HdsTag,
 } from '@hashicorp/design-system-components/components';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 class AdminCalendarComponent extends Component {
   @tracked openCommitmentId = null;
@@ -117,6 +118,10 @@ class AdminCalendarComponent extends Component {
   <template>
     <ToolbarHeader @title={{@controller.title}} />
 
+    {{#if @controller.errorMessage}}
+      <Alert @message={{@controller.errorMessage}} />
+    {{/if}}
+
     <div class='admin-calendar'>
       <PowerCalendar
         @center={{@controller.monthMoment}}
@@ -151,6 +156,7 @@ class AdminCalendarComponent extends Component {
             @slots={{@controller.slots}}
             @count={{true}}
             @setViewingSlot={{this.setViewingSlot}}
+            @setError={{this.setError}}
           />
         </calendar.Days>
       </PowerCalendar>

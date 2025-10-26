@@ -26,6 +26,8 @@ export default class LoginController extends Controller {
 
     const user = this.model;
 
+    this.error = undefined;
+
     this.session
       .authenticate(
         'authenticator:application',
@@ -33,7 +35,9 @@ export default class LoginController extends Controller {
         user.get('password'),
       )
       .catch((error) => {
-        this.error = error;
+        this.error =
+          error?.errors?.[0]?.detail ??
+          'There was an error logging you in.';
       });
   }
 }

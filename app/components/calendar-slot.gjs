@@ -128,6 +128,7 @@ export default class CalendarSlot extends Component {
       try {
         yield this.commitment.destroyRecord();
 
+        this.args.setError(undefined);
         this.toasts.show(
           `Cancelled your agreement to drive on ${moment(
             this.slot?.start,
@@ -139,7 +140,7 @@ export default class CalendarSlot extends Component {
         }
 
         const errorDetail = error?.errors?.[0]?.detail;
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        this.args.setError(errorDetail || 'Couldn’t save your change');
       }
     } else if (this.slot?.isNotFull) {
       const newRecord = this.store.createRecord('commitment', {
@@ -150,6 +151,7 @@ export default class CalendarSlot extends Component {
       try {
         yield newRecord.save();
 
+        this.args.setError(undefined);
         this.toasts.show(
           `Thanks for agreeing to drive on ${moment(this.slot?.start).format(
             'MMMM D',
@@ -157,7 +159,7 @@ export default class CalendarSlot extends Component {
         );
       } catch (error) {
         const errorDetail = error?.errors?.[0]?.detail;
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        this.args.setError(errorDetail || 'Couldn’t save your change');
         newRecord.destroyRecord();
 
         if (checkbox) {

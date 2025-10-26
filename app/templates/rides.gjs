@@ -133,6 +133,7 @@ export default RouteTemplate(
         @ride={{@controller.editingRide}}
         @cancel={{fn @controller.cancel @controller.editingRide}}
         @save={{fn @controller.submitRide @controller.editingRide}}
+        @errorMessage={{@controller.rideErrorMessage}}
       />
     {{/if}}
 
@@ -147,6 +148,7 @@ export default RouteTemplate(
           @controller.cancelCancellation
           @controller.editingCancellation
         }}
+        @errorMessage={{@controller.cancellationErrorMessage}}
       />
     {{/if}}
   </template>,

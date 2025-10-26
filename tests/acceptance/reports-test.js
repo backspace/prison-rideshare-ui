@@ -3,12 +3,14 @@ import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
+import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/report';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
+import { overrideRoute } from '../helpers/override-route';
 
 module('Acceptance | reports', function (hooks) {
   setupApplicationTest(hooks);
@@ -156,12 +158,11 @@ module('Acceptance | reports', function (hooks) {
   });
 
   test('a failure to save keeps the values and displays an error', async function (assert) {
-    this.server.patch(
+    const restoreReportSave = overrideRoute(
+      this.server,
+      'patch',
       '/rides/:id',
-      () => {
-        return {};
-      },
-      422,
+      () => new Response(422, {}, {}),
     );
 
     await page.visit();
@@ -171,13 +172,26 @@ module('Acceptance | reports', function (hooks) {
 
     await page.submitButton.click();
 
-    assert.equal(shared.toast.text, 'There was an error saving your report!');
+    assert.equal(
+      shared.inlineAlert.text,
+      'There was an error saving your report!',
+    );
 
     assert.equal(currentURL(), '/reports/new');
     assert.equal(
       page.distance.value,
       '75',
       'expected the distance field to have the same value',
+    );
+
+    restoreReportSave();
+
+    await page.submitButton.click();
+
+    assert.equal(shared.toast.text, 'Your report was saved');
+    assert.notOk(
+      shared.inlineAlert.isPresent,
+      'expected the inline alert to clear after retrying the submission',
     );
   });
 });

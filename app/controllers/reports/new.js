@@ -17,6 +17,7 @@ export default class NewController extends Controller {
   toasts;
 
   editingRide;
+  errorMessage = undefined;
 
   _setNumberProperty(property, event) {
     const ride = this.editingRide;
@@ -90,6 +91,7 @@ export default class NewController extends Controller {
     if (editingRide) {
       return editingRide.save().then(
         () => {
+          this.set('errorMessage', undefined);
           this.toasts.show('Your report was saved');
 
           // Remove the ride from the store before reloading from the server
@@ -100,11 +102,14 @@ export default class NewController extends Controller {
           window.scrollTo(0, 0);
         },
         () => {
-          this.toasts.show('There was an error saving your report!');
+          this.set(
+            'errorMessage',
+            'There was an error saving your report!',
+          );
         },
       );
     } else {
-      this.toasts.show('Please choose a ride');
+      this.set('errorMessage', 'Please choose a ride');
     }
   }
 }

@@ -16,6 +16,7 @@ export default class DriversController extends Controller {
   showInactive = false;
   sortProp = 'name';
   sortDir = 'asc';
+  errorMessage = undefined;
 
   @computed('model.@each.{name,lastRide}', 'sortProp', 'sortDir')
   get sortedPeople() {
@@ -102,9 +103,15 @@ export default class DriversController extends Controller {
     return proxy
       .get('content')
       .save()
-      .then(() => this.set('editingPerson', undefined))
+      .then(() => {
+        this.set('editingPerson', undefined);
+        this.set('errorMessage', undefined);
+      })
       .catch(() => {
-        // FIXME this is handled for ride-saving failures, how to generalise?
+        this.set(
+          'errorMessage',
+          'There was an error saving this driver. Please try again.',
+        );
       });
   }
 
@@ -130,11 +137,19 @@ export default class DriversController extends Controller {
     const checked = event?.target?.checked ?? false;
 
     person.set('active', checked);
-    person.save().catch(() => {
-      this.toasts.show(
-        `There was an error saving the active status of ${person.name}`,
-      );
-    });
+    person
+      .save()
+      .then(() => {
+        this.set('errorMessage', undefined);
+      })
+      .catch(() => {
+        this.set(
+          'errorMessage',
+          `There was an error saving the active status of ${
+            person.name ?? 'this driver'
+          }.`,
+        );
+      });
   }
 
   @action

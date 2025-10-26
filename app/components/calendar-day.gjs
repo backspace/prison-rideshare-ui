@@ -17,6 +17,7 @@ export default class CalendarDay extends Component {
         @person={{this.person}}
         @count={{this.count}}
         @setViewingSlot={{this.setViewingSlot}}
+        @setError={{this.setError}}
       />
     {{/each}}
   </template>

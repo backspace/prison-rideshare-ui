@@ -2,6 +2,7 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
+import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -9,6 +10,7 @@ import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
+import { overrideRoute } from '../helpers/override-route';
 
 module('Acceptance | people', function (hooks) {
   setupApplicationTest(hooks);
@@ -207,19 +209,31 @@ module('Acceptance | people', function (hooks) {
     [sun] = this.server.db.people;
     assert.ok(
       sun.active,
-      'expected Sun to have been made active on the server',
+      'expected Sun to have been made active on the server.',
     );
+    assert.notOk(shared.inlineAlert.isPresent);
 
-    this.server.patch('/people/:id', {}, 422);
+    const restorePeoplePatch = overrideRoute(
+      this.server,
+      'patch',
+      '/people/:id',
+      () => new Response(422, {}, {}),
+    );
 
     // FIXME test that inactive people aren’t shown in the ride-person popup
 
     await page.people[1].activeSwitch.click();
 
     assert.equal(
-      shared.toast.text,
-      'There was an error saving the active status of Sun',
+      shared.inlineAlert.text,
+      'There was an error saving the active status of Sun.',
     );
+
+    restorePeoplePatch();
+
+    await page.people[1].activeSwitch.click();
+
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('person validation errors are displayed', async function (assert) {

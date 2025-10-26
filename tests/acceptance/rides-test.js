@@ -3,6 +3,7 @@ import { waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
+import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
@@ -11,6 +12,7 @@ import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
 
 import moment from 'moment-timezone';
+import { overrideRoute } from '../helpers/override-route';
 
 module('Acceptance | rides', function (hooks) {
   setupApplicationTest(hooks);
@@ -253,12 +255,28 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(page.rides[2].cancellation.showsLockdown);
 
-    this.server.patch('/rides/:id', {}, 500);
+    const restoreRidePatch = overrideRoute(
+      this.server,
+      'patch',
+      '/rides/:id',
+      () => new Response(500, {}, {}),
+    );
 
     await page.rides[2].cancellation.click();
     await page.cancellationForm.shortcutButtons[0].click();
 
-    assert.equal(shared.toast.text, 'There was an error cancelling this ride');
+    assert.equal(
+      shared.inlineAlert.text,
+      'There was an error cancelling this ride',
+    );
+
+    restoreRidePatch();
+
+    await page.cancellationForm.cancel();
+    await page.rides[2].cancellation.click();
+    await page.cancellationForm.shortcutButtons[0].click();
+
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('completed rides can be shown and cleared', async function (assert) {
@@ -540,15 +558,28 @@ module('Acceptance | rides', function (hooks) {
     assert.notOk(lastRide.firstTime);
     assert.equal(lastRide.medium, 'email');
 
-    this.server.patch('/rides/:id', {}, 500);
+    const restoreRideSave = overrideRoute(
+      this.server,
+      'patch',
+      '/rides/:id',
+      () => new Response(500, {}, {}),
+    );
 
     await page.rides[0].edit();
     await page.form.notes.fillIn('Updated request notes?');
     await page.form.submit();
 
-    assert.equal(shared.toast.text, 'There was an error saving this ride');
+    assert.equal(
+      shared.inlineAlert.text,
+      'There was an error saving this ride',
+    );
     // assert.equal(page.notes[0].text, 'Some request notes?'); FIXME lost due to fix for #123
     assert.equal(page.form.notes.value, 'Updated request notes?');
+
+    restoreRideSave();
+
+    await page.form.submit();
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('ride times can be entered manually', async function (assert) {

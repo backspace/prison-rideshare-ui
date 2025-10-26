@@ -2,13 +2,13 @@ import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
 import {
-  HdsAlert,
   HdsButton,
   HdsButtonSet,
   HdsForm,
   HdsFormTextInputField,
   HdsModal,
 } from '@hashicorp/design-system-components/components';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 export default RouteTemplate(
   <template>
@@ -47,17 +47,11 @@ export default RouteTemplate(
               </HdsFormTextInputField>
 
               {{#if @controller.error}}
-                <HdsAlert
-                  @color='critical'
-                  @type='inline'
+                <Alert
+                  @message={{@controller.error}}
                   class='login-error'
                   data-test-login-error
-                  as |Alert|
-                >
-                  <Alert.Title>
-                    There was an error logging you in.
-                  </Alert.Title>
-                </HdsAlert>
+                />
               {{/if}}
             </Form.Section>
             <Form.Footer>

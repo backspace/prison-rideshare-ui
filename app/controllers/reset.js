@@ -11,6 +11,7 @@ export default class ResetController extends Controller {
   password = '';
 
   passwordConfirmation = '';
+  error = undefined;
 
   @service
   session;
@@ -58,26 +59,32 @@ export default class ResetController extends Controller {
       },
     });
 
-    query.then((response) => {
-      if (response.ok) {
-        this.toasts.show('Changed your password, will now log you in');
+    this.set('error', undefined);
 
-        response.json().then((json) => {
-          let email = get(json, 'data.attributes.email');
+    query
+      .then((response) => {
+        if (response.ok) {
+          this.toasts.show('Changed your password, will now log you in');
 
-          this.session.authenticate(
-            'authenticator:application',
-            email,
-            this.password,
-          );
-        });
-      } else {
-        response.json().then((json) => {
-          let message = get(json, 'errors.firstObject.detail');
+          response.json().then((json) => {
+            let email = get(json, 'data.attributes.email');
 
-          this.toasts.show(message || 'An unknown error occurred');
-        });
-      }
-    });
+            this.session.authenticate(
+              'authenticator:application',
+              email,
+              this.password,
+            );
+          });
+        } else {
+          response.json().then((json) => {
+            let message = get(json, 'errors.firstObject.detail');
+
+            this.set('error', message || 'An unknown error occurred');
+          });
+        }
+      })
+      .catch(() => {
+        this.set('error', 'There was an error updating your password.');
+      });
   }
 }

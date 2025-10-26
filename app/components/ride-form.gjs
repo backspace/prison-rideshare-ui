@@ -29,6 +29,7 @@ import eq from 'ember-truth-helpers/helpers/eq';
 import gt from 'ember-truth-helpers/helpers/gt';
 import { tracked } from '@glimmer/tracking';
 import { scheduleTask } from 'ember-lifeline';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
 
@@ -79,6 +80,10 @@ export default class RideForm extends Component {
       </M.Header>
 
       <M.Body>
+        {{#if this.errorMessage}}
+          <Alert @message={{this.errorMessage}} />
+        {{/if}}
+
         <HdsForm {{on 'submit' this.handleSubmit}} as |Form|>
           <Form.Section>
             <HdsFormTextareaField

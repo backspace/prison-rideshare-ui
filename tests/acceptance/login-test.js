@@ -5,6 +5,8 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
+import { Response } from 'miragejs';
+import { overrideRoute } from '../helpers/override-route';
 
 import page from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -76,22 +78,34 @@ module('Acceptance | login', function (hooks) {
     assert.equal(currentURL(), '/reports/new');
   });
 
-  test('a failed login shows an error', async function (assert) {
-    this.server.post(
+  test('a failed login shows an error that clears on retry', async function (assert) {
+    const restoreToken = overrideRoute(
+      this.server,
+      'post',
       '/token',
-      () => {
-        return {};
-      },
-      401,
+      () => new Response(401, {}, {}),
     );
 
     await page.visit();
     await page.fillEmail('x@example.com');
+    await page.fillPassword('wrong-password');
     await page.submit();
 
     percySnapshot(assert);
 
     assert.equal(currentURL(), '/login');
-    assert.equal(page.error, 'There was an error logging you in.');
+    assert.equal(shared.inlineAlert.text, 'There was an error logging you in.');
+
+    restoreToken();
+    this.server.create('user', {
+      email: 'x@example.com',
+      password: 'correcthorsebatterystaple',
+    });
+
+    await page.fillPassword('correcthorsebatterystaple');
+    await page.submit();
+
+    assert.equal(currentURL(), '/reports/new');
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 });

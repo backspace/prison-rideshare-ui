@@ -16,6 +16,7 @@ import {
 } from '@hashicorp/design-system-components/components';
 import eq from 'ember-truth-helpers/helpers/eq';
 import gt from 'ember-truth-helpers/helpers/gt';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 export default RouteTemplate(
   <template>
@@ -35,6 +36,10 @@ export default RouteTemplate(
       {{else}}
         {{#if @controller.model}}
           <div class='form-container' data-test-report-form-container>
+            {{#if @controller.errorMessage}}
+              <Alert @message={{@controller.errorMessage}} />
+            {{/if}}
+
             <HdsForm
               data-test-report-form
               {{on 'submit' @controller.submitReport}}

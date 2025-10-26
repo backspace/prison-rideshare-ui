@@ -10,6 +10,8 @@ import { task } from 'ember-concurrency';
 
 @classic
 export default class CalendarController extends Controller {
+  error = undefined;
+
   @service
   toasts;
 
@@ -53,8 +55,9 @@ export default class CalendarController extends Controller {
 
       this.toasts.show('Saved your details');
       this.set('showPerson', false);
+      this.set('error', undefined);
     } catch (e) {
-      this.toasts.show('Couldn’t save your details');
+      this.set('error', 'Couldn’t save your details');
     }
   }).drop())
   savePerson;
@@ -63,5 +66,9 @@ export default class CalendarController extends Controller {
   cancel() {
     this.set('showPerson', false);
     this.person.rollbackAttributes();
+  }
+
+  @action setError(error) {
+    this.set('error', error);
   }
 }

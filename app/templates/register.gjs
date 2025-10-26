@@ -1,12 +1,13 @@
 import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import {
-  HdsAlert,
   HdsButton,
   HdsCardContainer,
   HdsForm,
   HdsFormTextInputField,
 } from '@hashicorp/design-system-components/components';
+import Alert from 'prison-rideshare-ui/components/alert';
+
 export default RouteTemplate(
   <template>
     <div class='login-page' data-test-register-page>
@@ -18,16 +19,7 @@ export default RouteTemplate(
 
           <Form.Section>
             {{#if @controller.error}}
-              <HdsAlert
-                @color='critical'
-                @type='inline'
-                data-test-register-error
-                as |Alert|
-              >
-                <Alert.Title>
-                  {{@controller.error}}
-                </Alert.Title>
-              </HdsAlert>
+              <Alert @message={{@controller.error}} data-test-register-error />
             {{/if}}
 
             <HdsFormTextInputField

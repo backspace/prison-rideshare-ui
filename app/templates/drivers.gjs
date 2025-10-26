@@ -18,6 +18,7 @@ import {
   HdsModal,
   HdsTable,
 } from '@hashicorp/design-system-components/components';
+import Alert from 'prison-rideshare-ui/components/alert';
 
 export default RouteTemplate(
   <template>
@@ -31,6 +32,10 @@ export default RouteTemplate(
         data-test-new-driver
       />
     </ToolbarHeader>
+
+    {{#if @controller.errorMessage}}
+      <Alert @message={{@controller.errorMessage}} />
+    {{/if}}
 
     <div class='switch-container layout-row layout-align-start-center'>
       <HdsFormToggleField

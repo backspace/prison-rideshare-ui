@@ -12,6 +12,11 @@ export default create({
     text: text('[data-test-toast-text]'),
   },
 
+  inlineAlert: {
+    scope: '[data-test-inline-alert]',
+    text: text('[data-test-inline-alert-text]'),
+  },
+
   userCount: {
     scope: '[data-test-nav-users-count]',
     text: text(),
