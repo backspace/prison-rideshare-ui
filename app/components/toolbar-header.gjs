@@ -20,20 +20,8 @@ export default class ToolbarHeader extends Component {
 
   @tracked sidebarOpen = true;
 
-  get chips() {
-    const hostname = window.location.hostname;
-
-    if (hostname.indexOf('sandbox') > -1) {
-      return [
-        {
-          label: 'Sandbox',
-          title:
-            'All data on this instance is erased daily. If some type of example data would be useful for you, let Buck know.',
-        },
-      ];
-    } else {
-      return [];
-    }
+  get isSandbox() {
+    return window.location.hostname.indexOf('sandbox') > -1;
   }
 
   @action
@@ -65,9 +53,12 @@ export default class ToolbarHeader extends Component {
               class='hide-gt-sm'
               {{on 'click' this.toggleSidebar}}
             />
-            {{#each this.chips as |chip|}}
-              <HdsTag @text={{chip.label}} title={{chip.title}} />
-            {{/each}}
+            {{#if this.isSandbox}}
+              <HdsTag
+                @text='Sandbox'
+                title='All data on this instance is erased daily. If some type of example data would be useful for you, let Buck know.'
+              />
+            {{/if}}
             {{yield}}
             {{#if this.session.currentUser.admin}}
               {{#if this.sidebar.notificationCount}}
