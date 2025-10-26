@@ -310,26 +310,21 @@ module('Acceptance | calendar', function (hooks) {
   });
 
   test('a failure to create a commitment with a particular error shows the error', async function (assert) {
-    const restoreCommitmentCreateWithDetail = overrideRoute(
-      this.server,
-      'post',
-      '/commitments',
-      function () {
-        return new Response(
-          422,
-          {},
-          {
-            errors: [
-              {
-                status: 422,
-                title: 'Unauthorized',
-                detail: 'Fail!',
-              },
-            ],
-          },
-        );
-      },
-    );
+    overrideRoute(this.server, 'post', '/commitments', function () {
+      return new Response(
+        422,
+        {},
+        {
+          errors: [
+            {
+              status: 422,
+              title: 'Unauthorized',
+              detail: 'Fail!',
+            },
+          ],
+        },
+      );
+    });
 
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 

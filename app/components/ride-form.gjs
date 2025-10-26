@@ -505,7 +505,7 @@ export default class RideForm extends Component {
     return start && end && start < new Date();
   }
 
-  @computed('ride.validationErrors.start.[]', 'ride.validationErrors.end.[]')
+  @computed('ride.validationErrors.{start.[],end.[]}')
   get timespanValidationErrors() {
     const validationErrors = this.get('ride.validationErrors') || {};
     const startErrors = validationErrors.start || [];
