@@ -13,6 +13,7 @@ import { getPageTitle } from 'ember-page-title/test-support';
 
 import moment from 'moment-timezone';
 import { overrideRoute } from '../helpers/override-route';
+import { selectChoose } from 'ember-power-select/test-support';
 
 module('Acceptance | rides', function (hooks) {
   setupApplicationTest(hooks);
@@ -604,6 +605,44 @@ module('Acceptance | rides', function (hooks) {
     assert.notOk(shared.inlineAlert.isPresent);
   });
 
+  test('a visitor name can be entered manually even when matches exist', async function (assert) {
+    const rockwood = this.server.create('institution', {
+      name: 'Rockwood',
+    });
+
+    this.server.create('ride', {
+      name: 'Greyson',
+      address: '91 Albert St.',
+      contact: 'greyson@example.com',
+      institution: rockwood,
+      start: new Date(2016, 11, 20, 9, 0),
+      end: new Date(2016, 11, 20, 11, 0),
+    });
+
+    await page.visit();
+    await page.newRide();
+
+    await page.form.name.fillIn('gre');
+
+    await waitUntil(() => page.form.name.suggestions.length >= 2);
+
+    assert.strictEqual(page.form.name.suggestions[0].name, 'Greyson');
+    assert.strictEqual(
+      page.form.name.suggestions[1].name,
+      'Use “gre” as visitor name',
+      'expected the manual option to be listed last',
+    );
+
+    await selectChoose(
+      '[data-test-visitor-select]',
+      'Use “gre” as visitor name',
+    );
+
+    assert.strictEqual(page.form.name.value, 'gre');
+    assert.strictEqual(page.form.address.value, '');
+    assert.strictEqual(page.form.contact.value, '');
+  });
+
   test('ride times can be entered manually', async function (assert) {
     this.server.create('institution', {
       name: 'Rockwood',
@@ -660,7 +699,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.name.fillIn('fran');
     await waitUntil(() => page.form.name.suggestions.length);
 
-    assert.equal(page.form.name.suggestions.length, 2);
+    assert.equal(page.form.name.suggestions.length, 3);
 
     await page.form.name.suggestions[0].as((francine) => {
       assert.equal(francine.name, 'Francine');
@@ -672,6 +711,11 @@ module('Acceptance | rides', function (hooks) {
       assert.equal(frank.address, '91 Albert St.');
       assert.equal(frank.contact, 'frank@jants.ca');
     });
+
+    assert.strictEqual(
+      page.form.name.suggestions[2].name,
+      'Use “fran” as visitor name',
+    );
 
     await page.form.name.suggestions[1].click();
 

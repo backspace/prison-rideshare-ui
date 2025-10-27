@@ -291,7 +291,7 @@ export default class RideForm extends Component {
                 @search={{this.searchRides}}
                 @selected={{this.nameOrVisitorSelection}}
                 @selectedItemComponent={{SelectedRideVisitor}}
-                @noMatchesMessage='No matches, press Enter to use this name'
+                @noMatchesMessage='No previous visitors found'
                 @onChange={{this.visitorSelected}}
                 @onBlur={{this.maybeStoreUnmatchedVisitorName}}
                 @onClose={{this.maybeStoreUnmatchedVisitorName}}
@@ -300,12 +300,18 @@ export default class RideForm extends Component {
               >
                 <F.Label>Name</F.Label>
                 <F.Options>
-                  {{#let F.options as |ride|}}
-                    <div>
-                      <span class='name'>{{ride.name}}</span>
-                      <address>{{ride.address}}</address>
-                      <span class='contact'>{{ride.contact}}</span>
-                    </div>
+                  {{#let F.options as |option|}}
+                    {{#if option.customVisitor}}
+                      <div data-test-new-visitor-option>
+                        <span class='name'>Use “{{option.name}}” as visitor name</span>
+                      </div>
+                    {{else}}
+                      <div data-test-visitor-suggestion>
+                        <span class='name'>{{option.name}}</span>
+                        <address>{{option.address}}</address>
+                        <span class='contact'>{{option.contact}}</span>
+                      </div>
+                    {{/if}}
                   {{/let}}
                 </F.Options>
                 {{#if (gt this.ride.validationErrors.name.length 0)}}
@@ -572,21 +578,26 @@ export default class RideForm extends Component {
   }
 
   @action searchRides(term) {
-    if (!term) {
+    const trimmedTerm = term?.trim() ?? '';
+
+    if (!trimmedTerm) {
       this.lastSearchTerm = null;
       this.lastSearchPromise = null;
       return [];
     }
 
-    if (term === this.lastSearchTerm && this.lastSearchPromise) {
+    if (trimmedTerm === this.lastSearchTerm && this.lastSearchPromise) {
       return this.lastSearchPromise;
     }
 
     const promise = this.store
       .query('ride', { 'filter[name]': term })
-      .then((rides) => deduplicateVisitorSuggestions(rides));
+      .then((rides) => {
+        const suggestions = deduplicateVisitorSuggestions(rides);
+        return this.buildVisitorOptions(trimmedTerm, suggestions);
+      });
 
-    this.lastSearchTerm = term;
+    this.lastSearchTerm = trimmedTerm;
     this.lastSearchPromise = promise;
 
     return promise;
@@ -594,7 +605,13 @@ export default class RideForm extends Component {
 
   @action
   visitorSelected(ride) {
-    console.log('visitorSelected', ride);
+    if (ride?.customVisitor) {
+      this.visitorSelection = null;
+      this.set('ride.name', ride.name);
+      this.pendingUnmatchedVisitorName = '';
+      return;
+    }
+
     this.visitorSelection = ride;
     if (ride) {
       this.set('ride.name', ride.get('name'));
@@ -608,7 +625,7 @@ export default class RideForm extends Component {
   }
 
   @action storeVisitorName(enteredText) {
-    this.pendingUnmatchedVisitorName = enteredText;
+    this.pendingUnmatchedVisitorName = enteredText?.trim?.() ?? '';
   }
 
   @action maybeStoreUnmatchedVisitorName() {
@@ -621,7 +638,28 @@ export default class RideForm extends Component {
       ) {
         this.set('ride.name', this.pendingUnmatchedVisitorName);
       }
+      this.pendingUnmatchedVisitorName = '';
     });
+  }
+
+  buildVisitorOptions(term, suggestions) {
+    const manualOption = this.createManualVisitorOption(term);
+    if (manualOption) {
+      return [...suggestions, manualOption];
+    }
+    return suggestions;
+  }
+
+  createManualVisitorOption(name) {
+    const value = name?.trim?.() ?? '';
+    if (!value) {
+      return null;
+    }
+    return {
+      id: `manual-visitor-${value.toLowerCase()}`,
+      customVisitor: true,
+      name: value,
+    };
   }
 
   @action
