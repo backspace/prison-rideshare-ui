@@ -35,10 +35,6 @@ const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
 
 const SelectedRideVisitor = <template>{{@option.name}}</template>;
 
-const NoMatchesComponent = <template>
-  Press enter to save this name if no one matches
-</template>;
-
 @classic
 export default class RideForm extends Component {
   lastSearchTerm = null;
@@ -83,11 +79,7 @@ export default class RideForm extends Component {
           <Alert @message={{this.errorMessage}} />
         {{/if}}
 
-        <HdsForm
-          id='ride-form'
-          {{on 'submit' this.handleSubmit}}
-          as |Form|
-        >
+        <HdsForm id='ride-form' {{on 'submit' this.handleSubmit}} as |Form|>
           <Form.Section>
             <HdsFormTextareaField
               rows='1'
@@ -299,8 +291,7 @@ export default class RideForm extends Component {
                 @search={{this.searchRides}}
                 @selected={{this.nameOrVisitorSelection}}
                 @selectedItemComponent={{SelectedRideVisitor}}
-                @showAfterOptions={{true}}
-                @afterOptionsComponent={{NoMatchesComponent}}
+                @noMatchesMessage='No matches, press Enter to use this name'
                 @onChange={{this.visitorSelected}}
                 @onBlur={{this.maybeStoreUnmatchedVisitorName}}
                 @onClose={{this.maybeStoreUnmatchedVisitorName}}
