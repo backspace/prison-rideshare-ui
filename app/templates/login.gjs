@@ -18,7 +18,11 @@ export default RouteTemplate(
           Log in
         </Modal.Header>
         <Modal.Body>
-          <HdsForm {{on 'submit' @controller.login}} as |Form|>
+          <HdsForm
+            id='login-form'
+            {{on 'submit' @controller.login}}
+            as |Form|
+          >
             <Form.Section>
               <HdsFormTextInputField
                 @value={{@controller.model.email}}
@@ -54,25 +58,26 @@ export default RouteTemplate(
                 />
               {{/if}}
             </Form.Section>
-            <Form.Footer>
-              <HdsButtonSet>
-                <HdsButton
-                  type='submit'
-                  @color='primary'
-                  @text='Log in'
-                  {{on 'click' @controller.login}}
-                  data-test-login-submit
-                />
-                <HdsButton
-                  @color='secondary'
-                  @route='register'
-                  @text='Register'
-                  data-test-login-register
-                />
-              </HdsButtonSet>
-            </Form.Footer>
           </HdsForm>
         </Modal.Body>
+
+        <Modal.Footer>
+          <HdsButtonSet>
+            <HdsButton
+              type='submit'
+              form='login-form'
+              @color='primary'
+              @text='Log in'
+              data-test-login-submit
+            />
+            <HdsButton
+              @color='secondary'
+              @route='register'
+              @text='Register'
+              data-test-login-register
+            />
+          </HdsButtonSet>
+        </Modal.Footer>
       </HdsModal>
     </div>
   </template>,

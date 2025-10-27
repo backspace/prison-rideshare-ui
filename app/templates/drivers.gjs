@@ -8,6 +8,7 @@ import { on } from '@ember/modifier';
 import eq from 'ember-truth-helpers/helpers/eq';
 import {
   HdsButton,
+  HdsButtonSet,
   HdsCopyButton,
   HdsForm,
   HdsFormRadioGroup,
@@ -223,6 +224,7 @@ export default RouteTemplate(
 
         <Modal.Body>
           <HdsForm
+            id='driver-form'
             data-test-driver-form
             {{on 'submit' @controller.savePerson}}
             as |Form|
@@ -335,26 +337,27 @@ export default RouteTemplate(
                 <Field.Label>Notes</Field.Label>
               </HdsFormTextareaField>
             </Form.Section>
-
-            <Form.Footer as |Footer|>
-              <Footer.ButtonSet>
-                <HdsButton
-                  @text='Save'
-                  @color='primary'
-                  type='submit'
-                  data-test-driver-form-submit
-                />
-                <HdsButton
-                  @text='Cancel'
-                  @color='secondary'
-                  type='button'
-                  data-test-driver-form-cancel
-                  {{on 'click' @controller.cancelPerson}}
-                />
-              </Footer.ButtonSet>
-            </Form.Footer>
           </HdsForm>
         </Modal.Body>
+
+        <Modal.Footer as |Footer|>
+          <HdsButtonSet>
+            <HdsButton
+              type='submit'
+              form='driver-form'
+              @text='Save'
+              @color='primary'
+              data-test-driver-form-submit
+            />
+            <HdsButton
+              type='button'
+              @text='Cancel'
+              @color='secondary'
+              data-test-driver-form-cancel
+              {{on 'click' Footer.close}}
+            />
+          </HdsButtonSet>
+        </Modal.Footer>
       </HdsModal>
     {{/if}}
   </template>,

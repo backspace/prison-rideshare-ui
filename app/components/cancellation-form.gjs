@@ -6,6 +6,7 @@ import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import {
   HdsModal,
   HdsButton,
+  HdsButtonSet,
   HdsFormCheckboxField,
   HdsFormTextInputField,
   HdsFormSelectField,
@@ -57,7 +58,7 @@ export default class CancellationForm extends Component {
           <Alert @message={{this.errorMessage}} />
         {{/if}}
 
-        <form {{on 'submit' this.handleSubmit}}>
+        <form id='cancellation-form' {{on 'submit' this.handleSubmit}}>
           <div data-test-cancellation-shortcuts>
             {{#each-in this.shortcutReasonToIcon as |reason icon|}}
               <HdsButton
@@ -111,19 +112,23 @@ export default class CancellationForm extends Component {
         </form>
       </M.Body>
 
-      <M.Footer>
-        <HdsButton
-          @text='Cancel'
-          @color='secondary'
-          data-test-cancellation-form-cancel
-          {{on 'click' this.handleCancel}}
-        />
-        <HdsButton
-          @text='Save'
-          @color='primary'
-          data-test-cancellation-form-save
-          {{on 'click' this.handleSubmit}}
-        />
+      <M.Footer as |Footer|>
+        <HdsButtonSet>
+          <HdsButton
+            type='button'
+            @text='Cancel'
+            @color='secondary'
+            data-test-cancellation-form-cancel
+            {{on 'click' Footer.close}}
+          />
+          <HdsButton
+            type='submit'
+            form='cancellation-form'
+            @text='Save'
+            @color='primary'
+            data-test-cancellation-form-save
+          />
+        </HdsButtonSet>
       </M.Footer>
     </HdsModal>
   </template>

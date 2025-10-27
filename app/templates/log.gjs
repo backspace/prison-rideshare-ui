@@ -161,6 +161,7 @@ export default RouteTemplate(
 
           <Modal.Body>
             <HdsForm
+              id='log-form'
               data-test-log-form
               {{on 'submit' @controller.savePost}}
               as |Form|
@@ -188,26 +189,27 @@ export default RouteTemplate(
                   </div>
                 {{/if}}
               </Form.Section>
-
-              <Form.Footer as |Footer|>
-                <Footer.ButtonSet>
-                  <HdsButton
-                    type='button'
-                    @color='secondary'
-                    @text='Cancel'
-                    data-test-log-form-cancel
-                    {{on 'click' @controller.cancelPost}}
-                  />
-                  <HdsButton
-                    type='submit'
-                    @color='primary'
-                    @text='Save'
-                    data-test-log-form-save
-                  />
-                </Footer.ButtonSet>
-              </Form.Footer>
             </HdsForm>
           </Modal.Body>
+
+          <Modal.Footer as |Footer|>
+            <HdsButtonSet>
+              <HdsButton
+                type='submit'
+                form='log-form'
+                @color='primary'
+                @text='Save'
+                data-test-log-form-save
+              />
+              <HdsButton
+                type='button'
+                @color='secondary'
+                @text='Cancel'
+                data-test-log-form-cancel
+                {{on 'click' Footer.close}}
+              />
+            </HdsButtonSet>
+          </Modal.Footer>
         </HdsModal>
       {{/if}}
     </div>

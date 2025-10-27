@@ -7,6 +7,7 @@ import { on } from '@ember/modifier';
 import {
   HdsAdvancedTable,
   HdsButton,
+  HdsButtonSet,
   HdsForm,
   HdsFormCheckboxField,
   HdsFormTextInputField,
@@ -92,6 +93,7 @@ class InstitutionsComponent extends Component {
 
         <Modal.Body>
           <HdsForm
+            id='institution-form'
             data-test-institution-form
             {{on 'submit' @controller.saveInstitution}}
             as |Form|
@@ -125,26 +127,27 @@ class InstitutionsComponent extends Component {
                 <Field.Label>Far?</Field.Label>
               </HdsFormCheckboxField>
             </Form.Section>
-
-            <Form.Footer as |Footer|>
-              <Footer.ButtonSet>
-                <HdsButton
-                  type='submit'
-                  @color='primary'
-                  @text='Save'
-                  data-test-institution-submit
-                />
-                <HdsButton
-                  type='button'
-                  @color='secondary'
-                  @text='Cancel'
-                  data-test-institution-cancel
-                  {{on 'click' @controller.cancelInstitution}}
-                />
-              </Footer.ButtonSet>
-            </Form.Footer>
           </HdsForm>
         </Modal.Body>
+
+        <Modal.Footer as |Footer|>
+          <HdsButtonSet>
+            <HdsButton
+              type='submit'
+              form='institution-form'
+              @color='primary'
+              @text='Save'
+              data-test-institution-submit
+            />
+            <HdsButton
+              type='button'
+              @color='secondary'
+              @text='Cancel'
+              data-test-institution-cancel
+              {{on 'click' Footer.close}}
+            />
+          </HdsButtonSet>
+        </Modal.Footer>
       </HdsModal>
     {{/if}}
   </template>

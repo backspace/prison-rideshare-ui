@@ -3,6 +3,7 @@ import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import {
   HdsButton,
+  HdsButtonSet,
   HdsForm,
   HdsFormCheckboxField,
   HdsFormTextInputField,
@@ -31,12 +32,6 @@ class ReimbursementForm extends Component {
   }
 
   @action
-  handleCancel(event) {
-    event?.preventDefault?.();
-    this.args.cancel?.(event);
-  }
-
-  @action
   handleClose(event) {
     event?.preventDefault?.();
     this.args.cancel?.(event);
@@ -56,7 +51,11 @@ class ReimbursementForm extends Component {
       </Modal.Header>
 
       <Modal.Body>
-        <HdsForm {{on 'submit' this.handleSubmit}} as |Form|>
+        <HdsForm
+          id='reimbursement-form'
+          {{on 'submit' this.handleSubmit}}
+          as |Form|
+        >
           <Form.Section>
             <HdsFormTextInputField
               @value={{@reimbursement.amountDollars}}
@@ -79,26 +78,28 @@ class ReimbursementForm extends Component {
               <Field.Label>Donation?</Field.Label>
             </HdsFormCheckboxField>
           </Form.Section>
-
-          <Form.Footer as |Footer|>
-            <Footer.ButtonSet>
-              <HdsButton
-                type='button'
-                @color='secondary'
-                @text='Cancel'
-                data-test-reimbursement-cancel
-                {{on 'click' this.handleCancel}}
-              />
-              <HdsButton
-                type='submit'
-                @color='primary'
-                @text='Save'
-                data-test-reimbursement-save
-              />
-            </Footer.ButtonSet>
-          </Form.Footer>
         </HdsForm>
       </Modal.Body>
+
+      <Modal.Footer as |Footer|>
+        <HdsButtonSet>
+          <HdsButton
+            type='submit'
+            form='reimbursement-form'
+            @color='primary'
+            @text='Save'
+            data-test-reimbursement-save
+          />
+          <HdsButton
+            type='button'
+            @color='secondary'
+            @text='Cancel'
+            data-test-reimbursement-cancel
+            {{on 'click' Footer.close}}
+          />
+        </HdsButtonSet>
+      </Modal.Footer>
+
     </HdsModal>
   </template>
 }

@@ -83,7 +83,11 @@ export default class RideForm extends Component {
           <Alert @message={{this.errorMessage}} />
         {{/if}}
 
-        <HdsForm {{on 'submit' this.handleSubmit}} as |Form|>
+        <HdsForm
+          id='ride-form'
+          {{on 'submit' this.handleSubmit}}
+          as |Form|
+        >
           <Form.Section>
             <HdsFormTextareaField
               rows='1'
@@ -447,19 +451,21 @@ export default class RideForm extends Component {
         </HdsForm>
       </M.Body>
 
-      <M.Footer>
+      <M.Footer as |Footer|>
         <HdsButtonSet>
           <HdsButton
-            @text='Save'
+            type='submit'
+            form='ride-form'
             @color='primary'
+            @text='Save'
             data-test-ride-form-submit
-            {{on 'click' this.handleSubmit}}
           />
           <HdsButton
-            @text='Cancel'
+            type='button'
             @color='secondary'
+            @text='Cancel'
             data-test-ride-form-cancel
-            {{on 'click' this.handleCancel}}
+            {{on 'click' Footer.close}}
           />
         </HdsButtonSet>
       </M.Footer>
