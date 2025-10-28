@@ -18,11 +18,7 @@ export default RouteTemplate(
           Log in
         </Modal.Header>
         <Modal.Body>
-          <HdsForm
-            id='login-form'
-            {{on 'submit' @controller.login}}
-            as |Form|
-          >
+          <HdsForm id='login-form' {{on 'submit' @controller.login}} as |Form|>
             <Form.Section>
               <HdsFormTextInputField
                 @value={{@controller.model.email}}
