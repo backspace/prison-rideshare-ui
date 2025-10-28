@@ -12,7 +12,7 @@ patchedDependencies:
     hash: fdd37c1f2b693ce834016a5e4d64d8935e1dc495259de08ee2a3da251e56aa34
     path: patches/@hashicorp__design-system-components.patch
   '@hashicorp/flight-icons':
-    hash: 726684057b80209886bf06eac87e95ba2057f6112b12e18539858ee71dddad8c
+    hash: a4015afaecef4b5506fd8d6276edc252725a2a582b566ec810996b493e06c511
     path: patches/@hashicorp__flight-icons.patch
   decorator-transforms:
     hash: daaf70dcf904cf2d805d085a6528bf51c0554bb9a602cfdd5025c76d86e07eb9
@@ -9275,7 +9275,7 @@ snapshots:
       '@embroider/util': 1.13.4(@glint/template@1.6.1)(ember-source@3.28.12(@babel/core@7.28.4))
       '@floating-ui/dom': 1.7.4
       '@hashicorp/design-system-tokens': 3.0.0
-      '@hashicorp/flight-icons': 3.13.0(patch_hash=726684057b80209886bf06eac87e95ba2057f6112b12e18539858ee71dddad8c)
+      '@hashicorp/flight-icons': 3.13.0(patch_hash=a4015afaecef4b5506fd8d6276edc252725a2a582b566ec810996b493e06c511)
       '@lezer/highlight': 1.2.1
       '@nullvoxpopuli/ember-composable-helpers': 5.3.0(@babel/core@7.28.4)
       clipboard-polyfill: 4.1.1
@@ -9312,7 +9312,7 @@ snapshots:
 
   '@hashicorp/design-system-tokens@3.0.0': {}
 
-  '@hashicorp/flight-icons@3.13.0(patch_hash=726684057b80209886bf06eac87e95ba2057f6112b12e18539858ee71dddad8c)': {}
+  '@hashicorp/flight-icons@3.13.0(patch_hash=a4015afaecef4b5506fd8d6276edc252725a2a582b566ec810996b493e06c511)': {}
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:

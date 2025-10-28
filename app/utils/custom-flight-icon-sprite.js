@@ -102,6 +102,66 @@ const CUSTOM_FLIGHT_ICON_SPRITE = `
       <path d="M3 9h11" />
     </symbol>
 
+    <!-- Lucide merge icon - https://github.com/lucide-icons/lucide/blob/main/icons/merge.svg -->
+    <symbol
+      id="flight-merge-16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m8 6 4-4 4 4" />
+      <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+      <path d="m20 22-5-5" />
+    </symbol>
+
+    <symbol
+      id="flight-merge-24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="m8 6 4-4 4 4" />
+      <path d="M12 2v10.3a4 4 0 0 1-1.172 2.872L4 22" />
+      <path d="m20 22-5-5" />
+    </symbol>
+
+    <!-- Lucide split icon - https://github.com/lucide-icons/lucide/blob/main/icons/split.svg -->
+    <symbol
+      id="flight-split-16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 3h5v5" />
+      <path d="M8 3H3v5" />
+      <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3" />
+      <path d="m15 9 6-6" />
+    </symbol>
+
+    <symbol
+      id="flight-split-24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M16 3h5v5" />
+      <path d="M8 3H3v5" />
+      <path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3" />
+      <path d="m15 9 6-6" />
+    </symbol>
+
     <!-- Lucide user-round-search icon - https://github.com/lucide-icons/lucide/blob/main/icons/user-round-search.svg -->
     <symbol
       id="flight-user-round-search-16"

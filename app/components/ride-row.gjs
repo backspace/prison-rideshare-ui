@@ -78,14 +78,17 @@ export default class RideRow extends Component {
       <@table.Td class='assignments' data-test-ride-assignments>
         {{#if @combined}}
           {{#unless this.rideToCombine}}
-            <button
-              type='button'
+            <HdsButton
               data-test-combine-button
+              @text='Uncombine this ride'
               title='Uncombine this ride'
+              @size='small'
+              @color='tertiary'
+              @isIconOnly={{true}}
+              @isInline={{true}}
+              @icon='split'
               {{on 'click' (fn this.uncombineRide this.ride)}}
-            >
-              Uncombine
-            </button>
+            />
           {{/unless}}
         {{else}}
           <RidePerson
@@ -106,23 +109,23 @@ export default class RideRow extends Component {
             </span>
           {{/if}}
           {{#if (or (not this.ride.children) this.rideToCombine)}}
-            <button
-              type='button'
-              data-test-combine-button
-              data-active={{if
-                (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
-                'true'
-                'false'
-              }}
-              title={{this.combineButtonLabel}}
-              {{on 'click' (fn this.combineRide this.ride)}}
-            >
-              {{if
-                (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
-                'Cancel combining'
-                'Combine'
-              }}
-            </button>
+            {{#let
+              (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
+              as |maybeCombining|
+            }}
+              <HdsButton
+                data-test-combine-button
+                @text={{if maybeCombining 'Cancel combining' 'Combine'}}
+                title={{this.combineButtonTitle}}
+                @size='small'
+                @color='tertiary'
+                @isIconOnly={{not maybeCombining}}
+                @isInline={{true}}
+                @icon='merge'
+                {{on 'click' (fn this.combineRide this.ride)}}
+                data-active={{if maybeCombining 'true' 'false'}}
+              />
+            {{/let}}
           {{/if}}
         {{/if}}
       </@table.Td>
@@ -352,7 +355,7 @@ export default class RideRow extends Component {
   }
 
   @computed('ride.id', 'rideToCombine.id')
-  get combineButtonLabel() {
+  get combineButtonTitle() {
     if (this.ride.id === this.rideToCombine?.id) {
       return 'Cancel combining';
     }
