@@ -75,59 +75,61 @@ export default class RideRow extends Component {
       <@table.Td data-test-ride-address>
         {{this.ride.address}}
       </@table.Td>
-      <@table.Td class='assignments' data-test-ride-assignments>
-        {{#if @combined}}
-          {{#unless this.rideToCombine}}
-            <HdsButton
-              data-test-combine-button
-              @text='Uncombine this ride'
-              title='Uncombine this ride'
-              @size='small'
-              @color='tertiary'
-              @isIconOnly={{true}}
-              @isInline={{true}}
-              @icon='split'
-              {{on 'click' (fn this.uncombineRide this.ride)}}
-            />
-          {{/unless}}
-        {{else}}
-          <RidePerson
-            data-test-driver
-            @ride={{this.ride}}
-            @property='driver'
-            @onChange={{this.setDriver}}
-          />
-          <RidePerson
-            data-test-car-owner
-            @ride={{this.ride}}
-            @property='carOwner'
-            @onChange={{this.setCarOwner}}
-          />
-          {{#if this.ride.overridable}}
-            <span data-test-overridable-indicator>
-              <HdsIcon @name='car' @size='16' @isInline={{true}} />
-            </span>
-          {{/if}}
-          {{#if (or (not this.ride.children) this.rideToCombine)}}
-            {{#let
-              (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
-              as |maybeCombining|
-            }}
+      <@table.Td data-test-ride-assignments>
+        <div class='assignments'>
+          {{#if @combined}}
+            {{#unless this.rideToCombine}}
               <HdsButton
                 data-test-combine-button
-                @text={{if maybeCombining 'Cancel combining' 'Combine'}}
-                title={{this.combineButtonTitle}}
+                @text='Uncombine this ride'
+                title='Uncombine this ride'
                 @size='small'
                 @color='tertiary'
-                @isIconOnly={{not maybeCombining}}
+                @isIconOnly={{true}}
                 @isInline={{true}}
-                @icon='merge'
-                {{on 'click' (fn this.combineRide this.ride)}}
-                data-active={{if maybeCombining 'true' 'false'}}
+                @icon='split'
+                {{on 'click' (fn this.uncombineRide this.ride)}}
               />
-            {{/let}}
+            {{/unless}}
+          {{else}}
+            <RidePerson
+              data-test-driver
+              @ride={{this.ride}}
+              @property='driver'
+              @onChange={{this.setDriver}}
+            />
+            <RidePerson
+              data-test-car-owner
+              @ride={{this.ride}}
+              @property='carOwner'
+              @onChange={{this.setCarOwner}}
+            />
+            {{#if this.ride.overridable}}
+              <span data-test-overridable-indicator>
+                <HdsIcon @name='car' @size='16' @isInline={{true}} />
+              </span>
+            {{/if}}
+            {{#if (or (not this.ride.children) this.rideToCombine)}}
+              {{#let
+                (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
+                as |maybeCombining|
+              }}
+                <HdsButton
+                  data-test-combine-button
+                  @text={{if maybeCombining 'Cancel combining' 'Combine'}}
+                  title={{this.combineButtonTitle}}
+                  @size='small'
+                  @color='tertiary'
+                  @isIconOnly={{not maybeCombining}}
+                  @isInline={{true}}
+                  @icon='merge'
+                  {{on 'click' (fn this.combineRide this.ride)}}
+                  data-active={{if maybeCombining 'true' 'false'}}
+                />
+              {{/let}}
+            {{/if}}
           {{/if}}
-        {{/if}}
+        </div>
       </@table.Td>
       <@table.Td>
         <HdsButton
