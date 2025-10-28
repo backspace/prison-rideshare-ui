@@ -293,8 +293,12 @@ md-table-container.debts .person .name {
   font-weight: bold;
 }
 
-.form-container {
-  padding: 16px;
+.report-form {
+  padding: 1rem;
+
+  [name='ride-selection'] label {
+    font-weight: 400;
+  }
 }
 
 .switch-container {
