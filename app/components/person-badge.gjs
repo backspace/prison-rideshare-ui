@@ -26,16 +26,24 @@ export default class PersonBadge extends Component {
       data-test-person-badge-toggle
       {{on 'click' this.toggleContact}}
     >
-      {{#if (eq @property 'driver')}}
-        <HdsIcon @name='user' @size='16' @title='driver' @isInline={{true}} />
-      {{else if (eq @property 'carOwner')}}
-        <HdsIcon @name='car' @size='16' @title='car owner' @isInline={{true}} />
-      {{/if}}
-      <span data-test-person-badge-name>
-        {{@person.name}}
-      </span>
+      <div class='row'>
+        {{#if (eq @property 'driver')}}
+          <HdsIcon @name='user' @size='16' @title='driver' @isInline={{true}} />
+        {{else if (eq @property 'carOwner')}}
+          <HdsIcon
+            @name='car'
+            @size='16'
+            @title='car owner'
+            @isInline={{true}}
+          />
+        {{/if}}
+        <span data-test-person-badge-name>
+          {{@person.name}}
+        </span>
+      </div>
       {{#if @clear}}
         <HdsButton
+          class='clear'
           data-test-person-badge-clear
           {{on 'click' @clear}}
           @isIconOnly={{true}}
@@ -46,11 +54,9 @@ export default class PersonBadge extends Component {
           @color='tertiary'
         />
       {{/if}}
-    </div>
-    {{#if this.showContact}}
-      <div class='contact-container'>
+      {{#if this.showContact}}
         {{#if @person.email}}
-          <a href='mailto:{{@person.email}}'>
+          <a class='row' href='mailto:{{@person.email}}'>
             <HdsIcon
               @name='mail'
               @size='16'
@@ -63,7 +69,7 @@ export default class PersonBadge extends Component {
           </a>
         {{/if}}
         {{#if @person.mobile}}
-          <a href='tel:{{@person.mobile}}'>
+          <a class='row' href='tel:{{@person.mobile}}'>
             <HdsIcon
               @name='smartphone'
               @size='16'
@@ -76,7 +82,7 @@ export default class PersonBadge extends Component {
           </a>
         {{/if}}
         {{#if @person.landline}}
-          <a href='tel:{{@person.landline}}'>
+          <a class='row' href='tel:{{@person.landline}}'>
             <HdsIcon
               @name='phone'
               @size='16'
@@ -89,17 +95,19 @@ export default class PersonBadge extends Component {
           </a>
         {{/if}}
         {{#if @person.selfNotes}}
-          <HdsIcon
-            @name='file-text'
-            @size='16'
-            @title='notes about self'
-            @isInline={{true}}
-          />
-          <span data-test-person-badge-self-notes>
-            {{@person.selfNotes}}
-          </span>
+          <div class='row'>
+            <HdsIcon
+              @name='file-text'
+              @size='16'
+              @title='notes about self'
+              @isInline={{true}}
+            />
+            <span data-test-person-badge-self-notes>
+              {{@person.selfNotes}}
+            </span>
+          </div>
         {{/if}}
-      </div>
-    {{/if}}
+      {{/if}}
+    </div>
   </template>
 }

@@ -330,6 +330,23 @@ md-table-container.debts .person .name {
 }
 
 .person-badge {
+  cursor: pointer;
+  font-size: 13px;
+
+  padding-right: 1.5rem;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .clear {
+    position: absolute;
+    top: 0.15rem;
+    right: -0.25rem;
+    padding: 0;
+    min-height: auto;
+  }
+
   a {
     color: inherit;
     text-decoration: none;
@@ -339,11 +356,15 @@ md-table-container.debts .person .name {
       text-decoration: underline;
     }
   }
-}
 
-.commitments .md-chip-content .contact-container {
-  background: white;
-  color: black;
+  .row {
+    display: flex;
+    gap: 0.125rem;
+    svg {
+      transform: scale(0.75);
+      margin-top: 1px;
+    }
+  }
 }
 
 .person {
