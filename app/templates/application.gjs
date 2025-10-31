@@ -4,8 +4,8 @@ import EmberLoadRemover from 'ember-load/components/ember-load-remover';
 import { action } from '@ember/object';
 import { concat, fn } from '@ember/helper';
 import { on } from '@ember/modifier';
-import { inject as service } from '@ember/service';
 import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import {
   HdsAppFrame,
   HdsAppSideNav,
@@ -22,7 +22,7 @@ import BasicDropdownWormhole from 'ember-basic-dropdown/components/basic-dropdow
 import { modifier } from 'ember-modifier';
 
 class ApplicationComponent extends Component {
-  @service paperToaster;
+  @service toasts;
 
   constructor(owner, args) {
     super(owner, args);
@@ -42,7 +42,7 @@ class ApplicationComponent extends Component {
   }
 
   get activeToast() {
-    return this.paperToaster.activeToast;
+    return this.toasts.activeToast;
   }
 
   <template>
@@ -50,17 +50,15 @@ class ApplicationComponent extends Component {
     <HeadLayout />
     <EmberLoadRemover />
 
-    {{! FIXME replace }}
-    {{! Adapted from https://github.com/adopted-ember-addons/ember-paper/blob/002fa43fd64a609b55d90daeecc0e151085b40e3/addon/components/paper-toaster.hbs }}
-    {{#if this.activeToast.show}}
+    {{#if this.activeToast}}
       <HdsToast
         class='toast'
-        @onDismiss={{fn this.paperToaster.cancelToast this.activeToast}}
+        @onDismiss={{fn this.toasts.dismiss this.activeToast}}
         data-test-toast
         as |toast|
       >
         <toast.Title data-test-toast-text>
-          {{this.activeToast.text}}
+          {{this.activeToast.message}}
         </toast.Title>
       </HdsToast>
     {{/if}}

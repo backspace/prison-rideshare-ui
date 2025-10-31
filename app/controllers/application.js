@@ -7,8 +7,6 @@ import { tracked } from '@glimmer/tracking';
 
 @classic
 export default class ApplicationController extends Controller {
-  @service paperToaster;
-
   @service
   overlaps;
 

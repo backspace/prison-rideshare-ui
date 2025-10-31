@@ -6,8 +6,8 @@ function setupApplicationTest(hooks) {
   setupMirage(hooks);
 
   hooks.afterEach(function () {
-    let toasts = this.owner.lookup('service:paperToaster');
-    toasts.get('queue').forEach((toast) => toasts.cancelToast(toast));
+    let toasts = this.owner.lookup('service:toasts');
+    toasts.dismiss();
   });
 }
 
