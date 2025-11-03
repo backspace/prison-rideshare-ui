@@ -25,6 +25,9 @@ module.exports = function (defaults) {
       ],
     },
     fingerprint,
+    minifyCSS: {
+      enabled: false,
+    },
     sourcemaps: {
       enabled: true,
     },
