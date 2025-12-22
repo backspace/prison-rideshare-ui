@@ -83,10 +83,6 @@ body.ember-application {
   .app-frame {
     grid-template-columns: 0 1fr;
   }
-
-  .app-frame__sidebar {
-    grid-column: 1 / span 2;
-  }
 }
 
 .app-header {
