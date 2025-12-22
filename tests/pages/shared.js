@@ -1,4 +1,4 @@
-import { clickable, create, text } from 'ember-cli-page-object';
+import { attribute, clickable, create, text } from 'ember-cli-page-object';
 
 export default create({
   session: {
@@ -28,6 +28,8 @@ export default create({
   sidebar: {
     scope: '[data-test-app-sidenav]',
   },
+
+  sidebarState: attribute('data-state', '[data-test-app-sidenav]'),
 
   userCount: {
     scope: '[data-test-nav-users-count]',

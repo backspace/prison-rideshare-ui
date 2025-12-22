@@ -7,14 +7,14 @@ import { on } from '@ember/modifier';
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import {
-  HdsAppFrame,
-  HdsAppSideNav,
-  HdsAppSideNavList,
   HdsBadgeCount,
   HdsButton,
   HdsSeparator,
   HdsToast,
 } from '@hashicorp/design-system-components/components';
+import AppFrame from 'prison-rideshare-ui/components/app-frame';
+import AppSideNav from 'prison-rideshare-ui/components/app-side-nav';
+import AppSideNavList from 'prison-rideshare-ui/components/app-side-nav/list';
 import { pageTitle } from 'ember-page-title';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import now from 'ember-moment/helpers/now';
@@ -23,13 +23,15 @@ import { modifier } from 'ember-modifier';
 
 class ApplicationComponent extends Component {
   @service toasts;
+  @service sidebar;
 
   constructor(owner, args) {
     super(owner, args);
 
     if (typeof window !== 'undefined') {
       const isDesktop = window.matchMedia('(min-width: 1088px)').matches;
-      this.args.controller.sidebar.open = isDesktop;
+      this.sidebar.open = isDesktop;
+      this.sidebar.setNavMinimizedState(!isDesktop);
     }
   }
 
@@ -38,11 +40,20 @@ class ApplicationComponent extends Component {
   }
 
   get isSidebarMinimized() {
-    return !this.args.controller.sidebar.open;
+    return this.sidebar.navIsMinimized;
   }
 
   get activeToast() {
     return this.toasts.activeToast;
+  }
+
+  @action registerSidebarComponent(component) {
+    this.sidebar.registerNavComponent(component);
+  }
+
+  @action handleSidebarToggle(isMinimized) {
+    this.sidebar.open = !isMinimized;
+    this.sidebar.setNavMinimizedState(isMinimized);
   }
 
   <template>
@@ -63,22 +74,26 @@ class ApplicationComponent extends Component {
       </HdsToast>
     {{/if}}
 
-    <HdsAppFrame class='app-frame' @hasFooter={{false}} as |Frame|>
+    <AppFrame
+      class={{if this.isSidebarMinimized 'app-frame--sidebar-closed'}}
+      as |Frame|
+    >
       <Frame.Header {{storeHeaderElement this.storeHeaderElement}} />
       <Frame.Sidebar>
-        {{#unless this.isSidebarMinimized}}
-          <HdsAppSideNav
-            data-test-app-sidenav
-            @isResponsive={{true}}
-            @isMinimized={{this.isSidebarMinimized}}
-          >
-            <HdsAppSideNavList as |List|>
-              {{#if @controller.session.currentUser.admin}}
-                <List.Link @route='drivers' @text='Drivers' />
-                <List.Link @route='reimbursements' @text='Reimbursements' />
-                <List.Link @route='debts' @text='Debts' />
-                <List.Link @route='rides' @text='Rides'>
-                  {{#if @controller.ridesBadgeCount}}
+        <AppSideNav
+          data-test-app-sidenav
+          @isResponsive={{true}}
+          @isMinimized={{this.isSidebarMinimized}}
+          @onRegister={{this.registerSidebarComponent}}
+          @onToggleMinimizedStatus={{this.handleSidebarToggle}}
+        >
+          <AppSideNavList as |List|>
+            {{#if @controller.session.currentUser.admin}}
+              <List.Link @route='drivers' @text='Drivers' />
+              <List.Link @route='reimbursements' @text='Reimbursements' />
+              <List.Link @route='debts' @text='Debts' />
+              <List.Link @route='rides' @text='Rides'>
+                {{#if @controller.ridesBadgeCount}}
                     <HdsBadgeCount
                       @text={{@controller.ridesBadgeCount}}
                       @type='outlined'
@@ -94,62 +109,61 @@ class ApplicationComponent extends Component {
                   @text='Calendar'
                 />
                 <List.Link @route='statistics' @text='Statistics' />
-              {{/if}}
+            {{/if}}
 
-              <List.Link @route='reports.new' @text='Report' />
-              <List.Link @route='gas-prices' @text='Gas prices' />
+            <List.Link @route='reports.new' @text='Report' />
+            <List.Link @route='gas-prices' @text='Gas prices' />
 
-              {{#if @controller.session.isAuthenticated}}
-                {{#if @controller.session.currentUser.admin}}
-                  <List.Link @route='log' @text='Log'>
-                    {{#if @controller.sidebar.unreadCount}}
-                      <HdsBadgeCount
-                        @text={{@controller.sidebar.unreadCount}}
-                        @type='outlined'
-                        @size='small'
-                        data-test-nav-log-count
-                      />
-                    {{/if}}
-                  </List.Link>
-                  <List.Link @route='users' @text='Users'>
-                    {{#if @controller.sidebar.userCount}}
-                      <HdsBadgeCount
-                        @text={{@controller.sidebar.userCount}}
-                        @type='outlined'
-                        @size='small'
-                        data-test-nav-users-count
-                      />
-                    {{/if}}
-                  </List.Link>
-                  <List.Item>
-                    <HdsSeparator @spacing='0' />
-                  </List.Item>
-                {{/if}}
-                <List.Item data-test-session>
-                  <HdsButton
-                    @color='secondary'
-                    @text={{concat
-                      'Log out '
-                      @controller.session.currentUser.email
-                    }}
-                    @size='small'
-                    {{on 'click' @controller.logout}}
-                    type='button'
-                    data-test-session-button
-                  />
+            {{#if @controller.session.isAuthenticated}}
+              {{#if @controller.session.currentUser.admin}}
+                <List.Link @route='log' @text='Log'>
+                  {{#if @controller.sidebar.unreadCount}}
+                    <HdsBadgeCount
+                      @text={{@controller.sidebar.unreadCount}}
+                      @type='outlined'
+                      @size='small'
+                      data-test-nav-log-count
+                    />
+                  {{/if}}
+                </List.Link>
+                <List.Link @route='users' @text='Users'>
+                  {{#if @controller.sidebar.userCount}}
+                    <HdsBadgeCount
+                      @text={{@controller.sidebar.userCount}}
+                      @type='outlined'
+                      @size='small'
+                      data-test-nav-users-count
+                    />
+                  {{/if}}
+                </List.Link>
+                <List.Item>
+                  <HdsSeparator @spacing='0' />
                 </List.Item>
-              {{else}}
-                <List.Link @route='login' @text='Admin log in' />
               {{/if}}
-            </HdsAppSideNavList>
-          </HdsAppSideNav>
-        {{/unless}}
+              <List.Item data-test-session>
+                <HdsButton
+                  @color='secondary'
+                  @text={{concat
+                    'Log out '
+                    @controller.session.currentUser.email
+                  }}
+                  @size='small'
+                  {{on 'click' @controller.logout}}
+                  type='button'
+                  data-test-session-button
+                />
+              </List.Item>
+            {{else}}
+              <List.Link @route='login' @text='Admin log in' />
+            {{/if}}
+          </AppSideNavList>
+        </AppSideNav>
       </Frame.Sidebar>
 
       <Frame.Main class='flex layout-column'>
         {{outlet}}
       </Frame.Main>
-    </HdsAppFrame>
+    </AppFrame>
 
     <BasicDropdownWormhole />
   </template>

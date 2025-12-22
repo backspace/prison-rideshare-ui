@@ -4,6 +4,7 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import stringToMobiledoc from 'prison-rideshare-ui/tests/helpers/string-to-mobiledoc';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
+import rides from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 
 module('Acceptance | sidebar', function (hooks) {
@@ -15,15 +16,74 @@ module('Acceptance | sidebar', function (hooks) {
   });
 
   test('the header toggle opens and closes the sidebar', async function (assert) {
-    await visit('/rides');
+    await rides.visit();
 
-    const initialVisibility = shared.sidebar.isPresent;
-
-    await shared.sidebarToggle.click();
-    assert.notStrictEqual(shared.sidebar.isPresent, initialVisibility);
+    const initialState = shared.sidebarState;
 
     await shared.sidebarToggle.click();
-    assert.strictEqual(shared.sidebar.isPresent, initialVisibility);
+    assert.notStrictEqual(shared.sidebarState, initialState);
+
+    await shared.sidebarToggle.click();
+    assert.strictEqual(shared.sidebarState, initialState);
+  });
+
+  test('the sidebar is closed on mobile until toggled open', async function (assert) {
+    assert.expect(11);
+
+    const restoreMatchMedia = stubDesktopMatchMedia(false);
+
+    try {
+      await rides.visit();
+
+      assert.true(
+        shared.sidebar.isPresent,
+        'sidebar container renders by default',
+      );
+      assert.strictEqual(
+        shared.sidebarState,
+        'closed',
+        'sidebar starts closed on mobile',
+      );
+
+      const sidebarService = this.owner.lookup('service:sidebar');
+
+      assert.false(sidebarService.open, 'sidebar service starts closed');
+      assert.true(
+        sidebarService.navIsMinimized,
+        'sidebar service starts minimized',
+      );
+
+      await shared.sidebarToggle.click();
+
+      assert.true(
+        sidebarService.open,
+        'sidebar service reports open after toggle',
+      );
+      assert.true(shared.sidebar.isPresent, 'sidebar renders after toggle');
+      assert.strictEqual(
+        shared.sidebarState,
+        'open',
+        'sidebar opens when toggled',
+      );
+      assert.true(
+        shared.sidebarToggle.isPresent,
+        'header toggle remains available while sidebar is open',
+      );
+
+      await shared.sidebarToggle.click();
+
+      assert.true(
+        shared.sidebar.isPresent,
+        'sidebar remains rendered after closing',
+      );
+      assert.strictEqual(shared.sidebarState, 'closed', 'sidebar closes again');
+      assert.true(
+        sidebarService.navIsMinimized,
+        'sidebar service reports minimized after closing',
+      );
+    } finally {
+      restoreMatchMedia();
+    }
   });
 
   test('a badge is shown on the toggle when notifications exist and the sidebar is closed', async function (assert) {
@@ -65,8 +125,9 @@ module('Acceptance | sidebar', function (hooks) {
     await visit('/rides');
     await shared.sidebarToggle.click();
 
-    assert.false(
-      shared.sidebar.isPresent,
+    assert.strictEqual(
+      shared.sidebarState,
+      'closed',
       'expected the sidebar to be hidden after toggling',
     );
     assert.true(
@@ -77,3 +138,39 @@ module('Acceptance | sidebar', function (hooks) {
     assert.strictEqual(shared.sidebarToggleBadge.text.trim(), '3');
   });
 });
+
+function stubDesktopMatchMedia(matches) {
+  const originalMatchMedia = window.matchMedia;
+  const desktopQuery = /\(min-width:\s*1088px\)/;
+
+  window.matchMedia = (query) => {
+    if (desktopQuery.test(query)) {
+      return createMockMediaQueryList(matches, query);
+    }
+
+    if (typeof originalMatchMedia === 'function') {
+      return originalMatchMedia(query);
+    }
+
+    return createMockMediaQueryList(true, query);
+  };
+
+  return () => {
+    window.matchMedia = originalMatchMedia;
+  };
+}
+
+function createMockMediaQueryList(matches, media) {
+  return {
+    matches,
+    media,
+    onchange: null,
+    addListener() {},
+    removeListener() {},
+    addEventListener() {},
+    removeEventListener() {},
+    dispatchEvent() {
+      return false;
+    },
+  };
+}

@@ -4,12 +4,12 @@ import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
 import { pageTitle } from 'ember-page-title';
 import {
-  HdsAppHeader,
   HdsBadgeCount,
   HdsButton,
   HdsTag,
 } from '@hashicorp/design-system-components/components';
 import { inject as controller } from '@ember/controller';
+import { runTask } from 'ember-lifeline';
 
 export default class ToolbarHeader extends Component {
   @controller application;
@@ -29,7 +29,21 @@ export default class ToolbarHeader extends Component {
 
   @action
   toggleSidebar() {
-    this.sidebar.open = !this.sidebar.open;
+    const navExpanded =
+      Boolean(this.sidebar.navComponent) && !this.sidebar.navIsMinimized;
+
+    if (navExpanded) {
+      const collapsed = this.sidebar.collapseNavIfNeeded();
+
+      this.sidebar.open = false;
+
+      if (!collapsed) {
+        this.sidebar.setNavMinimizedState(true);
+      }
+    } else {
+      this.sidebar.open = true;
+      runTask(this.sidebar, this.sidebar.expandNavIfNeeded);
+    }
   }
 
   <template>
@@ -41,8 +55,8 @@ export default class ToolbarHeader extends Component {
 
     {{#if this.application.headerElement}}
       {{#in-element this.application.headerElement}}
-        <HdsAppHeader>
-          <:logo>
+        <header class='app-header'>
+          <div class='app-header__left'>
             <span class='header-toggle'>
               <HdsButton
                 @color='secondary'
@@ -63,13 +77,13 @@ export default class ToolbarHeader extends Component {
                 />
               {{/if}}
             </span>
-          </:logo>
-          <:globalActions>
-            <h2>
+          </div>
+          <div class='app-header__title'>
+            <h1 class='app-header__heading'>
               {{@title}}
-            </h2>
-          </:globalActions>
-          <:utilityActions>
+            </h1>
+          </div>
+          <div class='app-header__actions'>
             {{#if this.isSandbox}}
               <HdsTag
                 @text='Sandbox'
@@ -77,8 +91,8 @@ export default class ToolbarHeader extends Component {
               />
             {{/if}}
             {{yield}}
-          </:utilityActions>
-        </HdsAppHeader>
+          </div>
+        </header>
       {{/in-element}}
     {{/if}}
   </template>

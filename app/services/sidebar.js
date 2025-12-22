@@ -3,6 +3,7 @@ import classic from 'ember-classic-decorator';
 import { computed } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import Service, { inject as service } from '@ember/service';
+import { runTask } from 'ember-lifeline';
 
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
@@ -19,7 +20,10 @@ export default class SidebarService extends Service {
   @service
   userSocket;
 
+  @tracked navIsMinimized = true;
   @tracked open = false;
+
+  navComponent = null;
 
   @computed('userSocket.present.length')
   get userCount() {
@@ -84,7 +88,6 @@ export default class SidebarService extends Service {
     'requiresConfirmationCount',
   )
   get notificationCount() {
-    window.sss = this;
     if (this.session.get('currentUser.admin')) {
       return (
         this.userCount +
@@ -95,5 +98,48 @@ export default class SidebarService extends Service {
     }
 
     return 0;
+  }
+
+  registerNavComponent(component) {
+    this.navComponent = component;
+
+    // Defer tracked updates to avoid mutating after consumption during render
+    if (component) {
+      const nextState = Boolean(component.args?.isMinimized);
+
+      if (this.navIsMinimized !== nextState) {
+        runTask(this, () => (this.navIsMinimized = nextState));
+      }
+
+      runTask(this, this.expandNavIfNeeded);
+    } else if (!this.navIsMinimized) {
+      runTask(this, () => (this.navIsMinimized = true));
+    }
+  }
+
+  setNavMinimizedState(isMinimized) {
+    this.navIsMinimized = isMinimized;
+  }
+
+  expandNavIfNeeded() {
+    if (!this.open) {
+      return;
+    }
+
+    if (!this.navComponent || !this.navIsMinimized) {
+      return;
+    }
+
+    this.navComponent.toggleMinimizedStatus();
+  }
+
+  collapseNavIfNeeded() {
+    if (!this.navComponent || this.navIsMinimized) {
+      return false;
+    }
+
+    this.navComponent.toggleMinimizedStatus();
+
+    return true;
   }
 }
