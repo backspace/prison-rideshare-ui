@@ -146,11 +146,9 @@ module('Acceptance | sidebar', function (hooks) {
     try {
       await visit('/rides');
       await shared.sidebarToggle.click();
-
       assert.strictEqual(shared.sidebarState, 'open');
 
       await shared.sidebarNavReportLink.click();
-
       assert.strictEqual(shared.sidebarState, 'closed');
 
       const sidebarService = this.owner.lookup('service:sidebar');
