@@ -1,4 +1,3 @@
-import { component } from '@ember/component/helper';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
