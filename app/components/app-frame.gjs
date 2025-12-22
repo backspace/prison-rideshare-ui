@@ -1,4 +1,3 @@
-import { component } from '@ember/component/helper';
 import Component from '@glimmer/component';
 import { hash } from '@ember/helper';
 import Header from 'prison-rideshare-ui/components/app-frame/header';

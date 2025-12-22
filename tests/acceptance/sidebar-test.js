@@ -1,4 +1,4 @@
-import { settled, visit } from '@ember/test-helpers';
+import { visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import stringToMobiledoc from 'prison-rideshare-ui/tests/helpers/string-to-mobiledoc';
