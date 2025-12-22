@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { cancel, later } from '@ember/runloop';
 import { action } from '@ember/object';
+import { cancelTask, runTask } from 'ember-lifeline';
 import config from 'prison-rideshare-ui/config/environment';
 
 const DEFAULT_DURATION = 3000;
@@ -23,7 +23,7 @@ export default class ToastsService extends Service {
     const duration = this.resolveDuration(options.duration);
 
     if (duration !== false && duration !== null && duration !== undefined) {
-      this.#dismissTimer = later(
+      this.#dismissTimer = runTask(
         this,
         () => {
           if (this.activeToast === toast) {
@@ -57,7 +57,7 @@ export default class ToastsService extends Service {
 
   clearScheduledDismiss() {
     if (this.#dismissTimer) {
-      cancel(this.#dismissTimer);
+      cancelTask(this, this.#dismissTimer);
       this.#dismissTimer = null;
     }
   }
