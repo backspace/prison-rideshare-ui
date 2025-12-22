@@ -94,24 +94,28 @@ class ApplicationComponent extends Component {
               <List.Link @route='debts' @text='Debts' />
               <List.Link @route='rides' @text='Rides'>
                 {{#if @controller.ridesBadgeCount}}
-                    <HdsBadgeCount
-                      @text={{@controller.ridesBadgeCount}}
-                      @type='outlined'
-                      @size='small'
-                      data-test-nav-rides-count
-                    />
-                  {{/if}}
-                </List.Link>
-                <List.Link @route='institutions' @text='Institutions' />
-                <List.Link
-                  @route='admin-calendar'
-                  @model={{momentFormat (now) 'YYYY-MM'}}
-                  @text='Calendar'
-                />
-                <List.Link @route='statistics' @text='Statistics' />
+                  <HdsBadgeCount
+                    @text={{@controller.ridesBadgeCount}}
+                    @type='outlined'
+                    @size='small'
+                    data-test-nav-rides-count
+                  />
+                {{/if}}
+              </List.Link>
+              <List.Link @route='institutions' @text='Institutions' />
+              <List.Link
+                @route='admin-calendar'
+                @model={{momentFormat (now) 'YYYY-MM'}}
+                @text='Calendar'
+              />
+              <List.Link @route='statistics' @text='Statistics' />
             {{/if}}
 
-            <List.Link @route='reports.new' @text='Report' data-test-nav-report />
+            <List.Link
+              @route='reports.new'
+              @text='Report'
+              data-test-nav-report
+            />
             <List.Link @route='gas-prices' @text='Gas prices' />
 
             {{#if @controller.session.isAuthenticated}}
