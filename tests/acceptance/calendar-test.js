@@ -142,6 +142,14 @@ module('Acceptance | calendar', function (hooks) {
   });
 
   test('slots can be committed to', async function (assert) {
+    let authorizationHeader;
+
+    this.server.post('/commitments', function (schema, request) {
+      authorizationHeader = request.requestHeaders.Authorization;
+      let attrs = this.normalizedRequestAttrs();
+      return schema.commitments.create(attrs);
+    });
+
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     // FIXME this is only a separate test because toasts linger forever in the test environment
@@ -161,6 +169,12 @@ module('Acceptance | calendar', function (hooks) {
       commitment.slotId,
       this.toCommitSlot.id,
       'expected the server to have the newly-created commitment',
+    );
+
+    assert.equal(
+      authorizationHeader,
+      'Person Bearer XXX',
+      'expected the person token to be sent when creating a commitment',
     );
   });
 

@@ -30,6 +30,9 @@ module.exports = function (defaults) {
       disableDecoratorTransforms: true,
     },
     fingerprint,
+    minifyCSS: {
+      enabled: false,
+    },
     sourcemaps: {
       enabled: true,
     },
