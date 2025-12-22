@@ -27,7 +27,7 @@ export default RouteTemplate(
     </ToolbarHeader>
 
     <HdsFormSectionMultiFieldGroup class='rides-filters' as |Group|>
-      <Group.Item @width='30rem'>
+      <Group.Item>
         <div>
           <label class='sr-only' for='ride-search-input'>Search</label>
           <HdsFormTextInputBase
@@ -62,53 +62,41 @@ export default RouteTemplate(
       </Group.Item>
     </HdsFormSectionMultiFieldGroup>
 
-    <HdsTable
-      class='rides'
-      @isSortable={{true}}
-      @sortBy={{@controller.sortProp}}
-      @sortOrder={{@controller.sortDir}}
-    >
-      <:head as |Head|>
-        <Head.Tr>
-          {{#if @controller.showCreation}}
-            <Head.Th>Created</Head.Th>
-          {{/if}}
-          <Head.ThSort
-            class='date'
-            data-test-rides-head-date
-            @sortOrder={{if
-              (eq @controller.sortProp 'start')
-              @controller.sortDir
-            }}
-            @onClickSort={{fn @controller.sort 'start'}}
-          >
-            Date
-          </Head.ThSort>
-          <Head.Th>Institution</Head.Th>
-          <Head.Th>Visitor</Head.Th>
-          <Head.Th>Pickup address</Head.Th>
-          <Head.Th>Driver/car owner</Head.Th>
-          <Head.Th />
-        </Head.Tr>
-      </:head>
+    <div class='rides-table'>
+      <HdsTable
+        class='rides'
+        @isSortable={{true}}
+        @sortBy={{@controller.sortProp}}
+        @sortOrder={{@controller.sortDir}}
+      >
+        <:head as |Head|>
+          <Head.Tr>
+            {{#if @controller.showCreation}}
+              <Head.Th>Created</Head.Th>
+            {{/if}}
+            <Head.ThSort
+              class='date'
+              data-test-rides-head-date
+              @sortOrder={{if
+                (eq @controller.sortProp 'start')
+                @controller.sortDir
+              }}
+              @onClickSort={{fn @controller.sort 'start'}}
+            >
+              Date
+            </Head.ThSort>
+            <Head.Th>Institution</Head.Th>
+            <Head.Th>Visitor</Head.Th>
+            <Head.Th>Pickup address</Head.Th>
+            <Head.Th>Driver/car owner</Head.Th>
+            <Head.Th />
+          </Head.Tr>
+        </:head>
 
-      <:body as |Body|>
-        {{#each @controller.filteredRides as |ride|}}
-          <RideRow
-            @ride={{ride}}
-            @showCreation={{@controller.showCreation}}
-            @editCancellation={{@controller.editCancellation}}
-            @editRide={{@controller.editRide}}
-            @combineRide={{@controller.combineRide}}
-            @uncombineRide={{@controller.uncombineRide}}
-            @people={{@controller.people}}
-            @rideToCombine={{@controller.rideToCombine}}
-            @table={{Body}}
-          />
-          {{#each ride.children as |child|}}
+        <:body as |Body|>
+          {{#each @controller.filteredRides as |ride|}}
             <RideRow
-              @ride={{child}}
-              @combined={{true}}
+              @ride={{ride}}
               @showCreation={{@controller.showCreation}}
               @editCancellation={{@controller.editCancellation}}
               @editRide={{@controller.editRide}}
@@ -118,16 +106,30 @@ export default RouteTemplate(
               @rideToCombine={{@controller.rideToCombine}}
               @table={{Body}}
             />
+            {{#each ride.children as |child|}}
+              <RideRow
+                @ride={{child}}
+                @combined={{true}}
+                @showCreation={{@controller.showCreation}}
+                @editCancellation={{@controller.editCancellation}}
+                @editRide={{@controller.editRide}}
+                @combineRide={{@controller.combineRide}}
+                @uncombineRide={{@controller.uncombineRide}}
+                @people={{@controller.people}}
+                @rideToCombine={{@controller.rideToCombine}}
+                @table={{Body}}
+              />
+            {{/each}}
+          {{else}}
+            <Body.Tr data-test-no-matches>
+              <Body.Td colspan={{if @controller.showCreation '7' '6'}}>
+                No rides matched your criteria.
+              </Body.Td>
+            </Body.Tr>
           {{/each}}
-        {{else}}
-          <Body.Tr data-test-no-matches>
-            <Body.Td colspan={{if @controller.showCreation '7' '6'}}>
-              No rides matched your criteria.
-            </Body.Td>
-          </Body.Tr>
-        {{/each}}
-      </:body>
-    </HdsTable>
+        </:body>
+      </HdsTable>
+    </div>
 
     {{#if @controller.editingRide}}
       <RideForm
