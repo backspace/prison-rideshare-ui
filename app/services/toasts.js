@@ -20,7 +20,7 @@ export default class ToastsService extends Service {
 
     this.activeToast = toast;
 
-    const duration = this.#resolveDuration(options.duration);
+    const duration = this.resolveDuration(options.duration);
 
     if (duration !== false && duration !== null && duration !== undefined) {
       this.#dismissTimer = later(
@@ -43,11 +43,11 @@ export default class ToastsService extends Service {
       return;
     }
 
-    this.#clearScheduledDismiss();
+    this.clearScheduledDismiss();
     this.activeToast = null;
   }
 
-  #resolveDuration(duration) {
+  resolveDuration(duration) {
     if (duration === undefined) {
       return config.toastDuration ?? DEFAULT_DURATION;
     }
@@ -55,7 +55,7 @@ export default class ToastsService extends Service {
     return duration;
   }
 
-  #clearScheduledDismiss() {
+  clearScheduledDismiss() {
     if (this.#dismissTimer) {
       cancel(this.#dismissTimer);
       this.#dismissTimer = null;
