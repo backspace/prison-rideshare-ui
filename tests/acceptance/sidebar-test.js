@@ -1,4 +1,4 @@
-import { visit } from '@ember/test-helpers';
+import { settled, visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import stringToMobiledoc from 'prison-rideshare-ui/tests/helpers/string-to-mobiledoc';
@@ -136,6 +136,29 @@ module('Acceptance | sidebar', function (hooks) {
     );
 
     assert.strictEqual(shared.sidebarToggleBadge.text.trim(), '3');
+  });
+
+  test('the sidebar closes after selecting a link on mobile', async function (assert) {
+    assert.expect(4);
+
+    const restoreMatchMedia = stubDesktopMatchMedia(false);
+
+    try {
+      await visit('/rides');
+      await shared.sidebarToggle.click();
+
+      assert.strictEqual(shared.sidebarState, 'open');
+
+      await shared.sidebarNavReportLink.click();
+
+      assert.strictEqual(shared.sidebarState, 'closed');
+
+      const sidebarService = this.owner.lookup('service:sidebar');
+      assert.true(sidebarService.navIsMinimized);
+      assert.false(sidebarService.open);
+    } finally {
+      restoreMatchMedia();
+    }
   });
 });
 

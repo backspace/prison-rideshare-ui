@@ -111,7 +111,7 @@ class ApplicationComponent extends Component {
                 <List.Link @route='statistics' @text='Statistics' />
             {{/if}}
 
-            <List.Link @route='reports.new' @text='Report' />
+            <List.Link @route='reports.new' @text='Report' data-test-nav-report />
             <List.Link @route='gas-prices' @text='Gas prices' />
 
             {{#if @controller.session.isAuthenticated}}

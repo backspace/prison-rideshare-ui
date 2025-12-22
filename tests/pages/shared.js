@@ -30,6 +30,7 @@ export default create({
   },
 
   sidebarState: attribute('data-state', '[data-test-app-sidenav]'),
+  sidebarNavReportLink: { scope: '[data-test-nav-report]' },
 
   userCount: {
     scope: '[data-test-nav-users-count]',
