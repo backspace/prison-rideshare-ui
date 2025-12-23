@@ -7,7 +7,7 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: '[data-test-register-card]',
+  testContainer: '[data-test-register-modal]',
 
   visit: visitable('/register'),
 

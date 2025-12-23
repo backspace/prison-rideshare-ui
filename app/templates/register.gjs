@@ -2,21 +2,33 @@ import RouteTemplate from 'ember-route-template';
 import { on } from '@ember/modifier';
 import {
   HdsButton,
-  HdsCardContainer,
+  HdsButtonSet,
   HdsForm,
   HdsFormTextInputField,
+  HdsModal,
 } from '@hashicorp/design-system-components/components';
 import Alert from 'prison-rideshare-ui/components/alert';
 
 export default RouteTemplate(
   <template>
-    <div class='login-page' data-test-register-page>
-      <HdsCardContainer @level='mid' class='login-card' data-test-register-card>
-        <HdsForm {{on 'submit' @controller.register}} as |Form|>
-          <Form.Header>
-            <Form.HeaderTitle>Register</Form.HeaderTitle>
-          </Form.Header>
+    <HdsModal
+      class='not-dismissible'
+      @size='small'
+      @isDismissDisabled={{true}}
+      data-test-register-modal
+      as |Modal|
+    >
+      <Modal.Header>
+        Register
+      </Modal.Header>
 
+      <Modal.Body>
+        <HdsForm
+          id='register-form'
+          data-test-register-page
+          {{on 'submit' @controller.register}}
+          as |Form|
+        >
           <Form.Section>
             {{#if @controller.error}}
               <Alert @message={{@controller.error}} data-test-register-error />
@@ -53,25 +65,27 @@ export default RouteTemplate(
               <Field.Label>Password confirmation</Field.Label>
             </HdsFormTextInputField>
           </Form.Section>
-
-          <Form.Footer as |Footer|>
-            <Footer.ButtonSet>
-              <HdsButton
-                type='submit'
-                @color='primary'
-                @text='Register'
-                data-test-register-submit
-              />
-              <HdsButton
-                @color='secondary'
-                @route='login'
-                @text='Log in'
-                data-test-register-login
-              />
-            </Footer.ButtonSet>
-          </Form.Footer>
         </HdsForm>
-      </HdsCardContainer>
-    </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <HdsButtonSet>
+          <HdsButton
+            type='submit'
+            form='register-form'
+            @size='small'
+            @color='primary'
+            @text='Register'
+            data-test-register-submit
+          />
+          <HdsButton
+            @size='small'
+            @color='secondary'
+            @route='login'
+            @text='Log in'
+            data-test-register-login
+          />
+        </HdsButtonSet>
+      </Modal.Footer>
+    </HdsModal>
   </template>,
 );

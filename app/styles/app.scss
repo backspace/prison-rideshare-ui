@@ -589,3 +589,7 @@ table.rides {
 .hds-modal input, #ride-search-input {
   box-sizing: border-box;
 }
+
+.hds-modal.not-dismissible .hds-modal__dismiss {
+  display: none;
+}
