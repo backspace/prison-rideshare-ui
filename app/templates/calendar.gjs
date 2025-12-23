@@ -38,11 +38,6 @@ class CalendarComponent extends Component {
       as |calendar|
     >
 
-      <About
-        @webcalUrl={{@controller.webcalSubscriptionUrl}}
-        @httpUrl={{@controller.httpSubscriptionUrl}}
-      />
-
       <HdsCardContainer
         class='person-card'
         @background='neutral-secondary'
@@ -97,6 +92,11 @@ class CalendarComponent extends Component {
           {{/if}}
         </div>
       </HdsCardContainer>
+
+      <About
+        @webcalUrl={{@controller.webcalSubscriptionUrl}}
+        @httpUrl={{@controller.httpSubscriptionUrl}}
+      />
 
       <calendar.Nav />
 
