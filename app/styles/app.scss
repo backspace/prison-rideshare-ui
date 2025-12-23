@@ -377,86 +377,6 @@ html {
   left: 0;
 }
 
-md-toolbar {
-  md-chips {
-    margin-left: 1rem;
-
-    .md-chips.md-chips {
-      box-shadow: none;
-    }
-  }
-
-  .count {
-    border-radius: 10px;
-    background: white;
-    color: paper-color($color-indigo, '600');
-    font-size: 50%;
-    text-align: center;
-    width: 12px;
-    height: 12px;
-    position: absolute;
-    top: 10px;
-    left: 32px;
-  }
-}
-
-md-sidenav {
-  width: 150px;
-  background-color: paper-color($color-indigo, '600');
-
-  md-content.md-default-theme, md-list {
-    background: transparent;
-
-    padding: 0;
-  }
-
-  .md-list-item-inner {
-    padding: 0;
-    align-items: stretch;
-  }
-
-  md-list-item a, md-list-item.session .md-button {
-    display: flex;
-    align-items: center;
-    padding-left: 16px;
-    width: 100%;
-
-    text-decoration: none;
-    color: white;
-    white-space: nowrap;
-
-    &:hover {
-      background-color: paper-color($color-indigo, '200');
-    }
-
-    &.active {
-      background-color: paper-color($color-indigo, '400');
-    }
-
-    .md-list-item-inner {
-      align-items: center;
-    }
-  }
-
-  .rides, .users, .log {
-    display: flex;
-    width: 100%;
-    padding-right: 16px;
-    justify-content: space-between;
-    align-items: center;
-    .count {
-      border-radius: 10px;
-      background: white;
-      color: paper-color($color-indigo, '600');
-      font-size: 50%;
-      text-align: center;
-      width: 10px;
-      height: 10px;
-    }
-  }
-}
-
-
 table.rides tr {
   td, th {
     border-left-style: none;
@@ -500,10 +420,6 @@ table.rides tr {
 
   &.overlaps {
     background-color: pink;
-  }
-
-  md-input-container {
-    margin: 18px 0 0;
   }
 
   .assignments {
@@ -560,16 +476,6 @@ table.rides tr {
   }
 }
 
-.medium-row md-radio-group {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-md-table-container.debts .person .name {
-  font-weight: bold;
-}
-
 .report-form {
   padding: 1rem;
 
@@ -588,11 +494,6 @@ md-table-container.debts .person .name {
   color: #424242;
   border-radius: 16px;
   padding: 5px;
-
-  md-icon {
-    transform: translate(2px, -2px);
-    padding-right: 2px;
-  }
 
   .remove-container {
     button {
@@ -669,36 +570,10 @@ md-table-container.debts .person .name {
   align-items: center;
 }
 
-md-table-container.reimbursements {
-  .month {
-    font-weight: bold;
-  }
-}
-
-md-table-container {
-  .copy-btn {
-    border: 0;
-    background: transparent;
-  }
-}
-
-md-toast {
-  position: fixed;
-}
-
 .unit {
   display: inline-block;
   transform: translateY(-2px);
   font-size: 60%;
-}
-
-md-option[aria-current] {
-  font-weight: bold;
-}
-
-/* ng-enter is mysteriously present with pnpm migration, but is its original opacity: 0 ever needed? */
-md-backdrop.md-opaque.ng-enter {
-  opacity: 0.48;
 }
 
 .hds-modal input, #ride-search-input {
