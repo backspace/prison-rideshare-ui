@@ -345,12 +345,22 @@ body.ember-application {
   .hds-modal {
     width: 100vw;
     max-width: 100vw;
+    max-height: min(83vh, 90svh);
     margin: 0;
     border-radius: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .hds-modal .hds-dialog-primitive__wrapper-body {
     padding: 16px;
+    overflow: auto;
+  }
+
+  .hds-modal .hds-dialog-primitive__wrapper-footer {
+    position: sticky;
+    bottom: 0;
+    background: white;
   }
 }
 
