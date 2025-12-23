@@ -59,12 +59,12 @@ export default class ToolbarHeader extends Component {
           <div class='app-header__left'>
             <span class='header-toggle'>
               <HdsButton
-                @color='secondary'
                 @icon='menu'
                 @isIconOnly={{true}}
                 @size='small'
                 @text={{this.toggleLabel}}
                 {{on 'click' this.toggleSidebar}}
+                class='header-toggle-button'
                 data-test-sidebar-toggle
               />
               {{#if this.showToggleBadge}}
