@@ -7,10 +7,6 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: '[data-test-reset-modal]',
-
-  scope: '[data-test-reset-form]',
-
   visit: visitable('/reset/:token'),
 
   fillPassword: fillable('[data-test-reset-password]'),
