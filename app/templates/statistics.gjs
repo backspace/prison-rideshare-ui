@@ -1,11 +1,11 @@
 import RouteTemplate from 'ember-route-template';
+import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import RequestsAndReimbursementsChart from 'prison-rideshare-ui/components/requests-and-reimbursements-chart';
 import RequestTimeChart from 'prison-rideshare-ui/components/request-time-chart';
 import CancellationChart from 'prison-rideshare-ui/components/cancellation-chart';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import eq from 'ember-truth-helpers/helpers/eq';
-import { pageTitle } from 'ember-page-title';
 import {
   HdsButton,
   HdsCardContainer,
@@ -17,7 +17,7 @@ import {
 
 export default RouteTemplate(
   <template>
-    {{pageTitle 'Statistics'}}
+    <ToolbarHeader @title='Statistics' />
 
     <div class='statistics-page layout-column flex' data-test-statistics-page>
       <HdsCardContainer class='statistics-card' data-test-statistics-card>
