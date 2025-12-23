@@ -149,6 +149,7 @@ export default create({
 
   notes: collection('[data-test-notes-row]', {
     text: text('[data-test-notes]'),
+    isHighlighted: hasClass('highlighted'),
   }),
 
   reports: collection('tr.report', {

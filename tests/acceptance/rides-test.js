@@ -1106,6 +1106,7 @@ module('Acceptance | rides', function (hooks) {
       end: nextWeek,
       medium: 'phone',
       requestConfirmed: false,
+      requestNotes: 'Needs confirmation',
     });
 
     this.server.create('ride', {
@@ -1122,16 +1123,23 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(page.confirmationNotifications.length, 2);
 
     assert.ok(page.rides[1].isHighlighted);
-    assert.ok(page.rides[2].isHighlighted);
+
+    // Confusing: the first row with notes is the third ride
+    const rideWithNotes = page.rides[2];
+    const notes = page.notes[0];
+
+    assert.ok(rideWithNotes.isHighlighted);
+    assert.ok(notes.isHighlighted);
 
     assert.equal(shared.ridesBadge.text, '2');
 
-    await page.rides[2].edit();
+    await rideWithNotes.edit();
     await page.form.requestConfirmed.click();
     await page.form.submit();
 
     assert.equal(page.confirmationNotifications.length, 1);
-    assert.notOk(page.rides[2].isHighlighted);
+    assert.notOk(rideWithNotes.isHighlighted);
+    assert.notOk(notes.isHighlighted);
     assert.equal(shared.ridesBadge.text, '1');
 
     await page.confirmationNotifications[0].markConfirmed();

@@ -216,7 +216,11 @@ export default class RideRow extends Component {
     {{/if}}
 
     {{#if this.ride.requestNotes}}
-      <@table.Tr class='notes no-top-border' data-test-notes-row>
+      <@table.Tr
+        class='notes no-top-border
+          {{if this.ride.requiresConfirmation "highlighted"}}'
+        data-test-notes-row
+      >
         {{#if this.showCreation}}
           <@table.Td />
         {{/if}}
