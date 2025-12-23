@@ -1,4 +1,5 @@
 import RouteTemplate from 'ember-route-template';
+import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import PowerCalendar from 'ember-power-calendar/components/power-calendar';
 import perform from 'ember-concurrency/helpers/perform';
 import { on } from '@ember/modifier';
@@ -25,6 +26,8 @@ class CalendarComponent extends Component {
   }
 
   <template>
+    <ToolbarHeader @title='Ride availability calendar' />
+
     {{#if @controller.error}}
       <Alert @message={{@controller.error}} data-test-calendar-slot-error />
     {{/if}}
