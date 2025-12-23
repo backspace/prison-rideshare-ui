@@ -9,13 +9,13 @@
 
     padding: 3px;
     border-radius: 5rem;
-    background-color: $dark-contrast-color;
+    background-color: var(--token-color-palette-blue-500);
     color: white;
 
     cursor: pointer;
 
     &.committed-to {
-      background-color: $primary;
+      background-color: var(--token-color-palette-blue-200);
     }
   }
 
