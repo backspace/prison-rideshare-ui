@@ -1,38 +1,29 @@
-/* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller, { inject as controller } from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 
-@classic
 export default class ApplicationController extends Controller {
-  @service
-  overlaps;
+  @service overlaps;
+  @service sidebar;
+  @service session;
+  @service store;
+  @service userSocket;
 
-  @service
-  sidebar;
-
-  @service
-  session;
-
-  @service
-  store;
-
-  @service
-  userSocket;
-
-  @controller
-  rides;
+  @controller rides;
 
   @tracked headerElement;
 
-  @computed('overlaps.count', 'rides.model.@each.requiresConfirmation')
   get ridesBadgeCount() {
-    let rides = this.get('rides.model') || [];
-    return (
-      this.get('overlaps.count') + rides.filterBy('requiresConfirmation').length
-    );
+    const overlapsCount = this.overlaps.count ?? 0;
+    const rides = this.rides.model || [];
+
+    const ridesNeedingConfirmation =
+      typeof rides.filterBy === 'function'
+        ? rides.filterBy('requiresConfirmation')
+        : rides.filter((ride) => ride?.requiresConfirmation);
+
+    return overlapsCount + ridesNeedingConfirmation.length;
   }
 
   @action

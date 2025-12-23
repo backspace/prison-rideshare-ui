@@ -1,54 +1,44 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get, ember/no-side-effects */
-import classic from 'ember-classic-decorator';
-import { set, computed } from '@ember/object';
+/* eslint-disable ember/no-side-effects */
+import { set } from '@ember/object';
 import Service, { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 import fetch from 'fetch';
 import { task } from 'ember-concurrency';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
 
-@classic
 export default class OverlapsService extends Service {
-  @service
-  moment;
+  @service moment;
+  @service session;
+  @service store;
 
-  @service
-  session;
+  @tracked overlaps;
 
-  @service
-  store;
-
-  init() {
-    super.init(...arguments);
-
+  constructor() {
+    super(...arguments);
     this.fetchOverlaps.perform();
   }
 
-  @task(function* () {
+  fetchOverlaps = task(async () => {
     let rideAdapter = this.store.adapterFor('ride');
     let overlapsUrl = `${rideAdapter.buildURL('ride')}/overlaps`;
-    let token = this.get('session.data.authenticated.access_token');
+    let token = this.session?.data?.authenticated?.access_token;
 
-    let query = fetch(overlapsUrl, {
+    let response = await fetch(overlapsUrl, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
 
-    let response = yield query;
-    let json = yield response.json();
+    let json = await response.json();
+    this.overlaps = json;
+  });
 
-    this.set('overlaps', json);
-  })
-  fetchOverlaps;
-
-  @computed('overlaps.data.length')
   get count() {
-    return this.get('overlaps.data.length') || 0;
+    return this.overlaps?.data?.length || 0;
   }
 
-  @computed('overlaps.data.@each.id')
   get rideIdsToCommitments() {
     let response = this.overlaps;
 

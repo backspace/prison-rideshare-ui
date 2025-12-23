@@ -118,7 +118,7 @@ export default class CalendarSlot extends Component {
     return `${dividend}/${divisor}`;
   }
 
-  @(task(function* (event) {
+  toggle = task({ drop: true }, async (event) => {
     event.preventDefault();
 
     // This is a hack to restore the correct checked status if saving fails.
@@ -126,7 +126,7 @@ export default class CalendarSlot extends Component {
 
     if (this.isCommittedTo) {
       try {
-        yield this.commitment.destroyRecord();
+        await this.commitment.destroyRecord();
 
         this.args.setError(undefined);
         this.toasts.show(
@@ -149,7 +149,7 @@ export default class CalendarSlot extends Component {
       });
 
       try {
-        yield newRecord.save();
+        await newRecord.save();
 
         this.args.setError(undefined);
         this.toasts.show(
@@ -167,6 +167,5 @@ export default class CalendarSlot extends Component {
         }
       }
     }
-  }).drop())
-  toggle;
+  });
 }
