@@ -1,4 +1,5 @@
 <template>
+  {{! See docs/helios-overrides.md }}
   <header class='app-frame__header' ...attributes>
     {{yield}}
   </header>
