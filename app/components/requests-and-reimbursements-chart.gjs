@@ -5,9 +5,6 @@ import { equal } from '@ember/object/computed';
 import Component from '@ember/component';
 import moment from 'moment-timezone';
 import HighCharts from 'ember-highcharts/components/high-charts';
-// import EmberWormhole from 'ember-wormhole/components/ember-wormhole';
-// import PaperButton from 'prison-rideshare-ui/components/placeholder';
-// import eq from 'ember-truth-helpers/helpers/eq';
 
 function countRidesOrVisitors(rides, grouping) {
   if (grouping === 'rides') {
@@ -28,17 +25,8 @@ export default class RequestsAndReimbursementsChart extends Component {
       @theme={{this.theme}}
       @callback={{this.afterRenderCallback}}
     />
-
-    {{#if this.rendered}}
-      {{!-- <EmberWormhole @to="grouping-weeks">
-    <PaperButton @label="Weeks" @primary={{this.isWeeks}} @onClick={{this.setTimeGrouping "weeks"}} />
-  </EmberWormhole>
-  <EmberWormhole @to="grouping-months">
-    <PaperButton @label="Months" @primary={{this.isMonths}} @onClick={{this.setTimeGrouping "months"}} />
-  </EmberWormhole> --}}
-    {{/if}}
   </template>
-  // timeGrouping = 'months';
+
   rendered = false;
 
   @equal('timeGrouping', 'weeks') isWeeks;
@@ -77,7 +65,6 @@ export default class RequestsAndReimbursementsChart extends Component {
   @computed('grouping', 'timeGroupKeys', 'timeGrouping', 'timeGroups')
   get data() {
     const timeGroups = this.timeGroups;
-    // const timeGrouping = this.timeGrouping;
     const grouping = this.grouping;
 
     return [
@@ -148,7 +135,6 @@ export default class RequestsAndReimbursementsChart extends Component {
   get options() {
     return {
       title: {
-        // text: `Ride distances and expenses, grouped into <span id='grouping-months'></span> or <span id='grouping-weeks'>(broken time axis)</span>`,
         text: `Ride distances and expenses, grouped into months`,
         useHTML: true,
       },
