@@ -34,16 +34,13 @@ export default create({
 
   userCount: {
     scope: '[data-test-nav-users-count]',
-    text: text(),
   },
 
   logCount: {
     scope: '[data-test-nav-log-count]',
-    text: text(),
   },
 
   ridesBadge: {
     scope: '[data-test-nav-rides-count]',
-    text: text(),
   },
 });
