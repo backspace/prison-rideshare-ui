@@ -43,6 +43,11 @@ body.ember-application {
   --app-header-bg: #00194d;
 }
 
+html {
+  /* Reports and notes looked huge on iOS */
+  -webkit-text-size-adjust: 100%;
+}
+
 .app-frame--sidebar-closed {
   --app-sidebar-width: 0px;
 }
