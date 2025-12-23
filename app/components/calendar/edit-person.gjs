@@ -12,24 +12,14 @@ import gt from 'ember-truth-helpers/helpers/gt';
 import { action } from '@ember/object';
 
 export default class CalendarEditPersonComponent extends Component {
-  @action updatePersonAttribute(attribute, valueOrEvent) {
-    let value = valueOrEvent;
+  @action updatePersonAttribute(attribute, event) {
+    const target = event?.target;
 
-    if (
-      valueOrEvent &&
-      typeof valueOrEvent === 'object' &&
-      'target' in valueOrEvent &&
-      valueOrEvent.target
-    ) {
-      const { target } = valueOrEvent;
-
-      if (target.type === 'checkbox') {
-        value = target.checked;
-      } else {
-        value = target.value;
-      }
+    if (!target) {
+      return;
     }
 
+    const value = target.type === 'checkbox' ? target.checked : target.value;
     this.args.person.set(attribute, value);
   }
 
