@@ -58,6 +58,13 @@ export default RouteTemplate(
             @text='Send reset email'
             data-test-forgot-submit
           />
+          <HdsButton
+            @size='small'
+            @color='secondary'
+            @route='login'
+            @text='Log in'
+            data-test-register-login
+          />
         </HdsButtonSet>
       </Modal.Footer>
     </HdsModal>
