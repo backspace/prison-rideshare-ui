@@ -17,13 +17,9 @@ const CalendarAboutComponent = <template>
         You can subscribe to a live-updating calendar that shows what times
         you’ve committed to as well as rides assigned to you. On Apple
         platforms, tap
-        <a href={{@webcalUrl}}>
-          here
-        </a>
+        <a href={{@webcalUrl}}>here</a>
         to subscribe; on other platforms, you’ll have to copy
-        <a href={{@httpUrl}} data-test-calendar-subscription>
-          this URL
-        </a>
+        <a href={{@httpUrl}} data-test-calendar-subscription>this URL</a>
         into a calendar subscription field. Please be careful with these links,
         as they show contact information for riders. If they’re ever exposed,
         let us know and we can change the secret token.
