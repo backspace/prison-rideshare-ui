@@ -1,44 +1,28 @@
-import {
-  clickable,
-  collection,
-  create,
-  text,
-  visitable,
-} from 'ember-cli-page-object';
-import { findOne } from 'ember-cli-page-object/extend';
-import { getter } from 'ember-cli-page-object/macros';
-
-function isDisabled(selector) {
-  return getter(function (pageObjectKey) {
-    return (
-      findOne(this, selector, { pageObjectKey }).getAttribute('disabled') ===
-      'disabled'
-    );
-  });
-}
+import { collection, create, property, visitable } from 'ember-cli-page-object';
 
 export default create({
   visit: visitable('/reports/new'),
 
-  rides: collection('md-radio-button', {
-    label: text('.md-label > span'),
-    choose: clickable(),
-  }),
+  rides: collection('[data-test-report-ride-option]'),
 
-  noRides: { scope: '.no-rides' },
-  noSession: { scope: '.no-session' },
+  noRides: { scope: '[data-test-report-no-rides]' },
+  noSession: { scope: '[data-test-report-no-session]' },
 
-  distance: { scope: '.distance input' },
-  carExpenses: { scope: '.car-expenses input' },
-  foodExpenses: { scope: '.food-expenses input' },
-  notes: { scope: '.report-notes textarea' },
+  distance: { scope: '[data-test-report-distance]' },
+
+  carExpenses: { scope: '[data-test-report-car-expenses]' },
+
+  foodExpenses: { scope: '[data-test-report-food-expenses]' },
+
+  notes: { scope: '[data-test-report-notes]' },
+
   donation: {
-    scope: 'md-checkbox',
+    scope: '[data-test-report-donation]',
+    isChecked: property('checked', 'input'),
   },
 
   submitButton: {
-    scope: 'button.submit',
-    disabled: isDisabled(),
-    click: clickable(),
+    scope: '[data-test-report-submit]',
+    disabled: property('disabled'),
   },
 });

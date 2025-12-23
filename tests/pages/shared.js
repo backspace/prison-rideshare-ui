@@ -1,25 +1,46 @@
-import { clickable, create } from 'ember-cli-page-object';
+import { attribute, clickable, create, text } from 'ember-cli-page-object';
 
 export default create({
   session: {
-    scope: '.site-nav-container .session',
-    click: clickable('button'),
+    scope: '[data-test-session]',
+    click: clickable('[data-test-session-button]'),
+    text: text('[data-test-session-button]'),
   },
 
   toast: {
-    scope: '.md-toast-content span',
-    testContainer: 'md-toast',
+    scope: '[data-test-toast]',
+    text: text('[data-test-toast-text]'),
   },
 
+  inlineAlert: {
+    scope: '[data-test-inline-alert]',
+    text: text('[data-test-inline-alert-text]'),
+  },
+
+  sidebarToggle: {
+    scope: '[data-test-sidebar-toggle]',
+  },
+
+  sidebarToggleBadge: {
+    scope: '[data-test-sidebar-toggle-badge]',
+  },
+
+  sidebar: {
+    scope: '[data-test-app-sidenav]',
+  },
+
+  sidebarState: attribute('data-state', '[data-test-app-sidenav]'),
+  sidebarNavReportLink: { scope: '[data-test-nav-report]' },
+
   userCount: {
-    scope: '.users .count',
+    scope: '[data-test-nav-users-count]',
   },
 
   logCount: {
-    scope: '.log .count',
+    scope: '[data-test-nav-log-count]',
   },
 
   ridesBadge: {
-    scope: '.rides .count',
+    scope: '[data-test-nav-rides-count]',
   },
 });

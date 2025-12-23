@@ -1,17 +1,19 @@
 /* eslint-disable qunit/assert-args, qunit/require-expect */
-import { find, waitUntil } from '@ember/test-helpers';
+import { click, currentURL, findAll, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
+import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
+import { overrideRoute } from '../helpers/override-route';
+import { selectChoose } from 'ember-power-select/test-support';
 
 module('Acceptance | rides', function (hooks) {
   setupApplicationTest(hooks);
@@ -204,8 +206,6 @@ module('Acceptance | rides', function (hooks) {
     );
     assert.equal(page.cancellationForm.reason.value, 'lockdown');
 
-    // FIXME why did this stop working with Ember Paper beta 2?
-    // selectChoose('md-input-container.reason', 'visitor');
     await page.cancellationForm.other.fillIn('visitor');
     await page.cancellationForm.save();
 
@@ -250,12 +250,89 @@ module('Acceptance | rides', function (hooks) {
 
     assert.ok(page.rides[0].cancellation.showsDriverNotFound);
 
-    this.server.patch('/rides/:id', {}, 500);
+    await page.rides[2].cancellation.click();
+    await page.cancellationForm.reason.fillIn('lockdown');
+    await page.cancellationForm.save();
+
+    assert.ok(page.rides[2].cancellation.showsLockdown);
+
+    const restoreRidePatch = overrideRoute(
+      this.server,
+      'patch',
+      '/rides/:id',
+      () => new Response(500, {}, {}),
+    );
 
     await page.rides[2].cancellation.click();
     await page.cancellationForm.shortcutButtons[0].click();
 
-    assert.equal(shared.toast.text, 'There was an error cancelling this ride');
+    assert.equal(
+      shared.inlineAlert.text,
+      'There was an error cancelling this ride',
+    );
+
+    restoreRidePatch();
+
+    await page.cancellationForm.cancel();
+    await page.rides[2].cancellation.click();
+    await page.cancellationForm.shortcutButtons[0].click();
+
+    assert.notOk(shared.inlineAlert.isPresent);
+
+    await page.head.search.fillIn('Chelsea');
+    await page.head.completedSwitch.click();
+
+    const url = currentURL();
+
+    assert.ok(
+      url.includes('cancelled=true'),
+      'expected the cancelled filter to be reflected in the URL',
+    );
+    assert.ok(
+      url.includes('completed=true'),
+      'expected the completed filter to be reflected in the URL',
+    );
+    assert.ok(
+      url.includes('dir=desc'),
+      'expected the sort direction to be reflected in the URL',
+    );
+    assert.ok(
+      url.includes('search=Chelsea'),
+      'expected the search query to be reflected in the URL',
+    );
+  });
+
+  test('selecting an existing visitor replaces the typed value', async function (assert) {
+    this.server.create('ride', {
+      name: 'Octavia Butler',
+      address: '123 Earthseed Way',
+      contact: '204-555-1111',
+    });
+
+    await page.visit();
+    await page.newRide();
+
+    // Choose by clicking option because text-matching component-rendered option is difficult in Power Select.
+    await click('[data-test-visitor-select]');
+    await page.form.name.searchInput.fillIn('Oct');
+    await waitUntil(() =>
+      findAll('.ember-power-select-option').some((option) =>
+        option.textContent.includes('Octavia Butler'),
+      ),
+    );
+
+    const option = findAll('.ember-power-select-option').find((el) =>
+      el.textContent.includes('Octavia Butler'),
+    );
+    await click(option);
+
+    assert.strictEqual(page.form.name.value, 'Octavia Butler');
+    assert.strictEqual(page.form.address.value, '123 Earthseed Way');
+    assert.strictEqual(page.form.contact.value, '204-555-1111');
+
+    await page.form.address.click(); // blur the select to mimic mobile behavior
+
+    assert.strictEqual(page.form.name.value, 'Octavia Butler');
   });
 
   test('completed rides can be shown and cleared', async function (assert) {
@@ -405,13 +482,19 @@ module('Acceptance | rides', function (hooks) {
     await page.form.firstTime.click();
     await page.form.passengers.fillIn(2);
 
+    assert.equal(
+      page.form.name.value,
+      'Edward',
+      'expected the typed visitor name to remain visible when no suggestion is chosen',
+    );
+
     assert.ok(
       page.form.firstTimePoints.isVisible,
       'expected the first time tips to show after the checkbox is set',
     );
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    await selectChoose('md-input-container.institution', 'Rockwood');
+    await page.form.institution.choose('Rockwood');
 
     percySnapshot(assert);
 
@@ -456,7 +539,7 @@ module('Acceptance | rides', function (hooks) {
     assert.ok(lastRide.overridable);
 
     await page.rides[0].driver.click();
-    await selectChoose('.driver md-input-container', 'Sun');
+    await page.rides[0].driver.choose('Sun');
 
     assert.equal(page.rides[0].driver.text, 'Sun');
     assert.equal(
@@ -531,15 +614,66 @@ module('Acceptance | rides', function (hooks) {
     assert.notOk(lastRide.firstTime);
     assert.equal(lastRide.medium, 'email');
 
-    this.server.patch('/rides/:id', {}, 500);
+    const restoreRideSave = overrideRoute(
+      this.server,
+      'patch',
+      '/rides/:id',
+      () => new Response(500, {}, {}),
+    );
 
     await page.rides[0].edit();
     await page.form.notes.fillIn('Updated request notes?');
     await page.form.submit();
 
-    assert.equal(shared.toast.text, 'There was an error saving this ride');
+    assert.equal(
+      shared.inlineAlert.text,
+      'There was an error saving this ride',
+    );
     // assert.equal(page.notes[0].text, 'Some request notes?'); FIXME lost due to fix for #123
     assert.equal(page.form.notes.value, 'Updated request notes?');
+
+    restoreRideSave();
+
+    await page.form.submit();
+    assert.notOk(shared.inlineAlert.isPresent);
+  });
+
+  test('a visitor name can be entered manually even when matches exist', async function (assert) {
+    const rockwood = this.server.create('institution', {
+      name: 'Rockwood',
+    });
+
+    this.server.create('ride', {
+      name: 'Greyson',
+      address: '91 Albert St.',
+      contact: 'greyson@example.com',
+      institution: rockwood,
+      start: new Date(2016, 11, 20, 9, 0),
+      end: new Date(2016, 11, 20, 11, 0),
+    });
+
+    await page.visit();
+    await page.newRide();
+
+    await page.form.name.fillIn('gre');
+
+    await waitUntil(() => page.form.name.suggestions.length >= 2);
+
+    assert.strictEqual(page.form.name.suggestions[0].name, 'Greyson');
+    assert.strictEqual(
+      page.form.name.suggestions[1].name,
+      'Use “gre” as visitor name',
+      'expected the manual option to be listed last',
+    );
+
+    await selectChoose(
+      '[data-test-visitor-select]',
+      'Use “gre” as visitor name',
+    );
+
+    assert.strictEqual(page.form.name.value, 'gre');
+    assert.strictEqual(page.form.address.value, '');
+    assert.strictEqual(page.form.contact.value, '');
   });
 
   test('ride times can be entered manually', async function (assert) {
@@ -555,7 +689,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.timespanOverrideButton.click();
 
-    assert.ok(page.form.timespanOverrideButton.isHidden);
+    assert.ok(page.form.timespanOverrideButton.isDisabled);
     assert.ok(page.form.timespanStart.isVisible);
 
     await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
@@ -570,7 +704,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.contact.fillIn('jants@example.com');
 
     // FIXME not really here, but keyboard input for this is broken, and hovering
-    await selectChoose('md-input-container.institution', 'Rockwood');
+    await page.form.institution.choose('Rockwood');
 
     await page.form.submit();
 
@@ -598,7 +732,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.name.fillIn('fran');
     await waitUntil(() => page.form.name.suggestions.length);
 
-    assert.equal(page.form.name.suggestions.length, 2);
+    assert.equal(page.form.name.suggestions.length, 3);
 
     await page.form.name.suggestions[0].as((francine) => {
       assert.equal(francine.name, 'Francine');
@@ -611,13 +745,57 @@ module('Acceptance | rides', function (hooks) {
       assert.equal(frank.contact, 'frank@jants.ca');
     });
 
+    assert.strictEqual(
+      page.form.name.suggestions[2].name,
+      'Use “fran” as visitor name',
+    );
+
     await page.form.name.suggestions[1].click();
 
-    // FIXME the page object field value is "" but it works via jQuery? 🤔
-    assert.equal(find('md-autocomplete input').value, 'frank');
-    // assert.equal(page.form.name.value, 'frank');
+    assert.equal(page.form.name.text, 'frank');
     assert.equal(page.form.contact.value, 'frank@jants.ca');
     assert.equal(page.form.address.value, '91 Albert St.');
+  });
+
+  test('timespan validation errors are shown when manual overrides are not used', async function (assert) {
+    this.server.post(
+      '/rides',
+      {
+        errors: [
+          {
+            source: {
+              pointer: '/data/attributes/start',
+            },
+            detail: 'Start must be present',
+          },
+          {
+            source: {
+              pointer: '/data/attributes/end',
+            },
+            detail: 'End must be present',
+          },
+        ],
+      },
+      422,
+    );
+
+    await page.visit();
+    await page.newRide();
+
+    assert.ok(
+      page.form.timespanStart.isHidden,
+      'expected manual start time field to be hidden before override',
+    );
+    assert.ok(page.form.timespanEnd.isHidden);
+
+    await page.form.submit();
+
+    assert.equal(page.form.timespanErrors.length, 2);
+
+    assert.equal(page.form.timespanErrors[0].text, 'Start must be present');
+    assert.equal(page.form.timespanErrors[1].text, 'End must be present');
+
+    this.server.post('/rides');
   });
 
   test('ride validation errors are displayed but can be recovered from', async function (assert) {
@@ -651,6 +829,9 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
     await page.newRide();
     await page.form.timespanOverrideButton.click();
+
+    assert.true(page.form.nameError.isHidden);
+    assert.true(page.form.institutionError.isHidden);
 
     await page.form.submit();
 
@@ -820,10 +1001,6 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
 
     assert.equal(page.rides.length, 2, 'expected two rides to show by default');
-    assert.ok(
-      page.head.search.clear.isHidden,
-      'expected the empty search field to have no clear button',
-    );
 
     await page.head.search.fillIn('chel');
 
@@ -837,26 +1014,13 @@ module('Acceptance | rides', function (hooks) {
       'Chelsea',
       'expected the ride to be the Chelsea one',
     );
-    assert.ok(
-      page.head.search.clear.isVisible,
-      'expected the clear button to show when the field has content',
-    );
 
-    await page.head.search.clear.click();
+    await page.head.search.fillIn('');
 
     assert.equal(
       page.rides.length,
       2,
       'expected the ride list to be returned to its default state',
-    );
-    assert.equal(
-      page.head.search.value,
-      '',
-      'expected the search field to now be empty',
-    );
-    assert.ok(
-      page.head.search.clear.isHidden,
-      'expected the empty search field to have no clear button',
     );
 
     await page.head.search.fillIn('HEL');
@@ -936,6 +1100,7 @@ module('Acceptance | rides', function (hooks) {
       end: nextWeek,
       medium: 'phone',
       requestConfirmed: false,
+      requestNotes: 'Needs confirmation',
     });
 
     this.server.create('ride', {
@@ -952,16 +1117,23 @@ module('Acceptance | rides', function (hooks) {
     assert.equal(page.confirmationNotifications.length, 2);
 
     assert.ok(page.rides[1].isHighlighted);
-    assert.ok(page.rides[2].isHighlighted);
+
+    // Confusing: the first row with notes is the third ride
+    const rideWithNotes = page.rides[2];
+    const notes = page.notes[0];
+
+    assert.ok(rideWithNotes.isHighlighted);
+    assert.ok(notes.isHighlighted);
 
     assert.equal(shared.ridesBadge.text, '2');
 
-    await page.rides[2].edit();
+    await rideWithNotes.edit();
     await page.form.requestConfirmed.click();
     await page.form.submit();
 
     assert.equal(page.confirmationNotifications.length, 1);
-    assert.notOk(page.rides[2].isHighlighted);
+    assert.notOk(rideWithNotes.isHighlighted);
+    assert.notOk(notes.isHighlighted);
     assert.equal(shared.ridesBadge.text, '1');
 
     await page.confirmationNotifications[0].markConfirmed();

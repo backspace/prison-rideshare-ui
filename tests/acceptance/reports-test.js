@@ -3,12 +3,14 @@ import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
+import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/report';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
+import { overrideRoute } from '../helpers/override-route';
 
 module('Acceptance | reports', function (hooks) {
   setupApplicationTest(hooks);
@@ -69,15 +71,15 @@ module('Acceptance | reports', function (hooks) {
     assert.ok(page.noSession.isHidden);
 
     assert.equal(
-      page.rides[0].label,
+      page.rides[0].text,
       'francine: Sun, Dec 25 at 10:15a to Remand Centre (33 ¢⁄km )',
     );
     assert.equal(
-      page.rides[1].label,
+      page.rides[1].text,
       'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
 
-    await page.rides[0].choose();
+    await page.rides[0].click();
     await page.distance.fillIn(75);
     await page.foodExpenses.fillIn(25.5);
     await page.carExpenses.fillIn(52.05);
@@ -105,7 +107,7 @@ module('Acceptance | reports', function (hooks) {
       'expected the reported-on ride to have disappeared',
     );
     assert.equal(
-      page.rides[0].label,
+      page.rides[0].text,
       'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
   });
@@ -131,7 +133,7 @@ module('Acceptance | reports', function (hooks) {
 
   test('a ride that is not donatable doesn’t show the donation checkbox, same for overridable and car expenses', async function (assert) {
     await page.visit();
-    await page.rides[1].choose();
+    await page.rides[1].click();
 
     assert.ok(
       page.donation.isHidden,
@@ -146,38 +148,50 @@ module('Acceptance | reports', function (hooks) {
   test('unsaved changes are discarded when the selected ride changes', async function (assert) {
     await page.visit();
 
-    await page.rides[0].choose();
+    await page.rides[0].click();
     await page.distance.fillIn(75);
 
-    await page.rides[1].choose();
-    await page.rides[0].choose();
+    await page.rides[1].click();
+    await page.rides[0].click();
 
     assert.equal(page.distance.value, '');
   });
 
   test('a failure to save keeps the values and displays an error', async function (assert) {
-    this.server.patch(
+    const restoreReportSave = overrideRoute(
+      this.server,
+      'patch',
       '/rides/:id',
-      () => {
-        return {};
-      },
-      422,
+      () => new Response(422, {}, {}),
     );
 
     await page.visit();
 
-    await page.rides[0].choose();
+    await page.rides[0].click();
     await page.distance.fillIn(75);
 
     await page.submitButton.click();
 
-    assert.equal(shared.toast.text, 'There was an error saving your report!');
+    assert.equal(
+      shared.inlineAlert.text,
+      'There was an error saving your report!',
+    );
 
     assert.equal(currentURL(), '/reports/new');
     assert.equal(
       page.distance.value,
       '75',
       'expected the distance field to have the same value',
+    );
+
+    restoreReportSave();
+
+    await page.submitButton.click();
+
+    assert.equal(shared.toast.text, 'Your report was saved');
+    assert.notOk(
+      shared.inlineAlert.isPresent,
+      'expected the inline alert to clear after retrying the submission',
     );
   });
 });

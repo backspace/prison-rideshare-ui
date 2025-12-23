@@ -7,7 +7,7 @@ import { authenticateSession } from 'ember-simple-auth/test-support';
 import page from 'prison-rideshare-ui/tests/pages/statistics';
 import { getPageTitle } from 'ember-page-title/test-support';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const format = 'YYYY-MM-DD';
 

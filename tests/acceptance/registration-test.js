@@ -79,6 +79,9 @@ module('Acceptance | registration', function (hooks) {
     percySnapshot(assert);
 
     assert.equal(currentURL(), '/register');
-    assert.equal(page.error, 'Password confirmation did not match');
+    assert.equal(
+      shared.inlineAlert.text,
+      'Password confirmation did not match',
+    );
   });
 });

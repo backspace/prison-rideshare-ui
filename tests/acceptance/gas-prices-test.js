@@ -6,7 +6,7 @@ import { percySnapshot } from 'ember-percy';
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import { getPageTitle } from 'ember-page-title/test-support';
 
-module('Acceptance | reports', function (hooks) {
+module('Acceptance | gas prices', function (hooks) {
   setupApplicationTest(hooks);
 
   hooks.beforeEach(function () {

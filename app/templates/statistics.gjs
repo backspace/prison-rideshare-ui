@@ -1,80 +1,107 @@
 import RouteTemplate from 'ember-route-template';
-import PaperContent from 'ember-paper/components/paper-content/component';
-import PaperCard from 'ember-paper/components/paper-card';
-import PaperInput from 'ember-paper/components/paper-input';
-import PaperButton from 'ember-paper/components/paper-button';
-import PaperRadioGroup from 'ember-paper/components/paper-radio-group';
+import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import RequestsAndReimbursementsChart from 'prison-rideshare-ui/components/requests-and-reimbursements-chart';
 import RequestTimeChart from 'prison-rideshare-ui/components/request-time-chart';
 import CancellationChart from 'prison-rideshare-ui/components/cancellation-chart';
-import CopyButton from 'ember-cli-clipboard/components/copy-button';
-import paperIcon from 'ember-paper/components/paper-icon';
 import { fn } from '@ember/helper';
-import { pageTitle } from 'ember-page-title';
+import { on } from '@ember/modifier';
+import eq from 'ember-truth-helpers/helpers/eq';
+import {
+  HdsButton,
+  HdsCardContainer,
+  HdsCopyButton,
+  HdsForm,
+  HdsFormRadioGroup,
+  HdsFormTextInputField,
+} from '@hashicorp/design-system-components/components';
 
 export default RouteTemplate(
   <template>
-    {{pageTitle 'Statistics'}}
-    <PaperContent @class='layout-column flex'>
-      <PaperCard @class='statistics-card' as |card|>
-        <card.content>
-          <div class='inputs'>
-            <PaperInput
-              @class='start'
-              @type='date'
-              @label='Chart data begins'
+    <ToolbarHeader @title='Statistics' />
+
+    <div class='statistics-page' data-test-statistics-page>
+      <HdsCardContainer class='statistics-card' data-test-statistics-card>
+        <HdsForm class='statistics-controls' as |Form|>
+          <Form.Section class='control start'>
+            <HdsFormTextInputField
               @value={{@controller.start}}
-              @onChange={{fn (mut @controller.start)}}
-            />
-
-            <PaperInput
-              @class='end'
               @type='date'
-              @label='Chart data ends'
-              @value={{@controller.end}}
-              @onChange={{fn (mut @controller.end)}}
-            />
-          </div>
-
-          <div class='buttons'>
-            <PaperButton
-              @class='past-year'
-              @label='Past year'
-              @onClick={{@controller.setPastYear}}
-            />
-            <PaperButton
-              @class='past-two-weeks'
-              @label='Past two weeks'
-              @onClick={{@controller.setPastTwoWeeks}}
-            />
-            <PaperButton
-              @class='this-year'
-              @label='This year'
-              @onClick={{@controller.setThisYear}}
-            />
-          </div>
-
-          <div class='radios'>
-            Count
-            <PaperRadioGroup
-              @groupValue={{readonly @controller.grouping}}
-              @onChange={{fn (mut @controller.grouping)}}
-              as |group|
+              data-test-statistics-start
+              {{on 'input' @controller.updateStart}}
+              as |Field|
             >
-              <div class='flex'>
-                <group.radio @value='rides'>
-                  rides
-                </group.radio>
-              </div>
-              <div class='flex'>
-                <group.radio @value='passengers'>
-                  passengers
-                </group.radio>
-              </div>
-            </PaperRadioGroup>
-          </div>
-        </card.content>
-      </PaperCard>
+              <Field.Label>Chart data begins</Field.Label>
+            </HdsFormTextInputField>
+          </Form.Section>
+
+          <Form.Section class='control end'>
+            <HdsFormTextInputField
+              @value={{@controller.end}}
+              @type='date'
+              data-test-statistics-end
+              {{on 'input' @controller.updateEnd}}
+              as |Field|
+            >
+              <Field.Label>Chart data ends</Field.Label>
+            </HdsFormTextInputField>
+          </Form.Section>
+
+          <Form.Section class='control buttons'>
+            <HdsButton
+              type='button'
+              @text='Past year'
+              @size='small'
+              @color='secondary'
+              data-test-statistics-past-year
+              {{on 'click' @controller.setPastYear}}
+            />
+            <HdsButton
+              type='button'
+              @text='Past two weeks'
+              @size='small'
+              @color='secondary'
+              data-test-statistics-past-two-weeks
+              {{on 'click' @controller.setPastTwoWeeks}}
+            />
+            <HdsButton
+              type='button'
+              @text='This year'
+              @size='small'
+              @color='secondary'
+              data-test-statistics-this-year
+              {{on 'click' @controller.setThisYear}}
+            />
+          </Form.Section>
+
+          <Form.Section class='control radios'>
+            <span class='radios-label'>Count</span>
+            <HdsFormRadioGroup
+              name='statistics-count'
+              data-test-statistics-grouping
+              as |Group|
+            >
+              <Group.RadioField
+                @value='rides'
+                checked={{eq @controller.grouping 'rides'}}
+                data-test-statistics-grouping-option='rides'
+                {{on 'change' (fn @controller.setGrouping 'rides')}}
+                as |F|
+              >
+                <F.Label>Rides</F.Label>
+              </Group.RadioField>
+              <Group.RadioField
+                @value='passengers'
+                checked={{eq @controller.grouping 'passengers'}}
+                data-test-statistics-grouping-option='passengers'
+                {{on 'change' (fn @controller.setGrouping 'passengers')}}
+                as |F|
+              >
+                <F.Label>Passengers</F.Label>
+              </Group.RadioField>
+            </HdsFormRadioGroup>
+          </Form.Section>
+        </HdsForm>
+      </HdsCardContainer>
 
       <RequestsAndReimbursementsChart
         @rides={{@controller.rides}}
@@ -94,15 +121,16 @@ export default RouteTemplate(
         @grouping={{@controller.grouping}}
       />
 
-      <div>
-        <CopyButton
-          @text={{@controller.clipboardText}}
-          title={{@controller.copyButtonTitle}}
-        >
-          {{paperIcon 'content copy'}}
-          Copy for report
-        </CopyButton>
+      <div class='copy-button'>
+        <HdsCopyButton
+          type='button'
+          @textToCopy={{@controller.clipboardText}}
+          @iconOnly={{true}}
+          @color='secondary'
+          @text='Copy for report'
+          data-test-statistics-copy
+        />
       </div>
-    </PaperContent>
+    </div>
   </template>,
 );

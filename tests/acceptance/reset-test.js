@@ -4,6 +4,7 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { currentURL } from '@ember/test-helpers';
 import { percySnapshot } from 'ember-percy';
 import { Response } from 'miragejs';
+import { overrideRoute } from '../helpers/override-route';
 
 import resetPage from 'prison-rideshare-ui/tests/pages/reset';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
@@ -65,22 +66,26 @@ module('Acceptance | reset password', function (hooks) {
   });
 
   test('a validation error is displayed', async function (assert) {
-    this.server.put('/users/:token', () => {
-      return new Response(
-        422,
-        {},
-        {
-          errors: [
-            {
-              source: {
-                pointer: '/data/attributes/password-confirmation',
+    const restoreResetRoute = overrideRoute(
+      this.server,
+      'put',
+      '/users/:token',
+      () =>
+        new Response(
+          422,
+          {},
+          {
+            errors: [
+              {
+                source: {
+                  pointer: '/data/attributes/password-confirmation',
+                },
+                detail: 'Password confirmation did not match',
               },
-              detail: 'Password confirmation did not match',
-            },
-          ],
-        },
-      );
-    });
+            ],
+          },
+        ),
+    );
 
     await resetPage.visit({ token: 'hey' });
     await resetPage.fillPassword('x');
@@ -88,7 +93,24 @@ module('Acceptance | reset password', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(shared.toast.text, 'Password confirmation did not match');
+    assert.equal(
+      shared.inlineAlert.text,
+      'Password confirmation did not match',
+    );
+
+    this.server.create('user', { email: 'validation@test.com' });
+    this.server.post('/token', () => {
+      return {
+        access_token: 'abcdef',
+      };
+    });
+    restoreResetRoute(({ users }) => users.first());
+
+    await resetPage.fillPassword('hello');
+    await resetPage.fillPasswordConfirmation('hello');
+    await resetPage.submit();
+
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('an unknown error is handled', async function (assert) {
@@ -100,6 +122,6 @@ module('Acceptance | reset password', function (hooks) {
     await resetPage.fillPassword('x');
     await resetPage.submit();
 
-    assert.equal(shared.toast.text, 'An unknown error occurred');
+    assert.equal(shared.inlineAlert.text, 'An unknown error occurred');
   });
 });

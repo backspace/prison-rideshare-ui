@@ -1,24 +1,18 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import { computed } from '@ember/object';
 import Ember from 'ember';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { htmlSafe } from '@ember/string';
 
-@classic
-@tagName('span')
 export default class LinkedContact extends Component {
   <template>
-    {{#if this.contact}}
+    {{#if @contact}}
       {{this.link}}
     {{/if}}
   </template>
-  @computed('contact')
+
   get link() {
     const phonePattern =
       /(\([0-9]{3}\)\s?|[0-9]{3}-?\s?)[0-9]{3}-?\s?[0-9]{4}/g;
-    const contact = this.contact;
+    const contact = this.args.contact;
 
     if (contact) {
       return htmlSafe(

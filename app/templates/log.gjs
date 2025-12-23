@@ -1,202 +1,220 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperButton from 'ember-paper/components/paper-button';
-import paperIcon from 'ember-paper/components/paper-icon';
-import PaperContent from 'ember-paper/components/paper-content/component';
-import PaperDataTable from 'paper-data-table/components/paper-data-table';
 import filterBy from 'ember-composable-helpers/helpers/filter-by';
 import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import eq from 'ember-truth-helpers/helpers/eq';
-import PaperDialog from 'ember-paper/components/paper-dialog';
-import PaperForm from 'ember-paper/components/paper-form';
-import PaperDialogContent from 'ember-paper/components/paper-dialog-content';
 import MobiledocEditor from 'ember-mobiledoc-editor/components/mobiledoc-editor/component';
 import MobiledocToolbar from 'ember-mobiledoc-editor/components/mobiledoc-toolbar/component';
-import PaperDialogActions from 'ember-paper/components/paper-dialog-actions';
 import { fn } from '@ember/helper';
 import DOMRenderer from 'ember-mobiledoc-dom-renderer';
 import { modifier } from 'ember-modifier';
+import { on } from '@ember/modifier';
+import {
+  HdsButton,
+  HdsButtonSet,
+  HdsForm,
+  HdsModal,
+  HdsTable,
+} from '@hashicorp/design-system-components/components';
 
 export default RouteTemplate(
   <template>
-    <ToolbarHeader @title='Log'>
-      <PaperButton
-        @mini={{true}}
-        @aria-label='New post'
-        @title='New post'
-        @class='new'
-        @onClick={{@controller.newPost}}
-      >
-        {{paperIcon 'note_add'}}
-      </PaperButton>
-    </ToolbarHeader>
+    <div data-test-log-page>
+      <ToolbarHeader @title='Log'>
+        <HdsButton
+          type='button'
+          @icon='plus'
+          @text='New post'
+          @size='small'
+          data-test-log-new-post
+          {{on 'click' @controller.newPost}}
+        />
+      </ToolbarHeader>
 
-    <PaperContent>
-      <PaperDataTable @class='posts' as |table|>
-        <table.head as |head|>
-          <head.column>
-            Meta
-          </head.column>
-          <head.column>
-            Content
-          </head.column>
-          <head.column>
-            {{#if (filterBy 'unread' @controller.model)}}
-              <PaperButton
-                @aria-label='Mark all read'
-                @title='Mark all read'
-                @class='markAllRead'
-                @onClick={{@controller.markAllRead}}
-              >
-                Mark all read{{paperIcon 'done_all'}}
-              </PaperButton>
-            {{/if}}
-          </head.column>
-        </table.head>
-        <table.body as |body|>
+      <HdsTable data-test-log-table>
+        <:head as |Head|>
+          <Head.Tr>
+            <Head.Th class='meta-column'>Meta</Head.Th>
+            <Head.Th class='content-column'>Content</Head.Th>
+            <Head.Th class='actions-column'>
+              {{#if (filterBy 'unread' @controller.model)}}
+                <HdsButton
+                  type='button'
+                  @text='Mark all read'
+                  @icon='check'
+                  @color='secondary'
+                  data-test-log-mark-all-read
+                  {{on 'click' @controller.markAllRead}}
+                />
+              {{/if}}
+            </Head.Th>
+          </Head.Tr>
+        </:head>
+
+        <:body as |Body|>
           {{#each (sortBy 'insertedAt:desc' @controller.model) as |post|}}
             {{#unless post.isNew}}
-              <body.row as |row|>
-                <row.cell @class='meta'>
-                  <span class='date'>
+              <Body.Tr data-test-log-post-row>
+                <Body.Td class='meta'>
+                  <div class='date' data-test-log-post-date>
                     {{momentFormat post.insertedAt 'ddd MMM D YYYY h:mma'}}
-                  </span>
-                  <br />
-                  <span class='poster'>
+                  </div>
+                  <div class='poster' data-test-log-post-poster>
                     {{post.poster.email}}
-                  </span>
-                </row.cell>
-                <row.cell @class='content'>
-                  <MobiledocRenderer @mobiledoc={{post.bodyJson}} />
-                </row.cell>
-                <row.cell @class='controls'>
-                  {{#if post.unread}}
-                    <PaperButton
-                      @aria-label='Mark read'
-                      @title='Mark read'
-                      @class='markRead'
-                      @onClick={{fn @controller.markRead post}}
-                    >
-                      Mark read{{paperIcon 'done'}}
-                    </PaperButton>
-                  {{else}}
-                    <PaperButton
-                      @aria-label='Mark unread'
-                      @title='Mark unread'
-                      @class='markUnread'
-                      @onClick={{fn @controller.markUnread post}}
-                    >
-                      Mark unread{{paperIcon 'autorenew'}}
-                    </PaperButton>
-                  {{/if}}
-                  {{#if (eq @controller.session.currentUser.id post.poster.id)}}
-                    <PaperButton
-                      @iconButton={{true}}
-                      @aria-label='Edit post'
-                      @title='Edit post'
-                      @class='edit'
-                      @onClick={{fn @controller.editPost post}}
-                    >
-                      {{paperIcon 'mode edit'}}
-                    </PaperButton>
-                    {{#if (eq @controller.deletingPost post)}}
-                      Delete this post?
-                      <PaperButton
-                        @class='delete-confirm'
-                        @warn={{true}}
-                        @aria-label='Delete post'
-                        @title='Delete post'
-                        @onClick={{@controller.deletePost}}
-                      >
-                        Yes
-                      </PaperButton>
-                      <PaperButton
-                        @class='delete-cancel'
-                        @aria-label='Don’t delete report'
-                        @title='Don’t delete report'
-                        @onClick={{fn @controller.maybeDeletePost null}}
-                      >
-                        No
-                      </PaperButton>
+                  </div>
+                </Body.Td>
+
+                <Body.Td
+                  class='log-content'
+                  {{renderMobiledoc post.bodyJson}}
+                  data-test-log-post-content
+                />
+
+                <Body.Td class='controls'>
+                  <HdsButtonSet>
+                    {{#if post.unread}}
+                      <HdsButton
+                        type='button'
+                        @text='Mark read'
+                        @icon='check'
+                        @color='secondary'
+                        data-test-log-post-mark-read
+                        {{on 'click' (fn @controller.markRead post)}}
+                      />
                     {{else}}
-                      <PaperButton
-                        @iconButton={{true}}
-                        @aria-label='Delete post'
-                        @title='Delete post'
-                        @class='delete'
-                        @onClick={{fn @controller.maybeDeletePost post}}
-                      >
-                        {{paperIcon 'delete'}}
-                      </PaperButton>
+                      <HdsButton
+                        type='button'
+                        @text='Mark unread'
+                        @icon='reload'
+                        @color='secondary'
+                        data-test-log-post-mark-unread
+                        {{on 'click' (fn @controller.markUnread post)}}
+                      />
                     {{/if}}
-                  {{/if}}
-                </row.cell>
-              </body.row>
+
+                    {{#if
+                      (eq @controller.session.currentUser.id post.poster.id)
+                    }}
+                      <HdsButton
+                        type='button'
+                        @text='Edit'
+                        @icon='edit'
+                        @isIconOnly={{true}}
+                        @color='secondary'
+                        @size='small'
+                        data-test-log-post-edit
+                        {{on 'click' (fn @controller.editPost post)}}
+                      />
+
+                      {{#if (eq @controller.deletingPost post)}}
+                        <span data-test-log-post-delete-confirmation>
+                          Delete this post?
+                        </span>
+                        <HdsButton
+                          type='button'
+                          @text='Yes'
+                          @color='critical'
+                          data-test-log-post-delete-confirm
+                          {{on 'click' @controller.deletePost}}
+                        />
+                        <HdsButton
+                          type='button'
+                          @text='No'
+                          @color='secondary'
+                          data-test-log-post-delete-cancel
+                          {{on 'click' (fn @controller.maybeDeletePost null)}}
+                        />
+                      {{else}}
+                        <HdsButton
+                          type='button'
+                          @text='Delete'
+                          @icon='trash'
+                          @isIconOnly={{true}}
+                          @color='secondary'
+                          @size='small'
+                          data-test-log-post-delete
+                          {{on 'click' (fn @controller.maybeDeletePost post)}}
+                        />
+                      {{/if}}
+                    {{/if}}
+                  </HdsButtonSet>
+                </Body.Td>
+              </Body.Tr>
             {{/unless}}
           {{/each}}
-        </table.body>
-      </PaperDataTable>
-    </PaperContent>
+        </:body>
+      </HdsTable>
 
-    {{#if @controller.editingPost}}
-      <PaperDialog
-        @clickOutsideToClose={{true}}
-        @fullscreen={{true}}
-        @onClose={{@cancelPost}}
-      >
-        <PaperForm @onSubmit={{@controller.savePost}}>
-          <PaperDialogContent>
-            <h2 class='md-title'>
-              {{if @controller.editingPost.isNew 'New' 'Edit'}}
-              post
-            </h2>
-            <div class='layout layout-sm-column content'>
-              <MobiledocEditor
-                @mobiledoc={{@controller.editingPost.bodyJson}}
-                @autofocus={{true}}
-                @on-change={{@controller.updatePostBody}}
-                as |editor|
-              >
-                <MobiledocToolbar @editor={{editor}} />
-              </MobiledocEditor>
-              {{#if @controller.editingPost.validationErrors.body}}
-                <div class='md-input-messages-animation md-auto-hide'>
-                  {{#each
-                    @controller.editingPost.validationErrors.body
-                    as |error|
-                  }}
-                    <div
-                      class='paper-input-error ng-enter ng-enter-active md-input-message-animation'
-                    >
-                      {{error}}
-                    </div>
-                  {{/each}}
-                </div>
-              {{/if}}
-            </div>
-          </PaperDialogContent>
-          <PaperDialogActions @class='layout-row'>
-            <PaperButton @class='cancel' @onClick={{@controller.cancelPost}}>
-              Cancel
-            </PaperButton>
-            <PaperButton
-              @class='submit'
-              @primary={{true}}
-              @onClick={{@controller.savePost}}
+      {{#if @controller.editingPost}}
+        <HdsModal
+          @color='neutral'
+          @size='large'
+          @onClose={{@controller.cancelPost}}
+          data-test-log-modal
+          as |Modal|
+        >
+          <Modal.Header>
+            {{if @controller.editingPost.isNew 'New' 'Edit'}}
+            post
+          </Modal.Header>
+
+          <Modal.Body>
+            <HdsForm
+              id='log-form'
+              data-test-log-form
+              {{on 'submit' @controller.savePost}}
+              as |Form|
             >
-              Save
-            </PaperButton>
-          </PaperDialogActions>
-        </PaperForm>
-      </PaperDialog>
-    {{/if}}
+              <Form.Section>
+                <div class='layout layout-sm-column content'>
+                  <MobiledocEditor
+                    @mobiledoc={{@controller.editingPost.bodyJson}}
+                    @autofocus={{true}}
+                    @on-change={{@controller.updatePostBody}}
+                    as |editor|
+                  >
+                    <MobiledocToolbar @editor={{editor}} />
+                  </MobiledocEditor>
+                </div>
+
+                {{#if @controller.editingPost.validationErrors.body}}
+                  <div data-test-log-form-error>
+                    {{#each
+                      @controller.editingPost.validationErrors.body
+                      as |error|
+                    }}
+                      <div>{{error}}</div>
+                    {{/each}}
+                  </div>
+                {{/if}}
+              </Form.Section>
+            </HdsForm>
+          </Modal.Body>
+
+          <Modal.Footer as |Footer|>
+            <HdsButtonSet>
+              <HdsButton
+                type='submit'
+                form='log-form'
+                @color='primary'
+                @text='Save'
+                data-test-log-form-save
+              />
+              <HdsButton
+                type='button'
+                @color='secondary'
+                @text='Cancel'
+                data-test-log-form-cancel
+                {{on 'click' Footer.close}}
+              />
+            </HdsButtonSet>
+          </Modal.Footer>
+        </HdsModal>
+      {{/if}}
+    </div>
   </template>,
 );
-
-const MobiledocRenderer = <template>
-  <section {{renderMobiledoc @mobiledoc}}></section>
-</template>;
 
 const renderMobiledoc = modifier((element, [mobiledoc]) => {
   if (!mobiledoc) {

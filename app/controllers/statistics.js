@@ -93,4 +93,23 @@ export default class StatisticsController extends Controller {
     this.set('start', moment().startOf('year').format('YYYY-MM-DD'));
     this.set('end', moment().format('YYYY-MM-DD'));
   }
+
+  @action
+  updateStart(event) {
+    const value = event?.target?.value ?? '';
+
+    this.set('start', value);
+  }
+
+  @action
+  updateEnd(event) {
+    const value = event?.target?.value ?? '';
+
+    this.set('end', value);
+  }
+
+  @action
+  setGrouping(grouping) {
+    this.set('grouping', grouping);
+  }
 }

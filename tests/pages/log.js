@@ -8,52 +8,52 @@ import {
 
 export default create({
   visit: visitable('/log'),
-  newPost: clickable('button.new'),
+  newPost: clickable('[data-test-log-new-post]'),
 
   markAllReadButton: {
-    scope: 'button.markAllRead',
+    scope: '[data-test-log-mark-all-read]',
   },
 
-  posts: collection('.posts tbody tr', {
-    date: text('.date'),
-    poster: text('.poster'),
-    content: text('.content'),
+  posts: collection('[data-test-log-post-row]', {
+    date: text('[data-test-log-post-date]'),
+    poster: text('[data-test-log-post-poster]'),
+    content: text('[data-test-log-post-content]'),
 
     editButton: {
-      scope: 'button.edit',
+      scope: '[data-test-log-post-edit]',
     },
 
     deleteButton: {
-      scope: 'button.delete',
+      scope: '[data-test-log-post-delete]',
     },
 
     deleteConfirm: {
-      scope: 'button.delete-confirm',
+      scope: '[data-test-log-post-delete-confirm]',
     },
 
     markReadButton: {
-      scope: 'button.markRead',
+      scope: '[data-test-log-post-mark-read]',
     },
 
     markUnreadButton: {
-      scope: 'button.markUnread',
+      scope: '[data-test-log-post-mark-unread]',
     },
   }),
 
   form: {
-    testContainer: 'md-dialog',
+    scope: '[data-test-log-modal]',
 
     content: {
-      scope: '.content',
+      scope: '[data-test-log-form]',
       field: {
         scope: '.mobiledoc-editor__editor',
       },
       error: {
-        scope: '.paper-input-error',
+        scope: '[data-test-log-form-error]',
       },
     },
 
-    submit: clickable('button.submit'),
-    cancel: clickable('button.cancel'),
+    submit: clickable('[data-test-log-form-save]'),
+    cancel: clickable('[data-test-log-form-cancel]'),
   },
 });

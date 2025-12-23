@@ -1,59 +1,59 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperContent from 'ember-paper/components/paper-content/component';
-import PaperCard from 'ember-paper/components/paper-card';
-import PaperForm from 'ember-paper/components/paper-form';
-import PaperRadioGroup from 'ember-paper/components/paper-radio-group';
 import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
-import PaperCheckbox from 'ember-paper/components/paper-checkbox';
-import PaperButton from 'ember-paper/components/paper-button';
-import { action } from '@ember/object';
-import Component from '@glimmer/component';
+import { fn } from '@ember/helper';
+import { on } from '@ember/modifier';
+import {
+  HdsButton,
+  HdsCardContainer,
+  HdsForm,
+  HdsFormCheckboxField,
+  HdsFormRadioGroup,
+  HdsFormTextareaField,
+  HdsFormTextInputField,
+} from '@hashicorp/design-system-components/components';
+import eq from 'ember-truth-helpers/helpers/eq';
+import gt from 'ember-truth-helpers/helpers/gt';
+import Alert from 'prison-rideshare-ui/components/alert';
 
-class NewReportComponent extends Component {
-  @action updateDistance(distance) {
-    this.args.controller.editingRide.distance = distance;
-  }
-
-  @action updatedonation(value) {
-    this.args.controller.editingRide.donation = value;
-  }
-  @action updatefoodExpensesDollars(value) {
-    this.args.controller.editingRide.foodExpensesDollars = value;
-  }
-  @action updatecarExpensesDollars(value) {
-    this.args.controller.editingRide.carExpensesDollars = value;
-  }
-  @action updatereportNotes(value) {
-    this.args.controller.editingRide.reportNotes = value;
-  }
+export default RouteTemplate(
   <template>
     <ToolbarHeader @title='Record ride details' @titleOverride='Ride report' />
 
-    <PaperContent @class='layout-column'>
-      {{#if @controller.session.isAuthenticated}}
-        <PaperCard @class='no-session' as |card|>
-          <card.content>
-            The ability to submit reports while logged in is indefinitely
-            unavailable for annoying technical reasons. Please use another
-            browser or a private/incognito window to submit your reports in the
-            interim. ☹️
-          </card.content>
-        </PaperCard>
-      {{else}}
-        {{#if @controller.model}}
-          <div class='form-container'>
-            <PaperForm @onSubmit={{this.submitReport}} as |form|>
-              <div class='layout layout-sm-column'>
-                <PaperRadioGroup
-                  @groupValue={{readonly @controller.editingRide}}
-                  @onChange={{@controller.setRide}}
-                  as |group|
-                >
-                  {{#each (sortBy 'start' @controller.model) as |ride|}}
-                    <group.radio @value={{ride}}>
+    {{#if @controller.session.isAuthenticated}}
+      <HdsCardContainer class='no-session' data-test-report-no-session>
+        The ability to submit reports while logged in is indefinitely
+        unavailable for annoying technical reasons. Please use another browser
+        or a private/incognito window to submit your reports in the interim. ☹️
+      </HdsCardContainer>
+    {{else}}
+      {{#if @controller.model}}
+        <div class='report-form'>
+          {{#if @controller.errorMessage}}
+            <Alert @message={{@controller.errorMessage}} />
+          {{/if}}
+
+          <HdsForm
+            data-test-report-form
+            {{on 'submit' @controller.submitReport}}
+            as |Form|
+          >
+            <Form.Section>
+              <HdsFormRadioGroup
+                name='ride-selection'
+                data-test-report-rides
+                as |Group|
+              >
+                {{#each (sortBy 'start' @controller.model) as |ride|}}
+                  <Group.RadioField
+                    @value={{ride.id}}
+                    checked={{eq @controller.editingRide ride}}
+                    {{on 'change' (fn @controller.setRide ride)}}
+                    as |F|
+                  >
+                    <F.Label data-test-report-ride-option>
                       {{#if ride.initials}}
                         {{ride.initials}}:
                       {{/if}}
@@ -63,98 +63,117 @@ class NewReportComponent extends Component {
                       {{#if ride.rate}}
                         ({{ride.rate}}<ReimbursementUnit />)
                       {{/if}}
-                    </group.radio>
-                  {{/each}}
-                </PaperRadioGroup>
-              </div>
+                    </F.Label>
+                  </Group.RadioField>
+                {{/each}}
+              </HdsFormRadioGroup>
+            </Form.Section>
 
-              {{#if @controller.editingRide}}
-                <div class='layout-column'>
-                  <form.input
-                    @class='distance'
-                    @type='number'
-                    @label='Distance in kilometres'
+            {{#if @controller.editingRide}}
+              <Form.Section>
+                {{#let
+                  (gt @controller.editingRide.validationErrors.distance 0)
+                  (@controller.editingRide.validationErrors.distance)
+                  as |hasDistanceErrors distanceErrors|
+                }}
+                  <HdsFormTextInputField
+                    type='number'
                     @value={{@controller.editingRide.distance}}
-                    @errors={{@controller.editingRide.validationErrors.distance}}
-                    @isTouched={{readonly
-                      @controller.editingRide.validationErrors.distance.length
+                    @isInvalid={{hasDistanceErrors}}
+                    @isRequired={{true}}
+                    data-test-report-distance
+                    {{on 'input' @controller.updateDistance}}
+                    as |Field|
+                  >
+                    <Field.Label>Distance in kilometres</Field.Label>
+                    {{#if hasDistanceErrors}}
+                      <Field.Error data-test-report-distance-error>
+                        {{#each distanceErrors as |distanceError|}}
+                          {{distanceError}}
+                        {{/each}}
+                      </Field.Error>
+                    {{/if}}
+                  </HdsFormTextInputField>
+                {{/let}}
+              </Form.Section>
+
+              {{#if @controller.editingRide.donatable}}
+                <Form.Section>
+                  <HdsFormCheckboxField
+                    checked={{if
+                      @controller.editingRide.donation
+                      true
+                      undefined
                     }}
-                    @onChange={{this.updateDistance}}
-                  />
-                </div>
-                {{#if @controller.editingRide.donatable}}
-                  <div class='layout layout-sm-column'>
-                    <PaperCheckbox
-                      @value={{@controller.editingRide.donation}}
-                      @onChange={{this.updatedonation}}
-                    >
-                      Donate your gas reimbursement
-                    </PaperCheckbox>
-                  </div>
-                {{/if}}
-                <div class='layout-column'>
-                  <form.input
-                    @class='food-expenses'
-                    @type='number'
-                    @label='Food expenses if wanting reimbursement'
-                    @value={{@controller.editingRide.foodExpensesDollars}}
-                    @onChange={{this.updatefoodExpensesDollars}}
-                  />
-                </div>
-                {{#if @controller.editingRide.overridable}}
-                  <div class='layout-column'>
-                    <form.input
-                      @class='car-expenses'
-                      @type='number'
-                      @label='Car expenses'
-                      @value={{@controller.editingRide.carExpensesDollars}}
-                      @onChange={{this.updatecarExpensesDollars}}
-                    />
-                  </div>
-                {{/if}}
-                <div class='layout-column'>
-                  <form.input
-                    @class='report-notes'
-                    @textarea={{true}}
-                    @label='Notes'
-                    @value={{@controller.editingRide.reportNotes}}
-                    @onChange={{this.updatereportNotes}}
-                    as |textHelper|
+                    data-test-report-donation
+                    {{on 'change' @controller.updateDonation}}
+                    as |Field|
                   >
-                    {{#unless textHelper.hasValue}}
-                      <div class='hint'>
-                        Anything unusual, like paying the driver for gas instead
-                        of car owner.
-                      </div>
-                    {{/unless}}
-                  </form.input>
-                </div>
-
-                <div class='layout-row'>
-                  <PaperButton
-                    @class='submit'
-                    @raised={{true}}
-                    @primary={{true}}
-                    @onClick={{@controller.submitReport}}
-                  >
-                    Save
-                  </PaperButton>
-                  {{! FIXME simplify if/when form yields radio-group?}}
-                </div>
+                    <Field.Label>Donate your gas reimbursement</Field.Label>
+                  </HdsFormCheckboxField>
+                </Form.Section>
               {{/if}}
-            </PaperForm>
-          </div>
-        {{else}}
-          <PaperCard @class='no-rides' as |card|>
-            <card.content>
-              There are no rides to report on! Thanks for your diligence,
-              drivers. Email us if you expected to see a report here.
-            </card.content>
-          </PaperCard>
-        {{/if}}
-      {{/if}}
-    </PaperContent>
-  </template>
-}
 
-export default RouteTemplate(NewReportComponent);
+              <Form.Section>
+                <HdsFormTextInputField
+                  type='number'
+                  @value={{@controller.editingRide.foodExpensesDollars}}
+                  data-test-report-food-expenses
+                  {{on 'input' @controller.updateFoodExpenses}}
+                  as |Field|
+                >
+                  <Field.Label>Food expenses if wanting reimbursement</Field.Label>
+                </HdsFormTextInputField>
+              </Form.Section>
+
+              {{#if @controller.editingRide.overridable}}
+                <Form.Section>
+                  <HdsFormTextInputField
+                    type='number'
+                    @value={{@controller.editingRide.carExpensesDollars}}
+                    data-test-report-car-expenses
+                    {{on 'input' @controller.updateCarExpenses}}
+                    as |Field|
+                  >
+                    <Field.Label>Car expenses</Field.Label>
+                  </HdsFormTextInputField>
+                </Form.Section>
+              {{/if}}
+
+              <Form.Section>
+                <HdsFormTextareaField
+                  @value={{@controller.editingRide.reportNotes}}
+                  data-test-report-notes
+                  {{on 'input' @controller.updateReportNotes}}
+                  as |Field|
+                >
+                  <Field.Label>Notes</Field.Label>
+                  <Field.HelperText>
+                    Anything unusual, like paying the driver for gas instead of
+                    the car owner.
+                  </Field.HelperText>
+                </HdsFormTextareaField>
+              </Form.Section>
+
+              <Form.Footer as |Footer|>
+                <Footer.ButtonSet>
+                  <HdsButton
+                    type='submit'
+                    @color='primary'
+                    @text='Save'
+                    data-test-report-submit
+                  />
+                </Footer.ButtonSet>
+              </Form.Footer>
+            {{/if}}
+          </HdsForm>
+        </div>
+      {{else}}
+        <HdsCardContainer class='no-rides' data-test-report-no-rides>
+          There are no rides to report on! Thanks for your diligence, drivers.
+          Email us if you expected to see a report here.
+        </HdsCardContainer>
+      {{/if}}
+    {{/if}}
+  </template>,
+);

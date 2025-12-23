@@ -20,9 +20,14 @@ module.exports = function (defaults) {
     autoImport,
     babel: {
       plugins: [
+        // eslint-disable-next-line node/no-missing-require
+        require.resolve('decorator-transforms'),
         require.resolve('ember-concurrency/async-arrow-task-transform'),
         ...require('ember-cli-code-coverage').buildBabelPlugin(),
       ],
+    },
+    'ember-cli-babel': {
+      disableDecoratorTransforms: true,
     },
     fingerprint,
     minifyCSS: {
@@ -34,6 +39,13 @@ module.exports = function (defaults) {
     emberHighCharts: {
       includeHighCharts: true,
       includeModules: ['heatmap'],
+    },
+    sassOptions: {
+      precision: 4,
+      includePaths: [
+        './node_modules/@hashicorp/design-system-tokens/dist/products/css',
+        './node_modules/@hashicorp/design-system-components/dist/styles',
+      ],
     },
   });
 

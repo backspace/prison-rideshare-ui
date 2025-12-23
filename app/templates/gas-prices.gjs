@@ -1,11 +1,13 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import PaperContent from 'ember-paper/components/paper-content/component';
-import PaperCard from 'ember-paper/components/paper-card';
-import PaperDataTable from 'paper-data-table/components/paper-data-table';
 import take from 'ember-composable-helpers/helpers/take';
 import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
+import {
+  HdsCardContainer,
+  HdsTable,
+  HdsTextBody,
+} from '@hashicorp/design-system-components/components';
 import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
 
 export default RouteTemplate(
@@ -15,54 +17,47 @@ export default RouteTemplate(
       @titleOverride='Gas prices'
     />
 
-    <PaperContent>
-      <PaperCard as |card|>
-        <card.content>
-          <p>
-            Ride reimbursement rates are calculated from the day’s average gas
-            price, fetched from winnipeggasprices.com.
-          </p>
-        </card.content>
-      </PaperCard>
+    <div data-test-gas-prices-page>
+      <HdsCardContainer data-test-gas-prices-summary>
+        <HdsTextBody>
+          Ride reimbursement rates are calculated from the day’s average gas
+          price, fetched from winnipeggasprices.com.
+        </HdsTextBody>
+      </HdsCardContainer>
 
-      <PaperDataTable @class='gas-prices' as |table|>
-        <table.head as |head|>
-          <head.column>
-            Date
-          </head.column>
-          <head.column>
-            Gas price
-          </head.column>
-          <head.column>
-            Far institution rate
-          </head.column>
-          <head.column>
-            Close institution rate
-          </head.column>
-        </table.head>
-        <table.body as |body|>
+      <HdsTable class='gas-prices' data-test-gas-prices-table>
+        <:head as |Head|>
+          <Head.Tr>
+            <Head.Th>Date</Head.Th>
+            <Head.Th>Gas price</Head.Th>
+            <Head.Th>Far institution rate</Head.Th>
+            <Head.Th>Close institution rate</Head.Th>
+          </Head.Tr>
+        </:head>
+
+        <:body as |Body|>
           {{#each
             (take 10 (sortBy 'insertedAt:desc' @controller.model))
             as |gasPrice|
           }}
-            <body.row as |row|>
-              <row.cell @class='date'>
+            <Body.Tr data-test-gas-prices-row>
+              <Body.Td class='date' data-test-gas-prices-date>
                 {{momentFormat gasPrice.insertedAt 'ddd, MMM D'}}
-              </row.cell>
-              <row.cell @class='price'>
+              </Body.Td>
+              <Body.Td class='price' data-test-gas-prices-price>
                 {{gasPrice.price}}<span class='unit'><sup>¢</sup>&frasl;<sub
                   >L</sub></span>
-              </row.cell>
-              <row.cell @class='far'>
+              </Body.Td>
+              <Body.Td class='far' data-test-gas-prices-far-rate>
                 {{gasPrice.farRate}}<ReimbursementUnit />
-              </row.cell>
-              <row.cell @class='close'>
+              </Body.Td>
+              <Body.Td class='close' data-test-gas-prices-close-rate>
                 {{gasPrice.closeRate}}<ReimbursementUnit />
-              </row.cell>
-            </body.row>
+              </Body.Td>
+            </Body.Tr>
           {{/each}}
-        </table.body>
-      </PaperDataTable>
-    </PaperContent>
+        </:body>
+      </HdsTable>
+    </div>
   </template>,
 );

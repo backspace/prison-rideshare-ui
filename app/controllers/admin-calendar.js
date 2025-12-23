@@ -5,7 +5,7 @@ import CalendarController from './calendar';
 import { alias, mapBy, setDiff, sum } from '@ember/object/computed';
 import { A } from '@ember/array';
 import fetch from 'fetch';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { get, action, computed } from '@ember/object';
 import RSVP from 'rsvp';
 
@@ -39,6 +39,8 @@ export default class AdminCalendarController extends CalendarController {
 
   @service
   toasts;
+
+  errorMessage = undefined;
 
   @computed('month')
   get previousMonth() {
@@ -113,6 +115,7 @@ export default class AdminCalendarController extends CalendarController {
     commitment
       .save()
       .then(() => {
+        this.set('errorMessage', undefined);
         this.toasts.show(
           `Committed ${person.get('name')} to drive on ${moment(
             slot.get('start'),
@@ -121,7 +124,7 @@ export default class AdminCalendarController extends CalendarController {
       })
       .catch((error) => {
         const errorDetail = get(error, 'errors.firstObject.detail');
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        this.set('errorMessage', errorDetail || 'Couldn’t save your change');
       });
   }
 
@@ -133,11 +136,12 @@ export default class AdminCalendarController extends CalendarController {
     commitment
       .destroyRecord()
       .then(() => {
+        this.set('errorMessage', undefined);
         this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
       })
       .catch((error) => {
         const errorDetail = get(error, 'errors.firstObject.detail');
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        this.set('errorMessage', errorDetail || 'Couldn’t save your change');
       });
   }
 

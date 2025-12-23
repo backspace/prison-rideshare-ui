@@ -3,7 +3,7 @@ import classic from 'ember-classic-decorator';
 import { classNames } from '@ember-decorators/component';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import HighCharts from 'ember-highcharts/components/high-charts';
 
 @classic

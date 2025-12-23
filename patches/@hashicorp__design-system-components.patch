@@ -1,0 +1,35 @@
+diff --git a/dist/components/hds/dismiss-button/index.js b/dist/components/hds/dismiss-button/index.js
+index 4fa6474b19d4ee1aa853c3ff357571fc993ac1dd..c17fd9cc90e4b4ab2d7578cbaba44a78a638e875 100644
+--- a/dist/components/hds/dismiss-button/index.js
++++ b/dist/components/hds/dismiss-button/index.js
+@@ -1,5 +1,5 @@
+ import Component from '@glimmer/component';
+-import { service } from '@ember/service';
++import { inject as service } from '@ember/service';
+ import { precompileTemplate } from '@ember/template-compilation';
+ import { g, i } from 'decorator-transforms/runtime';
+ import { setComponentTemplate } from '@ember/component';
+diff --git a/dist/components/hds/table/th-button-sort.js b/dist/components/hds/table/th-button-sort.js
+index a61c6e93ce8eb0468b9683786b84b939a344f383..99795f47b3ec54afe9b9b81d42333e87b2cec4b9 100644
+--- a/dist/components/hds/table/th-button-sort.js
++++ b/dist/components/hds/table/th-button-sort.js
+@@ -1,5 +1,5 @@
+ import Component from '@glimmer/component';
+-import { service } from '@ember/service';
++import { inject as service } from '@ember/service';
+ import { guidFor } from '@ember/object/internals';
+ import { HdsTableThSortOrderIconValues, HdsTableThSortOrderValues } from './types.js';
+ import { precompileTemplate } from '@ember/template-compilation';
+diff --git a/dist/helpers/hds-t.js b/dist/helpers/hds-t.js
+index d624cbfd07e27eb5427040cba5ddd2533364e78a..0463fe999cc80626e85abe465922e4b0679955d5 100644
+--- a/dist/helpers/hds-t.js
++++ b/dist/helpers/hds-t.js
+@@ -17,7 +17,7 @@ class HdsTHelper extends Helper {
+   compute(positional, named) {
+     const key = positional[0];
+     assert('Hds::T helper requires a key as the first positional argument', typeof key === 'string' && isPresent(key));
+-    return this.hdsIntl.t(key, named);
++    return named.default;
+   }
+ }
+ 

@@ -2,7 +2,7 @@
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import { module, test } from 'qunit';
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 module('Unit | Utility | parse timespan', function (hooks) {
   hooks.beforeEach(function () {

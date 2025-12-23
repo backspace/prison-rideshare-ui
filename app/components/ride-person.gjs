@@ -1,55 +1,54 @@
-/* eslint-disable ember/no-classic-components */
-import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { alias } from '@ember/object/computed';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import PersonBadge from 'prison-rideshare-ui/components/person-badge';
-import PaperSelect from 'ember-paper/components/paper-select/component';
+import { HdsFormSuperSelectSingleField } from '@hashicorp/design-system-components/components';
 
-@classic
-@tagName('')
 export default class RidePerson extends Component {
+  @service('people') peopleService;
+
+  get person() {
+    return this.args.ride.get(this.args.property);
+  }
+
+  get placeholder() {
+    return this.args.property === 'driver' ? 'Driver' : 'Car Owner';
+  }
+
+  @action
+  clear() {
+    const ride = this.args.ride;
+    ride.set(this.args.property, null);
+    return ride.save();
+  }
+
   <template>
     {{#if this.person}}
-      <span class='ride-person'>
+      <span class='ride-person' ...attributes>
         <PersonBadge
           @person={{this.person}}
-          @property={{this.property}}
+          @property={{@property}}
           @clear={{this.clear}}
         />
       </span>
     {{else}}
-      <PaperSelect
+      <HdsFormSuperSelectSingleField
+        data-test-ride-person-select={{@property}}
+        @placeholder={{this.placeholder}}
+        @options={{this.peopleService.active}}
         @selected={{this.person}}
-        @options={{this.people}}
-        @onChange={{this.onChange}}
-        @allowClear={{true}}
         @searchField='name'
-        as |person|
+        @allowClear={{true}}
+        @onChange={{@onChange}}
+        ...attributes
+        as |F|
       >
-        {{person.name}}
-      </PaperSelect>
+        <F.Options>
+          {{#let F.options as |option|}}
+            {{option.name}}
+          {{/let}}
+        </F.Options>
+      </HdsFormSuperSelectSingleField>
     {{/if}}
   </template>
-  @service('people')
-  peopleService;
-
-  @alias('peopleService.active')
-  people;
-
-  @computed('ride', 'property', 'ride.{carOwner.id,driver.id}')
-  get person() {
-    return this.ride.get(this.property);
-  }
-
-  showContact = false;
-
-  @action
-  clear() {
-    const ride = this.ride;
-    ride.set(this.property, null);
-    return ride.save();
-  }
 }

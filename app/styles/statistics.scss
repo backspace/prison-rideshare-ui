@@ -1,23 +1,59 @@
 .statistics-card {
   display: block;
+  padding: 1rem 1.5rem;
+}
 
-  md-card-content {
-    display: flex;
-    justify-content: space-between;
+.statistics-controls {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(160px, 1fr) auto auto;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.statistics-card .control {
+  min-width: 220px;
+}
+
+.statistics-card .buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
+  flex-direction: row;
+}
+
+.statistics-card .buttons .hds-button {
+  text-transform: none;
+  font-weight: 600;
+}
+
+.statistics-card .radios {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.statistics-card .radios-label {
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .statistics-controls {
+    align-items: flex-start;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   }
 
-  .inputs {
-    .md-errors-spacer {
-      display: none;
-    }
-
-    md-input-container {
-      margin-bottom: 0;
-    }
+  .statistics-card .radios {
+    width: 100%;
+    justify-content: flex-start;
   }
 
-  .buttons {
-    display: flex;
+  .statistics-card .buttons {
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 }
 

@@ -1,6 +1,6 @@
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 import { module, test } from 'qunit';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import momentAddLocaleShortMeridiemFormat from 'prison-rideshare-ui/utils/moment-add-locale-short-meridiem-format';
 
 module('Unit | Utility | format timespan', function (hooks) {

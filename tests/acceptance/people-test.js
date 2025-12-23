@@ -2,14 +2,15 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
+import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { selectChoose } from 'ember-power-select/test-support/helpers';
 
 import page from 'prison-rideshare-ui/tests/pages/people';
 import ridesPage from 'prison-rideshare-ui/tests/pages/rides';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
+import { overrideRoute } from '../helpers/override-route';
 
 module('Acceptance | people', function (hooks) {
   setupApplicationTest(hooks);
@@ -139,6 +140,24 @@ module('Acceptance | people', function (hooks) {
     assert.equal(will.medium, 'mobile');
   });
 
+  test('people can be sorted by name and last ride', async function (assert) {
+    await page.visit();
+
+    assert.deepEqual(page.peopleNames, ['Kala', 'Sun']);
+
+    await page.head.nameSort.click();
+    assert.deepEqual(page.peopleNames, ['Sun', 'Kala']);
+
+    await page.head.nameSort.click();
+    assert.deepEqual(page.peopleNames, ['Kala', 'Sun']);
+
+    await page.head.lastRideSort.click();
+    assert.deepEqual(page.peopleNames, ['Sun', 'Kala']);
+
+    await page.head.lastRideSort.click();
+    assert.deepEqual(page.peopleNames, ['Kala', 'Sun']);
+  });
+
   test('a person can be created and chosen for a ride', async function (assert) {
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();
@@ -162,7 +181,7 @@ module('Acceptance | people', function (hooks) {
 
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();
-    await selectChoose('.driver md-input-container', 'Capheus');
+    await ridesPage.rides[0].driver.choose('Capheus');
 
     assert.equal(ridesPage.rides[0].driver.text, 'Capheus');
   });
@@ -190,19 +209,31 @@ module('Acceptance | people', function (hooks) {
     [sun] = this.server.db.people;
     assert.ok(
       sun.active,
-      'expected Sun to have been made active on the server',
+      'expected Sun to have been made active on the server.',
     );
+    assert.notOk(shared.inlineAlert.isPresent);
 
-    this.server.patch('/people/:id', {}, 422);
+    const restorePeoplePatch = overrideRoute(
+      this.server,
+      'patch',
+      '/people/:id',
+      () => new Response(422, {}, {}),
+    );
 
     // FIXME test that inactive people aren’t shown in the ride-person popup
 
     await page.people[1].activeSwitch.click();
 
     assert.equal(
-      shared.toast.text,
-      'There was an error saving the active status of Sun',
+      shared.inlineAlert.text,
+      'There was an error saving the active status of Sun.',
     );
+
+    restorePeoplePatch();
+
+    await page.people[1].activeSwitch.click();
+
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('person validation errors are displayed', async function (assert) {
@@ -229,6 +260,7 @@ module('Acceptance | people', function (hooks) {
 
     await page.visit();
     await page.newPerson();
+    await page.form.nameField.fill('William');
     await page.form.submit();
 
     assert.equal(page.form.nameError.text, "Name can't be blank");

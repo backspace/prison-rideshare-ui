@@ -1,177 +1,181 @@
 import RouteTemplate from 'ember-route-template';
 import HeadLayout from 'ember-cli-head/components/head-layout';
 import EmberLoadRemover from 'ember-load/components/ember-load-remover';
-import PaperToaster from 'ember-paper/components/paper-toaster';
-import PaperSidenavContainer from 'ember-paper/components/paper-sidenav-container';
-import PaperSidenav from 'ember-paper/components/paper-sidenav';
-import PaperContent from 'ember-paper/components/paper-content/component';
-import PaperList from 'ember-paper/components/paper-list';
-import PaperItem from 'ember-paper/components/paper-item';
-import { LinkTo } from '@ember/routing';
+import { action } from '@ember/object';
+import { concat, fn } from '@ember/helper';
+import { on } from '@ember/modifier';
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
+import {
+  HdsBadgeCount,
+  HdsButton,
+  HdsSeparator,
+  HdsToast,
+} from '@hashicorp/design-system-components/components';
+import AppFrame from 'prison-rideshare-ui/components/app-frame';
+import AppSideNav from 'prison-rideshare-ui/components/app-side-nav';
+import AppSideNavList from 'prison-rideshare-ui/components/app-side-nav/list';
+import { pageTitle } from 'ember-page-title';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import now from 'ember-moment/helpers/now';
-import PaperDivider from 'ember-paper/components/paper-divider/component';
-import { action } from '@ember/object';
-import Component from '@glimmer/component';
-import { pageTitle } from 'ember-page-title';
+import BasicDropdownWormhole from 'ember-basic-dropdown/components/basic-dropdown-wormhole';
+import { modifier } from 'ember-modifier';
 
 class ApplicationComponent extends Component {
-  @action toggleSidebar() {
-    this.args.controller.sidebar.open = !this.args.controller.sidebar.open;
+  @service toasts;
+  @service sidebar;
+
+  constructor(owner, args) {
+    super(owner, args);
+
+    if (typeof window !== 'undefined') {
+      const isDesktop = window.matchMedia('(min-width: 1088px)').matches;
+      this.sidebar.open = isDesktop;
+      this.sidebar.setNavMinimizedState(!isDesktop);
+    }
   }
+
+  @action storeHeaderElement(headerElement) {
+    this.args.controller.headerElement = headerElement;
+  }
+
+  get isSidebarMinimized() {
+    return this.sidebar.navIsMinimized;
+  }
+
+  get activeToast() {
+    return this.toasts.activeToast;
+  }
+
+  @action registerSidebarComponent(component) {
+    this.sidebar.registerNavComponent(component);
+  }
+
+  @action handleSidebarToggle(isMinimized) {
+    this.sidebar.open = !isMinimized;
+    this.sidebar.setNavMinimizedState(isMinimized);
+  }
+
   <template>
     {{pageTitle 'Prison Rideshare' separator=' · '}}
     <HeadLayout />
     <EmberLoadRemover />
 
-    <PaperToaster />
-
-    <PaperSidenavContainer @class='site-nav-container'>
-      <PaperSidenav
-        @lockedOpen='gt-sm'
-        @open={{@controller.sidebar.open}}
-        @onToggle={{this.toggleSidebar}}
+    {{#if this.activeToast}}
+      <HdsToast
+        class='toast'
+        @onDismiss={{fn this.toasts.dismiss this.activeToast}}
+        data-test-toast
+        as |toast|
       >
-        <PaperContent>
-          <PaperList>
+        <toast.Title data-test-toast-text>
+          {{this.activeToast.message}}
+        </toast.Title>
+      </HdsToast>
+    {{/if}}
+
+    <AppFrame
+      class={{if this.isSidebarMinimized 'app-frame--sidebar-closed'}}
+      as |Frame|
+    >
+      <Frame.Header {{storeHeaderElement this.storeHeaderElement}} />
+      <Frame.Sidebar>
+        <AppSideNav
+          data-test-app-sidenav
+          @isResponsive={{true}}
+          @isMinimized={{this.isSidebarMinimized}}
+          @onRegister={{this.registerSidebarComponent}}
+          @onToggleMinimizedStatus={{this.handleSidebarToggle}}
+        >
+          <AppSideNavList as |List|>
             {{#if @controller.session.currentUser.admin}}
-              <PaperItem>
-                <LinkTo @route='drivers'>
-                  <span>
-                    Drivers
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='reimbursements'>
-                  <span>
-                    Reimbursements
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='debts'>
-                  <span>
-                    Debts
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='rides'>
-                  <span class='rides'>
-                    <span>
-                      Rides
-                    </span>
-                    {{#if @controller.ridesBadgeCount}}
-                      <span
-                        class='count'
-                        title='How many rides require attention'
-                      >
-                        {{@controller.ridesBadgeCount}}
-                      </span>
-                    {{/if}}
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='institutions'>
-                  <span>
-                    Institutions
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo
-                  @route='admin-calendar'
-                  @model={{momentFormat (now) 'YYYY-MM'}}
-                >
-                  <span>
-                    Calendar
-                  </span>
-                </LinkTo>
-              </PaperItem>
-              <PaperItem>
-                <LinkTo @route='statistics'>
-                  <span>
-                    Statistics
-                  </span>
-                </LinkTo>
-              </PaperItem>
+              <List.Link @route='drivers' @text='Drivers' />
+              <List.Link @route='reimbursements' @text='Reimbursements' />
+              <List.Link @route='debts' @text='Debts' />
+              <List.Link @route='rides' @text='Rides'>
+                {{#if @controller.ridesBadgeCount}}
+                  <HdsBadgeCount
+                    @text={{@controller.ridesBadgeCount}}
+                    @type='outlined'
+                    @size='small'
+                    data-test-nav-rides-count
+                  />
+                {{/if}}
+              </List.Link>
+              <List.Link @route='institutions' @text='Institutions' />
+              <List.Link
+                @route='admin-calendar'
+                @model={{momentFormat (now) 'YYYY-MM'}}
+                @text='Calendar'
+              />
+              <List.Link @route='statistics' @text='Statistics' />
             {{/if}}
-            <PaperItem>
-              <LinkTo @route='reports.new'>
-                <span>
-                  Report
-                </span>
-              </LinkTo>
-            </PaperItem>
-            <PaperItem>
-              <LinkTo @route='gas-prices'>
-                <span>
-                  Gas prices
-                </span>
-              </LinkTo>
-            </PaperItem>
+
+            <List.Link
+              @route='reports.new'
+              @text='Report'
+              data-test-nav-report
+            />
+            <List.Link @route='gas-prices' @text='Gas prices' />
+
             {{#if @controller.session.isAuthenticated}}
               {{#if @controller.session.currentUser.admin}}
-                <PaperItem>
-                  <LinkTo @route='log'>
-                    <span class='log'>
-                      <span>
-                        Log
-                      </span>
-                      {{#if @controller.sidebar.unreadCount}}
-                        <span
-                          class='count'
-                          title='How many unread posts you have'
-                        >
-                          {{@controller.sidebar.unreadCount}}
-                        </span>
-                      {{/if}}
-                    </span>
-                  </LinkTo>
-                </PaperItem>
-                <PaperItem>
-                  <LinkTo @route='users'>
-                    <span class='users'>
-                      <span>
-                        Users
-                      </span>
-                      {{#if @controller.sidebar.userCount}}
-                        <span
-                          class='count'
-                          title='How many users are connected'
-                        >
-                          {{@controller.sidebar.userCount}}
-                        </span>
-                      {{/if}}
-                    </span>
-                  </LinkTo>
-                </PaperItem>
-                <PaperDivider />
+                <List.Link @route='log' @text='Log'>
+                  {{#if @controller.sidebar.unreadCount}}
+                    <HdsBadgeCount
+                      @text={{@controller.sidebar.unreadCount}}
+                      @type='outlined'
+                      @size='small'
+                      data-test-nav-log-count
+                    />
+                  {{/if}}
+                </List.Link>
+                <List.Link @route='users' @text='Users'>
+                  {{#if @controller.sidebar.userCount}}
+                    <HdsBadgeCount
+                      @text={{@controller.sidebar.userCount}}
+                      @type='outlined'
+                      @size='small'
+                      data-test-nav-users-count
+                    />
+                  {{/if}}
+                </List.Link>
+                <List.Item>
+                  <HdsSeparator @spacing='0' />
+                </List.Item>
               {{/if}}
-              <PaperItem @onClick={{@controller.logout}} @class='session'>
-                Log out
-                {{@controller.session.currentUser.email}}
-              </PaperItem>
+              <List.Item data-test-session>
+                <HdsButton
+                  @color='secondary'
+                  @text={{concat
+                    'Log out '
+                    @controller.session.currentUser.email
+                  }}
+                  @size='small'
+                  class='session-button'
+                  {{on 'click' @controller.logout}}
+                  type='button'
+                  data-test-session-button
+                />
+              </List.Item>
             {{else}}
-              <PaperItem>
-                <LinkTo @route='login'>
-                  <span>
-                    Admin log in
-                  </span>
-                </LinkTo>
-              </PaperItem>
+              <List.Link @route='login' @text='Admin log in' />
             {{/if}}
-          </PaperList>
-        </PaperContent>
-      </PaperSidenav>
+          </AppSideNavList>
+        </AppSideNav>
+      </Frame.Sidebar>
 
-      <main class='flex layout-column'>
+      <Frame.Main>
         {{outlet}}
-      </main>
-    </PaperSidenavContainer>
+      </Frame.Main>
+    </AppFrame>
+
+    <BasicDropdownWormhole />
   </template>
 }
+
+const storeHeaderElement = modifier((element, [storeHeaderElement]) => {
+  storeHeaderElement(element);
+});
 
 export default RouteTemplate(ApplicationComponent);

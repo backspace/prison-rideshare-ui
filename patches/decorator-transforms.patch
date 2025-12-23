@@ -1,0 +1,14 @@
+diff --git a/dist/runtime-BPCpkOf1.js b/dist/runtime-BPCpkOf1.js
+index f3b582cd3f9ab548117cc7b1948652aa10f25ac9..af1166f3add5f71de6525ba511eed40a89cde562 100644
+--- a/dist/runtime-BPCpkOf1.js
++++ b/dist/runtime-BPCpkOf1.js
+@@ -32,7 +32,9 @@ function decorateFieldV2(prototype, prop, decorators, initializer) {
+     desc.initializer = initializer;
+   }
+   for (let decorator of decorators) {
++    if (decorator) {
+     desc = decorator(prototype, prop, desc) || desc;
++    }
+   }
+   if (desc.initializer === void 0) {
+     Object.defineProperty(prototype, prop, desc);

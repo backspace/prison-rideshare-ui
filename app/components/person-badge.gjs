@@ -1,77 +1,113 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
 import { action } from '@ember/object';
-import { classNames } from '@ember-decorators/component';
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import eq from 'ember-truth-helpers/helpers/eq';
-import paperIcon from 'ember-paper/components/paper-icon';
+import {
+  HdsButton,
+  HdsIcon,
+} from '@hashicorp/design-system-components/components';
+import { on } from '@ember/modifier';
+import { tracked } from '@glimmer/tracking';
 
-@classic
-@classNames('person-badge')
 export default class PersonBadge extends Component {
-  <template>
-    {{! template-lint-disable no-invalid-interactive }}
-    <div class='name-container' onclick={{this.toggleContact}}>
-      {{#if (eq this.property 'driver')}}
-        {{paperIcon 'person' size=14 title='driver'}}
-      {{else if (eq this.property 'carOwner')}}
-        {{paperIcon 'local gas station' size=14 title='car owner'}}
-      {{/if}}
-      <span class='name'>
-        {{this.person.name}}
-      </span>
-      {{#if this.clear}}
-        <span class='remove-container'>
-          <button onclick={{this.clear}} type='button'>
-            <paperIcon @icon='clear' @size={{14}} @title='remove' />
-            <span class='md-visually-hidden'>
-              Remove
-            </span>
-          </button>
-        </span>
-      {{/if}}
-    </div>
-    {{#if this.showContact}}
-      <div class='contact-container'>
-        {{#if this.person.email}}
-          <a href='mailto:{{this.person.email}}'>
-            {{paperIcon 'email' size=14 title='email address'}}
-            <span class='email'>
-              {{this.person.email}}
-            </span>
-          </a>
-        {{/if}}
-        {{#if this.person.mobile}}
-          <a href='tel:{{this.person.mobile}}'>
-            {{paperIcon 'smartphone' size=14 title='mobile phone number'}}
-            <span class='mobile'>
-              {{this.person.mobile}}
-            </span>
-          </a>
-        {{/if}}
-        {{#if this.person.landline}}
-          <a href='tel:{{this.person.landline}}'>
-            {{paperIcon 'phone' size=14 title='landline number'}}
-            <span class='landline'>
-              {{this.person.landline}}
-            </span>
-          </a>
-        {{/if}}
-        {{#if this.person.selfNotes}}
-          {{paperIcon 'notes' size=14 title='notes about self'}}
-          <span class='self-notes'>
-            {{this.person.selfNotes}}
-          </span>
-        {{/if}}
-      </div>
-    {{/if}}
-  </template>
-  showContact = false;
+  @tracked showContact = false;
 
   @action
   toggleContact() {
     if (!this.isDestroying && !this.isDestroyed) {
-      this.toggleProperty('showContact');
+      this.showContact = !this.showContact;
     }
   }
+
+  <template>
+    {{! template-lint-disable no-invalid-interactive }}
+    <div
+      ...attributes
+      class='person-badge'
+      data-test-person-badge-toggle
+      {{on 'click' this.toggleContact}}
+    >
+      <div class='row'>
+        {{#if (eq @property 'driver')}}
+          <HdsIcon @name='user' @size='16' @title='driver' @isInline={{true}} />
+        {{else if (eq @property 'carOwner')}}
+          <HdsIcon
+            @name='car'
+            @size='16'
+            @title='car owner'
+            @isInline={{true}}
+          />
+        {{/if}}
+        <span data-test-person-badge-name>
+          {{@person.name}}
+        </span>
+      </div>
+      {{#if @clear}}
+        <HdsButton
+          class='clear'
+          data-test-person-badge-clear
+          {{on 'click' @clear}}
+          @isIconOnly={{true}}
+          @isInline={{true}}
+          @icon='x'
+          @text='Remove'
+          @size='small'
+          @color='tertiary'
+        />
+      {{/if}}
+      {{#if this.showContact}}
+        {{#if @person.email}}
+          <a class='row' href='mailto:{{@person.email}}'>
+            <HdsIcon
+              @name='mail'
+              @size='16'
+              @title='email address'
+              @isInline={{true}}
+            />
+            <span data-test-person-badge-email>
+              {{@person.email}}
+            </span>
+          </a>
+        {{/if}}
+        {{#if @person.mobile}}
+          <a class='row' href='tel:{{@person.mobile}}'>
+            <HdsIcon
+              @name='smartphone'
+              @size='16'
+              @title='mobile phone number'
+              @isInline={{true}}
+            />
+            <span data-test-person-badge-mobile>
+              {{@person.mobile}}
+            </span>
+          </a>
+        {{/if}}
+        {{#if @person.landline}}
+          <a class='row' href='tel:{{@person.landline}}'>
+            <HdsIcon
+              @name='phone'
+              @size='16'
+              @title='landline number'
+              @isInline={{true}}
+            />
+            <span data-test-person-badge-landline>
+              {{@person.landline}}
+            </span>
+          </a>
+        {{/if}}
+        {{#if @person.selfNotes}}
+          <div class='row'>
+            <HdsIcon
+              @name='file-text'
+              @size='16'
+              @title='notes about self'
+              @isInline={{true}}
+            />
+            <span data-test-person-badge-self-notes>
+              {{@person.selfNotes}}
+            </span>
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </template>
 }

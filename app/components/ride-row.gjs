@@ -1,283 +1,298 @@
 /* eslint-disable ember/no-classic-components, ember/no-get */
 import classic from 'ember-classic-decorator';
-import { tagName } from '@ember-decorators/component';
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
+import { tagName } from '@ember-decorators/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
 import fetch from 'fetch';
 import ScrollTo from 'prison-rideshare-ui/components/scroll-to';
-import paperIcon from 'ember-paper/components/paper-icon';
 import LinkedContact from 'prison-rideshare-ui/components/linked-contact';
-import PaperButton from 'ember-paper/components/paper-button';
 import RidePerson from 'prison-rideshare-ui/components/ride-person';
+import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
+import {
+  HdsButton,
+  HdsIcon,
+} from '@hashicorp/design-system-components/components';
+import { on } from '@ember/modifier';
+import { fn } from '@ember/helper';
 import or from 'ember-truth-helpers/helpers/or';
 import not from 'ember-truth-helpers/helpers/not';
-import eq from 'ember-truth-helpers/helpers/eq';
 import and from 'ember-truth-helpers/helpers/and';
-import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
-import { fn } from '@ember/helper';
-
-const mediumIcon = {
-  txt: 'textsms',
-  email: 'email',
-  phone: 'phone',
-};
+import eq from 'ember-truth-helpers/helpers/eq';
 
 @classic
 @tagName('')
 export default class RideRow extends Component {
   <template>
-    <@body.row class={{this.classAttribute}} as |row|>
+    <@table.Tr
+      class={{this.rowClass}}
+      data-test-ride-row
+      data-ride-id={{this.ride.id}}
+    >
       {{#if this.showCreation}}
-        <row.cell class='creation'>
+        <@table.Td data-test-ride-creation>
           {{this.creation}}
-        </row.cell>
+        </@table.Td>
       {{/if}}
-      <row.cell class='date-cell' @onClick={{this.toggleCreation}}>
+      <@table.Td
+        class='date-cell'
+        data-test-ride-date-cell
+        {{on 'click' this.toggleCreation}}
+      >
         {{#if this.ride.isDivider}}
           <ScrollTo />
         {{/if}}
-        <span class='date'>
+        <span class='date' data-test-ride-date>
           {{this.ride.rideTimes}}
         </span>
-        {{#if this.showCreation}}
-          {{paperIcon 'alarm off' size=14}}
-        {{else}}
-          {{paperIcon 'add alarm' size=14}}
-        {{/if}}
-      </row.cell>
-      <row.cell class='institution'>
+      </@table.Td>
+      <@table.Td class='institution' data-test-ride-institution>
         {{this.ride.institution.name}}
-      </row.cell>
-      <row.cell class='name-and-contact'>
-        <span class='name'>
+      </@table.Td>
+      <@table.Td>
+        <span class='name' data-test-ride-name>
           {{this.ride.namePlusPassengers}}
         </span>
         {{#if this.ride.firstTime}}
-          {{paperIcon 'announcement' size=10 title='first time rider'}}
+          <HdsIcon
+            @name='alert-triangle'
+            @size='16'
+            @isInline={{true}}
+            @title='First-time rider'
+            data-test-ride-first-time
+          />
         {{/if}}
-        <div class='medium-and-contact'>
+        <div data-test-ride-medium data-medium={{this.ride.medium}}>
           {{#if this.mediumIcon}}
-            {{paperIcon this.mediumIcon size=10 title=this.mediumIconTitle}}
+            <HdsIcon @name={{this.mediumIcon}} @size='16' @isInline={{true}} />
           {{/if}}
-          <span class='contact'>
+          <span data-test-ride-contact>
             <LinkedContact @contact={{this.ride.contact}} />
           </span>
         </div>
-      </row.cell>
-      <row.cell class='address'>
+      </@table.Td>
+      <@table.Td data-test-ride-address>
         {{this.ride.address}}
-      </row.cell>
-      <row.cell class='driver-and-car-owner'>
-        {{#if this.combined}}
-          {{#unless this.rideToCombine}}
-            <PaperButton
-              class='combine'
-              @iconButton={{true}}
-              @aria-label='Uncombine this ride'
-              @title='Uncombine this ride'
-              @onClick={{fn this.uncombineRide this.ride}}
-            >
-              {{paperIcon 'call split'}}
-            </PaperButton>
-          {{/unless}}
-        {{else}}
-          <span class='driver'>
+      </@table.Td>
+      <@table.Td data-test-ride-assignments>
+        <div class='assignments'>
+          {{#if @combined}}
+            {{#unless this.rideToCombine}}
+              <HdsButton
+                data-test-combine-button
+                @text='Uncombine this ride'
+                title='Uncombine this ride'
+                @size='small'
+                @color='tertiary'
+                @isIconOnly={{true}}
+                @isInline={{true}}
+                @icon='split'
+                {{on 'click' (fn this.uncombineRide this.ride)}}
+              />
+            {{/unless}}
+          {{else}}
             <RidePerson
+              data-test-driver
               @ride={{this.ride}}
               @property='driver'
               @onChange={{this.setDriver}}
             />
-          </span>
-          <span class='car-owner'>
             <RidePerson
+              data-test-car-owner
               @ride={{this.ride}}
               @property='carOwner'
               @onChange={{this.setCarOwner}}
             />
-          </span>
-          {{#if this.ride.overridable}}
-            {{paperIcon
-              'directions_bus'
-              title='driver can override car expenses (van-driving, probably)'
-            }}
-          {{/if}}
-          {{#if (or (not this.ride.children) this.rideToCombine)}}
-            <PaperButton
-              class='combine'
-              @iconButton={{true}}
-              @raised={{eq this.ride.id this.rideToCombine.id}}
-              @aria-label={{this.combineButtonLabel}}
-              @title={{this.combineButtonLabel}}
-              @onClick={{fn this.combineRide this.ride}}
-            >
-              {{paperIcon 'merge type'}}
-            </PaperButton>
-          {{/if}}
-        {{/if}}
-      </row.cell>
-      <row.cell>
-        <span class='cancellation'>
-          <PaperButton
-            @iconButton={{true}}
-            @aria-label={{this.cancellationButtonLabel}}
-            @title={{this.cancellationButtonLabel}}
-            @onClick={{fn this.editCancellation this.ride}}
-          >
-            {{#if this.ride.enabled}}
-              {{paperIcon 'highlight off'}}
-            {{else}}
-              {{paperIcon this.cancellationIcon}}
+            {{#if this.ride.overridable}}
+              <span data-test-overridable-indicator>
+                <HdsIcon @name='car' @size='16' @isInline={{true}} />
+              </span>
             {{/if}}
-          </PaperButton>
-        </span>
-        <PaperButton
-          @iconButton={{true}}
-          @aria-label='Edit ride'
-          @title='Edit ride'
-          class='edit'
-          @onClick={{fn this.editRide this.ride}}
-        >
-          {{paperIcon 'mode edit'}}
-        </PaperButton>
-      </row.cell>
-    </@body.row>
+            {{#if (or (not this.ride.children) this.rideToCombine)}}
+              {{#let
+                (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
+                as |maybeCombining|
+              }}
+                <HdsButton
+                  data-test-combine-button
+                  @text={{if maybeCombining 'Cancel combining' 'Combine'}}
+                  title={{this.combineButtonTitle}}
+                  @size='small'
+                  @color='tertiary'
+                  @isIconOnly={{not maybeCombining}}
+                  @isInline={{true}}
+                  @icon='merge'
+                  {{on 'click' (fn this.combineRide this.ride)}}
+                  data-active={{if maybeCombining 'true' 'false'}}
+                />
+              {{/let}}
+            {{/if}}
+          {{/if}}
+        </div>
+      </@table.Td>
+      <@table.Td>
+        <HdsButton
+          data-test-cancellation-button
+          data-cancellation-state={{this.cancellationState}}
+          title={{this.cancellationButtonLabel}}
+          @text={{this.cancellationButtonLabel}}
+          @color='tertiary'
+          @isIconOnly={{true}}
+          @isInline={{true}}
+          @icon={{if this.ride.enabled 'x-circle' this.cancellationIcon}}
+          {{on 'click' (fn this.editCancellation this.ride)}}
+        />
+        <HdsButton
+          data-test-edit-ride
+          @text='Edit ride'
+          @color='tertiary'
+          @isIconOnly={{true}}
+          @isInline={{true}}
+          @icon='edit'
+          {{on 'click' (fn this.editRide this.ride)}}
+        />
+      </@table.Td>
+    </@table.Tr>
 
     {{#each this.commitments as |commitment|}}
-      <@body.row class='overlap highlighted' as |row|>
-        {{row.cell}}
-        <row.cell @colspan={{3}}>
-          {{paperIcon 'date range'}}
-          <span class='text'>
+      <@table.Tr
+        class='overlap highlighted no-top-border'
+        data-test-overlap-row
+      >
+        {{#if this.showCreation}}
+          <@table.Td />
+        {{/if}}
+        <@table.Td colspan='3'>
+          <HdsIcon @name='calendar' @size='16' @isInline={{true}} />
+          <span data-test-overlap-text>
             {{commitment.person.name}}
             committed to slot
             {{commitment.timespan}}
           </span>
-        </row.cell>
-        <row.cell @colspan={{3}}>
-          <PaperButton
-            class='assign'
-            @onClick={{fn this.assignFromCommitment commitment}}
+        </@table.Td>
+        <@table.Td colspan='3'>
+          <button
+            type='button'
+            data-test-overlap-assign
+            {{on 'click' (fn this.assignFromCommitment commitment)}}
           >
             Assign
-          </PaperButton>
-          <PaperButton
-            class='ignore'
-            @onClick={{fn this.ignoreCommitment commitment}}
+          </button>
+          <button
+            type='button'
+            data-test-overlap-ignore
+            {{on 'click' (fn this.ignoreCommitment commitment)}}
           >
             Ignore
-          </PaperButton>
-        </row.cell>
-      </@body.row>
+          </button>
+        </@table.Td>
+      </@table.Tr>
     {{/each}}
 
     {{#if this.ride.requiresConfirmation}}
-      <@body.row class='confirmation-notification highlighted' as |row|>
-        {{row.cell}}
-        <row.cell @colspan={{3}}>
+      <@table.Tr class='highlighted no-top-border' data-test-confirmation-row>
+        {{#if this.showCreation}}
+          <@table.Td />
+        {{/if}}
+        <@table.Td colspan='3'>
           {{#if this.mediumIcon}}
-            {{paperIcon this.mediumIcon title=this.mediumIconTitle}}
+            <HdsIcon @name={{this.mediumIcon}} @size='16' @isInline={{true}} />
           {{/if}}
-          <span>
+          <span class='text' data-test-confirmation-text>
             Contact visitor to confirm receipt of ride request
           </span>
-        </row.cell>
-        <row.cell @colspan={{3}}>
-          <PaperButton class='mark-confirmed' @onClick={{this.markConfirmed}}>
+        </@table.Td>
+        <@table.Td colspan='3'>
+          <button
+            type='button'
+            data-test-confirmation-mark
+            {{on 'click' this.markConfirmed}}
+          >
             Mark as contacted
-          </PaperButton>
-        </row.cell>
-      </@body.row>
+          </button>
+        </@table.Td>
+      </@table.Tr>
     {{/if}}
 
     {{#if this.ride.requestNotes}}
-      <@body.row class='notes' as |row|>
-        {{row.cell}}
-        <row.cell class='notes' @colspan={{6}}>
+      <@table.Tr
+        class='notes no-top-border
+          {{if this.ride.requiresConfirmation "highlighted"}}'
+        data-test-notes-row
+      >
+        {{#if this.showCreation}}
+          <@table.Td />
+        {{/if}}
+        <@table.Td data-test-notes colspan='6'>
           {{this.ride.requestNotes}}
-        </row.cell>
-      </@body.row>
+        </@table.Td>
+      </@table.Tr>
     {{/if}}
+
     {{#if this.ride.complete}}
-      <@body.row class='report' as |row|>
-        {{row.cell}}
-        <row.cell @colspan={{6}}>
-          {{paperIcon 'map'}}
-          <span class='distance'>
+      <@table.Tr class='report no-top-border' data-test-report-row>
+        {{#if this.showCreation}}
+          <@table.Td />
+        {{/if}}
+        <@table.Td colspan='6'>
+          <HdsIcon @name='map' @size='16' @isInline={{true}} />
+
+          <span class='distance' data-test-report-distance>
             {{this.ride.distance}}
           </span>
           {{#if this.ride.carExpenses}}
-            {{paperIcon 'local gas station'}}
-            <span class='car-expenses'>
+            <HdsIcon @name='fuel' @size='16' @isInline={{true}} />
+
+            <span data-test-report-car-expenses>
               {{this.ride.carExpensesDollars}}
             </span>
             {{#if (and this.ride.rate (not this.ride.overridable))}}
-              (<span class='rate'>{{this.ride.rate}}<ReimbursementUnit
+              (<span data-test-report-rate>{{this.ride.rate}}<ReimbursementUnit
                 /></span>)
             {{/if}}
           {{/if}}
           {{#if this.ride.foodExpenses}}
-            {{paperIcon 'local cafe'}}
-            <span class='food-expenses'>
+            <HdsIcon @name='coffee' @size='16' @isInline={{true}} />
+
+            <span data-test-report-food>
               {{this.ride.foodExpensesDollars}}
             </span>
           {{/if}}
           {{#if this.ride.reportNotes}}
-            {{paperIcon 'note'}}
-            <span class='notes'>
+            <span class='notes' data-test-report-notes>
               {{this.ride.reportNotes}}
             </span>
           {{/if}}
           {{#if this.clearing}}
             Clear this report?
-            <PaperButton
-              class='clear-confirm'
-              @warn={{true}}
-              @aria-label='Clear report'
-              @title='Clear report'
-              @onClick={{this.clearReport}}
+            <button
+              type='button'
+              data-test-report-clear-confirm
+              {{on 'click' this.clearReport}}
             >
               Yes
-            </PaperButton>
-            <PaperButton
-              class='clear-cancel'
-              @aria-label='Don’t clear report'
-              @title='Don’t clear report'
-              @onClick={{this.unproposeClear}}
+            </button>
+            <button
+              type='button'
+              data-test-report-clear-cancel
+              {{on 'click' this.unproposeClear}}
             >
               No
-            </PaperButton>
+            </button>
           {{else}}
-            <PaperButton
-              @iconButton={{true}}
-              @aria-label='Clear report'
-              @title='Clear report'
-              @onClick={{this.proposeClear}}
+            <button
+              type='button'
+              data-test-report-clear
+              {{on 'click' this.proposeClear}}
             >
-              {{paperIcon 'clear'}}
-            </PaperButton>
+              Clear report
+            </button>
           {{/if}}
-        </row.cell>
-      </@body.row>
+        </@table.Td>
+      </@table.Tr>
     {{/if}}
   </template>
-  @computed(
-    'uncombinable',
-    'ride.{isCombined,isDivider,enabled,requiresConfirmation}',
-    'commitments.[]',
-  )
-  get classAttribute() {
-    return `ride ${this.get('ride.enabled') ? 'enabled' : ''} ${
-      this.uncombinable ? 'uncombinable' : ''
-    } ${this.get('ride.isCombined') ? 'combined' : ''} ${
-      this.get('ride.isDivider') ? 'divider' : ''
-    } ${
-      this.get('ride.requiresConfirmation') || this.get('commitments.length')
-        ? 'highlighted'
-        : ''
-    }`;
-  }
 
   @service
   moment;
@@ -291,27 +306,44 @@ export default class RideRow extends Component {
   @service
   store;
 
-  // TODO this is unfortunate but without it ignoring doesn’t make the overlap immediately disappear
+  clearing = false;
+
+  @computed(
+    'uncombinable',
+    'ride.{isCombined,isDivider,enabled,requiresConfirmation}',
+    'commitments.length',
+  )
+  get rowClass() {
+    return `ride ${this.ride.enabled ? 'enabled' : ''} ${
+      this.uncombinable ? 'uncombinable' : ''
+    } ${this.ride.isCombined ? 'combined' : ''} ${
+      this.ride.isDivider ? 'divider' : ''
+    } ${
+      this.ride.requiresConfirmation || this.commitments.length
+        ? 'highlighted'
+        : ''
+    }`;
+  }
+
   @computed('overlaps.overlaps.data.@each.id', 'ride')
   get commitments() {
     return this.overlaps.commitmentsForRide(this.ride);
   }
 
-  clearing = false;
-
   @computed('ride.insertedAt')
   get creation() {
-    const insertedAt = this.get('ride.insertedAt');
-
+    const insertedAt = this.ride.insertedAt;
     return this.moment.moment(insertedAt).format('ddd MMM D YYYY h:mma');
   }
 
-  @computed('ride.cancellationReason')
+  @computed('ride.{enabled,cancellationReason}')
   get cancellationIcon() {
-    const reason = this.get('ride.cancellationReason');
-    const icon = reasonToIcon[reason];
+    if (this.ride.enabled) {
+      return 'slash';
+    }
 
-    return icon || 'help';
+    const reason = this.ride.cancellationReason;
+    return reasonToIcon[reason] ?? 'alert-circle';
   }
 
   @computed('ride.{enabled,cancellationReason}')
@@ -323,40 +355,49 @@ export default class RideRow extends Component {
     }
   }
 
+  @computed('ride.{enabled,cancellationReason}')
+  get cancellationState() {
+    return this.ride.enabled ? 'not-cancelled' : this.ride.cancellationReason;
+  }
+
   @computed('ride.id', 'rideToCombine.id')
-  get combineButtonLabel() {
-    if (this.get('ride.id') == this.get('rideToCombine.id')) {
+  get combineButtonTitle() {
+    if (this.ride.id === this.rideToCombine?.id) {
       return 'Cancel combining';
-    } else {
-      return 'Combine with another ride';
     }
+
+    return 'Combine with another ride';
   }
 
   @computed('rideToCombine.{id,start}', 'ride.start')
   get uncombinable() {
     const sixHours = 1000 * 60 * 60 * 6;
-    const rideToCombineStart = this.get('rideToCombine.start');
+    const rideToCombineStart = this.rideToCombine?.start;
 
     if (!rideToCombineStart) {
       return false;
-    } else {
-      return (
-        Math.abs(
-          new Date(rideToCombineStart).getTime() -
-            new Date(this.get('ride.start')).getTime(),
-        ) > sixHours
-      );
     }
+
+    return (
+      Math.abs(
+        new Date(rideToCombineStart).getTime() -
+          new Date(this.ride.start).getTime(),
+      ) > sixHours
+    );
   }
 
   @computed('ride.medium')
   get mediumIcon() {
-    return mediumIcon[this.get('ride.medium')];
-  }
-
-  @computed('ride.medium')
-  get mediumIconTitle() {
-    return `ride was requested via ${this.get('ride.medium')}`;
+    switch (this.ride.medium) {
+      case 'txt':
+        return 'message-circle';
+      case 'email':
+        return 'mail';
+      case 'phone':
+        return 'phone';
+      default:
+        return null;
+    }
   }
 
   @action
@@ -392,7 +433,7 @@ export default class RideRow extends Component {
       commitmentJson.relationships.person.data.id,
     );
 
-    this.send('setDriver', person);
+    this.setDriver(person);
   }
 
   @action
@@ -401,16 +442,14 @@ export default class RideRow extends Component {
     let url = `${ride.store
       .adapterFor('ride')
       .buildURL('ride', ride.id)}/ignore/${commitmentJson.id}`;
-    let token = this.get('session.data.authenticated.access_token');
+    let token = this.session.data?.authenticated?.access_token;
 
     fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    }).then(() => {
-      return this.overlaps.fetch();
-    });
+    }).then(() => this.overlaps.fetch());
   }
 
   @action
@@ -418,16 +457,6 @@ export default class RideRow extends Component {
     let ride = this.ride;
     ride.set('requestConfirmed', true);
     return ride.save();
-  }
-
-  @action
-  match(option, searchTerm) {
-    const name = option.name;
-    const result = (name || '')
-      .toLowerCase()
-      .startsWith(searchTerm.toLowerCase());
-
-    return result ? 1 : -1;
   }
 
   @action
@@ -440,7 +469,8 @@ export default class RideRow extends Component {
     this.set('clearing', true);
   }
 
-  @action unproposeClear() {
+  @action
+  unproposeClear() {
     this.set('clearing', false);
   }
 

@@ -1,17 +1,17 @@
 const reasonToIcon = {
   lockdown: 'lock',
-  visitor: 'perm identity',
-  'no car': 'directions car',
-  'driver not found': 'assignment ind',
-  'at capacity': 'assignment ind',
+  visitor: 'user',
+  'no car': 'car',
+  'driver not found': 'user-round-search',
+  'at capacity': 'users',
   weather: 'cloud',
   transfer: 'shuffle',
-  error: 'error',
-  'visitor missing': 'perm identity',
-  'driver missing': 'directions car',
-  'driver cancelled': 'hot tub',
-  released: 'lock open',
-  'jail cancelled': 'alarm off',
+  error: 'alert-octagon',
+  'visitor missing': 'user-x',
+  'driver missing': 'truck',
+  'driver cancelled': 'skip',
+  released: 'unlock',
+  'jail cancelled': 'bell-off',
 };
 
 export default reasonToIcon;

@@ -3,6 +3,7 @@ import { currentURL, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { Response } from 'miragejs';
+import { overrideRoute } from '../helpers/override-route';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { percySnapshot } from 'ember-percy';
 import { pollTaskFor } from 'ember-lifeline/test-support';
@@ -229,7 +230,7 @@ module('Acceptance | calendar', function (hooks) {
       'expected the past committed slot to be disabled',
     );
 
-    await page.days[9].slots[0].click();
+    assert.rejects(page.days[9].slots[0].click());
 
     assert.notOk(
       page.days[9].slots[0].isCommittedTo,
@@ -238,26 +239,31 @@ module('Acceptance | calendar', function (hooks) {
   });
 
   test('a failure to delete a commitment keeps it displayed and shows an error', async function (assert) {
-    this.server.delete('/commitments/:id', function () {
-      return new Response(
-        401,
-        {},
-        {
-          errors: [
-            {
-              status: 401,
-              title: 'Unauthorized',
-            },
-          ],
-        },
-      );
-    });
+    const restoreCommitmentDelete = overrideRoute(
+      this.server,
+      'delete',
+      '/commitments/:id',
+      function () {
+        return new Response(
+          401,
+          {},
+          {
+            errors: [
+              {
+                status: 401,
+                title: 'Unauthorized',
+              },
+            ],
+          },
+        );
+      },
+    );
 
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     await page.days[3].slots[0].click();
 
-    assert.equal(shared.toast.text, 'Couldn’t save your change');
+    assert.equal(shared.inlineAlert.text, 'Couldn’t save your change');
     assert.ok(
       page.days[3].slots[0].isCommittedTo,
       'expected the slot to still be committed-to',
@@ -267,29 +273,40 @@ module('Acceptance | calendar', function (hooks) {
       4,
       'expected the commitment to still be on the server',
     );
+
+    restoreCommitmentDelete();
+
+    await page.days[3].slots[0].click();
+
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('a failure to create a commitment makes it not display and shows an error', async function (assert) {
-    this.server.post('/commitments', function () {
-      return new Response(
-        401,
-        {},
-        {
-          errors: [
-            {
-              status: 401,
-              title: 'Unauthorized',
-            },
-          ],
-        },
-      );
-    });
+    const restoreCommitmentCreate = overrideRoute(
+      this.server,
+      'post',
+      '/commitments',
+      function () {
+        return new Response(
+          401,
+          {},
+          {
+            errors: [
+              {
+                status: 401,
+                title: 'Unauthorized',
+              },
+            ],
+          },
+        );
+      },
+    );
 
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     await page.days[9].slots[1].click();
 
-    assert.equal(shared.toast.text, 'Couldn’t save your change');
+    assert.equal(shared.inlineAlert.text, 'Couldn’t save your change');
     assert.notOk(
       page.days[9].slots[1].isCommittedTo,
       'expected the slot to not be committed-to',
@@ -299,10 +316,15 @@ module('Acceptance | calendar', function (hooks) {
       4,
       'expected the commitments to be unchanged on the server',
     );
+
+    restoreCommitmentCreate();
+
+    await page.days[9].slots[1].click();
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 
   test('a failure to create a commitment with a particular error shows the error', async function (assert) {
-    this.server.post('/commitments', function () {
+    overrideRoute(this.server, 'post', '/commitments', function () {
       return new Response(
         422,
         {},
@@ -321,8 +343,7 @@ module('Acceptance | calendar', function (hooks) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     await page.days[9].slots[1].click();
-
-    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(shared.inlineAlert.text, 'Fail!');
   });
 
   test('visiting with an unknown magic token shows an error', async function (assert) {
@@ -408,12 +429,12 @@ module('Acceptance | calendar', function (hooks) {
     assert.equal(page.person.email.field.value, 'jorts@jants.ca');
 
     assert.ok(
-      page.person.mobile.desiredMedium,
+      page.person.mobile.desiredMedium.isChecked,
       'expected mobile to be the desired medium',
     );
 
-    assert.equal(page.person.selfNotes.field.value, 'My self notes');
-    assert.equal(page.person.address.field.value, '91 Albert');
+    assert.equal(page.person.selfNotes.value, 'My self notes');
+    assert.equal(page.person.address.value, '91 Albert');
 
     assert.notOk(
       page.person.submitButton.isHighlighted,
@@ -440,8 +461,8 @@ module('Acceptance | calendar', function (hooks) {
     await page.person.activeSwitch.click();
     await page.person.mobile.field.fillIn('1234');
     await page.person.email.desiredMedium.click();
-    await page.person.selfNotes.field.fillIn('Updated self notes');
-    await page.person.address.field.fillIn('A new address');
+    await page.person.selfNotes.fillIn('Updated self notes');
+    await page.person.address.fillIn('A new address');
 
     assert.ok(
       page.person.submitButton.isHighlighted,
@@ -512,41 +533,62 @@ module('Acceptance | calendar', function (hooks) {
     await page.person.name.field.fillIn('');
     await page.person.submitButton.click();
 
-    // FIXME validation-specific error text?
-    assert.equal(shared.toast.text, 'Couldn’t save your details');
+    assert.equal(shared.inlineAlert.text, 'Couldn’t save your details');
     assert.equal(page.person.name.error.text, "Name can't be blank");
     assert.ok(
-      page.person.name.isError,
+      page.person.name.field.isError,
       'expected the name field to show as being invalid',
+    );
+
+    await page.person.name.field.fillIn('Jortleby');
+    await page.person.submitButton.click();
+
+    assert.notOk(
+      shared.inlineAlert.isPresent,
+      'expected the inline alert to clear after fixing validation issues',
     );
   });
 
   test('handles an error saving details', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-    this.server.patch('/people/me', function () {
-      return new Response(
-        401,
-        {},
-        {
-          errors: [
-            {
-              status: 401,
-              title: 'Unauthorized',
-            },
-          ],
-        },
-      );
-    });
+    const restorePeopleMe = overrideRoute(
+      this.server,
+      'patch',
+      '/people/me',
+      function () {
+        return new Response(
+          401,
+          {},
+          {
+            errors: [
+              {
+                status: 401,
+                title: 'Unauthorized',
+              },
+            ],
+          },
+        );
+      },
+    );
 
     await page.person.toggle.click();
     await page.person.name.field.fillIn('Jartleby');
     await page.person.submitButton.click();
 
-    assert.equal(shared.toast.text, 'Couldn’t save your details');
+    assert.equal(shared.inlineAlert.text, 'Couldn’t save your details');
     assert.ok(
       page.person.name.isVisible,
       'expected the form to still be visible',
+    );
+
+    restorePeopleMe();
+
+    await page.person.submitButton.click();
+
+    assert.notOk(
+      shared.inlineAlert.isPresent,
+      'expected the inline alert to clear after retrying the save',
     );
   });
 
@@ -641,22 +683,20 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.days[9].slots[1].count.click();
     await page.peopleSearch.fillIn('commit');
-    await waitUntil(() => page.peopleSearch.options.length === 3);
 
     assert.equal(
       page.peopleSearch.options.length,
       3,
       'expected three people to show for possible commitments',
     );
-    assert.equal(page.peopleSearch.options[0].name, 'Also non-committal');
+    assert.equal(page.peopleSearch.options[0].text, 'Also non-committal');
     assert.equal(
-      page.peopleSearch.options[1].name,
+      page.peopleSearch.options[1].text,
       'Fully Committed Slot Person',
     );
-    assert.equal(page.peopleSearch.options[2].name, 'Non-committal');
+    assert.equal(page.peopleSearch.options[2].text, 'Non-committal');
 
     await page.peopleSearch.fillIn('also');
-    await waitUntil(() => page.peopleSearch.options.length === 1);
 
     assert.equal(
       page.peopleSearch.options.length,
@@ -693,21 +733,26 @@ module('Acceptance | calendar', function (hooks) {
   });
 
   test('an error when an admin tries to create a commitment is displayed', async function (assert) {
-    this.server.post('/commitments', function () {
-      return new Response(
-        422,
-        {},
-        {
-          errors: [
-            {
-              status: 422,
-              title: 'Unauthorized',
-              detail: 'Fail!',
-            },
-          ],
-        },
-      );
-    });
+    const restoreAdminCommitmentCreate = overrideRoute(
+      this.server,
+      'post',
+      '/commitments',
+      function () {
+        return new Response(
+          422,
+          {},
+          {
+            errors: [
+              {
+                status: 422,
+                title: 'Unauthorized',
+                detail: 'Fail!',
+              },
+            ],
+          },
+        );
+      },
+    );
 
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
@@ -718,11 +763,23 @@ module('Acceptance | calendar', function (hooks) {
     await waitUntil(() => page.peopleSearch.options.length);
     await page.peopleSearch.options[0].click();
 
-    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(shared.inlineAlert.text, 'Fail!');
     assert.equal(
       this.server.db.commitments.length,
       4,
       'expected no change on the server',
+    );
+
+    restoreAdminCommitmentCreate();
+
+    await page.days[9].slots[0].count.click();
+    await page.peopleSearch.fillIn('also');
+    await waitUntil(() => page.peopleSearch.options.length);
+    await page.peopleSearch.options[0].click();
+
+    assert.notOk(
+      shared.inlineAlert.isPresent,
+      'expected the inline alert to clear after the admin commitment succeeds',
     );
   });
 
@@ -746,21 +803,26 @@ module('Acceptance | calendar', function (hooks) {
   });
 
   test('an error when an admin tries to delete a commitment is displayed', async function (assert) {
-    this.server.delete('/commitments/:id', function () {
-      return new Response(
-        422,
-        {},
-        {
-          errors: [
-            {
-              status: 422,
-              title: 'Unauthorized',
-              detail: 'Fail!',
-            },
-          ],
-        },
-      );
-    });
+    const restoreAdminCommitmentDelete = overrideRoute(
+      this.server,
+      'delete',
+      '/commitments/:id',
+      function () {
+        return new Response(
+          422,
+          {},
+          {
+            errors: [
+              {
+                status: 422,
+                title: 'Unauthorized',
+                detail: 'Fail!',
+              },
+            ],
+          },
+        );
+      },
+    );
 
     this.server.create('user', { admin: true });
     await authenticateSession({ access_token: 'abcdef' });
@@ -769,11 +831,16 @@ module('Acceptance | calendar', function (hooks) {
     await page.days[3].slots[0].count.click();
     await page.people[0].remove();
 
-    assert.equal(shared.toast.text, 'Fail!');
+    assert.equal(shared.inlineAlert.text, 'Fail!');
     assert.equal(
       this.server.db.commitments.length,
       4,
       'expected no change on the server',
     );
+
+    restoreAdminCommitmentDelete();
+
+    await page.people[1].remove();
+    assert.notOk(shared.inlineAlert.isPresent);
   });
 });

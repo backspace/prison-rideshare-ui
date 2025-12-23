@@ -5,124 +5,160 @@ import {
   create,
   fillable,
   hasClass,
+  isVisible,
   text,
-  triggerable,
   visitable,
 } from 'ember-cli-page-object';
+import { findOne } from 'ember-cli-page-object/extend';
+import { getter } from 'ember-cli-page-object/macros';
+
+function resolveElement(context, selector, pageObjectKey) {
+  const scopedSelector = selector ?? '';
+  return findOne(context, scopedSelector, { pageObjectKey });
+}
+
+function isChecked(selector) {
+  return getter(function (pageObjectKey) {
+    const element = resolveElement(this, selector, pageObjectKey);
+    return element.checked ?? element.getAttribute('checked') !== null;
+  });
+}
 
 export default create({
   visit: visitable('/drivers'),
-  newPerson: clickable('button.new'),
+  newPerson: clickable('[data-test-new-driver]'),
 
   head: {
     inactiveSwitch: {
-      scope: '.paper-switch.inactive',
-      enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', {
-        eventProperties: { keyCode: 13 },
-      }),
+      scope: '[data-test-drivers-inactive-toggle]',
+      enabled: isChecked(),
+      click: clickable(),
+    },
+    nameSort: {
+      scope: '[data-test-drivers-head-name]',
+      click: clickable('button'),
+    },
+    lastRideSort: {
+      scope: '[data-test-drivers-head-last-ride]',
+      click: clickable('button'),
     },
   },
 
-  people: collection('tbody tr.person', {
+  people: collection('[data-test-driver-row]', {
     activeSwitch: {
-      scope: '.paper-switch',
-      enabled: hasClass('md-checked'),
-      click: triggerable('keypress', '.md-container', {
-        eventProperties: { keyCode: 13 },
-      }),
+      scope: '[data-test-driver-active-toggle]',
+      enabled: isChecked(),
+      click: clickable(),
     },
 
-    name: text('.name'),
+    name: text('[data-test-driver-name]'),
 
     email: {
-      scope: '.email',
-      href: attribute('href', 'a'),
+      scope: '[data-test-driver-email]',
+      text: text(),
+      href: attribute('href', '[data-test-driver-email-link]'),
       isPreferred: hasClass('is-preferred'),
     },
 
     landline: {
-      scope: '.landline',
-      href: attribute('href', 'a'),
+      scope: '[data-test-driver-landline]',
+      text: text(),
+      href: attribute('href', '[data-test-driver-landline-link]'),
       isPreferred: hasClass('is-preferred'),
     },
 
     mobile: {
-      scope: '.mobile',
-      href: attribute('href', 'a'),
+      scope: '[data-test-driver-mobile]',
+      text: text(),
+      href: attribute('href', '[data-test-driver-mobile-link]'),
       isPreferred: hasClass('is-preferred'),
     },
 
     lastRide: {
-      scope: '.last-ride',
+      scope: '[data-test-driver-last-ride]',
+      text: text(),
     },
 
     notes: {
-      scope: '.notes',
+      scope: '[data-test-driver-notes]',
+      text: text(),
     },
 
     copyButton: {
-      scope: '.copy-btn',
-      clipboardText: attribute('data-clipboard-text'),
+      scope: '[data-test-driver-copy-button]',
+      clipboardText: attribute('data-test-clipboard-text'),
+      isVisible: isVisible(),
     },
 
-    edit: clickable('button.edit'),
+    edit: clickable('[data-test-driver-edit]'),
   }),
 
   form: {
-    testContainer: 'md-dialog',
+    scope: '[data-test-driver-modal]',
 
     nameField: {
-      scope: '.name input',
-      fill: fillable(),
+      fill: fillable('[data-test-driver-form-name-input]'),
+      value: attribute('value', '[data-test-driver-form-name-input]'),
     },
 
     nameError: {
-      scope: '.name .paper-input-error',
+      scope: '[data-test-driver-form-name-error]',
+      text: text(),
     },
 
-    // TODO rule of three?
     email: {
-      scope: '.email',
+      fill: fillable('[data-test-driver-form-email-input]'),
       field: {
-        scope: 'input',
+        scope: '[data-test-driver-form-email-input]',
       },
       desiredMedium: {
-        scope: 'md-radio-button',
+        scope: '[data-test-driver-form-medium-email]',
       },
       error: {
-        scope: '.paper-input-error',
+        scope: '[data-test-driver-form-email-error]',
+        text: text(),
       },
     },
 
     mobile: {
-      scope: '.mobile',
+      fill: fillable('[data-test-driver-form-mobile-input]'),
       field: {
-        scope: 'input',
+        scope: '[data-test-driver-form-mobile-input]',
       },
       desiredMedium: {
-        scope: 'md-radio-button',
+        scope: '[data-test-driver-form-medium-mobile]',
       },
-      error: {
-        scope: '.paper-input-error',
+    },
+
+    landline: {
+      fill: fillable('[data-test-driver-form-landline-input]'),
+      field: {
+        scope: '[data-test-driver-form-landline-input]',
+      },
+      desiredMedium: {
+        scope: '[data-test-driver-form-medium-landline]',
       },
     },
 
     address: {
-      scope: '.address',
+      fill: fillable('[data-test-driver-form-address-input]'),
       field: {
-        scope: 'textarea',
+        scope: '[data-test-driver-form-address-input]',
       },
     },
 
     notes: {
-      scope: '.notes',
+      fill: fillable('[data-test-driver-form-notes-input]'),
       field: {
-        scope: 'textarea',
+        scope: '[data-test-driver-form-notes-input]',
       },
     },
 
-    submit: clickable('button.submit'),
-    cancel: clickable('button.cancel'),
+    submit: clickable('[data-test-driver-form-submit]'),
+    cancel: clickable('[data-test-driver-form-cancel]'),
   },
+
+  peopleNames: getter(function () {
+    return this.people.toArray().map((person) => person.name);
+  }),
 });

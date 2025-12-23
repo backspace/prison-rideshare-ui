@@ -1,24 +1,19 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-get, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
-import { reads } from '@ember/object/computed';
-import Component from '@ember/component';
-import { get, computed } from '@ember/object';
+import Component from '@glimmer/component';
 import formatBriefTimespan from 'prison-rideshare-ui/utils/format-brief-timespan';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { task } from 'ember-concurrency';
 import gt from 'ember-truth-helpers/helpers/gt';
-import PaperCheckbox from 'ember-paper/components/paper-checkbox';
 import perform from 'ember-concurrency/helpers/perform';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
+import { HdsFormCheckboxField } from '@hashicorp/design-system-components/components';
 
-@classic
 export default class CalendarSlot extends Component {
   <template>
-    <div class='slot {{if this.hidden "hidden"}}'>
+    <div class='slot {{if this.hidden "hidden"}}' data-test-calendar-slot>
       {{#if this.count}}
-        <span class='hours'>
+        <span class='hours' data-test-slot-hours>
           {{this.timespan}}
         </span>
         <button
@@ -26,20 +21,25 @@ export default class CalendarSlot extends Component {
             {{if (gt this.slot.commitments.length 0) "committed-to"}}'
           {{on 'click' (fn this.setViewingSlot this.slot)}}
           type='button'
+          data-test-slot-count
         >
           {{this.capacity}}
         </button>
       {{else}}
-        <PaperCheckbox
-          @value={{this.isCommittedTo}}
-          @disabled={{this.disabled}}
-          @indeterminate={{this.toggle.isRunning}}
-          @onChange={{perform this.toggle}}
+        <HdsFormCheckboxField
+          checked={{this.isCommittedTo}}
+          disabled={{this.disabled}}
+          aria-busy={{this.toggle.isRunning}}
+          data-test-slot-checkbox
+          {{on 'input' (perform this.toggle)}}
+          as |Field|
         >
-          <span class='hours'>
-            {{this.timespan}}
-          </span>
-        </PaperCheckbox>
+          <Field.Label>
+            <span class='hours' data-test-slot-hours>
+              {{this.timespan}}
+            </span>
+          </Field.Label>
+        </HdsFormCheckboxField>
       {{/if}}
     </div>
   </template>
@@ -52,38 +52,51 @@ export default class CalendarSlot extends Component {
   @service
   store;
 
-  @reads('commitment')
-  isCommittedTo;
+  get slot() {
+    return this.args.slot;
+  }
 
-  @computed('person.id', 'slot.commitments.@each.person')
+  get person() {
+    return this.args.person;
+  }
+
+  get count() {
+    return this.args.count;
+  }
+
+  get setViewingSlot() {
+    return this.args.setViewingSlot;
+  }
+
+  get isCommittedTo() {
+    return Boolean(this.commitment);
+  }
+
   get commitment() {
-    const personId = this.get('person.id');
+    const personId = this.person?.id;
 
-    return this.get('slot.commitments').find(
-      (slot) => slot.belongsTo('person').id() == personId,
+    return this.slot?.commitments?.find(
+      (commitment) => commitment.belongsTo('person').id() == personId,
     );
   }
 
-  @computed('slot.{start,end}')
   get timespan() {
     return formatBriefTimespan(
       this.moment,
-      this.get('slot.start'),
-      this.get('slot.end'),
+      this.slot?.start,
+      this.slot?.end,
       false,
     );
   }
 
-  @computed('slot.isNotFull', 'isCommittedTo')
   get hidden() {
-    return !this.get('slot.isNotFull') && !this.isCommittedTo;
+    return !this.slot?.isNotFull && !this.isCommittedTo;
   }
 
-  @computed('isCommittedTo', 'slot.{isNotFull,start}', 'toggle.isRunning')
   get disabled() {
-    const isNotFull = this.get('slot.isNotFull');
-    const start = this.get('slot.start');
-    const toggleIsRunning = this.get('toggle.isRunning');
+    const isNotFull = this.slot?.isNotFull;
+    const start = this.slot?.start;
+    const toggleIsRunning = this.toggle.isRunning;
 
     if (toggleIsRunning) {
       return true;
@@ -96,31 +109,40 @@ export default class CalendarSlot extends Component {
     }
   }
 
-  @computed('slot.{count,commitments.length}')
   get capacity() {
-    const dividend = this.get('slot.commitments.length');
+    const dividend = this.slot?.commitments?.length ?? 0;
 
-    const count = this.get('slot.count');
+    const count = this.slot?.count;
     const divisor = count === 0 ? '∞' : count;
 
     return `${dividend}/${divisor}`;
   }
 
-  @(task(function* () {
+  @(task(function* (event) {
+    event.preventDefault();
+
+    // This is a hack to restore the correct checked status if saving fails.
+    const checkbox = event.target;
+
     if (this.isCommittedTo) {
       try {
         yield this.commitment.destroyRecord();
 
+        this.args.setError(undefined);
         this.toasts.show(
           `Cancelled your agreement to drive on ${moment(
-            this.get('slot.start'),
+            this.slot?.start,
           ).format('MMMM D')}`,
         );
       } catch (error) {
-        const errorDetail = get(error, 'errors.firstObject.detail');
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        if (checkbox) {
+          checkbox.checked = true;
+        }
+
+        const errorDetail = error?.errors?.[0]?.detail;
+        this.args.setError(errorDetail || 'Couldn’t save your change');
       }
-    } else if (this.get('slot.isNotFull')) {
+    } else if (this.slot?.isNotFull) {
       const newRecord = this.store.createRecord('commitment', {
         slot: this.slot,
         person: this.person,
@@ -129,15 +151,20 @@ export default class CalendarSlot extends Component {
       try {
         yield newRecord.save();
 
+        this.args.setError(undefined);
         this.toasts.show(
-          `Thanks for agreeing to drive on ${moment(
-            this.get('slot.start'),
-          ).format('MMMM D')}!`,
+          `Thanks for agreeing to drive on ${moment(this.slot?.start).format(
+            'MMMM D',
+          )}!`,
         );
       } catch (error) {
-        const errorDetail = get(error, 'errors.firstObject.detail');
-        this.toasts.show(errorDetail || 'Couldn’t save your change');
+        const errorDetail = error?.errors?.[0]?.detail;
+        this.args.setError(errorDetail || 'Couldn’t save your change');
         newRecord.destroyRecord();
+
+        if (checkbox) {
+          checkbox.checked = false;
+        }
       }
     }
   }).drop())

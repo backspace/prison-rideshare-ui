@@ -30,18 +30,21 @@
     "@faker-js/faker": "^8.1.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
+    "@hashicorp/design-system-components": "^4.24.0",
+    "@hashicorp/design-system-tokens": "^3.0.0",
     "babel-eslint": "^8.2.6",
     "bluebird": "^3.7.2",
     "broccoli-asset-rev": "^3.0.0",
     "chrono-node": "^1.3.11",
     "coveralls": "^3.1.1",
-    "ember-auto-import": "^2.7.4",
+    "decorator-transforms": "^2.3.0",
+    "ember-auto-import": "^2.11.0",
+    "ember-basic-dropdown": "^8.7.0",
     "ember-buffered-proxy": "^2.1.1",
     "ember-classic-decorator": "^3.0.1",
     "ember-cli": "~3.28.6",
     "ember-cli-app-version": "^5.0.0",
     "ember-cli-babel": "^8.2.0",
-    "ember-cli-clipboard": "^1.1.0",
     "ember-cli-code-coverage": "^2.0.0",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-deploy": "^2.0.0",
@@ -72,11 +75,11 @@
     "ember-mobiledoc-editor": "^0.8.1",
     "ember-moment": "^10.0.0",
     "ember-page-title": "^8.2.4",
-    "ember-paper": "1.0.0-beta.36",
     "ember-percy": "^1.6.0",
     "ember-phoenix": "^1.0.3",
     "ember-power-calendar": "^1.1.0",
     "ember-power-calendar-moment": "^1.0.2",
+    "ember-power-select": "^8.11.0",
     "ember-qunit": "^5.1.5",
     "ember-qunit-nice-errors": "^1.2.1",
     "ember-resolver": "^8.0.3",
@@ -104,7 +107,6 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.6.0",
     "npm-run-all": "^4.1.5",
-    "paper-data-table": "^0.1.5",
     "prettier": "^3.0.0",
     "prettier-plugin-ember-template-tag": "^2.1.0",
     "qunit": "^2.17.2",
@@ -123,5 +125,15 @@
   "volta": {
     "node": "18.20.8",
     "pnpm": "10.17.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "ember-focus-trap": "0.8.0"
+    },
+    "patchedDependencies": {
+      "@hashicorp/design-system-components": "patches/@hashicorp__design-system-components.patch",
+      "decorator-transforms": "patches/decorator-transforms.patch",
+      "@hashicorp/flight-icons": "patches/@hashicorp__flight-icons.patch"
+    }
   }
 }

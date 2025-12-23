@@ -7,15 +7,17 @@ import {
 } from 'ember-cli-page-object';
 
 export default create({
-  testContainer: 'md-dialog',
+  testContainer: '[data-test-register-modal]',
 
   visit: visitable('/register'),
 
-  fillEmail: fillable('.email input'),
-  fillPassword: fillable('.password input'),
-  fillPasswordConfirmation: fillable('.password-confirmation input'),
+  fillEmail: fillable('[data-test-register-email]'),
+  fillPassword: fillable('[data-test-register-password]'),
+  fillPasswordConfirmation: fillable(
+    '[data-test-register-password-confirmation]',
+  ),
 
-  error: text('.error'),
+  error: text('[data-test-register-error]'),
 
-  submit: clickable('button'),
+  submit: clickable('[data-test-register-submit]'),
 });
