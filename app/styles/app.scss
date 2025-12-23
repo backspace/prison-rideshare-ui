@@ -577,7 +577,25 @@ table.rides {
 }
 
 .text-radio {
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 0.5rem 0.75rem;
+
+  .hds-form-radio-field {
+    margin: 0;
+    padding-bottom: 6px; /* align with input baseline */
+  }
+}
+
+.person-form .layout-row {
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.person-form .layout-row.text-radio .hds-form-field--layout-flag {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .unit {

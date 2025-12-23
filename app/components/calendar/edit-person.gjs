@@ -40,7 +40,7 @@ export default class CalendarEditPersonComponent extends Component {
       {{on 'submit' @submitPersonForm}}
     >
       <div class='layout-row'>
-        <div class='layout-column flex-50' data-test-person-name-field>
+        <div data-test-person-name-field>
           {{#let @person.validationErrors.name as |nameErrors|}}
             <HdsFormTextInputField
               @value={{@person.name}}
@@ -66,7 +66,9 @@ export default class CalendarEditPersonComponent extends Component {
             </HdsFormTextInputField>
           {{/let}}
         </div>
-        <div class='layout-column flex-50'>
+      </div>
+      <div class='layout-row'>
+        <div>
           <HdsFormToggleField
             checked={{@person.active}}
             data-test-person-active
@@ -78,7 +80,7 @@ export default class CalendarEditPersonComponent extends Component {
         </div>
       </div>
       <div class='layout-row'>
-        <div class='layout-column flex-50'>
+        <div>
           <div
             class='layout-row text-radio mobile'
             data-test-person-mobile-field
