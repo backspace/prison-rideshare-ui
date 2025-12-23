@@ -32,67 +32,72 @@ class CalendarComponent extends Component {
       <Alert @message={{@controller.error}} data-test-calendar-slot-error />
     {{/if}}
 
-    <HdsCardContainer class='person-card' data-test-person-card>
-      <div>
-        <header>
-          <div class='person-session' data-test-person-session>
-            Logged in as
-            {{@controller.person.email}}
-          </div>
-          {{#if @controller.showPerson}}
-            <div class='person-actions'>
-              <HdsButton
-                @text='Cancel'
-                @color='secondary'
-                @size='small'
-                data-test-person-cancel
-                {{on 'click' @controller.cancel}}
-                disabled={{@controller.savePerson.isRunning}}
-              />
-              <HdsButton
-                @text={{if @controller.savePerson.isRunning 'Saving…' 'Save'}}
-                @color={{if
-                  @controller.person.hasDirtyAttributes
-                  'primary'
-                  'secondary'
-                }}
-                @size='small'
-                data-test-person-save
-                {{on 'click' (perform @controller.savePerson)}}
-                disabled={{@controller.savePerson.isRunning}}
-              />
-            </div>
-          {{else}}
-            <HdsButton
-              @text='Edit communication details'
-              @color='primary'
-              @size='small'
-              class='toggle'
-              data-test-person-toggle
-              {{on 'click' this.toggleShowPerson}}
-            />
-          {{/if}}
-        </header>
-
-        {{#if @controller.showPerson}}
-          <EditPerson
-            @person={{@controller.person}}
-            @submitPersonForm={{this.submitPersonForm}}
-          />
-        {{/if}}
-      </div>
-    </HdsCardContainer>
-
-    <About
-      @webcalUrl={{@controller.webcalSubscriptionUrl}}
-      @httpUrl={{@controller.httpSubscriptionUrl}}
-    />
-
     <PowerCalendar
       @center={{@controller.monthMoment}}
       @daysComponent='calendar-days'
       as |calendar|
     >
+
+      <About
+        @webcalUrl={{@controller.webcalSubscriptionUrl}}
+        @httpUrl={{@controller.httpSubscriptionUrl}}
+      />
+
+      <HdsCardContainer
+        class='person-card'
+        @background='neutral-secondary'
+        data-test-person-card
+      >
+        <div>
+          <header>
+            <div class='person-session' data-test-person-session>
+              Logged in as
+              {{@controller.person.email}}
+            </div>
+            {{#if @controller.showPerson}}
+              <div class='person-actions'>
+                <HdsButton
+                  @text='Cancel'
+                  @color='secondary'
+                  @size='small'
+                  data-test-person-cancel
+                  {{on 'click' @controller.cancel}}
+                  disabled={{@controller.savePerson.isRunning}}
+                />
+                <HdsButton
+                  @text={{if @controller.savePerson.isRunning 'Saving…' 'Save'}}
+                  @color={{if
+                    @controller.person.hasDirtyAttributes
+                    'primary'
+                    'secondary'
+                  }}
+                  @size='small'
+                  data-test-person-save
+                  {{on 'click' (perform @controller.savePerson)}}
+                  disabled={{@controller.savePerson.isRunning}}
+                />
+              </div>
+            {{else}}
+              <HdsButton
+                @text='Edit communication details'
+                @color='primary'
+                @size='small'
+                class='toggle'
+                data-test-person-toggle
+                {{on 'click' this.toggleShowPerson}}
+              />
+            {{/if}}
+          </header>
+
+          {{#if @controller.showPerson}}
+            <EditPerson
+              @person={{@controller.person}}
+              @submitPersonForm={{this.submitPersonForm}}
+            />
+          {{/if}}
+        </div>
+      </HdsCardContainer>
+
       <calendar.Nav />
 
       <calendar.Days @showDaysAround={{false}} as |day|>

@@ -1,7 +1,7 @@
 import { HdsCardContainer } from '@hashicorp/design-system-components/components';
 
 const CalendarAboutComponent = <template>
-  <HdsCardContainer>
+  <HdsCardContainer @background='neutral-secondary'>
     <div>
       <p>
         Let us know in advance when you can take people to visit their loved
