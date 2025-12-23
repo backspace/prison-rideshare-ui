@@ -13,8 +13,6 @@ export default class RegisterController extends Controller {
   updateEmail(event) {
     const value = event?.target?.value;
     this.model.email = value;
-
-    this.model.set('email', value);
   }
 
   @action
