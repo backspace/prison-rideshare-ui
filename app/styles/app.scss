@@ -286,9 +286,9 @@ html {
 .rides-filters {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.75rem;
-  padding: 0 1rem 0.5rem;
+  padding-bottom: 0.75rem;
   margin: 0;
   row-gap: 0.5rem;
 }
