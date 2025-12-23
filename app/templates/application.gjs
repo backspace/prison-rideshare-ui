@@ -152,6 +152,7 @@ class ApplicationComponent extends Component {
                     @controller.session.currentUser.email
                   }}
                   @size='small'
+                  class='session-button'
                   {{on 'click' @controller.logout}}
                   type='button'
                   data-test-session-button

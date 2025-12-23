@@ -84,6 +84,10 @@ html {
   padding: 1rem;
 }
 
+.session-button {
+  margin: 0.75rem;
+}
+
 @media (max-width: 1079px) {
   .app-frame {
     grid-template-columns: 0 1fr;
