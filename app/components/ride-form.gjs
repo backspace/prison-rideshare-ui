@@ -481,10 +481,6 @@ export default class RideForm extends Component {
   @service('store')
   store;
 
-  get SelectedRideVisitor() {
-    return SelectedRideVisitor;
-  }
-
   @computed('ride.{cancellationReason,complete}')
   get editingWarning() {
     const reason = this.get('ride.cancellationReason');
