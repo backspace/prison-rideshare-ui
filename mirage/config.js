@@ -15,7 +15,7 @@ export default function (config) {
       this.get('/rides', function ({ rides }, { queryParams, requestHeaders }) {
         if (queryParams['filter[name]']) {
           // FIXME this is a mess, no better way???
-          const nameFilter = queryParams['filter[name]'];
+          const nameFilter = queryParams['filter[name]'].toLowerCase();
           const matchingRides = rides
             .all()
             .models.filter((ride) =>

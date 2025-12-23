@@ -1,5 +1,11 @@
 /* eslint-disable qunit/assert-args, qunit/require-expect */
-import { currentURL, waitUntil } from '@ember/test-helpers';
+import {
+  click,
+  currentURL,
+  findAll,
+  waitFor,
+  waitUntil,
+} from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
@@ -300,6 +306,39 @@ module('Acceptance | rides', function (hooks) {
       url.includes('search=Chelsea'),
       'expected the search query to be reflected in the URL',
     );
+  });
+
+  test('selecting an existing visitor replaces the typed value', async function (assert) {
+    this.server.create('ride', {
+      name: 'Octavia Butler',
+      address: '123 Earthseed Way',
+      contact: '204-555-1111',
+    });
+
+    await page.visit();
+    await page.newRide();
+
+    // Choose by clicking option because text-matching component-rendered option is difficult in Power Select.
+    await click('[data-test-visitor-select]');
+    await page.form.name.searchInput.fillIn('Oct');
+    await waitUntil(() =>
+      findAll('.ember-power-select-option').some((option) =>
+        option.textContent.includes('Octavia Butler'),
+      ),
+    );
+
+    const option = findAll('.ember-power-select-option').find((el) =>
+      el.textContent.includes('Octavia Butler'),
+    );
+    await click(option);
+
+    assert.strictEqual(page.form.name.value, 'Octavia Butler');
+    assert.strictEqual(page.form.address.value, '123 Earthseed Way');
+    assert.strictEqual(page.form.contact.value, '204-555-1111');
+
+    await page.form.address.click(); // blur the select to mimic mobile behavior
+
+    assert.strictEqual(page.form.name.value, 'Octavia Butler');
   });
 
   test('completed rides can be shown and cleared', async function (assert) {

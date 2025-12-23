@@ -613,6 +613,8 @@ export default class RideForm extends Component {
     }
 
     this.visitorSelection = ride;
+    this.pendingUnmatchedVisitorName = '';
+
     if (ride) {
       this.set('ride.name', ride.get('name'));
       this.set('ride.address', ride.get('address'));
@@ -630,6 +632,11 @@ export default class RideForm extends Component {
 
   @action maybeStoreUnmatchedVisitorName() {
     scheduleTask(this, 'actions', () => {
+      if (this.visitorSelection) {
+        this.pendingUnmatchedVisitorName = '';
+        return;
+      }
+
       let existingName = this.get('ride.name');
 
       if (
