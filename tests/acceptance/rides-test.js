@@ -1,11 +1,5 @@
 /* eslint-disable qunit/assert-args, qunit/require-expect */
-import {
-  click,
-  currentURL,
-  findAll,
-  waitFor,
-  waitUntil,
-} from '@ember/test-helpers';
+import { click, currentURL, findAll, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { percySnapshot } from 'ember-percy';
