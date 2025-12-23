@@ -21,85 +21,84 @@ export default RouteTemplate(
 
     <div class='statistics-page layout-column flex' data-test-statistics-page>
       <HdsCardContainer class='statistics-card' data-test-statistics-card>
-        <HdsForm as |Form|>
-          <Form.Section>
-            <div class='inputs'>
-              <HdsFormTextInputField
-                @value={{@controller.start}}
-                @type='date'
-                data-test-statistics-start
-                {{on 'input' @controller.updateStart}}
-                as |Field|
-              >
-                <Field.Label>Chart data begins</Field.Label>
-              </HdsFormTextInputField>
-
-              <HdsFormTextInputField
-                @value={{@controller.end}}
-                @type='date'
-                data-test-statistics-end
-                {{on 'input' @controller.updateEnd}}
-                as |Field|
-              >
-                <Field.Label>Chart data ends</Field.Label>
-              </HdsFormTextInputField>
-            </div>
+        <HdsForm class='statistics-controls' as |Form|>
+          <Form.Section class='control start'>
+            <HdsFormTextInputField
+              @value={{@controller.start}}
+              @type='date'
+              data-test-statistics-start
+              {{on 'input' @controller.updateStart}}
+              as |Field|
+            >
+              <Field.Label>Chart data begins</Field.Label>
+            </HdsFormTextInputField>
           </Form.Section>
 
-          <Form.Section>
-            <div class='buttons'>
-              <HdsButton
-                type='button'
-                @text='Past year'
-                @color='secondary'
-                data-test-statistics-past-year
-                {{on 'click' @controller.setPastYear}}
-              />
-              <HdsButton
-                type='button'
-                @text='Past two weeks'
-                @color='secondary'
-                data-test-statistics-past-two-weeks
-                {{on 'click' @controller.setPastTwoWeeks}}
-              />
-              <HdsButton
-                type='button'
-                @text='This year'
-                @color='secondary'
-                data-test-statistics-this-year
-                {{on 'click' @controller.setThisYear}}
-              />
-            </div>
+          <Form.Section class='control end'>
+            <HdsFormTextInputField
+              @value={{@controller.end}}
+              @type='date'
+              data-test-statistics-end
+              {{on 'input' @controller.updateEnd}}
+              as |Field|
+            >
+              <Field.Label>Chart data ends</Field.Label>
+            </HdsFormTextInputField>
           </Form.Section>
 
-          <Form.Section>
-            <div class='radios'>
-              <span class='radios-label'>Count</span>
-              <HdsFormRadioGroup
-                name='statistics-count'
-                data-test-statistics-grouping
-                as |Group|
+          <Form.Section class='control buttons'>
+            <HdsButton
+              type='button'
+              @text='Past year'
+              @size='small'
+              @color='secondary'
+              data-test-statistics-past-year
+              {{on 'click' @controller.setPastYear}}
+            />
+            <HdsButton
+              type='button'
+              @text='Past two weeks'
+              @size='small'
+              @color='secondary'
+              data-test-statistics-past-two-weeks
+              {{on 'click' @controller.setPastTwoWeeks}}
+            />
+            <HdsButton
+              type='button'
+              @text='This year'
+              @size='small'
+              @color='secondary'
+              data-test-statistics-this-year
+              {{on 'click' @controller.setThisYear}}
+            />
+          </Form.Section>
+
+          <Form.Section class='control radios'>
+            <span class='radios-label'>Count</span>
+            <HdsFormRadioGroup
+              name='statistics-count'
+              data-test-statistics-grouping
+              as |Group|
+            >
+              <Group.RadioField
+                @value='rides'
+                checked={{eq @controller.grouping 'rides'}}
+                data-test-statistics-grouping-option='rides'
+                {{on 'change' (fn @controller.setGrouping 'rides')}}
+                as |F|
               >
-                <Group.RadioField
-                  @value='rides'
-                  checked={{eq @controller.grouping 'rides'}}
-                  data-test-statistics-grouping-option='rides'
-                  {{on 'change' (fn @controller.setGrouping 'rides')}}
-                  as |F|
-                >
-                  <F.Label>Rides</F.Label>
-                </Group.RadioField>
-                <Group.RadioField
-                  @value='passengers'
-                  checked={{eq @controller.grouping 'passengers'}}
-                  data-test-statistics-grouping-option='passengers'
-                  {{on 'change' (fn @controller.setGrouping 'passengers')}}
-                  as |F|
-                >
-                  <F.Label>Passengers</F.Label>
-                </Group.RadioField>
-              </HdsFormRadioGroup>
-            </div>
+                <F.Label>Rides</F.Label>
+              </Group.RadioField>
+              <Group.RadioField
+                @value='passengers'
+                checked={{eq @controller.grouping 'passengers'}}
+                data-test-statistics-grouping-option='passengers'
+                {{on 'change' (fn @controller.setGrouping 'passengers')}}
+                as |F|
+              >
+                <F.Label>Passengers</F.Label>
+              </Group.RadioField>
+            </HdsFormRadioGroup>
           </Form.Section>
         </HdsForm>
       </HdsCardContainer>
