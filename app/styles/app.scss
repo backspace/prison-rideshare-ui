@@ -464,7 +464,7 @@ table.rides tr {
   margin-bottom: 0;
 }
 
-.rides table {
+table.rides {
   .notes, .report, .overlap {
     td {
       border-top: 0;
@@ -473,6 +473,12 @@ table.rides tr {
 
   .report .distance::after {
     content: ' km';
+  }
+
+  .report td[colspan='6'], .overlap td[colspan='3'] {
+    .hds-icon {
+      transform: translateY(3px);
+    }
   }
 }
 
