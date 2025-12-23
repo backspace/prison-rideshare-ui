@@ -19,7 +19,7 @@ export default RouteTemplate(
   <template>
     <ToolbarHeader @title='Statistics' />
 
-    <div class='statistics-page layout-column flex' data-test-statistics-page>
+    <div class='statistics-page' data-test-statistics-page>
       <HdsCardContainer class='statistics-card' data-test-statistics-card>
         <HdsForm class='statistics-controls' as |Form|>
           <Form.Section class='control start'>

@@ -165,7 +165,7 @@ class ApplicationComponent extends Component {
         </AppSideNav>
       </Frame.Sidebar>
 
-      <Frame.Main class='flex layout-column'>
+      <Frame.Main>
         {{outlet}}
       </Frame.Main>
     </AppFrame>
