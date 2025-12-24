@@ -6,6 +6,7 @@ import { on } from '@ember/modifier';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import CalendarDay from 'prison-rideshare-ui/components/calendar-day';
+import CalendarDays from 'prison-rideshare-ui/components/calendar-days';
 import {
   HdsButton,
   HdsCardContainer,
@@ -34,7 +35,7 @@ class CalendarComponent extends Component {
 
     <PowerCalendar
       @center={{@controller.monthMoment}}
-      @daysComponent='calendar-days'
+      @daysComponent={{CalendarDays}}
       as |calendar|
     >
 

@@ -5,6 +5,7 @@ import { LinkTo } from '@ember/routing';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import pluralize from 'ember-inflector/lib/helpers/pluralize';
 import CalendarDay from 'prison-rideshare-ui/components/calendar-day';
+import CalendarDays from 'prison-rideshare-ui/components/calendar-days';
 import gt from 'ember-truth-helpers/helpers/gt';
 import eq from 'ember-truth-helpers/helpers/eq';
 import { action } from '@ember/object';
@@ -125,7 +126,7 @@ class AdminCalendarComponent extends Component {
     <div class='admin-calendar'>
       <PowerCalendar
         @center={{@controller.monthMoment}}
-        @daysComponent='calendar-days'
+        @daysComponent={{CalendarDays}}
         @onCenterChange={{this.changeMonth}}
         as |calendar|
       >
