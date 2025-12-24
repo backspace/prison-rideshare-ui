@@ -3,6 +3,7 @@ import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { mapBy, gt } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
@@ -91,6 +92,8 @@ export default Model.extend({
 
   donation: attr('boolean'),
   donatable: attr('boolean'),
+
+  isDivider: tracked(),
 
   reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: computed(
