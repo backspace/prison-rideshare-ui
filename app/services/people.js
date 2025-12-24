@@ -1,8 +1,11 @@
 import classic from 'ember-classic-decorator';
+import ArrayProxy from '@ember/array/proxy';
 import { computed } from '@ember/object';
+import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 import { filterBy } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
-import { PromiseArray } from '@ember-data/store/-private';
+
+const PromiseArray = ArrayProxy.extend(PromiseProxyMixin);
 
 @classic
 export default class PeopleService extends Service {
