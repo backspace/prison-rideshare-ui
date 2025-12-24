@@ -6,7 +6,11 @@ export default JSONAPISerializer.extend({
     let extracted = this._super(store, typeClass, payload, id);
 
     if (payload && Array.isArray(payload.errors)) {
-      if (!extracted || typeof extracted !== 'object' || Array.isArray(extracted)) {
+      if (
+        !extracted ||
+        typeof extracted !== 'object' ||
+        Array.isArray(extracted)
+      ) {
         extracted = {};
       }
 

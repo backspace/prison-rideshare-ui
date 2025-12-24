@@ -46,10 +46,7 @@ export default RouteTemplate(
                 data-test-report-rides
                 as |Group|
               >
-                {{#each
-                  (sortBy 'start' @controller.reportableRides)
-                  as |ride|
-                }}
+                {{#each (sortBy 'start' @controller.reportableRides) as |ride|}}
                   <Group.RadioField
                     @value={{ride.id}}
                     checked={{eq @controller.editingRide ride}}

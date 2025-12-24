@@ -12,9 +12,7 @@ export default class AdminCalendarRoute extends AuthenticatedRoute {
     await this.store.findAll('slot');
     const slots = this.store
       .peekAll('slot')
-      .filter(
-        (slot) => moment(slot.get('start')).format('YYYY-MM') === month,
-      );
+      .filter((slot) => moment(slot.get('start')).format('YYYY-MM') === month);
 
     return RSVP.hash({
       slots,
