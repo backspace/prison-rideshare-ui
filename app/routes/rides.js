@@ -5,7 +5,7 @@ import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 export default class RidesRoute extends AuthenticatedRoute {
   @service store;
 
-  model() {
+  async model() {
     return this.store.findAll('ride');
   }
 }
