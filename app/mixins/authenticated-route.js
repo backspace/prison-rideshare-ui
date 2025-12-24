@@ -1,14 +1,14 @@
-/* eslint-disable ember/no-get, ember/no-new-mixins */
+/* eslint-disable ember/no-new-mixins */
 import { inject as service } from '@ember/service';
-import Mixin from '@ember/object/mixin';
+import Route from '@ember/routing/route';
 
-export default Mixin.create({
-  router: service(),
-  session: service(),
+export default class AuthenticatedRoute extends Route {
+  @service router;
+  @service session;
 
   beforeModel() {
-    if (!this.get('session.isAuthenticated')) {
+    if (!this.session.isAuthenticated) {
       this.router.transitionTo('login');
     }
-  },
-});
+  }
+}

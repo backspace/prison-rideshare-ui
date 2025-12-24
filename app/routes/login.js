@@ -1,13 +1,9 @@
-/* eslint-disable ember/no-classic-classes */
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import EmberObject from '@ember/object';
 import Route from '@ember/routing/route';
 
-@classic
 export default class LoginRoute extends Route {
-  @service
-  session;
+  @service session;
 
   beforeModel() {
     this.session.prohibitAuthentication();

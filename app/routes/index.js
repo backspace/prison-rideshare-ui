@@ -1,29 +1,18 @@
-/* eslint-disable ember/no-get, ember/no-mixins */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/no-mixins, prettier/prettier */
 import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
-@classic
-export default class IndexRoute extends Route.extend(AuthenticatedRoute) {
-  @service
-  account;
-
-  @service
-  router;
-
-  @service
-  session;
+export default class IndexRoute extends AuthenticatedRoute {
+  @service account;
+  @service router;
+  @service session;
 
   beforeModel() {
     // FIXME this is loading twice, also in application
     return this.account
       .loadCurrentUser()
       .then(() => {
-        if (
-          this.get('session.isAuthenticated') &&
-          this.get('session.currentUser.admin')
-        ) {
+        if (this.session.isAuthenticated && this.session.currentUser?.admin) {
           this.router.transitionTo('rides');
         } else {
           this.router.transitionTo('reports.new');

@@ -1,28 +1,15 @@
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 
 import momentAddLocaleShortMeridiemFormat from 'prison-rideshare-ui/utils/moment-add-locale-short-meridiem-format';
 
-@classic
 export default class ApplicationRoute extends Route {
-  @service
-  session;
-
-  @service
-  account;
-
-  @service
-  userSocket;
-
-  @service
-  toasts;
-
-  @service
-  overlaps;
-
-  @service
-  moment;
+  @service session;
+  @service account;
+  @service userSocket;
+  @service toasts;
+  @service overlaps;
+  @service moment;
 
   async beforeModel() {
     await this.session.setup();

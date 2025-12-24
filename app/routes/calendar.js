@@ -1,21 +1,16 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get */
-import classic from 'ember-classic-decorator';
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import Ember from 'ember';
-import { get } from '@ember/object';
 import fetch from 'fetch';
 import config from '../config/environment';
 import { pollTask, runTask } from 'ember-lifeline';
 
 export const POLL_TOKEN = 'calendar_poll';
 
-@classic
 export default class CalendarRoute extends Route {
-  @service
-  store;
+  @service store;
 
   model(
     { month },
@@ -57,7 +52,7 @@ export default class CalendarRoute extends Route {
         });
       })
       .catch((error) => {
-        const detail = get(error, 'errors.firstObject.detail');
+        const detail = error?.errors?.firstObject?.detail;
 
         if (detail) {
           throw new Error(detail);

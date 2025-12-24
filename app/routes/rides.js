@@ -1,13 +1,9 @@
-/* eslint-disable ember/no-classic-classes, ember/no-mixins */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/no-mixins */
 import { inject as service } from '@ember/service';
-import Route from '@ember/routing/route';
 import AuthenticatedRoute from 'prison-rideshare-ui/mixins/authenticated-route';
 
-@classic
-export default class RidesRoute extends Route.extend(AuthenticatedRoute) {
-  @service
-  store;
+export default class RidesRoute extends AuthenticatedRoute {
+  @service store;
 
   model() {
     return this.store.findAll('ride');
