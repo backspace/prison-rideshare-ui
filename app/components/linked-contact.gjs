@@ -1,6 +1,6 @@
-import Ember from 'ember';
 import Component from '@glimmer/component';
 import { htmlSafe } from '@ember/string';
+import sanitizeHtml from 'sanitize-html';
 
 export default class LinkedContact extends Component {
   <template>
@@ -17,7 +17,7 @@ export default class LinkedContact extends Component {
     if (contact) {
       return htmlSafe(
         contact.replace(phonePattern, function (number) {
-          const escapedNumber = Ember.Handlebars.Utils.escapeExpression(number);
+          const escapedNumber = sanitizeHtml(number);
           return `<a href='tel:${escapedNumber}'>${escapedNumber}</a>`;
         }),
       );

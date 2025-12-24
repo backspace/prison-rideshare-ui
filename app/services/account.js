@@ -3,7 +3,7 @@ import classic from 'ember-classic-decorator';
 import RSVP from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
-import Ember from 'ember';
+import { isTesting } from '@ember/debug';
 
 import fetch from 'fetch';
 import config from '../config/environment';
@@ -24,7 +24,7 @@ export default class AccountService extends Service {
 
       if (!isEmpty(token)) {
         fetch(
-          `${Ember.testing ? '' : config.DS.host}/${
+          `${isTesting() ? '' : config.DS.host}/${
             config.DS.namespace.length > 0 ? `${config.DS.namespace}/` : ''
           }users/current`,
           {

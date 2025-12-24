@@ -2,7 +2,7 @@ import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
 import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
-import Ember from 'ember';
+import { isTesting } from '@ember/debug';
 import fetch from 'fetch';
 import config from '../config/environment';
 import { pollTask, runTask } from 'ember-lifeline';
@@ -20,7 +20,7 @@ export default class CalendarRoute extends Route {
       },
     },
   ) {
-    const personTokenEndpoint = `${Ember.testing ? '' : config.DS.host}/${
+    const personTokenEndpoint = `${isTesting() ? '' : config.DS.host}/${
       config.DS.namespace
     }/people/token`;
 
@@ -75,6 +75,6 @@ export default class CalendarRoute extends Route {
 
   poll(next) {
     this.store.findAll('slot');
-    runTask(this, next, Ember.testing ? 10 : 10000);
+    runTask(this, next, isTesting() ? 10 : 10000);
   }
 }
