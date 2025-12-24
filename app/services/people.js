@@ -1,29 +1,49 @@
 import classic from 'ember-classic-decorator';
-import ArrayProxy from '@ember/array/proxy';
+import { A } from '@ember/array';
 import { computed } from '@ember/object';
-import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
-import { filterBy } from '@ember/object/computed';
 import Service, { inject as service } from '@ember/service';
-
-const PromiseArray = ArrayProxy.extend(PromiseProxyMixin);
 
 @classic
 export default class PeopleService extends Service {
   @service
   store;
 
-  @computed
-  get findAll() {
-    return this.store.findAll('person');
+  people = A();
+  loadPromise = null;
+
+  init() {
+    super.init(...arguments);
+    this.set('people', this.store.peekAll('person'));
+    this.load();
   }
 
-  @computed('findAll.@each.name')
+  load() {
+    if (this.loadPromise) {
+      return this.loadPromise;
+    }
+
+    const promise = this.store
+      .findAll('person', { reload: true })
+      .then(() => {
+        this.set('people', this.store.peekAll('person'));
+        this.notifyPropertyChange('people');
+      })
+      .finally(() => {
+        this.set('loadPromise', null);
+      });
+
+    this.set('loadPromise', promise);
+    return promise;
+  }
+
+  @computed('people.{[],people.@each.name}')
   get all() {
-    return PromiseArray.create({
-      promise: this.findAll.then((people) => people.sortBy('name')),
-    });
+    const people = this.people || A();
+    return [...people].sort((a, b) => a.name.localeCompare(b.name));
   }
 
-  @filterBy('all', 'active')
-  active;
+  @computed('all.{[],all.@each.active}')
+  get active() {
+    return this.all.filterBy('active');
+  }
 }
