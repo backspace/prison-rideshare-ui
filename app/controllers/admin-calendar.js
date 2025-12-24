@@ -75,17 +75,18 @@ export default class AdminCalendarController extends CalendarController {
   @setDiff('activePeople', 'people')
   remainingPeople;
 
-  @mapBy('viewingSlot.commitments', 'person')
-  viewingSlotPeople;
-
-  @mapBy('viewingSlotPeople', 'id')
-  viewingSlotPeopleIds;
-
-  @computed('activePeople.[]', 'viewingSlotPeopleIds.[]')
+  @computed('activePeople.[]', 'viewingSlot.commitments.{[],@each.person}')
   get uncommittedPeople() {
-    const alreadyCommittedPeople = this.viewingSlotPeopleIds;
-    return this.activePeople.reject((person) =>
-      alreadyCommittedPeople.includes(person.id),
+    const commitments = this.viewingSlot?.commitments || [];
+    const committedIds = new Set(
+      Array.from(commitments)
+        .map((commitment) => commitment.person?.id)
+        .filter(Boolean),
+    );
+    const activePeople = this.activePeople || [];
+
+    return Array.from(activePeople).filter(
+      (person) => !committedIds.has(person.id),
     );
   }
 
@@ -105,27 +106,26 @@ export default class AdminCalendarController extends CalendarController {
   }
 
   @action
-  createCommitment(person) {
+  async createCommitment(person) {
     const slot = this.viewingSlot;
     const commitment = this.store.createRecord('commitment', {
       slot: this.viewingSlot,
       person: person,
     });
 
-    commitment
-      .save()
-      .then(() => {
-        this.set('errorMessage', undefined);
-        this.toasts.show(
-          `Committed ${person.get('name')} to drive on ${moment(
-            slot.get('start'),
-          ).format('MMMM D')}`,
-        );
-      })
-      .catch((error) => {
-        const errorDetail = get(error, 'errors.firstObject.detail');
-        this.set('errorMessage', errorDetail || 'Couldn’t save your change');
-      });
+    try {
+      await commitment.save();
+      this.set('errorMessage', undefined);
+      this.notifyPropertyChange('viewingSlot');
+      this.toasts.show(
+        `Committed ${person.get('name')} to drive on ${moment(
+          slot.get('start'),
+        ).format('MMMM D')}`,
+      );
+    } catch (error) {
+      const errorDetail = get(error, 'errors.firstObject.detail');
+      this.set('errorMessage', errorDetail || 'Couldn’t save your change');
+    }
   }
 
   @action
@@ -137,6 +137,7 @@ export default class AdminCalendarController extends CalendarController {
       .destroyRecord()
       .then(() => {
         this.set('errorMessage', undefined);
+        this.notifyPropertyChange('viewingSlot');
         this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
       })
       .catch((error) => {

@@ -104,6 +104,6 @@ export default class OverlapsService extends Service {
   }
 
   fetch() {
-    this.fetchOverlaps.perform();
+    return this.fetchOverlaps.perform();
   }
 }
