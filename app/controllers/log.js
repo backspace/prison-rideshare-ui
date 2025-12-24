@@ -13,6 +13,9 @@ export default class LogController extends Controller {
   @service
   store;
 
+  @service
+  postReadings;
+
   @action
   newPost() {
     this.set(
@@ -73,16 +76,16 @@ export default class LogController extends Controller {
 
   @action
   markAllRead() {
-    this.get('model.firstObject').markAllRead();
+    return this.postReadings.markAllRead();
   }
 
   @action
   markRead(post) {
-    return post.markRead();
+    return this.postReadings.markRead(post);
   }
 
   @action
   markUnread(post) {
-    return post.markUnread();
+    return this.postReadings.markUnread(post);
   }
 }

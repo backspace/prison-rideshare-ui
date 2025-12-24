@@ -1,7 +1,6 @@
 /* eslint-disable ember/no-classic-classes*/
 import Model, { attr, belongsTo } from '@ember-data/model';
 import { computed } from '@ember/object';
-import { modelAction, resourceAction } from 'ember-custom-actions';
 
 export default Model.extend({
   body: attr('string'),
@@ -40,11 +39,4 @@ export default Model.extend({
       }, {});
     },
   ),
-
-  markAllRead: resourceAction('readings', {
-    method: 'POST',
-    pushToStore: true,
-  }),
-  markRead: modelAction('readings', { method: 'POST', pushToStore: true }),
-  markUnread: modelAction('readings', { method: 'DELETE', pushToStore: true }),
 });
