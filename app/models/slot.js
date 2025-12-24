@@ -7,9 +7,9 @@ export default Model.extend({
   end: attr('date'),
   count: attr('number'),
 
-  commitments: hasMany({ async: false }),
+  commitments: hasMany('commitment', { async: false, inverse: 'slot' }),
 
-  isNotFull: computed('commitments.length', 'count', function () {
+  isNotFull: computed('commitments.[]', 'count', function () {
     const count = this.count;
     const commitmentCount = this.get('commitments.length');
 
