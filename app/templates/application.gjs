@@ -1,6 +1,5 @@
 import RouteTemplate from 'ember-route-template';
 import HeadLayout from 'ember-cli-head/components/head-layout';
-import EmberLoadRemover from 'ember-load/components/ember-load-remover';
 import { action } from '@ember/object';
 import { concat, fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -59,7 +58,6 @@ class ApplicationComponent extends Component {
   <template>
     {{pageTitle 'Prison Rideshare' separator=' · '}}
     <HeadLayout />
-    <EmberLoadRemover />
 
     {{#if this.activeToast}}
       <HdsToast
@@ -75,6 +73,7 @@ class ApplicationComponent extends Component {
     {{/if}}
 
     <AppFrame
+      {{removeEmberLoadIndicator}}
       class={{if this.isSidebarMinimized 'app-frame--sidebar-closed'}}
       as |Frame|
     >
@@ -176,6 +175,14 @@ class ApplicationComponent extends Component {
 
 const storeHeaderElement = modifier((element, [storeHeaderElement]) => {
   storeHeaderElement(element);
+});
+
+const removeEmberLoadIndicator = modifier(() => {
+  if (typeof document === 'undefined') {
+    return;
+  }
+
+  document.querySelector('.ember-load-indicator')?.remove();
 });
 
 export default RouteTemplate(ApplicationComponent);
