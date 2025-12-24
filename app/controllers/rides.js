@@ -104,21 +104,21 @@ export default class RidesController extends Controller {
   }
 
   @action
-  submitRide(proxy) {
+  async submitRide(proxy) {
     let buffer = proxy.buffer;
     proxy.applyBufferedChanges();
 
-    return proxy.content
-      .save()
-      .then(() => {
-        this.editingRide = undefined;
-        this.rideErrorMessage = undefined;
-        return this.overlapsService.fetch();
-      })
-      .catch(() => {
-        this.rideErrorMessage = 'There was an error saving this ride';
-        proxy.setProperties(buffer);
-      });
+    try {
+      await proxy.content.save();
+
+      this.editingRide = undefined;
+      this.rideErrorMessage = undefined;
+
+      await this.overlapsService.fetch();
+    } catch {
+      this.rideErrorMessage = 'There was an error saving this ride';
+      proxy.setProperties(buffer);
+    }
   }
 
   @action
