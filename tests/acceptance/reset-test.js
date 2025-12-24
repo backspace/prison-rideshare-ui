@@ -30,10 +30,10 @@ module('Acceptance | reset password', function (hooks) {
           },
         } = JSON.parse(requestBody);
 
-        assert.equal(token, 'Strike!');
+        assert.strictEqual(token, 'Strike!');
 
-        assert.equal(password, 'hello');
-        assert.equal(confirmation, 'hello');
+        assert.strictEqual(password, 'hello');
+        assert.strictEqual(confirmation, 'hello');
 
         resetDone = true;
 
@@ -50,16 +50,16 @@ module('Acceptance | reset password', function (hooks) {
     });
 
     await resetPage.visit({ token: 'Strike!' });
-    assert.equal(getPageTitle(), 'Reset password · Prison Rideshare');
+    assert.strictEqual(getPageTitle(), 'Reset password · Prison Rideshare');
     await resetPage.fillPassword('hello');
     await resetPage.fillPasswordConfirmation('hello');
     await resetPage.submit();
 
-    assert.equal(
+    assert.strictEqual(
       shared.toast.text,
       'Changed your password, will now log you in',
     );
-    assert.equal(currentURL(), '/reports/new');
+    assert.strictEqual(currentURL(), '/reports/new');
 
     assert.ok(resetDone);
     assert.ok(loginDone);
@@ -93,7 +93,7 @@ module('Acceptance | reset password', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(
+    assert.strictEqual(
       shared.inlineAlert.text,
       'Password confirmation did not match',
     );
@@ -122,6 +122,6 @@ module('Acceptance | reset password', function (hooks) {
     await resetPage.fillPassword('x');
     await resetPage.submit();
 
-    assert.equal(shared.inlineAlert.text, 'An unknown error occurred');
+    assert.strictEqual(shared.inlineAlert.text, 'An unknown error occurred');
   });
 });

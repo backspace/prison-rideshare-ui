@@ -42,15 +42,15 @@ module('Acceptance | users', function (hooks) {
   test('list users and update admin status', async function (assert) {
     await page.visit();
 
-    assert.equal(getPageTitle(), 'Users · Prison Rideshare');
-    assert.equal(page.users.length, 2, 'expected two users');
+    assert.strictEqual(getPageTitle(), 'Users · Prison Rideshare');
+    assert.strictEqual(page.users.length, 2, 'expected two users');
 
-    assert.equal(page.users[0].email, 'abc@def.com');
-    assert.equal(page.users[0].lastSeenAt, 'Jul 6 2018');
+    assert.strictEqual(page.users[0].email, 'abc@def.com');
+    assert.strictEqual(page.users[0].lastSeenAt, 'Jul 6 2018');
     assert.ok(page.users[0].adminCheckbox.checked);
     assert.ok(page.users[0].adminCheckbox.isDisabled);
 
-    assert.equal(page.users[1].email, 'ghi@jkl.com');
+    assert.strictEqual(page.users[1].email, 'ghi@jkl.com');
     assert.notOk(page.users[1].adminCheckbox.checked);
 
     await page.users[1].adminCheckbox.click();
@@ -83,7 +83,7 @@ module('Acceptance | users', function (hooks) {
 
     await page.visit();
 
-    assert.equal(
+    assert.strictEqual(
       shared.userCount.text,
       '2',
       'expected the count to show when two people are connected',

@@ -83,17 +83,17 @@ module('Acceptance | debts', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(getPageTitle(), 'Debts · Prison Rideshare');
-    assert.equal(
+    assert.strictEqual(getPageTitle(), 'Debts · Prison Rideshare');
+    assert.strictEqual(
       page.people.length,
       2,
       'only people with outstanding debts are listed',
     );
 
     const sun = page.people[0];
-    assert.equal(sun.foodExpenses, '120');
-    assert.equal(sun.carExpenses, '0');
-    assert.equal(sun.totalExpenses, '120');
+    assert.strictEqual(sun.foodExpenses, '120');
+    assert.strictEqual(sun.carExpenses, '0');
+    assert.strictEqual(sun.totalExpenses, '120');
 
     assert
       .dom(`[data-test-debt-ride-row][data-test-driver-id="${sun.id}"]`)
@@ -126,9 +126,9 @@ module('Acceptance | debts', function (hooks) {
       .hasAttribute('title', '44 has already been reimbursed');
 
     const will = page.people[1];
-    assert.equal(will.foodExpenses, '19.19');
-    assert.equal(will.carExpenses, '19.19');
-    assert.equal(will.totalExpenses, '38.38');
+    assert.strictEqual(will.foodExpenses, '19.19');
+    assert.strictEqual(will.carExpenses, '19.19');
+    assert.strictEqual(will.totalExpenses, '38.38');
 
     assert
       .dom(`[data-test-debt-ride-row][data-test-driver-id="${will.id}"]`)
@@ -145,12 +145,12 @@ module('Acceptance | debts', function (hooks) {
     await page.visit();
     await page.people[0].reimburse();
 
-    assert.equal(
+    assert.strictEqual(
       page.people.length,
       1,
       'expected the debt to have disappeared',
     );
-    assert.equal(
+    assert.strictEqual(
       this.server.db.debts.length,
       1,
       'expected the debt to have been deleted on the server',

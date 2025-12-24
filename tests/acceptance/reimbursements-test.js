@@ -106,49 +106,49 @@ module('Acceptance | reimbursements', function (hooks) {
   test('list reimbursements and optionally show processed ones', async function (assert) {
     await reimbursementsPage.visit();
 
-    assert.equal(getPageTitle(), 'Reimbursements · Prison Rideshare');
-    assert.equal(
+    assert.strictEqual(getPageTitle(), 'Reimbursements · Prison Rideshare');
+    assert.strictEqual(
       reimbursementsPage.rows.length,
       8,
       'expected two month rows and six person reimbursement rows',
     );
 
-    assert.equal(reimbursementsPage.rows[0].month, 'April 2017');
+    assert.strictEqual(reimbursementsPage.rows[0].month, 'April 2017');
 
     const kala = reimbursementsPage.rows[1];
-    assert.equal(kala.name, 'Kala');
-    assert.equal(
+    assert.strictEqual(kala.name, 'Kala');
+    assert.strictEqual(
       kala.foodExpenses,
       '0',
       'expected the processed reimbursement to be excluded',
     );
-    assert.equal(kala.carExpenses, '22');
-    assert.equal(kala.totalExpenses, '22');
-    assert.equal(
+    assert.strictEqual(kala.carExpenses, '22');
+    assert.strictEqual(kala.totalExpenses, '22');
+    assert.strictEqual(
       kala.processButton.variant,
       'primary',
       'expected the process button to be default for non-donations',
     );
-    assert.equal(
+    assert.strictEqual(
       kala.donateButton.variant,
       'secondary',
       'expected the donate button to not be default for non-donations',
     );
 
     await reimbursementsPage.rows[2].as((kalaDonation) => {
-      assert.equal(kalaDonation.name, '');
-      assert.equal(kalaDonation.foodExpenses, '');
-      assert.equal(kalaDonation.carExpenses, '1');
+      assert.strictEqual(kalaDonation.name, '');
+      assert.strictEqual(kalaDonation.foodExpenses, '');
+      assert.strictEqual(kalaDonation.carExpenses, '1');
       assert.ok(
         kalaDonation.carExpenseIsDonation,
         'expected the donation to be thus marked',
       );
-      assert.equal(
+      assert.strictEqual(
         kalaDonation.processButton.variant,
         'secondary',
         'expected the process button to not be default for donations',
       );
-      assert.equal(
+      assert.strictEqual(
         kalaDonation.donateButton.variant,
         'primary',
         'expected the donate button to be default for donations',
@@ -156,39 +156,39 @@ module('Acceptance | reimbursements', function (hooks) {
     });
 
     const sun = reimbursementsPage.rows[3];
-    assert.equal(sun.name, 'Sun');
-    assert.equal(sun.foodExpenses, '44');
-    assert.equal(sun.carExpenses, '33');
-    assert.equal(sun.totalExpenses, '77');
+    assert.strictEqual(sun.name, 'Sun');
+    assert.strictEqual(sun.foodExpenses, '44');
+    assert.strictEqual(sun.carExpenses, '33');
+    assert.strictEqual(sun.totalExpenses, '77');
 
     await reimbursementsPage.rows[4].as((willDonation) => {
-      assert.equal(willDonation.name, 'Will');
-      assert.equal(willDonation.carExpenses, '3.33');
+      assert.strictEqual(willDonation.name, 'Will');
+      assert.strictEqual(willDonation.carExpenses, '3.33');
     });
 
-    assert.equal(
+    assert.strictEqual(
       reimbursementsPage.reimbursements.length,
       0,
       'expected no processed reimbursements to be shown',
     );
 
-    assert.equal(reimbursementsPage.rows[5].month, 'May 2017');
-    assert.equal(reimbursementsPage.rows[7].name, 'Sun');
-    assert.equal(reimbursementsPage.rows[7].carExpenses, '99');
+    assert.strictEqual(reimbursementsPage.rows[5].month, 'May 2017');
+    assert.strictEqual(reimbursementsPage.rows[7].name, 'Sun');
+    assert.strictEqual(reimbursementsPage.rows[7].carExpenses, '99');
 
     await reimbursementsPage.processedSwitch.click();
 
-    assert.equal(
+    assert.strictEqual(
       reimbursementsPage.reimbursements.length,
       2,
       'expected the processed reimbursements to be shown',
     );
 
     const foodProcessed = reimbursementsPage.reimbursements[0];
-    assert.equal(foodProcessed.date, '2017-03-26');
-    assert.equal(foodProcessed.name, 'Kala');
-    assert.equal(foodProcessed.ride, '2017-03-22 to Fort Leavenworth');
-    assert.equal(foodProcessed.expenses, '11');
+    assert.strictEqual(foodProcessed.date, '2017-03-26');
+    assert.strictEqual(foodProcessed.name, 'Kala');
+    assert.strictEqual(foodProcessed.ride, '2017-03-22 to Fort Leavenworth');
+    assert.strictEqual(foodProcessed.expenses, '11');
     assert.ok(foodProcessed.isFoodExpense, 'expected a food expense icon');
     assert.notOk(
       foodProcessed.isDonation,
@@ -196,9 +196,9 @@ module('Acceptance | reimbursements', function (hooks) {
     );
 
     const carProcessed = reimbursementsPage.reimbursements[1];
-    assert.equal(carProcessed.date, '2017-03-25');
-    assert.equal(carProcessed.name, 'Kala');
-    assert.equal(carProcessed.expenses, '9.99');
+    assert.strictEqual(carProcessed.date, '2017-03-25');
+    assert.strictEqual(carProcessed.name, 'Kala');
+    assert.strictEqual(carProcessed.expenses, '9.99');
     assert.ok(carProcessed.isCarExpense, 'expected a car expense icon');
     assert.ok(
       carProcessed.isDonation,

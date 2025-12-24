@@ -44,10 +44,10 @@ module('Acceptance | registration', function (hooks) {
 
     const [user] = this.server.db.users;
 
-    assert.equal(user.email, 'jorts@jants.ca');
-    assert.equal(user.password, 'aaaaaaaaa');
+    assert.strictEqual(user.email, 'jorts@jants.ca');
+    assert.strictEqual(user.password, 'aaaaaaaaa');
 
-    assert.equal(shared.session.text, 'Log out jorts@jants.ca');
+    assert.strictEqual(shared.session.text, 'Log out jorts@jants.ca');
   });
 
   test('a failed registration shows an unprocessed error', async function (assert) {
@@ -78,8 +78,8 @@ module('Acceptance | registration', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(currentURL(), '/register');
-    assert.equal(
+    assert.strictEqual(currentURL(), '/register');
+    assert.strictEqual(
       shared.inlineAlert.text,
       'Password confirmation did not match',
     );

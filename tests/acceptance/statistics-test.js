@@ -21,13 +21,13 @@ module('Acceptance | statistics', function (hooks) {
   test('has convenience buttons for timespans', async function (assert) {
     await page.visit();
 
-    assert.equal(getPageTitle(), 'Statistics · Prison Rideshare');
-    assert.equal(
+    assert.strictEqual(getPageTitle(), 'Statistics · Prison Rideshare');
+    assert.strictEqual(
       page.start.value,
       moment().subtract(1, 'year').format(format),
       'expected the start date to be a year ago',
     );
-    assert.equal(
+    assert.strictEqual(
       page.end.value,
       moment().format(format),
       'expected the end date to be today',
@@ -35,12 +35,12 @@ module('Acceptance | statistics', function (hooks) {
 
     await page.pastTwoWeeks.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.start.value,
       moment().subtract(2, 'weeks').format(format),
       'expected the start date to be two weeks ago',
     );
-    assert.equal(
+    assert.strictEqual(
       page.end.value,
       moment().format(format),
       'expected the end date to be today',
@@ -48,12 +48,12 @@ module('Acceptance | statistics', function (hooks) {
 
     await page.thisYear.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.start.value,
       moment().startOf('year').format(format),
       'expected the start date to be the beginning of this year',
     );
-    assert.equal(
+    assert.strictEqual(
       page.end.value,
       moment().format(format),
       'expected the end date to be today',
@@ -61,12 +61,12 @@ module('Acceptance | statistics', function (hooks) {
 
     await page.pastYear.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.start.value,
       moment().subtract(1, 'year').format(format),
       'expected the start date to be a year ago',
     );
-    assert.equal(
+    assert.strictEqual(
       page.end.value,
       moment().format(format),
       'expected the end date to be today',

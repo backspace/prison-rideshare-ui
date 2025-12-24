@@ -23,15 +23,15 @@ module('Acceptance | institutions', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(getPageTitle(), 'Institutions · Prison Rideshare');
-    assert.equal(
+    assert.strictEqual(getPageTitle(), 'Institutions · Prison Rideshare');
+    assert.strictEqual(
       page.institutions.length,
       2,
       'expected two institutions to be listed',
     );
-    assert.equal(page.institutions[0].name, 'Headingley');
+    assert.strictEqual(page.institutions[0].name, 'Headingley');
     assert.notOk(page.institutions[0].isFar);
-    assert.equal(page.institutions[1].name, 'Milner Ridge');
+    assert.strictEqual(page.institutions[1].name, 'Milner Ridge');
     assert.ok(page.institutions[1].isFar);
 
     await page.institutions[1].edit();
@@ -41,8 +41,8 @@ module('Acceptance | institutions', function (hooks) {
 
     let [milnerRidge] = this.server.db.institutions;
 
-    assert.equal(milnerRidge.name, 'Milner Ridge');
-    assert.equal(page.institutions[1].name, 'Milner Ridge');
+    assert.strictEqual(milnerRidge.name, 'Milner Ridge');
+    assert.strictEqual(page.institutions[1].name, 'Milner Ridge');
 
     await page.institutions[1].edit();
     await page.form.nameField.fillIn('Marlner Rardge');
@@ -51,7 +51,7 @@ module('Acceptance | institutions', function (hooks) {
 
     [milnerRidge] = this.server.db.institutions;
 
-    assert.equal(milnerRidge.name, 'Marlner Rardge');
+    assert.strictEqual(milnerRidge.name, 'Marlner Rardge');
     assert.notOk(milnerRidge.far);
   });
 
@@ -68,7 +68,7 @@ module('Acceptance | institutions', function (hooks) {
     await page.form.submit();
 
     const [, , remand] = this.server.db.institutions;
-    assert.equal(remand.name, 'Remand Centre');
+    assert.strictEqual(remand.name, 'Remand Centre');
     assert.ok(remand.far);
   });
 });

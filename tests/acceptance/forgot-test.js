@@ -17,7 +17,7 @@ module('Acceptance | forgot', function (hooks) {
     this.server.post(
       '/users/reset',
       function (schema, { queryParams: { email } }) {
-        assert.equal(email, 'hello@example.com');
+        assert.strictEqual(email, 'hello@example.com');
 
         return done();
       },
@@ -30,8 +30,8 @@ module('Acceptance | forgot', function (hooks) {
     await forgotPage.fillEmail('hello@example.com');
     await forgotPage.submit();
 
-    assert.equal(getPageTitle(), 'Forgot password · Prison Rideshare');
-    assert.equal(shared.toast.text, 'Check your email');
+    assert.strictEqual(getPageTitle(), 'Forgot password · Prison Rideshare');
+    assert.strictEqual(shared.toast.text, 'Check your email');
   });
 
   test('a reset email failure shows an alert until it succeeds', async function (assert) {
@@ -59,7 +59,7 @@ module('Acceptance | forgot', function (hooks) {
     await forgotPage.fillEmail('hello@example.com');
     await forgotPage.submit();
 
-    assert.equal(shared.inlineAlert.text, 'nope');
+    assert.strictEqual(shared.inlineAlert.text, 'nope');
 
     shouldFail = false;
     await forgotPage.submit();

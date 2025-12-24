@@ -25,11 +25,11 @@ module('Acceptance | authentication', function (hooks) {
 
     await visit('/');
 
-    assert.equal(currentURL(), '/reports/new');
+    assert.strictEqual(currentURL(), '/reports/new');
   });
 
   test('unauthenticated users are redirected to log in from authenticated routes', async function (assert) {
     await visit('/debts');
-    assert.equal(currentURL(), '/login');
+    assert.strictEqual(currentURL(), '/login');
   });
 });

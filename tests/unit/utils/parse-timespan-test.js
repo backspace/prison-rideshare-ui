@@ -24,8 +24,14 @@ module('Unit | Utility | parse timespan', function (hooks) {
   ) {
     const parsed = parseTimespan(timespanString);
 
-    assert.equal(moment(parsed.start.date()).format(formatString), startString);
-    assert.equal(moment(parsed.end.date()).format(formatString), endString);
+    assert.strictEqual(
+      moment(parsed.start.date()).format(formatString),
+      startString,
+    );
+    assert.strictEqual(
+      moment(parsed.end.date()).format(formatString),
+      endString,
+    );
   };
 
   test('it parses a well-specified timespan', function (assert) {
@@ -67,7 +73,7 @@ module('Unit | Utility | parse timespan', function (hooks) {
   test('it assumes PM if unspecified even for start alone', function (assert) {
     const parsed = parseTimespan('september 27 2017 from 630');
 
-    assert.equal(
+    assert.strictEqual(
       moment(parsed.start.date()).format(formatString),
       '2017-09-27 18:30',
     );

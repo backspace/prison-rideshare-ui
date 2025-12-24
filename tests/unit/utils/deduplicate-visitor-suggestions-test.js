@@ -34,6 +34,6 @@ module('Unit | Utility | deduplicate visitor suggestions', function () {
       };
     });
     const result = deduplicateVisitorSuggestions(rides);
-    assert.equal(result.length, 3);
+    assert.strictEqual(result.length, 3);
   });
 });
