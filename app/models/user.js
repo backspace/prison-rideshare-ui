@@ -1,7 +1,7 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get*/
 import Model, { attr } from '@ember-data/model';
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { gt } from '@ember/object/computed';
 
 export default Model.extend({
   userSocket: service(),
@@ -14,7 +14,7 @@ export default Model.extend({
 
   lastSeenAt: attr('date'),
 
-  isPresent: computed.gt('presenceCount', 0),
+  isPresent: gt('presenceCount', 0),
 
   // TODO restore in #202
   presenceCount: 0,
