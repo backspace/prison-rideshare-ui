@@ -710,12 +710,12 @@ export default class RideForm extends Component {
   @action
   handleSubmit(event) {
     event?.preventDefault?.();
-    this.save?.();
+    return this.save?.();
   }
 
   @action
   handleCancel(event) {
     event?.preventDefault?.();
-    this.cancel?.();
+    return this.cancel?.();
   }
 }
