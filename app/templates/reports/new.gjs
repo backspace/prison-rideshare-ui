@@ -29,7 +29,7 @@ export default RouteTemplate(
         or a private/incognito window to submit your reports in the interim. ☹️
       </HdsCardContainer>
     {{else}}
-      {{#if @controller.model}}
+      {{#if (gt @controller.reportableRides.length 0)}}
         <div class='report-form'>
           {{#if @controller.errorMessage}}
             <Alert @message={{@controller.errorMessage}} />
@@ -46,7 +46,10 @@ export default RouteTemplate(
                 data-test-report-rides
                 as |Group|
               >
-                {{#each (sortBy 'start' @controller.model) as |ride|}}
+                {{#each
+                  (sortBy 'start' @controller.reportableRides)
+                  as |ride|
+                }}
                   <Group.RadioField
                     @value={{ride.id}}
                     checked={{eq @controller.editingRide ride}}
