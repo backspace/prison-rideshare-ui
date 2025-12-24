@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import LinkTo from '@ember/routing/link-component';
+import { LinkComponent } from '@ember/legacy-built-in-components';
 
 // See docs/helios-overrides.md
 export default class AppSideNavLinkComponent extends Component {
@@ -10,7 +10,7 @@ export default class AppSideNavLinkComponent extends Component {
   <template>
     <li class='app-side-nav__item'>
       {{#if this.hasModel}}
-        <LinkTo
+        <LinkComponent
           @route={{@route}}
           @model={{@model}}
           @activeClass='app-side-nav__link--active'
@@ -21,9 +21,9 @@ export default class AppSideNavLinkComponent extends Component {
             {{@text}}
           </span>
           {{yield}}
-        </LinkTo>
+        </LinkComponent>
       {{else}}
-        <LinkTo
+        <LinkComponent
           @route={{@route}}
           @activeClass='app-side-nav__link--active'
           class='app-side-nav__link'
@@ -33,7 +33,7 @@ export default class AppSideNavLinkComponent extends Component {
             {{@text}}
           </span>
           {{yield}}
-        </LinkTo>
+        </LinkComponent>
       {{/if}}
     </li>
   </template>

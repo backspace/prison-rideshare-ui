@@ -25,6 +25,7 @@
   "devDependencies": {
     "@babel/helper-module-imports": "^7.22.15",
     "@babel/plugin-proposal-decorators": "^7.28.0",
+    "@ember/legacy-built-in-components": "^0.4.2",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@faker-js/faker": "^8.1.0",
