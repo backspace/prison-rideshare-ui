@@ -24,7 +24,10 @@ export default Model.extend({
   carOwnings: hasMany('ride', { async: true, inverse: 'carOwner' }),
 
   lastRide: computed('drivings.@each.start', function () {
-    return this.drivings.sortBy('start').get('lastObject');
+    const drivings = this.hasMany('drivings').value() || [];
+    const sorted = Array.from(drivings).sort((a, b) => a.start - b.start);
+
+    return sorted[sorted.length - 1];
   }),
 
   calendarSecret: attr('string'),

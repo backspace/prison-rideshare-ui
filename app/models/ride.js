@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get*/
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
-import { mapBy, gt } from '@ember/object/computed';
+import { gt } from '@ember/object/computed';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
@@ -95,14 +95,12 @@ export default Model.extend({
 
   isDivider: tracked(),
 
-  reimbursementFoodExpenses: mapBy('reimbursements', 'foodExpenses'),
   reimbursementFoodExpensesSum: computed(
-    'reimbursementFoodExpenses',
+    'reimbursements.@each.foodExpenses',
     function () {
-      return this.reimbursementFoodExpenses.reduce(
-        (sum, amount) => sum + amount,
-        0,
-      );
+      return this.hasMany('reimbursements')
+        .value()
+        .reduce((sum, reimbursement) => sum + reimbursement.foodExpenses, 0);
     },
   ),
   outstandingFoodExpenses: computed(
@@ -113,14 +111,12 @@ export default Model.extend({
     },
   ),
 
-  reimbursementCarExpenses: mapBy('reimbursements', 'carExpenses'),
   reimbursementCarExpensesSum: computed(
-    'reimbursementCarExpenses',
+    'reimbursements.@each.carExpenses',
     function () {
-      return this.reimbursementCarExpenses.reduce(
-        (sum, amount) => sum + amount,
-        0,
-      );
+      return this.hasMany('reimbursements')
+        .value()
+        .reduce((sum, reimbursement) => sum + reimbursement.carExpenses, 0);
     },
   ),
   outstandingCarExpenses: computed(
@@ -132,8 +128,8 @@ export default Model.extend({
   ),
 
   reimbursementExpensesSum: computed(
-    'reimbursementFoodExpensesSum.[]',
-    'reimbursementCarExpensesSum.[]',
+    'reimbursementFoodExpensesSum',
+    'reimbursementCarExpensesSum',
     function () {
       return (
         this.reimbursementFoodExpensesSum + this.reimbursementCarExpensesSum
@@ -187,8 +183,10 @@ export default Model.extend({
     'address',
     'children.@each.address',
     function () {
+      const children = this.hasMany('children').value() || [];
+
       return [this.address]
-        .concat(this.children.mapBy('address'))
+        .concat(Array.from(children).map((child) => child.address))
         .map((address) => anonymiseAddress(address))
         .join(', ');
     },
@@ -198,8 +196,10 @@ export default Model.extend({
     'passengers',
     'children.@each.passengers',
     function () {
-      return this.children
-        .mapBy('passengers')
+      const children = this.hasMany('children').value() || [];
+
+      return Array.from(children)
+        .map((child) => child.passengers)
         .reduce((sum, count) => count + sum, this.passengers);
     },
   ),

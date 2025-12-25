@@ -1,7 +1,6 @@
 /* eslint-disable ember/no-classic-classes, ember/no-get*/
 import Model, { belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
-import { sort, mapBy } from '@ember/object/computed';
 
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
@@ -10,33 +9,46 @@ export default Model.extend({
 
   rides: hasMany('ride', { async: true, inverse: null }),
 
-  descendingRides: sort('rides', 'descendingRideSort'),
-  descendingRideSort: Object.freeze(['start:desc']),
+  descendingRides: computed('rides.@each.start', function () {
+    const rides = this.hasMany('rides').value() || [];
 
-  ridesWithFoodExpenses: computed(
+    return Array.from(rides).sort((a, b) => b.start - a.start);
+  }),
+
+  foodExpenses: computed(
     'person.id',
-    'rides.@each.driver',
+    'rides.@each.{driver,outstandingFoodExpenses}',
     function () {
-      return this.rides.filterBy('driver.id', this.get('person.id'));
+      const personId = this.get('person.id');
+      const rides = this.hasMany('rides').value() || [];
+
+      return Array.from(rides).reduce((sum, ride) => {
+        if (ride.belongsTo('driver').id() !== personId) {
+          return sum;
+        }
+
+        return sum + ride.outstandingFoodExpenses;
+      }, 0);
     },
   ),
-  rideFoodExpenses: mapBy('ridesWithFoodExpenses', 'outstandingFoodExpenses'),
-  foodExpenses: computed('rideFoodExpenses', function () {
-    return this.rideFoodExpenses.reduce((sum, amount) => sum + amount, 0);
-  }),
   foodExpensesDollars: dollars('foodExpenses'),
 
-  ridesWithCarExpenses: computed(
+  carExpenses: computed(
     'person.id',
-    'rides.@each.carOwner',
+    'rides.@each.{carOwner,outstandingCarExpenses}',
     function () {
-      return this.rides.filterBy('carOwner.id', this.get('person.id'));
+      const personId = this.get('person.id');
+      const rides = this.hasMany('rides').value() || [];
+
+      return Array.from(rides).reduce((sum, ride) => {
+        if (ride.belongsTo('carOwner').id() !== personId) {
+          return sum;
+        }
+
+        return sum + ride.outstandingCarExpenses;
+      }, 0);
     },
   ),
-  rideCarExpenses: mapBy('ridesWithCarExpenses', 'outstandingCarExpenses'),
-  carExpenses: computed('rideCarExpenses', function () {
-    return this.rideCarExpenses.reduce((sum, amount) => sum + amount, 0);
-  }),
   carExpensesDollars: dollars('carExpenses'),
 
   totalExpenses: computed('foodExpenses', 'carExpenses', function () {

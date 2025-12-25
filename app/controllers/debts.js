@@ -27,10 +27,10 @@ export default class DebtsController extends Controller {
       const person = debt.get('person');
 
       const rideRows = (debt.descendingRides ?? []).map((ride) => {
-        const matchingReimbursements = (ride.reimbursements ?? []).filter(
-          (reimbursement) => {
-            return reimbursement.get('person.id') === debt.get('person.id');
-          },
+        const reimbursements = ride.hasMany('reimbursements').value() || [];
+        const matchingReimbursements = Array.from(reimbursements).filter(
+          (reimbursement) =>
+            reimbursement.get('person.id') === debt.get('person.id'),
         );
 
         const sumAmounts = (items, property) => {
