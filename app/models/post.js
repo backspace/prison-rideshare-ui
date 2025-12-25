@@ -23,7 +23,7 @@ export default Model.extend({
     },
   }),
 
-  poster: belongsTo('user'),
+  poster: belongsTo('user', { async: true, inverse: null }),
 
   insertedAt: attr('date'),
 

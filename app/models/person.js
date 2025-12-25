@@ -17,10 +17,11 @@ export default Model.extend({
   notes: attr('string'),
   selfNotes: attr('string'),
 
-  reimbursements: hasMany(),
+  reimbursements: hasMany('reimbursement', { async: true, inverse: 'person' }),
+  debts: hasMany('debt', { async: true, inverse: 'person' }),
 
-  drivings: hasMany('ride', { inverse: 'driver' }),
-  carOwnings: hasMany('ride', { inverse: 'carOwner' }),
+  drivings: hasMany('ride', { async: true, inverse: 'driver' }),
+  carOwnings: hasMany('ride', { async: true, inverse: 'carOwner' }),
 
   lastRide: computed('drivings.@each.start', function () {
     return this.drivings.sortBy('start').get('lastObject');

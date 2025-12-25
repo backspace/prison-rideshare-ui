@@ -6,9 +6,9 @@ import { sort, mapBy } from '@ember/object/computed';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
 export default Model.extend({
-  person: belongsTo(),
+  person: belongsTo('person', { async: true, inverse: 'debts' }),
 
-  rides: hasMany(),
+  rides: hasMany('ride', { async: true, inverse: null }),
 
   descendingRides: sort('rides', 'descendingRideSort'),
   descendingRideSort: Object.freeze(['start:desc']),

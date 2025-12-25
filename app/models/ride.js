@@ -18,8 +18,8 @@ export default Model.extend({
 
   cancellationReason: attr(),
 
-  combinedWith: belongsTo('ride', { inverse: 'children' }),
-  children: hasMany('ride', { inverse: 'combinedWith' }),
+  combinedWith: belongsTo('ride', { async: true, inverse: 'children' }),
+  children: hasMany('ride', { async: true, inverse: 'combinedWith' }),
 
   isCombined: computed('combinedWith.id', function () {
     return this.belongsTo('combinedWith').id();
@@ -30,7 +30,7 @@ export default Model.extend({
 
   name: attr(),
 
-  institution: belongsTo(),
+  institution: belongsTo('institution', { async: true, inverse: null }),
   rate: attr('number'),
 
   address: attr(),
@@ -65,8 +65,8 @@ export default Model.extend({
     return formatTimespan(this.moment, start, end);
   }),
 
-  driver: belongsTo('person'),
-  carOwner: belongsTo('person'),
+  driver: belongsTo('person', { async: true, inverse: 'drivings' }),
+  carOwner: belongsTo('person', { async: true, inverse: 'carOwnings' }),
   initials: attr('string'),
 
   requestNotes: attr(),
@@ -77,7 +77,7 @@ export default Model.extend({
 
   overridable: attr('boolean'),
 
-  reimbursements: hasMany(),
+  reimbursements: hasMany('reimbursement', { async: true, inverse: 'ride' }),
 
   foodExpenses: attr({ defaultValue: 0 }),
   foodExpensesDollars: dollars('foodExpenses'),
