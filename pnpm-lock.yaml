@@ -287,14 +287,14 @@ importers:
         specifier: ^2.7.0
         version: 2.17.0
       stylelint:
-        specifier: ^15.4.0
+        specifier: ^15.8.0
         version: 15.11.0(typescript@5.9.2)
       stylelint-config-standard:
         specifier: ^32.0.0
         version: 32.0.0(stylelint@15.11.0(typescript@5.9.2))
       stylelint-prettier:
-        specifier: ^3.0.0
-        version: 3.0.0(prettier@3.6.2)(stylelint@15.11.0(typescript@5.9.2))
+        specifier: ^4.0.0
+        version: 4.1.0(prettier@3.6.2)(stylelint@15.11.0(typescript@5.9.2))
       testem:
         specifier: ^3.10.1
         version: 3.16.0(babel-core@6.26.3)(handlebars@4.7.8)(underscore@1.13.7)
@@ -6837,12 +6837,12 @@ packages:
     peerDependencies:
       stylelint: ^15.4.0
 
-  stylelint-prettier@3.0.0:
-    resolution: {integrity: sha512-kIks1xw6np0zElokMT2kP6ar3S4MBoj6vUtPJuND1pFELMpZxVS/0uHPR4HDAVn0WAD3I5oF0IA3qBFxBpMkLg==}
+  stylelint-prettier@4.1.0:
+    resolution: {integrity: sha512-dd653q/d1IfvsSQshz1uAMe+XDm6hfM/7XiFH0htYY8Lse/s5ERTg7SURQehZPwVvm/rs7AsFhda9EQ2E9TS0g==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
-      prettier: '>=2.0.0'
-      stylelint: '>=14.0.0'
+      prettier: '>=3.0.0'
+      stylelint: '>=15.8.0'
 
   stylelint@15.11.0:
     resolution: {integrity: sha512-78O4c6IswZ9TzpcIiQJIN49K3qNoXTM8zEJzhaTE/xRTCZswaovSEVIa/uwbOltZrk16X4jAxjaOhzz/hTm1Kw==}
@@ -16049,7 +16049,7 @@ snapshots:
       stylelint: 15.11.0(typescript@5.9.2)
       stylelint-config-recommended: 11.0.0(stylelint@15.11.0(typescript@5.9.2))
 
-  stylelint-prettier@3.0.0(prettier@3.6.2)(stylelint@15.11.0(typescript@5.9.2)):
+  stylelint-prettier@4.1.0(prettier@3.6.2)(stylelint@15.11.0(typescript@5.9.2)):
     dependencies:
       prettier: 3.6.2
       prettier-linter-helpers: 1.0.0
