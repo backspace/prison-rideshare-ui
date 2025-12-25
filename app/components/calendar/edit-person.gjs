@@ -24,6 +24,7 @@ export default class CalendarEditPersonComponent extends Component {
   }
 
   <template>
+    {{! template-lint-disable no-autofocus-attribute }}
     <form
       class='person-form'
       data-test-person-form

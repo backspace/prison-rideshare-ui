@@ -31,6 +31,7 @@ class InstitutionsComponent extends Component {
   }
 
   <template>
+    {{! template-lint-disable no-autofocus-attribute }}
     <ToolbarHeader @title='Institutions'>
       <HdsButton
         @icon='plus'

@@ -23,6 +23,7 @@ import Alert from 'prison-rideshare-ui/components/alert';
 
 export default RouteTemplate(
   <template>
+    {{! template-lint-disable no-autofocus-attribute }}
     <ToolbarHeader @title='Drivers'>
       <HdsButton
         {{on 'click' @controller.newPerson}}
