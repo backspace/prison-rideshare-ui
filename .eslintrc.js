@@ -12,9 +12,6 @@ module.exports = {
         ['@babel/plugin-proposal-decorators', { decoratorsBeforeExport: true }],
       ],
     },
-    babelOptions: {
-      plugins: [['@babel/plugin-proposal-decorators', { legacy: true }]],
-    },
   },
   plugins: ['ember'],
   extends: [
