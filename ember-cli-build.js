@@ -16,7 +16,7 @@ module.exports = function (defaults) {
     fingerprint.prepend = `//${s3Bucket}.s3.amazonaws.com/`;
   }
 
-  let app = new EmberApp(defaults, {
+  const app = new EmberApp(defaults, {
     autoImport,
     babel: {
       plugins: [
