@@ -110,7 +110,7 @@ export default class ReimbursementsController extends Controller {
         );
 
       collections.forEach(([nonDonations, donations]) => {
-        if (nonDonations.get('length') === 0) {
+        if (nonDonations.reimbursements.length === 0) {
           donations.set('showName', true);
         } else {
           nonDonations.set('showName', true);
