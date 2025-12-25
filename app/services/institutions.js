@@ -11,6 +11,8 @@ export default class InstitutionsService extends Service {
   get all() {
     return this.store
       .findAll('institution')
-      .then((institutions) => institutions.sortBy('name'));
+      .then((institutions) =>
+        institutions.sort((a, b) => a.name.localeCompare(b.name)),
+      );
   }
 }

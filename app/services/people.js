@@ -44,6 +44,6 @@ export default class PeopleService extends Service {
 
   @computed('all.{[],all.@each.active}')
   get active() {
-    return this.all.filterBy('active');
+    return this.all.filter((person) => person.active);
   }
 }

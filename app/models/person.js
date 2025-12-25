@@ -40,7 +40,7 @@ export default Model.extend({
 
       return Array.from(attributes.keys()).reduce((response, key) => {
         const errors = this.get(`errors.${key}`) || [];
-        response[key] = errors.mapBy('message');
+        response[key] = errors.map((e) => e.message);
         return response;
       }, {});
     },

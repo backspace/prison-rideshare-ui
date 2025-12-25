@@ -12,6 +12,6 @@ export default class ReimbursementsRoute extends AuthenticatedRoute {
 
   afterModel(reimbursements) {
     // TODO coalesceFindRequests?
-    return all(reimbursements.mapBy('ride'));
+    return all(reimbursements.map((r) => r.ride));
   }
 }

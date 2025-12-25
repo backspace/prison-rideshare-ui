@@ -52,10 +52,11 @@ export default class StatisticsController extends Controller {
     return (
       'date\tinstitution\taddress\tpassengers\tdistance\tfood expenses\treimbursement\n' +
       this.rides
-        .rejectBy('cancelled')
-        .filterBy('reimbursementExpensesSum')
-        .filterBy('complete')
-        .sortBy('start')
+        .filter(
+          (ride) =>
+            !ride.cancelled && ride.reimbursementExpensesSum && ride.complete,
+        )
+        .sort((a, b) => a.start - b.start)
         .map((ride) => {
           return (
             `${moment(ride.get('start')).format('YYYY-MM-DD')}\t` +
