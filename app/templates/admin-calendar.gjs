@@ -28,13 +28,13 @@ class AdminCalendarComponent extends Component {
   @tracked emailSearchTerm = '';
 
   @action setViewingSlot(slot) {
-    this.args.controller.set('viewingSlot', slot);
+    this.args.controller.viewingSlot = slot;
     this.openCommitmentId = null;
     this.assignmentSearchTerm = '';
   }
 
   @action changeMonth(value) {
-    this.args.controller.set('month', value.date);
+    this.args.controller.updateMonth(value.date);
   }
 
   get uncommittedPeople() {

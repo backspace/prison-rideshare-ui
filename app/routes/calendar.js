@@ -5,6 +5,7 @@ import { isTesting } from '@ember/debug';
 import fetch from 'fetch';
 import config from '../config/environment';
 import { pollTask, runTask } from 'ember-lifeline';
+import CalendarState from 'prison-rideshare-ui/utils/calendar-state';
 
 export const POLL_TOKEN = 'calendar_poll';
 
@@ -52,11 +53,11 @@ export default class CalendarRoute extends Route {
 
         await this.store.findAll('slot');
 
-        return {
+        return new CalendarState({
           slots: this.store.peekAll('slot'),
           person,
           month,
-        };
+        });
       })
       .catch((error) => {
         const detail =

@@ -1,32 +1,16 @@
-/* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
+import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import CalendarController from './calendar';
-import { alias, mapBy, setDiff, sum } from '@ember/object/computed';
-import { A } from '@ember/array';
 import fetch from 'fetch';
 import moment from 'moment-timezone';
-import { get, action, computed } from '@ember/object';
 import RSVP from 'rsvp';
 
 const format = 'YYYY-MM';
 
-@classic
 export default class AdminCalendarController extends CalendarController {
   @service('people')
   peopleService;
-
-  @alias('peopleService.active')
-  activePeople;
-
-  @mapBy('model.slots', 'commitments')
-  slotCommitments;
-
-  @mapBy('slotCommitments', 'length')
-  slotCommitmentLengths;
-
-  @sum('slotCommitmentLengths')
-  commitmentCount;
 
   @service
   router;
@@ -40,42 +24,52 @@ export default class AdminCalendarController extends CalendarController {
   @service
   toasts;
 
-  errorMessage = undefined;
+  @tracked people = [];
+  @tracked links = undefined;
+  @tracked linksError = undefined;
+  @tracked viewingSlot = null;
+  @tracked errorMessage = undefined;
 
-  @computed('month')
+  get activePeople() {
+    return this.peopleService.active ?? [];
+  }
+
+  get commitmentCount() {
+    const slots = this.slots || [];
+
+    return slots.reduce((sum, slot) => {
+      return sum + (slot.commitments?.length ?? 0);
+    }, 0);
+  }
+
   get previousMonth() {
     return moment(this.month).add(-1, 'M').format(format);
   }
 
-  @computed('month')
   get nextMonth() {
     return moment(this.month).add(1, 'M').format(format);
   }
 
-  @computed('month')
   get monthString() {
     return moment(this.month).format(format);
   }
 
-  @computed('month')
   get monthMoment() {
     return moment(this.month);
   }
 
-  @computed('month')
   get title() {
     return `${moment(this.month).format('MMMM YYYY')} calendar`;
   }
 
-  init() {
-    super.init(...arguments);
-    this.set('people', A());
+  get remainingPeople() {
+    const selectedIds = new Set((this.people || []).map((person) => person.id));
+
+    return (this.activePeople || []).filter(
+      (person) => !selectedIds.has(person.id),
+    );
   }
 
-  @setDiff('activePeople', 'people')
-  remainingPeople;
-
-  @computed('activePeople.[]', 'viewingSlot.commitments.{[],@each.person}')
   get uncommittedPeople() {
     const commitments = this.viewingSlot?.commitments || [];
     const committedIds = new Set(
@@ -92,17 +86,22 @@ export default class AdminCalendarController extends CalendarController {
 
   @action
   addPerson(person) {
-    this.people.pushObject(person);
+    const people = this.people || [];
+
+    if (!people.some((entry) => entry.id === person.id)) {
+      this.people = [...people, person];
+    }
   }
 
   @action
   addAllActive() {
-    this.people.addObjects(this.activePeople);
+    this.people = [...(this.people || []), ...this.remainingPeople];
   }
 
   @action
   removePerson(person) {
-    this.people.removeObject(person);
+    const personId = person?.id;
+    this.people = (this.people || []).filter((entry) => entry.id !== personId);
   }
 
   @action
@@ -115,42 +114,40 @@ export default class AdminCalendarController extends CalendarController {
 
     try {
       await commitment.save();
-      this.set('errorMessage', undefined);
-      this.notifyPropertyChange('viewingSlot');
+      this.errorMessage = undefined;
       this.toasts.show(
-        `Committed ${person.get('name')} to drive on ${moment(
-          slot.get('start'),
-        ).format('MMMM D')}`,
+        `Committed ${person.name} to drive on ${moment(slot.start).format(
+          'MMMM D',
+        )}`,
       );
     } catch (error) {
-      const errorDetail = get(error, 'errors.firstObject.detail');
-      this.set('errorMessage', errorDetail || 'Couldn’t save your change');
+      const errorDetail = error?.errors?.[0]?.detail;
+      this.errorMessage = errorDetail || 'Couldn’t save your change';
     }
   }
 
   @action
-  deleteCommitment(commitment) {
-    let name = commitment.get('person.name');
-    let date = moment(commitment.get('slot.start')).format('MMMM D');
+  async deleteCommitment(commitment) {
+    const name = commitment?.person?.name;
+    const date = moment(commitment?.slot?.start).format('MMMM D');
 
-    commitment
-      .destroyRecord()
-      .then(() => {
-        this.set('errorMessage', undefined);
-        this.notifyPropertyChange('viewingSlot');
-        this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
-      })
-      .catch((error) => {
-        const errorDetail = get(error, 'errors.firstObject.detail');
-        this.set('errorMessage', errorDetail || 'Couldn’t save your change');
-      });
+    try {
+      await commitment.destroyRecord();
+
+      this.errorMessage = undefined;
+      this.toasts.show(`Deleted ${name}’s commitment on ${date}`);
+    } catch (error) {
+      const errorDetail = error?.errors?.[0]?.detail;
+      this.errorMessage = errorDetail || 'Couldn’t save your change';
+    }
   }
 
   @action
   email() {
-    const token = this.get('session.data.authenticated.access_token');
+    const token = this.session?.data?.authenticated?.access_token;
+    const people = [...(this.people || [])];
 
-    this.people.forEach((person) => {
+    people.forEach((person) => {
       const url = `${person.store
         .adapterFor('person')
         .buildURL('person', person.id)}/calendar-email/${this.monthString}`;
@@ -160,15 +157,17 @@ export default class AdminCalendarController extends CalendarController {
           Authorization: `Bearer ${token}`,
         },
       }).then(() => {
-        this.toasts.show(`Sent to ${person.get('name')}`);
-        this.people.removeObject(person);
+        this.toasts.show(`Sent to ${person.name}`);
+        this.people = (this.people || []).filter(
+          (entry) => entry.id !== person.id,
+        );
       });
     });
   }
 
   @action
   fetchLinks() {
-    const token = this.get('session.data.authenticated.access_token');
+    const token = this.session?.data?.authenticated?.access_token;
 
     const personLinkRequests = this.people.reduce((hash, person) => {
       const url = `${person.store
@@ -198,12 +197,12 @@ export default class AdminCalendarController extends CalendarController {
         const linkObjects = Object.keys(links).map((email) => {
           return { email, link: links[email] };
         });
-        this.set('links', linkObjects);
-        this.set('linksError', undefined);
+        this.links = linkObjects;
+        this.linksError = undefined;
       })
       .catch((e) => {
-        this.set('links', undefined);
-        this.set('linksError', e);
+        this.links = undefined;
+        this.linksError = e;
       });
   }
 }
