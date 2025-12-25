@@ -39,13 +39,13 @@ module('Acceptance | overlaps', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(shared.ridesBadge.text, '1');
+    assert.strictEqual(shared.ridesBadge.text, '1');
 
     assert.ok(
       page.rides[0].isHighlighted,
       'expected the overlapping ride to be highlighted',
     );
-    assert.equal(
+    assert.strictEqual(
       page.overlaps[0].text,
       'Octavia Butler committed to slot 5:30p—8',
     );
@@ -55,13 +55,13 @@ module('Acceptance | overlaps', function (hooks) {
 
     await page.overlaps[0].assign();
 
-    assert.equal(page.rides[0].driver.text, 'Octavia Butler');
-    assert.equal(page.rides[0].carOwner.text, 'Octavia Butler');
+    assert.strictEqual(page.rides[0].driver.text, 'Octavia Butler');
+    assert.strictEqual(page.rides[0].carOwner.text, 'Octavia Butler');
 
     let [serverRide] = this.server.db.rides;
 
-    assert.equal(serverRide.driverId, person.id);
-    assert.equal(serverRide.carOwnerId, person.id);
+    assert.strictEqual(serverRide.driverId, person.id);
+    assert.strictEqual(serverRide.carOwnerId, person.id);
 
     assert.ok(shared.ridesBadge.isHidden);
     assert.notOk(
@@ -94,7 +94,7 @@ module('Acceptance | overlaps', function (hooks) {
 
     await page.form.submit();
 
-    assert.equal(shared.ridesBadge.text, '1');
+    assert.strictEqual(shared.ridesBadge.text, '1');
     assert.ok(
       page.rides[0].isHighlighted,
       'expected the overlapping ride to be highlighted',
@@ -114,8 +114,8 @@ module('Acceptance | overlaps', function (hooks) {
     this.server.post(
       '/rides/:ride_id/ignore/:commitment_id',
       (schema, { params: { ride_id, commitment_id } }) => {
-        assert.equal(ride_id, this.firstRide.id);
-        assert.equal(commitment_id, commitment.id);
+        assert.strictEqual(ride_id, this.firstRide.id);
+        assert.strictEqual(commitment_id, commitment.id);
 
         this.firstRide.commitments = [];
         this.firstRide.save();

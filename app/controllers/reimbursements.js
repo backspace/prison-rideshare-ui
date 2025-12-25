@@ -10,9 +10,11 @@ import moment from 'moment-timezone';
 
 @classic
 export default class ReimbursementsController extends Controller {
-  queryParams = {
-    showProcessed: 'processed',
-  };
+  queryParams = [
+    {
+      showProcessed: 'processed',
+    },
+  ];
 
   @alias('model')
   reimbursements;

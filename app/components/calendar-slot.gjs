@@ -90,11 +90,11 @@ export default class CalendarSlot extends Component {
   }
 
   get hidden() {
-    return !this.slot?.isNotFull && !this.isCommittedTo;
+    return !this.isNotFull && !this.isCommittedTo;
   }
 
   get disabled() {
-    const isNotFull = this.slot?.isNotFull;
+    const isNotFull = this.isNotFull;
     const start = this.slot?.start;
     const toggleIsRunning = this.toggle.isRunning;
 
@@ -116,6 +116,13 @@ export default class CalendarSlot extends Component {
     const divisor = count === 0 ? '∞' : count;
 
     return `${dividend}/${divisor}`;
+  }
+
+  get isNotFull() {
+    const count = this.slot?.count ?? 0;
+    const commitmentCount = this.slot?.commitments?.length ?? 0;
+
+    return count === 0 || commitmentCount < count;
   }
 
   toggle = task({ drop: true }, async (event) => {
@@ -142,7 +149,7 @@ export default class CalendarSlot extends Component {
         const errorDetail = error?.errors?.[0]?.detail;
         this.args.setError(errorDetail || 'Couldn’t save your change');
       }
-    } else if (this.slot?.isNotFull) {
+    } else if (this.isNotFull) {
       const newRecord = this.store.createRecord('commitment', {
         slot: this.slot,
         person: this.person,

@@ -47,8 +47,8 @@ module('Acceptance | login', function (hooks) {
 
     await page.submit();
 
-    assert.equal(currentRouteName(), 'rides');
-    assert.equal(shared.session.text, 'Log out jorts@jants.ca');
+    assert.strictEqual(currentRouteName(), 'rides');
+    assert.strictEqual(shared.session.text, 'Log out jorts@jants.ca');
   });
 
   test('successful non-admin login forwards to the report route', async function (assert) {
@@ -58,7 +58,7 @@ module('Acceptance | login', function (hooks) {
     await page.fillPassword('aaaaaaaaa');
     await page.submit();
 
-    assert.equal(currentURL(), '/reports/new');
+    assert.strictEqual(currentURL(), '/reports/new');
   });
 
   test('a failure from the current endpoint logs the user out', async function (assert) {
@@ -75,7 +75,7 @@ module('Acceptance | login', function (hooks) {
     await page.fillPassword('x');
     await page.submit();
 
-    assert.equal(currentURL(), '/reports/new');
+    assert.strictEqual(currentURL(), '/reports/new');
   });
 
   test('a failed login shows an error that clears on retry', async function (assert) {
@@ -93,8 +93,11 @@ module('Acceptance | login', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(currentURL(), '/login');
-    assert.equal(shared.inlineAlert.text, 'There was an error logging you in.');
+    assert.strictEqual(currentURL(), '/login');
+    assert.strictEqual(
+      shared.inlineAlert.text,
+      'There was an error logging you in.',
+    );
 
     restoreToken();
     this.server.create('user', {
@@ -105,7 +108,7 @@ module('Acceptance | login', function (hooks) {
     await page.fillPassword('correcthorsebatterystaple');
     await page.submit();
 
-    assert.equal(currentURL(), '/reports/new');
+    assert.strictEqual(currentURL(), '/reports/new');
     assert.notOk(shared.inlineAlert.isPresent);
   });
 });

@@ -1,6 +1,5 @@
 import { inject as service } from '@ember/service';
 import Route from '@ember/routing/route';
-import RSVP from 'rsvp';
 import { isEmpty } from '@ember/utils';
 import { isTesting } from '@ember/debug';
 import fetch from 'fetch';
@@ -44,28 +43,30 @@ export default class CalendarRoute extends Route {
           throw errorJson;
         });
       })
-      .then(({ access_token }) => {
+      .then(async ({ access_token }) => {
         localStorage.setItem('person-token', access_token);
-        return this.store.queryRecord('person', {
+        const person = await this.store.queryRecord('person', {
           me: true,
           token: access_token,
         });
+
+        await this.store.findAll('slot');
+
+        return {
+          slots: this.store.peekAll('slot'),
+          person,
+          month,
+        };
       })
       .catch((error) => {
-        const detail = error?.errors?.firstObject?.detail;
+        const detail =
+          error?.errors?.[0]?.detail ?? error?.errors?.firstObject?.detail;
 
         if (detail) {
           throw new Error(detail);
         } else {
           throw new Error('We were unable to log you in with that token.');
         }
-      })
-      .then((person) => {
-        return RSVP.hash({
-          slots: this.store.findAll('slot'),
-          person,
-          month,
-        });
       });
   }
 
@@ -73,8 +74,8 @@ export default class CalendarRoute extends Route {
     pollTask(this, 'poll', POLL_TOKEN);
   }
 
-  poll(next) {
-    this.store.findAll('slot');
+  async poll(next) {
+    await this.store.findAll('slot', { reload: true });
     runTask(this, next, isTesting() ? 10 : 10000);
   }
 }

@@ -79,8 +79,8 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
     percySnapshot(assert);
 
-    assert.equal(getPageTitle(), 'Rides · Prison Rideshare');
-    assert.equal(
+    assert.strictEqual(getPageTitle(), 'Rides · Prison Rideshare');
+    assert.strictEqual(
       page.rides.length,
       2,
       'expected the cancelled ride to be hidden',
@@ -92,7 +92,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.head.cancelledSwitch.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides.length,
       3,
       'expected the cancelled ride to be shown',
@@ -105,15 +105,15 @@ module('Acceptance | rides', function (hooks) {
       ride.cancellation.showsLockdown,
       'expected the cancelled ride to show lockdown for the reason',
     );
-    assert.equal(ride.name, 'Edward + 2');
+    assert.strictEqual(ride.name, 'Edward + 2');
     assert.ok(
       ride.isFirstTimer,
       'expected the rider to be marked a first-timer',
     );
-    assert.equal(ride.date, 'Mon Dec 26 2016 8:30p — 10');
-    assert.equal(ride.institution, 'Fort Leavenworth');
-    assert.equal(ride.address, '91 Albert');
-    assert.equal(ride.contact, 'jorts@example.com');
+    assert.strictEqual(ride.date, 'Mon Dec 26 2016 8:30p — 10');
+    assert.strictEqual(ride.institution, 'Fort Leavenworth');
+    assert.strictEqual(ride.address, '91 Albert');
+    assert.strictEqual(ride.contact, 'jorts@example.com');
     assert.ok(
       ride.medium.isTxt,
       'expected the request to have been received via txt',
@@ -124,15 +124,22 @@ module('Acceptance | rides', function (hooks) {
     );
     assert.ok(ride.isOverridable, 'expected the ride to be overridable');
 
-    assert.equal(ride.driver.text, 'Sun');
-    assert.equal(ride.carOwner.text, 'Lito');
+    assert.strictEqual(ride.driver.text, 'Sun');
+    assert.strictEqual(ride.carOwner.text, 'Lito');
 
-    assert.equal(page.notes.length, 1, 'expected the notes to be visible');
-    assert.equal(page.notes[0].text, 'These are some request notes.');
+    assert.strictEqual(
+      page.notes.length,
+      1,
+      'expected the notes to be visible',
+    );
+    assert.strictEqual(page.notes[0].text, 'These are some request notes.');
 
     await page.rides[2].clickDate();
 
-    assert.equal(page.rides[2].creationDate.text, 'Tue Dec 20 2016 8:15p');
+    assert.strictEqual(
+      page.rides[2].creationDate.text,
+      'Tue Dec 20 2016 8:15p',
+    );
 
     await page.rides[2].clickDate();
 
@@ -144,16 +151,19 @@ module('Acceptance | rides', function (hooks) {
     await page.rides[2].driver.reveal();
 
     await page.rides[2].as((ride) => {
-      assert.equal(ride.driver.email, 'sun@sense8');
-      assert.equal(ride.driver.landline, '111');
-      assert.equal(ride.driver.selfNotes, 'Some important notes');
+      assert.strictEqual(ride.driver.email, 'sun@sense8');
+      assert.strictEqual(ride.driver.landline, '111');
+      assert.strictEqual(ride.driver.selfNotes, 'Some important notes');
     });
 
     await page.rides[2].edit();
 
-    assert.equal(page.form.notice, 'You are editing a cancelled ride!');
+    assert.strictEqual(page.form.notice, 'You are editing a cancelled ride!');
 
-    assert.equal(page.form.timespanResult.value, 'Mon Dec 26 2016 8:30p — 10');
+    assert.strictEqual(
+      page.form.timespanResult.value,
+      'Mon Dec 26 2016 8:30p — 10',
+    );
 
     await page.form.timespan.fillIn('Dec 26 2300 from 9a to 11:30');
     assert.notOk(page.form.timespanResult.hasWarning);
@@ -173,12 +183,12 @@ module('Acceptance | rides', function (hooks) {
       page.rides[0].cancellation.showsNotCancelled,
       'expected the other ride to not be cancelled',
     );
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].name,
       'Chelsea',
       'expected the earlier ride to be sorted to the bottom',
     );
-    assert.equal(page.rides[0].contactPhoneHref, 'tel:5145551212');
+    assert.strictEqual(page.rides[0].contactPhoneHref, 'tel:5145551212');
 
     assert.ok(
       page.rides[1].name,
@@ -192,7 +202,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.ridesHead.clickDate();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides[1].name,
       'Chelsea',
       'expected the earlier ride to be sorted to the top',
@@ -204,7 +214,7 @@ module('Acceptance | rides', function (hooks) {
       page.cancellationForm.cancelled.checked,
       'expected the cancellation box to be checked',
     );
-    assert.equal(page.cancellationForm.reason.value, 'lockdown');
+    assert.strictEqual(page.cancellationForm.reason.value, 'lockdown');
 
     await page.cancellationForm.other.fillIn('visitor');
     await page.cancellationForm.save();
@@ -222,7 +232,10 @@ module('Acceptance | rides', function (hooks) {
       page.rides[0].cancellation.showsOther,
       'expected the ride to now be cancelled with another reason',
     );
-    assert.equal(page.rides[0].cancellation.title, 'Edit cancellation: other!');
+    assert.strictEqual(
+      page.rides[0].cancellation.title,
+      'Edit cancellation: other!',
+    );
 
     await page.rides[0].cancellation.click();
     await page.cancellationForm.cancelled.click();
@@ -266,7 +279,7 @@ module('Acceptance | rides', function (hooks) {
     await page.rides[2].cancellation.click();
     await page.cancellationForm.shortcutButtons[0].click();
 
-    assert.equal(
+    assert.strictEqual(
       shared.inlineAlert.text,
       'There was an error cancelling this ride',
     );
@@ -356,7 +369,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.visit();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides.length,
       2,
       'expected the completed rides to be hidden',
@@ -368,7 +381,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.head.completedSwitch.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides.length,
       4,
       'expected the completed rides to be showing',
@@ -378,12 +391,16 @@ module('Acceptance | rides', function (hooks) {
       'expected the completed switch to be on',
     );
 
-    assert.equal(page.reports.length, 2, 'expected the reports to be rendered');
-    assert.equal(page.reports[0].distance, '44');
-    assert.equal(page.reports[0].carExpenses, '10.1');
-    assert.equal(page.reports[0].rate, '26 ¢⁄km');
-    assert.equal(page.reports[0].foodExpenses, '55.55');
-    assert.equal(page.reports[0].notes, 'Some report notes?');
+    assert.strictEqual(
+      page.reports.length,
+      2,
+      'expected the reports to be rendered',
+    );
+    assert.strictEqual(page.reports[0].distance, '44');
+    assert.strictEqual(page.reports[0].carExpenses, '10.1');
+    assert.strictEqual(page.reports[0].rate, '26 ¢⁄km');
+    assert.strictEqual(page.reports[0].foodExpenses, '55.55');
+    assert.strictEqual(page.reports[0].notes, 'Some report notes?');
 
     await page.rides[2].edit();
     await page.form.cancel();
@@ -409,7 +426,11 @@ module('Acceptance | rides', function (hooks) {
     await page.reports[0].clear();
     await page.reports[0].clearConfirm.click();
 
-    assert.equal(page.reports.length, 1, 'expected the report to be gone');
+    assert.strictEqual(
+      page.reports.length,
+      1,
+      'expected the report to be gone',
+    );
 
     const [, , ride] = this.server.db.rides;
 
@@ -447,18 +468,18 @@ module('Acceptance | rides', function (hooks) {
     await page.visit();
     await page.newRide();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides.length,
       0,
       'there should be no row for an unsaved ride',
     );
-    assert.equal(
+    assert.strictEqual(
       page.notes.length,
       0,
       'there should be no notes when there are no rides',
     );
 
-    assert.equal(
+    assert.strictEqual(
       page.form.passengers.value,
       '1',
       'the form should default to one passenger',
@@ -482,7 +503,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.firstTime.click();
     await page.form.passengers.fillIn(2);
 
-    assert.equal(
+    assert.strictEqual(
       page.form.name.value,
       'Edward',
       'expected the typed visitor name to remain visible when no suggestion is chosen',
@@ -501,37 +522,37 @@ module('Acceptance | rides', function (hooks) {
     await page.form.submit();
 
     const ride = page.rides[0];
-    assert.equal(ride.name, 'Edward + 1');
+    assert.strictEqual(ride.name, 'Edward + 1');
 
     assert.ok(
       ride.medium.isPhone,
       'expected the ride request to have been received via phone',
     );
-    assert.equal(ride.date, 'Mon Dec 26 2016 9a — 11:30');
+    assert.strictEqual(ride.date, 'Mon Dec 26 2016 9a — 11:30');
 
-    assert.equal(ride.institution, 'Rockwood');
+    assert.strictEqual(ride.institution, 'Rockwood');
 
     assert.ok(ride.isOverridable);
 
     let serverRides = this.server.db.rides;
     let lastRide = serverRides[serverRides.length - 1];
 
-    assert.equal(lastRide.medium, 'phone');
-    assert.equal(lastRide.name, 'Edward');
-    assert.equal(
+    assert.strictEqual(lastRide.medium, 'phone');
+    assert.strictEqual(lastRide.name, 'Edward');
+    assert.strictEqual(
       moment(lastRide.start).format('YYYY-MM-DD HH:mm'),
       '2016-12-26 09:00',
     );
-    assert.equal(
+    assert.strictEqual(
       moment(lastRide.end).format('YYYY-MM-DD HH:mm'),
       '2016-12-26 11:30',
     );
-    assert.equal(lastRide.address, '114 Spence');
-    assert.equal(lastRide.contact, 'jants@example.com');
+    assert.strictEqual(lastRide.address, '114 Spence');
+    assert.strictEqual(lastRide.contact, 'jants@example.com');
     assert.ok(lastRide.firstTime);
-    assert.equal(lastRide.passengers, 2);
-    assert.equal(lastRide.institutionId, rockwood.id);
-    assert.equal(
+    assert.strictEqual(lastRide.passengers, '2');
+    assert.strictEqual(lastRide.institutionId, rockwood.id);
+    assert.strictEqual(
       lastRide.requestNotes,
       undefined,
       'expected the notes to have been unspecified',
@@ -541,43 +562,47 @@ module('Acceptance | rides', function (hooks) {
     await page.rides[0].driver.click();
     await page.rides[0].driver.choose('Sun');
 
-    assert.equal(page.rides[0].driver.text, 'Sun');
-    assert.equal(
+    assert.strictEqual(page.rides[0].driver.text, 'Sun');
+    assert.strictEqual(
       page.rides[0].carOwner.text,
       'Sun',
       'expected the car owner to be set automatically',
     );
 
-    assert.equal(page.notes.length, 0, 'expected no notes on the new ride');
+    assert.strictEqual(
+      page.notes.length,
+      0,
+      'expected no notes on the new ride',
+    );
 
     serverRides = this.server.db.rides;
     lastRide = serverRides[serverRides.length - 1];
 
-    assert.equal(lastRide.driverId, sun.id);
-    assert.equal(lastRide.carOwnerId, sun.id);
+    assert.strictEqual(lastRide.driverId, sun.id);
+    assert.strictEqual(lastRide.carOwnerId, sun.id);
 
     await page.rides[0].carOwner.clear();
     await page.rides[0].carOwner.select.click();
     await page.rides[0].carOwner.select.type({ key: 'L' });
     await page.rides[0].carOwner.select.enter();
 
-    assert.equal(page.rides[0].carOwner.text, 'Lito');
+    assert.strictEqual(page.rides[0].carOwner.text, 'Lito');
 
     serverRides = this.server.db.rides;
     lastRide = serverRides[serverRides.length - 1];
 
-    assert.equal(lastRide.carOwnerId, lito.id);
+    assert.strictEqual(lastRide.carOwnerId, lito.id);
 
     await page.rides[0].edit();
 
     await page.form.name.fillIn('Ed');
     await page.form.cancel();
 
-    assert.equal(page.rides[0].name, 'Edward + 1');
+    assert.strictEqual(page.rides[0].name, 'Edward + 1');
 
     serverRides = this.server.db.rides;
     lastRide = serverRides[serverRides.length - 1];
-    assert.equal(lastRide.name, 'Edward');
+    assert.strictEqual(lastRide.name, 'Edward');
 
     await page.rides[0].edit();
 
@@ -586,7 +611,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.notes.fillIn('Some request notes?');
     await page.form.firstTime.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].name,
       'Edward + 1',
       'expected the original model to not yet have changed',
@@ -594,25 +619,25 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.submit();
 
-    assert.equal(page.rides[0].name, 'Edwina + 1');
+    assert.strictEqual(page.rides[0].name, 'Edwina + 1');
 
     assert.ok(
       page.rides[0].medium.isEmail,
       'expected the medium to now be email',
     );
-    assert.equal(
+    assert.strictEqual(
       page.notes.length,
       1,
       'expected the notes for the new ride to show',
     );
-    assert.equal(page.notes[0].text, 'Some request notes?');
+    assert.strictEqual(page.notes[0].text, 'Some request notes?');
 
     serverRides = this.server.db.rides;
     lastRide = serverRides[serverRides.length - 1];
-    assert.equal(lastRide.name, 'Edwina');
-    assert.equal(lastRide.requestNotes, 'Some request notes?');
+    assert.strictEqual(lastRide.name, 'Edwina');
+    assert.strictEqual(lastRide.requestNotes, 'Some request notes?');
     assert.notOk(lastRide.firstTime);
-    assert.equal(lastRide.medium, 'email');
+    assert.strictEqual(lastRide.medium, 'email');
 
     const restoreRideSave = overrideRoute(
       this.server,
@@ -625,12 +650,12 @@ module('Acceptance | rides', function (hooks) {
     await page.form.notes.fillIn('Updated request notes?');
     await page.form.submit();
 
-    assert.equal(
+    assert.strictEqual(
       shared.inlineAlert.text,
       'There was an error saving this ride',
     );
-    // assert.equal(page.notes[0].text, 'Some request notes?'); FIXME lost due to fix for #123
-    assert.equal(page.form.notes.value, 'Updated request notes?');
+    // assert.strictEqual(page.notes[0].text, 'Some request notes?'); FIXME lost due to fix for #123
+    assert.strictEqual(page.form.notes.value, 'Updated request notes?');
 
     restoreRideSave();
 
@@ -694,8 +719,8 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
 
-    assert.equal(page.form.timespanStart.value, '2016-12-26T09:00');
-    assert.equal(page.form.timespanEnd.value, '2016-12-26T11:30');
+    assert.strictEqual(page.form.timespanStart.value, '2016-12-26T09:00');
+    assert.strictEqual(page.form.timespanEnd.value, '2016-12-26T11:30');
 
     await page.form.timespanStart.fillIn('2016-12-26T09:55');
 
@@ -709,7 +734,7 @@ module('Acceptance | rides', function (hooks) {
     await page.form.submit();
 
     const ride = page.rides[0];
-    assert.equal(ride.date, 'Mon Dec 26 2016 9:55a — 11:30');
+    assert.strictEqual(ride.date, 'Mon Dec 26 2016 9:55a — 11:30');
   });
 
   test('matching visitors are suggested with some deduplication', async function (assert) {
@@ -732,17 +757,17 @@ module('Acceptance | rides', function (hooks) {
     await page.form.name.fillIn('fran');
     await waitUntil(() => page.form.name.suggestions.length);
 
-    assert.equal(page.form.name.suggestions.length, 3);
+    assert.strictEqual(page.form.name.suggestions.length, 3);
 
     await page.form.name.suggestions[0].as((francine) => {
-      assert.equal(francine.name, 'Francine');
-      assert.equal(francine.contact, 'jorts@jants.ca');
+      assert.strictEqual(francine.name, 'Francine');
+      assert.strictEqual(francine.contact, 'jorts@jants.ca');
     });
 
     await page.form.name.suggestions[1].as((frank) => {
-      assert.equal(frank.name, 'frank');
-      assert.equal(frank.address, '91 Albert St.');
-      assert.equal(frank.contact, 'frank@jants.ca');
+      assert.strictEqual(frank.name, 'frank');
+      assert.strictEqual(frank.address, '91 Albert St.');
+      assert.strictEqual(frank.contact, 'frank@jants.ca');
     });
 
     assert.strictEqual(
@@ -752,9 +777,9 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.name.suggestions[1].click();
 
-    assert.equal(page.form.name.text, 'frank');
-    assert.equal(page.form.contact.value, 'frank@jants.ca');
-    assert.equal(page.form.address.value, '91 Albert St.');
+    assert.strictEqual(page.form.name.text, 'frank');
+    assert.strictEqual(page.form.contact.value, 'frank@jants.ca');
+    assert.strictEqual(page.form.address.value, '91 Albert St.');
   });
 
   test('timespan validation errors are shown when manual overrides are not used', async function (assert) {
@@ -790,10 +815,13 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.submit();
 
-    assert.equal(page.form.timespanErrors.length, 2);
+    assert.strictEqual(page.form.timespanErrors.length, 2);
 
-    assert.equal(page.form.timespanErrors[0].text, 'Start must be present');
-    assert.equal(page.form.timespanErrors[1].text, 'End must be present');
+    assert.strictEqual(
+      page.form.timespanErrors[0].text,
+      'Start must be present',
+    );
+    assert.strictEqual(page.form.timespanErrors[1].text, 'End must be present');
 
     this.server.post('/rides');
   });
@@ -835,10 +863,13 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.submit();
 
-    assert.equal(page.form.nameError.text, "Name can't be blank");
+    assert.strictEqual(page.form.nameError.text, "Name can't be blank");
     // PaperSelect stopped rendering errors! See #177
-    //assert.equal(page.form.institutionError.text, "Institution can't be blank");
-    assert.equal(page.form.timespanEndError.text, 'End must be after start');
+    //assert.strictEqual(page.form.institutionError.text, "Institution can't be blank");
+    assert.strictEqual(
+      page.form.timespanEndError.text,
+      'End must be after start',
+    );
 
     this.server.post('/rides');
 
@@ -847,7 +878,7 @@ module('Acceptance | rides', function (hooks) {
 
     const serverRides = this.server.db.rides;
     const lastRide = serverRides[serverRides.length - 1];
-    assert.equal(lastRide.name, 'Hello');
+    assert.strictEqual(lastRide.name, 'Hello');
   });
 
   test('rides can be combined and uncombined, cancelling a parent ride shows a warning', async function (assert) {
@@ -887,7 +918,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.rides[1].cancellation.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.cancellationForm.notice,
       'Cancelling a ride with rides combined into it will cause the combined rides to also disappear. Uncombine them if this is undesirable.',
     );
@@ -898,7 +929,7 @@ module('Acceptance | rides', function (hooks) {
       page.rides[0].combineButton.isActive,
       'expected the combine button to indicate it is active',
     );
-    assert.equal(page.rides[0].combineButton.title, 'Cancel combining');
+    assert.strictEqual(page.rides[0].combineButton.title, 'Cancel combining');
 
     assert.ok(
       page.rides[1].combineButton.isVisible,
@@ -924,7 +955,7 @@ module('Acceptance | rides', function (hooks) {
       page.rides[0].combineButton.isActive,
       'expected the button to have become inactive after clicking',
     );
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].combineButton.title,
       'Combine with another ride',
     );
@@ -932,12 +963,12 @@ module('Acceptance | rides', function (hooks) {
     await page.rides[0].combineButton.click();
     await page.rides[3].combineButton.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides[2].name,
       'C',
       'expected the combined-into ride to have moved',
     );
-    assert.equal(
+    assert.strictEqual(
       page.rides[3].name,
       'A',
       'expected the combined ride to have moved',
@@ -946,11 +977,14 @@ module('Acceptance | rides', function (hooks) {
       page.rides[3].isCombined,
       'expected the combined ride to show as combined',
     );
-    assert.equal(page.rides[3].combineButton.title, 'Uncombine this ride');
+    assert.strictEqual(
+      page.rides[3].combineButton.title,
+      'Uncombine this ride',
+    );
 
     await page.rides[3].combineButton.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].name,
       'A',
       'expected the formerly-combined ride to have returned',
@@ -1000,16 +1034,20 @@ module('Acceptance | rides', function (hooks) {
 
     await page.visit();
 
-    assert.equal(page.rides.length, 2, 'expected two rides to show by default');
+    assert.strictEqual(
+      page.rides.length,
+      2,
+      'expected two rides to show by default',
+    );
 
     await page.head.search.fillIn('chel');
 
-    assert.equal(
+    assert.strictEqual(
       page.rides.length,
       1,
       'expected one ride to be showing after filtering',
     );
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].name,
       'Chelsea',
       'expected the ride to be the Chelsea one',
@@ -1017,7 +1055,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.head.search.fillIn('');
 
-    assert.equal(
+    assert.strictEqual(
       page.rides.length,
       2,
       'expected the ride list to be returned to its default state',
@@ -1025,7 +1063,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.head.search.fillIn('HEL');
 
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].name,
       'Chelsea',
       'expected the search to be case-insensitive',
@@ -1114,7 +1152,7 @@ module('Acceptance | rides', function (hooks) {
     await page.head.cancelledSwitch.click();
     await page.head.completedSwitch.click();
 
-    assert.equal(page.confirmationNotifications.length, 2);
+    assert.strictEqual(page.confirmationNotifications.length, 2);
 
     assert.ok(page.rides[1].isHighlighted);
 
@@ -1125,20 +1163,20 @@ module('Acceptance | rides', function (hooks) {
     assert.ok(rideWithNotes.isHighlighted);
     assert.ok(notes.isHighlighted);
 
-    assert.equal(shared.ridesBadge.text, '2');
+    assert.strictEqual(shared.ridesBadge.text, '2');
 
     await rideWithNotes.edit();
     await page.form.requestConfirmed.click();
     await page.form.submit();
 
-    assert.equal(page.confirmationNotifications.length, 1);
+    assert.strictEqual(page.confirmationNotifications.length, 1);
     assert.notOk(rideWithNotes.isHighlighted);
     assert.notOk(notes.isHighlighted);
-    assert.equal(shared.ridesBadge.text, '1');
+    assert.strictEqual(shared.ridesBadge.text, '1');
 
     await page.confirmationNotifications[0].markConfirmed();
 
-    assert.equal(page.confirmationNotifications.length, 0);
+    assert.strictEqual(page.confirmationNotifications.length, 0);
     assert.notOk(page.rides[1].isHighlighted);
     assert.ok(shared.ridesBadge.isHidden);
   });

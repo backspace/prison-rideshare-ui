@@ -15,7 +15,7 @@ module('Unit | Utility | format timespan', function (hooks) {
       new Date(2010, 5, 26, 15, 0, 0),
     );
 
-    assert.equal(noMinutesSameMeridiem, 'Sat Jun 26 2010 1p — 3');
+    assert.strictEqual(noMinutesSameMeridiem, 'Sat Jun 26 2010 1p — 3');
 
     const minutesSameMeridiem = formatTimespan(
       { moment },
@@ -23,7 +23,7 @@ module('Unit | Utility | format timespan', function (hooks) {
       new Date(2010, 5, 26, 16, 48, 0),
     );
 
-    assert.equal(minutesSameMeridiem, 'Sat Jun 26 2010 3:30p — 4:48');
+    assert.strictEqual(minutesSameMeridiem, 'Sat Jun 26 2010 3:30p — 4:48');
 
     const sameDayDifferentMeridiem = formatTimespan(
       { moment },
@@ -31,7 +31,7 @@ module('Unit | Utility | format timespan', function (hooks) {
       new Date(2010, 5, 27, 19, 0, 0),
     );
 
-    assert.equal(sameDayDifferentMeridiem, 'Sun Jun 27 2010 10:22a — 7p');
+    assert.strictEqual(sameDayDifferentMeridiem, 'Sun Jun 27 2010 10:22a — 7p');
 
     const differentDay = formatTimespan(
       { moment },
@@ -39,6 +39,6 @@ module('Unit | Utility | format timespan', function (hooks) {
       new Date(2010, 5, 29, 19, 0, 0),
     );
 
-    assert.equal(differentDay, 'Sun Jun 27 2010 10:22a — Tue 7p');
+    assert.strictEqual(differentDay, 'Sun Jun 27 2010 10:22a — Tue 7p');
   });
 });

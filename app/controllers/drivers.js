@@ -7,6 +7,9 @@ import BufferedProxy from 'ember-buffered-proxy/proxy';
 
 @classic
 export default class DriversController extends Controller {
+  @service('people')
+  peopleService;
+
   @service
   store;
 
@@ -18,9 +21,15 @@ export default class DriversController extends Controller {
   sortDir = 'asc';
   errorMessage = undefined;
 
-  @computed('model.@each.{name,lastRide}', 'sortProp', 'sortDir')
+  @computed(
+    'model',
+    'model.[]',
+    'model.@each.{name,lastRide}',
+    'sortProp',
+    'sortDir',
+  )
   get sortedPeople() {
-    const people = this.model ? this.model.toArray() : [];
+    const people = Array.from(this.model || []);
     const sorted = people.slice().sort((a, b) => {
       let comparison;
 
@@ -82,7 +91,7 @@ export default class DriversController extends Controller {
     this.set(
       'editingPerson',
       BufferedProxy.create({
-        content: this.store.createRecord('person'),
+        content: this.store.createRecord('person', { active: true }),
       }),
     );
   }
@@ -95,24 +104,24 @@ export default class DriversController extends Controller {
   }
 
   @action
-  savePerson(event) {
+  async savePerson(event) {
     event?.preventDefault();
 
     const proxy = this.editingPerson;
     proxy.applyBufferedChanges();
-    return proxy
-      .get('content')
-      .save()
-      .then(() => {
-        this.set('editingPerson', undefined);
-        this.set('errorMessage', undefined);
-      })
-      .catch(() => {
-        this.set(
-          'errorMessage',
-          'There was an error saving this driver. Please try again.',
-        );
-      });
+
+    try {
+      await proxy.get('content').save();
+      await this.peopleService.load();
+
+      this.set('editingPerson', undefined);
+      this.set('errorMessage', undefined);
+    } catch {
+      this.set(
+        'errorMessage',
+        'There was an error saving this driver. Please try again.',
+      );
+    }
   }
 
   @action

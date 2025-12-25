@@ -41,20 +41,20 @@ module('Acceptance | gas prices', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(getPageTitle(), 'Gas prices · Prison Rideshare');
-    assert.equal(
+    assert.strictEqual(getPageTitle(), 'Gas prices · Prison Rideshare');
+    assert.strictEqual(
       page.gasPrices.length,
       10,
       'expected ten gas prices to be listed',
     );
 
     page.gasPrices[0].as((latest) => {
-      assert.equal(latest.date, 'Sat, Jul 7');
-      assert.equal(latest.price, '101¢⁄L');
-      assert.equal(latest.closeRate, '84 ¢⁄km');
-      assert.equal(latest.farRate, '48 ¢⁄km');
+      assert.strictEqual(latest.date, 'Sat, Jul 7');
+      assert.strictEqual(latest.price, '101¢⁄L');
+      assert.strictEqual(latest.closeRate, '84 ¢⁄km');
+      assert.strictEqual(latest.farRate, '48 ¢⁄km');
     });
 
-    assert.equal(page.gasPrices[1].date, 'Fri, Jul 6');
+    assert.strictEqual(page.gasPrices[1].date, 'Fri, Jul 6');
   });
 });

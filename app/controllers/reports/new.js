@@ -1,5 +1,5 @@
 import classic from 'ember-classic-decorator';
-import { action } from '@ember/object';
+import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 
@@ -18,6 +18,12 @@ export default class NewController extends Controller {
 
   editingRide;
   errorMessage = undefined;
+
+  @computed('model', 'model.{[],@each.complete}')
+  get reportableRides() {
+    const rides = Array.from(this.model || []);
+    return rides.filter((ride) => !ride.complete);
+  }
 
   _setNumberProperty(property, event) {
     const ride = this.editingRide;
@@ -83,28 +89,27 @@ export default class NewController extends Controller {
   }
 
   @action
-  submitReport(event) {
+  async submitReport(event) {
     event?.preventDefault?.();
 
     let editingRide = this.editingRide;
 
     if (editingRide) {
-      return editingRide.save().then(
-        () => {
-          this.set('errorMessage', undefined);
-          this.toasts.show('Your report was saved');
+      try {
+        await editingRide.save();
+        editingRide.set('complete', true);
 
-          // Remove the ride from the store before reloading from the server
-          this.store.unloadRecord(this.editingRide);
+        this.set('errorMessage', undefined);
+        this.toasts.show('Your report was saved');
 
-          this.set('editingRide', undefined);
-          this.router.transitionTo('application');
-          window.scrollTo(0, 0);
-        },
-        () => {
-          this.set('errorMessage', 'There was an error saving your report!');
-        },
-      );
+        await this.store.findAll('ride', { reload: true });
+
+        this.set('editingRide', undefined);
+        this.router.transitionTo('application');
+        window.scrollTo(0, 0);
+      } catch {
+        this.set('errorMessage', 'There was an error saving your report!');
+      }
     } else {
       this.set('errorMessage', 'Please choose a ride');
     }

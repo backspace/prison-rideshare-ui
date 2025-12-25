@@ -53,21 +53,21 @@ module('Acceptance | people', function (hooks) {
   test('people are listed, with inactive people hidden by default', async function (assert) {
     await page.visit();
 
-    assert.equal(
+    assert.strictEqual(
       page.people.length,
       2,
       'expected the inactive person to be hidden',
     );
 
     await page.people[1].as((sun) => {
-      assert.equal(sun.name, 'Sun');
-      assert.equal(sun.email.text, 'sun@sense8');
-      assert.equal(sun.email.href, 'mailto:sun@sense8');
+      assert.strictEqual(sun.name, 'Sun');
+      assert.strictEqual(sun.email.text, 'sun@sense8');
+      assert.strictEqual(sun.email.href, 'mailto:sun@sense8');
       assert.ok(sun.email.isPreferred, 'expected Sun to prefer email');
-      assert.equal(sun.landline.text, '111');
-      assert.equal(sun.landline.href, 'tel:111');
-      assert.equal(sun.lastRide.text, 'March 22, 2017');
-      assert.equal(sun.notes.text, 'notes?');
+      assert.strictEqual(sun.landline.text, '111');
+      assert.strictEqual(sun.landline.href, 'tel:111');
+      assert.strictEqual(sun.lastRide.text, 'March 22, 2017');
+      assert.strictEqual(sun.notes.text, 'notes?');
       assert.notOk(sun.copyButton.isVisible);
     });
 
@@ -75,7 +75,7 @@ module('Acceptance | people', function (hooks) {
       page.people[0].mobile.isPreferred,
       'expected Kala to prefer mobile',
     );
-    assert.equal(
+    assert.strictEqual(
       page.people[0].lastRide.text,
       '',
       'expected someone with no rides to have a blank last ride',
@@ -83,14 +83,14 @@ module('Acceptance | people', function (hooks) {
 
     await page.head.inactiveSwitch.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.people.length,
       3,
       'expected the inactive person to be shown after the switch is flipped',
     );
 
     assert.ok(page.people[2].copyButton.isVisible);
-    assert.equal(page.people[2].copyButton.clipboardText, '91 Albert');
+    assert.strictEqual(page.people[2].copyButton.clipboardText, '91 Albert');
 
     percySnapshot(assert);
   });
@@ -107,17 +107,17 @@ module('Acceptance | people', function (hooks) {
     await page.form.nameField.fill('Billiam');
     await page.form.cancel();
 
-    assert.equal(getPageTitle(), 'Drivers · Prison Rideshare');
-    assert.equal(page.people[2].name, 'Will');
+    assert.strictEqual(getPageTitle(), 'Drivers · Prison Rideshare');
+    assert.strictEqual(page.people[2].name, 'Will');
 
     let serverPeople = this.server.db.people;
     let will = serverPeople[serverPeople.length - 1];
 
-    assert.equal(will.name, 'Will');
+    assert.strictEqual(will.name, 'Will');
 
     await page.people[2].edit();
 
-    assert.equal(page.form.address.field.value, '91 Albert');
+    assert.strictEqual(page.form.address.field.value, '91 Albert');
 
     await page.form.nameField.fill('William');
 
@@ -130,14 +130,14 @@ module('Acceptance | people', function (hooks) {
     await page.form.notes.field.fillIn('notes.');
     await page.form.submit();
 
-    assert.equal(page.people[2].name, 'William');
+    assert.strictEqual(page.people[2].name, 'William');
 
     serverPeople = this.server.db.people;
     will = serverPeople[serverPeople.length - 1];
 
-    assert.equal(will.name, 'William');
-    assert.equal(will.email, 'will@sense8');
-    assert.equal(will.medium, 'mobile');
+    assert.strictEqual(will.name, 'William');
+    assert.strictEqual(will.email, 'will@sense8');
+    assert.strictEqual(will.medium, 'mobile');
   });
 
   test('people can be sorted by name and last ride', async function (assert) {
@@ -169,21 +169,21 @@ module('Acceptance | people', function (hooks) {
     await page.form.nameField.fill('Capheus');
     await page.form.submit();
 
-    assert.equal(
+    assert.strictEqual(
       page.people.length,
-      '3',
+      3,
       'expected the new person to have been added to the list',
     );
-    assert.equal(page.people[0].name, 'Capheus');
+    assert.strictEqual(page.people[0].name, 'Capheus');
 
     const [, , , capheus] = this.server.db.people;
-    assert.equal(capheus.name, 'Capheus');
+    assert.strictEqual(capheus.name, 'Capheus');
 
     await ridesPage.visit();
     await ridesPage.rides[0].driver.click();
     await ridesPage.rides[0].driver.choose('Capheus');
 
-    assert.equal(ridesPage.rides[0].driver.text, 'Capheus');
+    assert.strictEqual(ridesPage.rides[0].driver.text, 'Capheus');
   });
 
   test('people can be made inactive and active', async function (assert) {
@@ -191,7 +191,7 @@ module('Acceptance | people', function (hooks) {
 
     await page.people[1].activeSwitch.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.people.length,
       1,
       'expected the person made inactive to have disappeared',
@@ -224,7 +224,7 @@ module('Acceptance | people', function (hooks) {
 
     await page.people[1].activeSwitch.click();
 
-    assert.equal(
+    assert.strictEqual(
       shared.inlineAlert.text,
       'There was an error saving the active status of Sun.',
     );
@@ -263,7 +263,7 @@ module('Acceptance | people', function (hooks) {
     await page.form.nameField.fill('William');
     await page.form.submit();
 
-    assert.equal(page.form.nameError.text, "Name can't be blank");
-    assert.equal(page.form.email.error.text, "Email can't be blank");
+    assert.strictEqual(page.form.nameError.text, "Name can't be blank");
+    assert.strictEqual(page.form.email.error.text, "Email can't be blank");
   });
 });

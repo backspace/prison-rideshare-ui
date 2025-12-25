@@ -48,23 +48,26 @@ export default class RidesController extends Controller {
       showCancelled = this.showCancelled;
     const search = this.search;
 
-    let rides = this.model.rejectBy('isCombined').rejectBy('isNew');
+    const rides = Array.from(this.model || []);
+    let filtered = rides.filter((ride) => !ride.isCombined && !ride.isNew);
 
     if (!showCompleted) {
-      rides = rides.filterBy('complete', false);
+      filtered = filtered.filter((ride) => !ride.complete);
     }
 
     if (!showCancelled) {
-      rides = rides.filterBy('enabled');
+      filtered = filtered.filter((ride) => ride.enabled);
     }
 
     if (search) {
-      rides = rides.filter((ride) => ride.matches(search));
+      filtered = filtered.filter((ride) => ride.matches(search));
     }
 
-    rides.setEach('isDivider', false);
+    filtered.forEach((ride) => {
+      ride.isDivider = false;
+    });
 
-    let sorted = rides.sortBy('start');
+    let sorted = filtered.slice().sort((a, b) => a.start - b.start);
     const sortDir = this.sortDir;
     const now = new Date();
 
@@ -76,13 +79,13 @@ export default class RidesController extends Controller {
       const firstAfterNow = sorted.find((ride) => ride.start > now);
 
       if (firstAfterNow) {
-        firstAfterNow.set('isDivider', true);
+        firstAfterNow.isDivider = true;
       }
     } else {
       const firstBeforeNow = sorted.find((ride) => ride.start < now);
 
       if (firstBeforeNow) {
-        firstBeforeNow.set('isDivider', true);
+        firstBeforeNow.isDivider = true;
       }
     }
 
@@ -104,21 +107,21 @@ export default class RidesController extends Controller {
   }
 
   @action
-  submitRide(proxy) {
+  async submitRide(proxy) {
     let buffer = proxy.buffer;
     proxy.applyBufferedChanges();
 
-    return proxy.content
-      .save()
-      .then(() => {
-        this.editingRide = undefined;
-        this.rideErrorMessage = undefined;
-        return this.overlapsService.fetch();
-      })
-      .catch(() => {
-        this.rideErrorMessage = 'There was an error saving this ride';
-        proxy.setProperties(buffer);
-      });
+    try {
+      await proxy.content.save();
+
+      this.editingRide = undefined;
+      this.rideErrorMessage = undefined;
+
+      await this.overlapsService.fetch();
+    } catch {
+      this.rideErrorMessage = 'There was an error saving this ride';
+      proxy.setProperties(buffer);
+    }
   }
 
   @action

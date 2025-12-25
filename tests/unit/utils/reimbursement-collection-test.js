@@ -47,7 +47,7 @@ module('Unit | Utility | reimbursement collection', function () {
       person,
       reimbursements: [carReimbursement],
     });
-    assert.equal(
+    assert.strictEqual(
       result.get('clipboardText'),
       `${dateString}\tOctober mileage\tChelsea\t-$33\t\t\t`,
     );
@@ -59,7 +59,7 @@ module('Unit | Utility | reimbursement collection', function () {
       reimbursements: [carReimbursement, otherCarReimbursement],
       donations: true,
     });
-    assert.equal(
+    assert.strictEqual(
       result.get('clipboardText'),
       `${dateString}\tOctober mileage\tChelsea\t-$55\t$55\t\t(donated)`,
     );
@@ -70,7 +70,7 @@ module('Unit | Utility | reimbursement collection', function () {
       person,
       reimbursements: [foodReimbursement, carReimbursement],
     });
-    assert.equal(
+    assert.strictEqual(
       result.get('clipboardText'),
       `${dateString}\tOctober mileage + meal\tChelsea\t-$77\t\t\t`,
     );
@@ -81,7 +81,7 @@ module('Unit | Utility | reimbursement collection', function () {
       person,
       reimbursements: [foodReimbursement, otherFoodReimbursement],
     });
-    assert.equal(
+    assert.strictEqual(
       result.get('clipboardText'),
       `${dateString}\tOctober meal × 2\tChelsea\t-$99\t\t\t`,
     );

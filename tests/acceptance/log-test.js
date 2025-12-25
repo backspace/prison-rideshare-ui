@@ -49,15 +49,15 @@ module('Acceptance | log', function (hooks) {
 
     percySnapshot(assert);
 
-    assert.equal(getPageTitle(), 'Log · Prison Rideshare');
-    assert.equal(shared.logCount.text, '1');
+    assert.strictEqual(getPageTitle(), 'Log · Prison Rideshare');
+    assert.strictEqual(shared.logCount.text, '1');
 
-    assert.equal(page.posts.length, 2);
+    assert.strictEqual(page.posts.length, 2);
 
     await page.posts[0].as((post) => {
-      assert.equal(post.date, 'Tue Aug 7 2018 2:18p');
-      assert.equal(post.poster, 'jortle@tortle.ca');
-      assert.equal(post.content, 'ya');
+      assert.strictEqual(post.date, 'Tue Aug 7 2018 2:18p');
+      assert.strictEqual(post.poster, 'jortle@tortle.ca');
+      assert.strictEqual(post.content, 'ya');
       assert.ok(post.editButton.isVisible);
       assert.ok(post.markUnreadButton.isVisible);
       assert.ok(post.markReadButton.isHidden);
@@ -69,13 +69,13 @@ module('Acceptance | log', function (hooks) {
 
     await page.posts[0].markUnreadButton.click();
 
-    assert.equal(shared.logCount.text, '2');
+    assert.strictEqual(shared.logCount.text, '2');
     assert.ok(page.posts[0].markUnreadButton.isHidden);
     assert.ok(page.posts[0].markReadButton.isVisible);
 
     await page.posts[0].markReadButton.click();
 
-    assert.equal(shared.logCount.text, '1');
+    assert.strictEqual(shared.logCount.text, '1');
     assert.ok(page.posts[0].markUnreadButton.isVisible);
 
     await page.markAllReadButton.click();
@@ -92,14 +92,14 @@ module('Acceptance | log', function (hooks) {
     await page.newPost();
     await page.form.content.field.fillIn('hello');
 
-    assert.equal(page.posts.length, 2);
+    assert.strictEqual(page.posts.length, 2);
 
     await page.form.submit();
 
-    assert.equal(page.posts.length, 3);
+    assert.strictEqual(page.posts.length, 3);
 
     const [, , post] = this.server.db.posts;
-    assert.equal(post.content, stringToMobiledoc('hello'));
+    assert.strictEqual(post.content, stringToMobiledoc('hello'));
   });
 
   test('post validation errors are displayed', async function (assert) {
@@ -124,7 +124,7 @@ module('Acceptance | log', function (hooks) {
     await page.newPost();
     await page.form.submit();
 
-    assert.equal(page.form.content.error.text, "Content can't be blank");
+    assert.strictEqual(page.form.content.error.text, "Content can't be blank");
   });
 
   test('posts can be edited, cancelled edits are discarded', async function (assert) {
@@ -140,24 +140,24 @@ module('Acceptance | log', function (hooks) {
     await page.form.cancel();
 
     assert.ok(page.form.isHidden);
-    assert.equal(page.posts[0].content, 'ya');
+    assert.strictEqual(page.posts[0].content, 'ya');
 
     let posts = this.server.db.posts;
     let post = posts[posts.length - 1];
 
-    assert.equal(post.content, stringToMobiledoc('ya'));
+    assert.strictEqual(post.content, stringToMobiledoc('ya'));
 
     await page.posts[0].editButton.click();
     await page.form.content.field.fillIn('new content');
 
     await page.form.submit();
 
-    assert.equal(page.posts[0].content, 'new content');
+    assert.strictEqual(page.posts[0].content, 'new content');
 
     posts = this.server.db.posts;
     post = posts[posts.length - 1];
 
-    assert.equal(post.content, stringToMobiledoc('new content'));
+    assert.strictEqual(post.content, stringToMobiledoc('new content'));
   });
 
   test('posts can be deleted', async function (assert) {
@@ -168,7 +168,7 @@ module('Acceptance | log', function (hooks) {
     await page.posts[0].deleteButton.click();
     await page.posts[0].deleteConfirm.click();
 
-    assert.equal(this.server.db.posts.length, 1);
-    assert.equal(page.posts.length, 1);
+    assert.strictEqual(this.server.db.posts.length, 1);
+    assert.strictEqual(page.posts.length, 1);
   });
 });

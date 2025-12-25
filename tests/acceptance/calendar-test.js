@@ -93,13 +93,13 @@ module('Acceptance | calendar', function (hooks) {
   test('calendar shows existing commitments and lets them be changed', async function (assert) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-    assert.equal(page.personSession, 'Logged in as jorts@jants.ca');
-    assert.equal(page.month, 'December 2117');
+    assert.strictEqual(page.personSession, 'Logged in as jorts@jants.ca');
+    assert.strictEqual(page.month, 'December 2117');
 
     page.days[3].as((d4) => {
-      assert.equal(d4.slots.length, 1, 'expected one slot on Monday');
+      assert.strictEqual(d4.slots.length, 1, 'expected one slot on Monday');
       d4.slots[0].as((s1) => {
-        assert.equal(s1.hours, '5:30p—8');
+        assert.strictEqual(s1.hours, '5:30p—8');
         assert.ok(s1.isCommittedTo, 'expected the slot to be committed-to');
         assert.notOk(s1.isDisabled, 'expected the slot to not be full');
         assert.notOk(
@@ -110,22 +110,22 @@ module('Acceptance | calendar', function (hooks) {
     });
 
     page.days[9].as((d10) => {
-      assert.equal(d10.slots.length, 2, 'expected two slots on Sunday');
+      assert.strictEqual(d10.slots.length, 2, 'expected two slots on Sunday');
       d10.slots[0].as((s1) => {
-        assert.equal(s1.hours, '11a—5p');
+        assert.strictEqual(s1.hours, '11a—5p');
         assert.notOk(
           s1.isCommittedTo,
           'expected the slot to not be committed-to',
         );
       });
       d10.slots[1].as((s2) => {
-        assert.equal(s2.hours, '5p—9');
+        assert.strictEqual(s2.hours, '5p—9');
       });
     });
 
     await page.days[3].slots[0].click();
 
-    assert.equal(
+    assert.strictEqual(
       shared.toast.text,
       'Cancelled your agreement to drive on December 4',
     );
@@ -133,7 +133,7 @@ module('Acceptance | calendar', function (hooks) {
       page.days[3].slots[0].isCommittedTo,
       'expected the slot to not longer be committed-to',
     );
-    assert.equal(
+    assert.strictEqual(
       this.server.db.commitments.length,
       3,
       'expected the commitment to have been deleted on the server',
@@ -155,7 +155,7 @@ module('Acceptance | calendar', function (hooks) {
     // FIXME this is only a separate test because toasts linger forever in the test environment
     await page.days[9].slots[1].click();
 
-    assert.equal(
+    assert.strictEqual(
       shared.toast.text,
       'Thanks for agreeing to drive on December 10!',
     );
@@ -165,13 +165,13 @@ module('Acceptance | calendar', function (hooks) {
     );
 
     const [, , , , commitment] = this.server.db.commitments;
-    assert.equal(
+    assert.strictEqual(
       commitment.slotId,
       this.toCommitSlot.id,
       'expected the server to have the newly-created commitment',
     );
 
-    assert.equal(
+    assert.strictEqual(
       authorizationHeader,
       'Person Bearer XXX',
       'expected the person token to be sent when creating a commitment',
@@ -263,12 +263,12 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.days[3].slots[0].click();
 
-    assert.equal(shared.inlineAlert.text, 'Couldn’t save your change');
+    assert.strictEqual(shared.inlineAlert.text, 'Couldn’t save your change');
     assert.ok(
       page.days[3].slots[0].isCommittedTo,
       'expected the slot to still be committed-to',
     );
-    assert.equal(
+    assert.strictEqual(
       this.server.db.commitments.length,
       4,
       'expected the commitment to still be on the server',
@@ -306,12 +306,12 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.days[9].slots[1].click();
 
-    assert.equal(shared.inlineAlert.text, 'Couldn’t save your change');
+    assert.strictEqual(shared.inlineAlert.text, 'Couldn’t save your change');
     assert.notOk(
       page.days[9].slots[1].isCommittedTo,
       'expected the slot to not be committed-to',
     );
-    assert.equal(
+    assert.strictEqual(
       this.server.db.commitments.length,
       4,
       'expected the commitments to be unchanged on the server',
@@ -343,19 +343,25 @@ module('Acceptance | calendar', function (hooks) {
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
     await page.days[9].slots[1].click();
-    assert.equal(shared.inlineAlert.text, 'Fail!');
+    assert.strictEqual(shared.inlineAlert.text, 'Fail!');
   });
 
   test('visiting with an unknown magic token shows an error', async function (assert) {
     await page.visit({ month: '2117-12', token: 'JORTLEBY' });
 
-    assert.equal(page.error, 'We were unable to log you in with that token.');
+    assert.strictEqual(
+      page.error,
+      'We were unable to log you in with that token.',
+    );
   });
 
   test('visiting with no token shows an error', async function (assert) {
     await page.visit({ month: '2117-12' });
 
-    assert.equal(page.error, 'We were unable to log you in without a token.');
+    assert.strictEqual(
+      page.error,
+      'We were unable to log you in without a token.',
+    );
   });
 
   test('visiting with a magic token that doesn’t resolve to a person shows an error', async function (assert) {
@@ -376,7 +382,10 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-    assert.equal(page.error, 'We were unable to log you in with that token.');
+    assert.strictEqual(
+      page.error,
+      'We were unable to log you in with that token.',
+    );
   });
 
   test('visiting with a rejected magic token shows an error including details', async function (assert) {
@@ -398,7 +407,7 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.visit({ month: '2117-12', token: 'MAGIC??TOKEN' });
 
-    assert.equal(page.error, 'A detail');
+    assert.strictEqual(page.error, 'A detail');
   });
 
   test('the person can edit their details', async function (assert) {
@@ -415,7 +424,7 @@ module('Acceptance | calendar', function (hooks) {
       page.person.name.isVisible,
       'expected the name field to have become visible',
     );
-    assert.equal(page.person.name.field.value, 'Jortle Tortle');
+    assert.strictEqual(page.person.name.field.value, 'Jortle Tortle');
 
     assert.ok(
       page.person.activeSwitch.enabled,
@@ -426,15 +435,15 @@ module('Acceptance | calendar', function (hooks) {
       page.person.email.field.isDisabled,
       'expected the email field to be disabled',
     );
-    assert.equal(page.person.email.field.value, 'jorts@jants.ca');
+    assert.strictEqual(page.person.email.field.value, 'jorts@jants.ca');
 
     assert.ok(
       page.person.mobile.desiredMedium.isChecked,
       'expected mobile to be the desired medium',
     );
 
-    assert.equal(page.person.selfNotes.value, 'My self notes');
-    assert.equal(page.person.address.value, '91 Albert');
+    assert.strictEqual(page.person.selfNotes.value, 'My self notes');
+    assert.strictEqual(page.person.address.value, '91 Albert');
 
     assert.notOk(
       page.person.submitButton.isHighlighted,
@@ -451,7 +460,7 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.person.toggle.click();
 
-    assert.equal(
+    assert.strictEqual(
       page.person.name.field.value,
       'Jortle Tortle',
       'expected the change to have been reverted',
@@ -474,7 +483,7 @@ module('Acceptance | calendar', function (hooks) {
 
     const [person] = this.server.db.people;
 
-    assert.equal(
+    assert.strictEqual(
       person.name,
       'Jortleby',
       'expected the name to have changed on the server',
@@ -483,24 +492,24 @@ module('Acceptance | calendar', function (hooks) {
       person.active,
       'expected the person to be inactive on the server',
     );
-    assert.equal(
+    assert.strictEqual(
       person.mobile,
       '1234',
       'expected the mobile number to have changed on the server',
     );
-    assert.equal(
+    assert.strictEqual(
       person.medium,
       'email',
       'expected the medium to have changed on the server',
     );
-    assert.equal(
+    assert.strictEqual(
       person.selfNotes,
       'Updated self notes',
       'expected the self notes to have changed on the server',
     );
-    assert.equal(person.address, 'A new address');
+    assert.strictEqual(person.address, 'A new address');
 
-    assert.equal(shared.toast.text, 'Saved your details');
+    assert.strictEqual(shared.toast.text, 'Saved your details');
 
     assert.ok(
       page.person.name.isHidden,
@@ -533,8 +542,8 @@ module('Acceptance | calendar', function (hooks) {
     await page.person.name.field.fillIn('');
     await page.person.submitButton.click();
 
-    assert.equal(shared.inlineAlert.text, 'Couldn’t save your details');
-    assert.equal(page.person.name.error.text, "Name can't be blank");
+    assert.strictEqual(shared.inlineAlert.text, 'Couldn’t save your details');
+    assert.strictEqual(page.person.name.error.text, "Name can't be blank");
     assert.ok(
       page.person.name.field.isError,
       'expected the name field to show as being invalid',
@@ -576,7 +585,7 @@ module('Acceptance | calendar', function (hooks) {
     await page.person.name.field.fillIn('Jartleby');
     await page.person.submitButton.click();
 
-    assert.equal(shared.inlineAlert.text, 'Couldn’t save your details');
+    assert.strictEqual(shared.inlineAlert.text, 'Couldn’t save your details');
     assert.ok(
       page.person.name.isVisible,
       'expected the form to still be visible',
@@ -595,7 +604,7 @@ module('Acceptance | calendar', function (hooks) {
   test('the path controls the month', async function (assert) {
     await page.visit({ month: '2118-01', token: 'MAGIC??TOKEN' });
 
-    assert.equal(page.month, 'January 2118');
+    assert.strictEqual(page.month, 'January 2118');
   });
 
   test('an admin can see the commitments with person names', async function (assert) {
@@ -603,7 +612,7 @@ module('Acceptance | calendar', function (hooks) {
     await authenticateSession({ access_token: 'abcdef' });
     await page.adminVisit({ month: '2117-12' });
 
-    assert.equal(
+    assert.strictEqual(
       page.days[3].slots[0].count.text,
       '2/1',
       'expected two people to show for the slot out of a maximum of one',
@@ -622,13 +631,13 @@ module('Acceptance | calendar', function (hooks) {
       'expected a full slot to show in admin mode',
     );
 
-    assert.equal(
+    assert.strictEqual(
       page.people.length,
       0,
       'expected no people details to show initially',
     );
 
-    assert.equal(
+    assert.strictEqual(
       page.days[9].slots[0].count.text,
       '0/∞',
       'expected the slot capacity to show as ∞',
@@ -640,18 +649,18 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.days[3].slots[0].count.click();
 
-    assert.equal(page.viewingSlot, 'Saturday, December 4, 5:30p–8:00p');
-    assert.equal(
+    assert.strictEqual(page.viewingSlot, 'Saturday, December 4, 5:30p–8:00p');
+    assert.strictEqual(
       page.people.length,
       2,
       'expected two people details to show for the slot',
     );
-    assert.equal(page.people[0].name, 'Other Slot Person');
-    assert.equal(page.people[1].name, 'Jortle Tortle');
+    assert.strictEqual(page.people[0].name, 'Other Slot Person');
+    assert.strictEqual(page.people[1].name, 'Jortle Tortle');
 
     await page.people[1].reveal();
 
-    assert.equal(
+    assert.strictEqual(
       page.people[1].email,
       'jorts@jants.ca',
       'expected the contact information to be revealed',
@@ -661,7 +670,7 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.nextMonth.click();
 
-    assert.equal(page.month, 'January 2118: 0 commitments');
+    assert.strictEqual(page.month, 'January 2118: 0 commitments');
     assert.ok(
       currentURL().endsWith('2118-01'),
       'expected the path to have changed with the new month',
@@ -669,7 +678,7 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.previousMonth.click();
 
-    assert.equal(page.month, 'December 2117: 3 commitments');
+    assert.strictEqual(page.month, 'December 2117: 3 commitments');
     assert.ok(
       currentURL().endsWith('2117-12'),
       'expected the path to have returned to the original month',
@@ -684,21 +693,21 @@ module('Acceptance | calendar', function (hooks) {
     await page.days[9].slots[1].count.click();
     await page.peopleSearch.fillIn('commit');
 
-    assert.equal(
+    assert.strictEqual(
       page.peopleSearch.options.length,
       3,
       'expected three people to show for possible commitments',
     );
-    assert.equal(page.peopleSearch.options[0].text, 'Also non-committal');
-    assert.equal(
+    assert.strictEqual(page.peopleSearch.options[0].text, 'Also non-committal');
+    assert.strictEqual(
       page.peopleSearch.options[1].text,
       'Fully Committed Slot Person',
     );
-    assert.equal(page.peopleSearch.options[2].text, 'Non-committal');
+    assert.strictEqual(page.peopleSearch.options[2].text, 'Non-committal');
 
     await page.peopleSearch.fillIn('also');
 
-    assert.equal(
+    assert.strictEqual(
       page.peopleSearch.options.length,
       1,
       'expected only one match',
@@ -706,18 +715,18 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.peopleSearch.options[0].click();
 
-    assert.equal(
+    assert.strictEqual(
       shared.toast.text,
       'Committed Also non-committal to drive on December 10',
     );
-    assert.equal(
+    assert.strictEqual(
       page.days[9].slots[1].count.text,
       '1/2',
       'expected the slot to be newly committed-to',
     );
 
     const [, , , , commitment] = this.server.db.commitments;
-    assert.equal(
+    assert.strictEqual(
       commitment.slotId,
       this.toCommitSlot.id,
       'expected the server to have the newly-created commitment',
@@ -725,7 +734,7 @@ module('Acceptance | calendar', function (hooks) {
 
     await page.peopleSearch.fillIn('commit');
 
-    assert.equal(
+    assert.strictEqual(
       page.peopleSearch.options.length,
       2,
       'expected the now-commited person to not show in the search',
@@ -763,8 +772,8 @@ module('Acceptance | calendar', function (hooks) {
     await waitUntil(() => page.peopleSearch.options.length);
     await page.peopleSearch.options[0].click();
 
-    assert.equal(shared.inlineAlert.text, 'Fail!');
-    assert.equal(
+    assert.strictEqual(shared.inlineAlert.text, 'Fail!');
+    assert.strictEqual(
       this.server.db.commitments.length,
       4,
       'expected no change on the server',
@@ -791,11 +800,11 @@ module('Acceptance | calendar', function (hooks) {
     await page.days[3].slots[0].count.click();
     await page.people[0].remove();
 
-    assert.equal(
+    assert.strictEqual(
       shared.toast.text,
       'Deleted Other Slot Person’s commitment on December 4',
     );
-    assert.equal(
+    assert.strictEqual(
       this.server.db.commitments.length,
       3,
       'expected there to be three commitments left on the server',
@@ -831,8 +840,8 @@ module('Acceptance | calendar', function (hooks) {
     await page.days[3].slots[0].count.click();
     await page.people[0].remove();
 
-    assert.equal(shared.inlineAlert.text, 'Fail!');
-    assert.equal(
+    assert.strictEqual(shared.inlineAlert.text, 'Fail!');
+    assert.strictEqual(
       this.server.db.commitments.length,
       4,
       'expected no change on the server',

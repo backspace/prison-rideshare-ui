@@ -13,7 +13,7 @@ module('Integration | Component | linked contact', function (hooks) {
         <span data-test-container><LinkedContact @contact={{value}} /></span>
       </template>,
     );
-    assert.equal(find('span').innerHTML.trim(), 'hello');
+    assert.strictEqual(find('span').innerHTML.trim(), 'hello');
   });
 
   test('it extracts a phone number', async function (assert) {
@@ -23,7 +23,7 @@ module('Integration | Component | linked contact', function (hooks) {
         <span data-test-container><LinkedContact @contact={{value}} /></span>
       </template>,
     );
-    assert.equal(
+    assert.strictEqual(
       find('[data-test-container]').innerHTML.trim(),
       `hello <a href="tel:212-986-8227">212-986-8227</a> what`,
     );
@@ -36,7 +36,7 @@ module('Integration | Component | linked contact', function (hooks) {
         <span data-test-container><LinkedContact @contact={{value}} /></span>
       </template>,
     );
-    assert.equal(
+    assert.strictEqual(
       find('[data-test-container]').innerHTML.trim(),
       `hello <a href="tel:2129868227">2129868227</a> what`,
     );
@@ -49,7 +49,7 @@ module('Integration | Component | linked contact', function (hooks) {
         <span data-test-container><LinkedContact @contact={{value}} /></span>
       </template>,
     );
-    assert.equal(
+    assert.strictEqual(
       find('[data-test-container]').innerHTML.trim(),
       `hello <a href="tel:212 986 8227">212 986 8227</a> what`,
     );
@@ -62,7 +62,7 @@ module('Integration | Component | linked contact', function (hooks) {
         <span data-test-container><LinkedContact @contact={{value}} /></span>
       </template>,
     );
-    assert.equal(
+    assert.strictEqual(
       find('[data-test-container]').innerHTML.trim(),
       `hello <a href="tel:(212) 986 8227">(212) 986 8227</a> what`,
     );
@@ -74,6 +74,6 @@ module('Integration | Component | linked contact', function (hooks) {
         <span data-test-container><LinkedContact /></span>
       </template>,
     );
-    assert.equal(find('[data-test-container]').innerText.trim(), '');
+    assert.strictEqual(find('[data-test-container]').innerText.trim(), '');
   });
 });

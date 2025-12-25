@@ -66,15 +66,19 @@ module('Acceptance | reports', function (hooks) {
   test('submit a report for a ride', async function (assert) {
     await page.visit();
 
-    assert.equal(getPageTitle(), 'Ride report · Prison Rideshare');
-    assert.equal(page.rides.length, 2, 'expected two rides to choose from');
+    assert.strictEqual(getPageTitle(), 'Ride report · Prison Rideshare');
+    assert.strictEqual(
+      page.rides.length,
+      2,
+      'expected two rides to choose from',
+    );
     assert.ok(page.noSession.isHidden);
 
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].text,
       'francine: Sun, Dec 25 at 10:15a to Remand Centre (33 ¢⁄km )',
     );
-    assert.equal(
+    assert.strictEqual(
       page.rides[1].text,
       'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
@@ -92,21 +96,21 @@ module('Acceptance | reports', function (hooks) {
 
     const changedRide = this.server.db.rides[1];
 
-    assert.equal(changedRide.distance, 75);
-    assert.equal(changedRide.foodExpenses, 2550);
-    assert.equal(changedRide.carExpenses, 5205);
-    assert.equal(changedRide.reportNotes, 'These r the notes');
+    assert.strictEqual(changedRide.distance, 75);
+    assert.strictEqual(changedRide.foodExpenses, 2550);
+    assert.strictEqual(changedRide.carExpenses, 5205);
+    assert.strictEqual(changedRide.reportNotes, 'These r the notes');
     assert.true(changedRide.donation);
 
-    assert.equal(currentURL(), '/reports/new');
+    assert.strictEqual(currentURL(), '/reports/new');
 
-    assert.equal(shared.toast.text, 'Your report was saved');
-    assert.equal(
+    assert.strictEqual(shared.toast.text, 'Your report was saved');
+    assert.strictEqual(
       page.rides.length,
       1,
       'expected the reported-on ride to have disappeared',
     );
-    assert.equal(
+    assert.strictEqual(
       page.rides[0].text,
       'Tue, Dec 27 at 5:00p to Fort Leavenworth',
     );
@@ -127,7 +131,7 @@ module('Acceptance | reports', function (hooks) {
 
     await page.visit();
 
-    assert.equal(page.rides.length, 0);
+    assert.strictEqual(page.rides.length, 0);
     assert.ok(page.noSession.isVisible);
   });
 
@@ -154,7 +158,7 @@ module('Acceptance | reports', function (hooks) {
     await page.rides[1].click();
     await page.rides[0].click();
 
-    assert.equal(page.distance.value, '');
+    assert.strictEqual(page.distance.value, '');
   });
 
   test('a failure to save keeps the values and displays an error', async function (assert) {
@@ -172,13 +176,13 @@ module('Acceptance | reports', function (hooks) {
 
     await page.submitButton.click();
 
-    assert.equal(
+    assert.strictEqual(
       shared.inlineAlert.text,
       'There was an error saving your report!',
     );
 
-    assert.equal(currentURL(), '/reports/new');
-    assert.equal(
+    assert.strictEqual(currentURL(), '/reports/new');
+    assert.strictEqual(
       page.distance.value,
       '75',
       'expected the distance field to have the same value',
@@ -188,7 +192,7 @@ module('Acceptance | reports', function (hooks) {
 
     await page.submitButton.click();
 
-    assert.equal(shared.toast.text, 'Your report was saved');
+    assert.strictEqual(shared.toast.text, 'Your report was saved');
     assert.notOk(
       shared.inlineAlert.isPresent,
       'expected the inline alert to clear after retrying the submission',
