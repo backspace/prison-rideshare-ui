@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-classic-classes */
 import classic from 'ember-classic-decorator';
-import { filterBy, sort, alias } from '@ember/object/computed';
+import { sort, alias } from '@ember/object/computed';
 import EmberObject, { action, computed } from '@ember/object';
 import Controller from '@ember/controller';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';

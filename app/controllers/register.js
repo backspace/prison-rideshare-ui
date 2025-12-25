@@ -1,7 +1,7 @@
 /* eslint-disable ember/no-get */
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
-import { get, action } from '@ember/object';
+import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 
 export default class RegisterController extends Controller {
