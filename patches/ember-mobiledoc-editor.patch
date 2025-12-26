@@ -1,0 +1,11 @@
+diff --git a/addon/utils/polyfill-assign.js b/addon/utils/polyfill-assign.js
+index 879daad03b8c97e37eb68bea9cfe9373b4b77c35..fa889033a61742b7f1acc38884b279b8ab097010 100644
+--- a/addon/utils/polyfill-assign.js
++++ b/addon/utils/polyfill-assign.js
+@@ -1,5 +1,3 @@
+-import { assign, merge } from '@ember/polyfills';
+-
+-let polyfilledAssign = assign || merge;
++let polyfilledAssign = Object.assign;
+ 
+ export default polyfilledAssign;

@@ -138,7 +138,9 @@
     "patchedDependencies": {
       "@hashicorp/design-system-components": "patches/@hashicorp__design-system-components.patch",
       "decorator-transforms": "patches/decorator-transforms.patch",
-      "@hashicorp/flight-icons": "patches/@hashicorp__flight-icons.patch"
+      "@hashicorp/flight-icons": "patches/@hashicorp__flight-icons.patch",
+      "ember-mobiledoc-dom-renderer": "patches/ember-mobiledoc-dom-renderer.patch",
+      "ember-mobiledoc-editor": "patches/ember-mobiledoc-editor.patch"
     }
   }
 }

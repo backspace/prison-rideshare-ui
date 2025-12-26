@@ -17,6 +17,12 @@ patchedDependencies:
   decorator-transforms:
     hash: daaf70dcf904cf2d805d085a6528bf51c0554bb9a602cfdd5025c76d86e07eb9
     path: patches/decorator-transforms.patch
+  ember-mobiledoc-dom-renderer:
+    hash: e98ff90008b3af721e3bd7f138c26239c6830416ba64f5c024215fe44766152c
+    path: patches/ember-mobiledoc-dom-renderer.patch
+  ember-mobiledoc-editor:
+    hash: 9bbd9b14e7dd6c5271b56592aa528b4896f3d4992157023fb5077a6b525d584e
+    path: patches/ember-mobiledoc-editor.patch
 
 importers:
 
@@ -165,10 +171,10 @@ importers:
         version: 2.1.2(@babel/core@7.28.4)
       ember-mobiledoc-dom-renderer:
         specifier: ^0.8.1
-        version: 0.8.1
+        version: 0.8.1(patch_hash=e98ff90008b3af721e3bd7f138c26239c6830416ba64f5c024215fe44766152c)
       ember-mobiledoc-editor:
         specifier: ^0.8.1
-        version: 0.8.1(@glint/template@1.6.1)(webpack@5.101.3)
+        version: 0.8.1(patch_hash=9bbd9b14e7dd6c5271b56592aa528b4896f3d4992157023fb5077a6b525d584e)(@glint/template@1.6.1)(webpack@5.101.3)
       ember-modifier:
         specifier: ^4.2.2
         version: 4.2.2(@babel/core@7.28.4)
@@ -12013,7 +12019,7 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-mobiledoc-dom-renderer@0.8.1:
+  ember-mobiledoc-dom-renderer@0.8.1(patch_hash=e98ff90008b3af721e3bd7f138c26239c6830416ba64f5c024215fe44766152c):
     dependencies:
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 4.2.0
@@ -12024,7 +12030,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  ember-mobiledoc-editor@0.8.1(@glint/template@1.6.1)(webpack@5.101.3):
+  ember-mobiledoc-editor@0.8.1(patch_hash=9bbd9b14e7dd6c5271b56592aa528b4896f3d4992157023fb5077a6b525d584e)(@glint/template@1.6.1)(webpack@5.101.3):
     dependencies:
       broccoli-funnel: 3.0.8
       broccoli-merge-trees: 4.2.0
