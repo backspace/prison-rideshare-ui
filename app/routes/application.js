@@ -5,7 +5,6 @@ import momentAddLocaleShortMeridiemFormat from 'prison-rideshare-ui/utils/moment
 
 export default class ApplicationRoute extends Route {
   @service account;
-  @service institutions;
   @service moment;
   @service overlaps;
   @service session;
@@ -14,7 +13,6 @@ export default class ApplicationRoute extends Route {
 
   async beforeModel() {
     await this.session.setup();
-    await this.institutions.load();
 
     momentAddLocaleShortMeridiemFormat(this.moment);
 
