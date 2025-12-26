@@ -2,7 +2,8 @@
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
-module.exports = function (defaults) {
+module.exports = async function (defaults) {
+  const { setConfig } = await import('@warp-drive/build-config');
   const deployTarget = process.env.DEPLOY_TARGET;
 
   let autoImport = {};
@@ -44,6 +45,12 @@ module.exports = function (defaults) {
         './node_modules/@hashicorp/design-system-tokens/dist/products/css',
         './node_modules/@hashicorp/design-system-components/dist/styles',
       ],
+    },
+  });
+
+  setConfig(app, __dirname, {
+    deprecations: {
+      DEPRECATE_TRACKING_PACKAGE: false,
     },
   });
 
