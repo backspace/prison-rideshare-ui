@@ -1,13 +1,9 @@
 @import '@hashicorp/design-system-components';
-@import "ember-power-select";
-
+@import 'ember-power-select';
 @import 'ember-power-calendar';
-
 @import 'loading';
-
 @import 'calendar';
 @import 'statistics';
-
 @import 'log';
 @import 'toast';
 
@@ -16,11 +12,9 @@ body {
 
   max-width: 100%;
   max-height: 100%;
-
   font-family: var(--token-typography-body-200-font-family);
   font-size: var(--token-typography-body-200-font-size);
   line-height: var(--token-typography-body-200-line-height);
-
   margin: 0;
 }
 
@@ -38,7 +32,7 @@ body.ember-application {
 
 html {
   /* Reports and notes looked huge on iOS */
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 .app-frame--sidebar-closed {
@@ -81,7 +75,7 @@ html {
   margin: 0.75rem;
 }
 
-@media (max-width: 1079px) {
+@media (width <= 1079px) {
   .app-frame {
     grid-template-columns: 0 1fr;
   }
@@ -96,7 +90,7 @@ html {
   padding: 0 1rem;
   background: var(--app-header-bg);
   color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
 }
 
 .app-header__heading {
@@ -119,7 +113,7 @@ html {
   color: inherit;
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .app-header {
     gap: 0.5rem;
     padding: 0 0.75rem;
@@ -146,13 +140,15 @@ html {
 .app-side-nav__panel {
   background: white;
   border-right: 1px solid #dfe3eb;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 6%);
   height: 100%;
   width: var(--app-sidebar-width);
   position: relative;
   z-index: 1;
   transform: translateX(-100%);
-  transition: transform 180ms ease, opacity 180ms ease;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
 }
 
 .app-side-nav__scroll {
@@ -201,7 +197,7 @@ html {
 }
 
 .app-side-nav__scrim {
-  background: rgba(0, 0, 0, 0.32);
+  background: rgb(0 0 0 / 32%);
   border: none;
   cursor: pointer;
   display: none;
@@ -225,7 +221,7 @@ html {
   opacity: 0;
 }
 
-@media (min-width: 1080px) {
+@media (width >= 1080px) {
   .app-side-nav {
     pointer-events: auto;
   }
@@ -242,10 +238,10 @@ html {
   }
 }
 
-@media (max-width: 1079px) {
+@media (width <= 1079px) {
   .app-side-nav {
     height: auto;
-    inset: 0 0 0 0;
+    inset: 0;
     position: fixed;
     top: var(--app-header-height);
     z-index: 9;
@@ -301,22 +297,21 @@ html {
   row-gap: 0.5rem;
 }
 
+.rides-filters .hds-form__section-multi-field-group-item {
+  flex: 0 1 auto;
+}
+
 .rides-filters .hds-form__section-multi-field-group-item:first-of-type {
   flex: 1 1 16rem;
   min-width: 12rem;
   max-width: 30rem;
 }
 
-.rides-filters .hds-form__section-multi-field-group-item {
-  flex: 0 1 auto;
-}
-
-@media (max-width: 767px) {
+@media (width <= 767px) {
   .rides-filters {
-    flex-direction: column;
+    flex-flow: column nowrap;
     align-items: stretch;
     gap: 0.5rem;
-    flex-wrap: nowrap;
     padding: 0 0.75rem 0.5rem;
     row-gap: 0.5rem;
   }
@@ -347,7 +342,7 @@ html {
   margin-top: 0;
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .hds-modal {
     width: 100vw;
     max-width: 100vw;
@@ -372,16 +367,33 @@ html {
 
 .site-nav-container {
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
 }
 
 table.rides tr {
-  td, th {
+  td,
+  th {
     border-left-style: none;
     border-right-style: none;
+  }
+
+  &.notes,
+  &.report,
+  &.overlap {
+    td {
+      border-top: 0;
+    }
+  }
+
+  &.report .distance::after {
+    content: ' km';
+  }
+
+  &.report td[colspan='6'],
+  &.overlap td[colspan='3'] {
+    .hds-icon {
+      transform: translateY(3px);
+    }
   }
 
   .date-cell {
@@ -397,7 +409,7 @@ table.rides tr {
 
   &:has(+ .no-top-border) {
     td {
-        border-bottom-style: none;
+      border-bottom-style: none;
     }
   }
 
@@ -410,7 +422,7 @@ table.rides tr {
   &.enabled {
     opacity: 1;
 
-    &+.notes {
+    & + .notes {
       opacity: 1;
     }
   }
@@ -434,8 +446,9 @@ table.rides tr {
   }
 
   &.combined {
-    .date, .institution {
-      color: rgba(0, 0, 0, 0.5);
+    .date,
+    .institution {
+      color: rgb(0 0 0 / 50%);
     }
 
     td {
@@ -463,24 +476,6 @@ table.rides tr {
 
   margin-right: 1rem;
   margin-bottom: 0;
-}
-
-table.rides {
-  .notes, .report, .overlap {
-    td {
-      border-top: 0;
-    }
-  }
-
-  .report .distance::after {
-    content: ' km';
-  }
-
-  .report td[colspan='6'], .overlap td[colspan='3'] {
-    .hds-icon {
-      transform: translateY(3px);
-    }
-  }
 }
 
 .report-form {
@@ -514,7 +509,7 @@ table.rides {
     }
   }
 
-  &+.ride-person {
+  & + .ride-person {
     margin-left: 5px;
   }
 
@@ -526,9 +521,7 @@ table.rides {
 .person-badge {
   cursor: pointer;
   font-size: 13px;
-
   padding-right: 1.5rem;
-
   position: relative;
   display: flex;
   flex-direction: column;
@@ -554,6 +547,7 @@ table.rides {
   .row {
     display: flex;
     gap: 0.125rem;
+
     svg {
       transform: scale(0.75);
       margin-top: 1px;
@@ -601,7 +595,8 @@ table.rides {
   font-size: 60%;
 }
 
-.hds-modal input, #ride-search-input {
+.hds-modal input,
+#ride-search-input {
   box-sizing: border-box;
 }
 

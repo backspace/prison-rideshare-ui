@@ -21,9 +21,9 @@
   transform-origin: 50% 80%;
 }
 
-.loader:before,
-.loader:after {
-  content: "";
+.loader::before,
+.loader::after {
+  content: '';
   grid-area: 1/1;
   border: inherit;
   border-radius: 50%;
@@ -33,11 +33,14 @@
   border-color: var(--token-color-palette-blue-400);
 }
 
-.loader:after {
-  --s:-1;
+.loader::after {
+  --s: -1;
+
   border-color: var(--token-color-palette-blue-300);
 }
 
 @keyframes l11 {
-   100% {transform:rotate(calc(var(--s,1)*1turn))}
+  100% {
+    transform: rotate(calc(var(--s, 1) * 1turn));
+  }
 }

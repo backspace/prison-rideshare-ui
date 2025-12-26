@@ -3,15 +3,12 @@
 
   .count {
     display: inline-block;
-
     font-size: 80%;
     text-align: center;
-
     padding: 3px;
     border-radius: 5rem;
     background-color: var(--token-color-palette-blue-500);
     color: white;
-
     cursor: pointer;
 
     &.committed-to {
@@ -31,7 +28,8 @@
     }
   }
 
-  .ember-power-calendar-weekdays, .ember-power-calendar-weekday {
+  .ember-power-calendar-weekdays,
+  .ember-power-calendar-weekday {
     height: auto;
   }
 
@@ -39,7 +37,8 @@
     text-align: center;
   }
 
-  .previous-month, .next-month {
+  .previous-month,
+  .next-month {
     text-decoration: none;
   }
 }

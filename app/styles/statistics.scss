@@ -17,11 +17,10 @@
 .statistics-card .buttons {
   display: flex;
   gap: 0.5rem;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   justify-content: flex-start;
   align-items: center;
   white-space: nowrap;
-  flex-direction: row;
 }
 
 .statistics-card .buttons .hds-button {
@@ -40,7 +39,7 @@
   font-weight: 600;
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .statistics-controls {
     align-items: flex-start;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));

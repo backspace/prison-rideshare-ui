@@ -6,7 +6,9 @@
   }
 
   .mobiledoc-toolbar__button {
-    &[title="Pull Quote"], &[title="Link"], &[title="Subheading"] {
+    &[title='Pull Quote'],
+    &[title='Link'],
+    &[title='Subheading'] {
       display: none;
     }
   }
