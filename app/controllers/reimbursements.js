@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-classic-classes */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-classic-classes, ember/no-computed-properties-in-native-classes */
 import { sort, alias } from '@ember/object/computed';
 import EmberObject, { action, computed } from '@ember/object';
 import Controller from '@ember/controller';
@@ -8,7 +7,6 @@ import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-col
 
 import moment from 'moment-timezone';
 
-@classic
 export default class ReimbursementsController extends Controller {
   queryParams = [
     {
@@ -237,7 +235,6 @@ export default class ReimbursementsController extends Controller {
   }
 }
 
-@classic
 class MonthReimbursementCollections extends EmberObject {
   @computed('reimbursementCollections', 'reimbursementCollectionsClipboardText')
   get clipboardText() {

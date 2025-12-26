@@ -1,10 +1,8 @@
 /* eslint-disable ember/no-classic-classes */
 import EmberObject from '@ember/object';
-import classic from 'ember-classic-decorator';
 import { module, test } from 'qunit';
 import dollars from 'prison-rideshare-ui/utils/dollars';
 
-@classic
 class ClassWithDollars extends EmberObject {
   cents = undefined;
   @dollars('cents') dollars;

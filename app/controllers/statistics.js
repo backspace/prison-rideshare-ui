@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-classic-classes */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-hooks, ember/classic-decorator-no-classic-methods, ember/no-classic-classes, ember/no-computed-properties-in-native-classes */
 import { action, computed } from '@ember/object';
 import Controller from '@ember/controller';
 import moment from 'moment-timezone';
@@ -22,7 +21,6 @@ const theme = {
   },
 };
 
-@classic
 export default class StatisticsController extends Controller {
   queryParams = ['start', 'end', 'grouping'];
   grouping = 'rides';

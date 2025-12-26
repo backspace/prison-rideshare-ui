@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-computed-properties-in-native-classes, ember/require-tagless-components */
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import reasonToIcon from 'prison-rideshare-ui/utils/reason-to-icon';
@@ -7,7 +6,6 @@ import HighCharts from 'ember-highcharts/components/high-charts';
 
 const reasons = Object.keys(reasonToIcon);
 
-@classic
 export default class CancellationChart extends Component {
   <template>
     <HighCharts

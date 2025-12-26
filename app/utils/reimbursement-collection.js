@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-computed-properties-in-native-classes, ember/no-get */
 import { filterBy, mapBy } from '@ember/object/computed';
 import EmberObject, { computed } from '@ember/object';
 
@@ -7,7 +6,6 @@ import dollars from 'prison-rideshare-ui/utils/dollars';
 
 import moment from 'moment-timezone';
 
-@classic
 export default class ReimbursementCollection extends EmberObject {
   @mapBy('reimbursements', 'foodExpenses')
   foodExpenses;

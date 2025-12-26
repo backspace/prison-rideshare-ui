@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-classic-components, ember/no-get, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-classic-components, ember/no-computed-properties-in-native-classes, ember/no-get, ember/require-tagless-components */
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { alias } from '@ember/object/computed';
@@ -35,7 +34,6 @@ const DATETIME_LOCAL_FORMAT = 'YYYY-MM-DDTHH:mm';
 
 const SelectedRideVisitor = <template>{{@option.name}}</template>;
 
-@classic
 export default class RideForm extends Component {
   lastSearchTerm = null;
   lastSearchPromise = null;

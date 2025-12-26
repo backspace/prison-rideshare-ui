@@ -1,10 +1,8 @@
-/* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-computed-properties-in-native-classes, ember/no-get */
 import { equal } from '@ember/object/computed';
 import { inject as service } from '@ember/service';
 import ApplicationAdapter from './application';
 
-@classic
 export default class Person extends ApplicationAdapter {
   @service
   router;

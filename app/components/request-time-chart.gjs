@@ -1,12 +1,10 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-computed-properties-in-native-classes, ember/require-tagless-components */
 import { classNames } from '@ember-decorators/component';
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import moment from 'moment-timezone';
 import HighCharts from 'ember-highcharts/components/high-charts';
 
-@classic
 @classNames('request-time-chart')
 export default class RequestTimeChart extends Component {
   <template>

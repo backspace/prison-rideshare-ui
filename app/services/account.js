@@ -1,4 +1,4 @@
-/* eslint-disable ember/no-get */
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-get */
 import RSVP from 'rsvp';
 import Service, { inject as service } from '@ember/service';
 import { isEmpty } from '@ember/utils';
