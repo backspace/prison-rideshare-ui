@@ -19,7 +19,7 @@ export default Model.extend({
   cancellationReason: attr(),
 
   combinedWith: belongsTo('ride', { async: true, inverse: 'children' }),
-  children: hasMany('ride', { async: true, inverse: 'combinedWith' }),
+  children: hasMany('ride', { async: false, inverse: 'combinedWith' }),
 
   isCombined: computed('combinedWith.id', function () {
     return this.belongsTo('combinedWith').id();

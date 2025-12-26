@@ -109,7 +109,7 @@ export default class RideRow extends Component {
                 <HdsIcon @name='car' @size='16' @isInline={{true}} />
               </span>
             {{/if}}
-            {{#if (or (not this.ride.children) this.rideToCombine)}}
+            {{#if (or (not this.rideChildrenArray) this.rideToCombine)}}
               {{#let
                 (and this.rideToCombine (eq this.ride.id this.rideToCombine.id))
                 as |maybeCombining|
@@ -398,6 +398,11 @@ export default class RideRow extends Component {
       default:
         return null;
     }
+  }
+
+  @computed('ride.children.length')
+  get rideChildrenArray() {
+    return this.ride.children.slice() || [];
   }
 
   @action
