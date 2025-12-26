@@ -63,7 +63,6 @@
     "ember-cli-sass": "^11.0.0",
     "ember-cli-sri": "^2.1.1",
     "ember-cli-terser": "^4.0.2",
-    "ember-composable-helpers": "^5.0.0",
     "ember-concurrency": "^5.0.0",
     "ember-data": "^4.12.0",
     "ember-decorators": "^6.1.1",

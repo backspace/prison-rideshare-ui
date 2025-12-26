@@ -22,7 +22,9 @@ export default class NewController extends Controller {
   @computed('model', 'model.{[],@each.complete}')
   get reportableRides() {
     const rides = Array.from(this.model || []);
-    return rides.filter((ride) => !ride.complete);
+    let reportableRides = rides.filter((ride) => !ride.complete);
+    reportableRides.sort((a, b) => a.start - b.start);
+    return reportableRides;
   }
 
   _setNumberProperty(property, event) {

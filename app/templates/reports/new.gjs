@@ -1,6 +1,5 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import ReimbursementUnit from 'prison-rideshare-ui/components/reimbursement-unit';
 import { fn } from '@ember/helper';
@@ -46,7 +45,7 @@ export default RouteTemplate(
                 data-test-report-rides
                 as |Group|
               >
-                {{#each (sortBy 'start' @controller.reportableRides) as |ride|}}
+                {{#each @controller.reportableRides as |ride|}}
                   <Group.RadioField
                     @value={{ride.id}}
                     checked={{eq @controller.editingRide ride}}
