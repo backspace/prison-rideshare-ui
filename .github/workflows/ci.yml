@@ -44,7 +44,6 @@ jobs:
       - name: Run Tests
         run: pnpm test:ember
         env:
-          COVERAGE: true
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 
       - name: Publish test results
