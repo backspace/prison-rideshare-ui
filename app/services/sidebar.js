@@ -63,7 +63,7 @@ export default class SidebarService extends Service {
     let posts = this.get('postsRequest.posts');
 
     if (posts) {
-      return posts.filterBy('unread').length;
+      return posts.filter((p) => p.unread).length;
     } else {
       return 0;
     }
@@ -74,7 +74,7 @@ export default class SidebarService extends Service {
     let rides = this.get('ridesRequest.rides');
 
     if (rides) {
-      return rides.filterBy('requiresConfirmation').length;
+      return rides.filter((r) => r.requiresConfirmation).length;
     } else {
       return 0;
     }

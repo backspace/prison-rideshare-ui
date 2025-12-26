@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-classic-classes */
 import classic from 'ember-classic-decorator';
-import { filterBy, sort, alias } from '@ember/object/computed';
+import { sort, alias } from '@ember/object/computed';
 import EmberObject, { action, computed } from '@ember/object';
 import Controller from '@ember/controller';
 import ReimbursementCollection from 'prison-rideshare-ui/utils/reimbursement-collection';
@@ -21,7 +21,7 @@ export default class ReimbursementsController extends Controller {
 
   @computed('reimbursements.@each.processed')
   get unsortedFilteredReimbursements() {
-    return this.reimbursements.rejectBy('processed');
+    return this.reimbursements.filter((r) => !r.processed);
   }
 
   filteredReimbursementsSorting = Object.freeze(['ride.start']);
@@ -31,8 +31,10 @@ export default class ReimbursementsController extends Controller {
 
   showProcessed = false;
 
-  @filterBy('reimbursements', 'processed')
-  unsortedProcessedReimbursements;
+  @computed('reimbursements.@each.processed')
+  get unsortedProcessedReimbursements() {
+    return this.reimbursements.filter((r) => r.processed);
+  }
 
   processedReimbursementsSorting = Object.freeze(['insertedAt:desc']);
 
@@ -103,10 +105,12 @@ export default class ReimbursementsController extends Controller {
         monthToPersonIdToReimbursements[monthNumberString];
       const collections = Object.keys(personIdToReimbursements)
         .map((id) => personIdToReimbursements[id])
-        .sortBy('firstObject.person.name');
+        .sort((a, b) =>
+          a[0].person.get('name').localeCompare(b[0].person.get('name')),
+        );
 
       collections.forEach(([nonDonations, donations]) => {
-        if (nonDonations.reimbursements.get('length') === 0) {
+        if (nonDonations.reimbursements.length === 0) {
           donations.set('showName', true);
         } else {
           nonDonations.set('showName', true);
@@ -131,7 +135,9 @@ export default class ReimbursementsController extends Controller {
       return monthReimbursementCollections;
     }, []);
 
-    return monthReimbursementCollections.sortBy('monthNumberString');
+    return monthReimbursementCollections.sort((a, b) =>
+      a.monthNumberString.localeCompare(b.monthNumberString),
+    );
   }
 
   @computed('monthReimbursementCollections')

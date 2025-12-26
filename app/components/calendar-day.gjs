@@ -21,6 +21,7 @@ export default class CalendarDay extends Component {
       />
     {{/each}}
   </template>
+
   @computed('day.{date,id}', 'slots.@each.start')
   get daySlots() {
     const dayDateString = this.get('day.date').toDateString();
@@ -28,6 +29,6 @@ export default class CalendarDay extends Component {
 
     return slots
       .filter((slot) => dayDateString === slot.get('start').toDateString())
-      .sortBy('start');
+      .sort((a, b) => a.get('start') - b.get('start'));
   }
 }

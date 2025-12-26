@@ -47,10 +47,12 @@ export default class OverlapsService extends Service {
     }
 
     return response.data.reduce((ridesToCommitments, rideJson) => {
-      let commitmentIds = rideJson.relationships.commitments.data.mapBy('id');
-      let commitments = response.included
-        .filterBy('type', 'commitments')
-        .filter((included) => commitmentIds.includes(included.id));
+      let commitmentIds = rideJson.relationships.commitments.data.map(
+        (c) => c.id,
+      );
+      let commitments = response.included.filter(
+        (c) => c.type === 'commitments' && commitmentIds.includes(c.id),
+      );
 
       let relationshipIdToAttributes = response.included.reduce(
         (relationshipIdToAttributes, included) => {

@@ -77,7 +77,7 @@ export default class ResetController extends Controller {
           });
         } else {
           response.json().then((json) => {
-            let message = get(json, 'errors.firstObject.detail');
+            let message = json?.errors?.[0]?.detail;
 
             this.set('error', message || 'An unknown error occurred');
           });

@@ -106,7 +106,7 @@ export default class ReimbursementCollection extends EmberObject {
 
   @computed('reimbursements.firstObject.ride.start')
   get monthName() {
-    const date = this.get('reimbursements.firstObject.ride.start');
+    const date = this.reimbursements[0].ride.get('start');
     return moment(date).format('MMMM');
   }
 }

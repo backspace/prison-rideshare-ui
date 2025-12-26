@@ -10,9 +10,11 @@ function countRidesOrVisitors(rides, grouping) {
   if (grouping === 'rides') {
     return rides.length;
   } else if (grouping === 'passengers') {
-    return rides.mapBy('passengers').reduce((sum, passengers) => {
-      return sum + passengers;
-    }, 0);
+    return rides
+      .map((r) => r.passengers)
+      .reduce((sum, passengers) => {
+        return sum + passengers;
+      }, 0);
   }
 }
 
@@ -73,7 +75,7 @@ export default class RequestsAndReimbursementsChart extends Component {
         type: 'column',
         data: this.timeGroupKeys.map((timeGroupKey) => {
           return countRidesOrVisitors(
-            timeGroups[timeGroupKey].filterBy('cancelled'),
+            timeGroups[timeGroupKey].filter((r) => r.cancelled),
             grouping,
           );
         }),
@@ -84,7 +86,7 @@ export default class RequestsAndReimbursementsChart extends Component {
         type: 'column',
         data: this.timeGroupKeys.map((timeGroupKey) => {
           return countRidesOrVisitors(
-            timeGroups[timeGroupKey].rejectBy('cancelled'),
+            timeGroups[timeGroupKey].filter((r) => !r.cancelled),
             grouping,
           );
         }),

@@ -6,8 +6,6 @@ export default function (config) {
     ...config,
     models: { ...config.models },
     routes() {
-      this.passthrough('/write-coverage');
-
       this.logging = window.location.search.includes('mirage-logging=true');
 
       this.namespace = '/api';

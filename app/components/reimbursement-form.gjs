@@ -38,6 +38,7 @@ class ReimbursementForm extends Component {
   }
 
   <template>
+    {{! template-lint-disable no-autofocus-attribute }}
     <HdsModal
       @color='neutral'
       @size='small'

@@ -12,6 +12,7 @@ import Alert from 'prison-rideshare-ui/components/alert';
 
 export default RouteTemplate(
   <template>
+    {{! template-lint-disable no-autofocus-attribute }}
     {{pageTitle 'Forgot password'}}
     <HdsModal
       class='not-dismissible'

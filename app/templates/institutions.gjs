@@ -2,7 +2,7 @@ import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import { action } from '@ember/object';
 import Component from '@glimmer/component';
-import { fn, hash } from '@ember/helper';
+import { fn, get, hash } from '@ember/helper';
 import { on } from '@ember/modifier';
 import {
   HdsAdvancedTable,
@@ -31,6 +31,7 @@ class InstitutionsComponent extends Component {
   }
 
   <template>
+    {{! template-lint-disable no-autofocus-attribute }}
     <ToolbarHeader @title='Institutions'>
       <HdsButton
         @icon='plus'
@@ -113,7 +114,10 @@ class InstitutionsComponent extends Component {
                   @controller.editingInstitution.validationErrors.name.length
                 }}
                   <Field.Error data-test-institution-name-error>
-                    {{@controller.editingInstitution.validationErrors.name.firstObject}}
+                    {{get
+                      @controller.editingInstitution.validationErrors.name
+                      '0'
+                    }}
                   </Field.Error>
                 {{/if}}
               </HdsFormTextInputField>

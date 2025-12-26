@@ -20,7 +20,7 @@ export default class ApplicationController extends Controller {
 
     const ridesNeedingConfirmation =
       typeof rides.filterBy === 'function'
-        ? rides.filterBy('requiresConfirmation')
+        ? rides.filter((ride) => ride.requiresConfirmation)
         : rides.filter((ride) => ride?.requiresConfirmation);
 
     return overlapsCount + ridesNeedingConfirmation.length;
