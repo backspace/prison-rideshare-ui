@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-classic-components, ember/no-get */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-classic-components, ember/no-computed-properties-in-native-classes, ember/no-get */
 import { action, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
@@ -21,7 +20,6 @@ import not from 'ember-truth-helpers/helpers/not';
 import and from 'ember-truth-helpers/helpers/and';
 import eq from 'ember-truth-helpers/helpers/eq';
 
-@classic
 @tagName('')
 export default class RideRow extends Component {
   <template>

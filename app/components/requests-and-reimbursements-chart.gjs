@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-classic-classes, ember/no-classic-components, ember/no-computed-properties-in-native-classes, ember/require-tagless-components */
 import { action, computed } from '@ember/object';
 import { equal } from '@ember/object/computed';
 import Component from '@ember/component';
@@ -18,7 +17,6 @@ function countRidesOrVisitors(rides, grouping) {
   }
 }
 
-@classic
 export default class RequestsAndReimbursementsChart extends Component {
   <template>
     <HighCharts

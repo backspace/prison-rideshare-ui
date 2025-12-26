@@ -1,10 +1,8 @@
-/* eslint-disable ember/no-classic-classes, ember/no-classic-components, ember/no-get, ember/require-tagless-components */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-classic-classes, ember/no-classic-components, ember/no-computed-properties-in-native-classes, ember/no-get, ember/require-tagless-components */
 import { computed } from '@ember/object';
 import Component from '@ember/component';
 import CalendarSlot from 'prison-rideshare-ui/components/calendar-slot';
 
-@classic
 export default class CalendarDay extends Component {
   <template>
     <div class='day'>

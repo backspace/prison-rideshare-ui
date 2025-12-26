@@ -1,12 +1,10 @@
-/* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
+/* eslint-disable ember/classic-decorator-no-classic-methods, ember/no-get */
 import { inject as service } from '@ember/service';
 import Controller from '@ember/controller';
 import { get, action } from '@ember/object';
 
 import fetch from 'fetch';
 
-@classic
 export default class ResetController extends Controller {
   password = '';
 

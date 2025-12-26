@@ -1,7 +1,7 @@
 import RouteTemplate from 'ember-route-template';
 import HeadLayout from 'ember-cli-head/components/head-layout';
 import { action } from '@ember/object';
-import { concat, fn } from '@ember/helper';
+import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
@@ -146,10 +146,7 @@ class ApplicationComponent extends Component {
               <List.Item data-test-session>
                 <HdsButton
                   @color='secondary'
-                  @text={{concat
-                    'Log out '
-                    @controller.session.currentUser.email
-                  }}
+                  @text='Log out {{@controller.session.currentUser.email}}'
                   @size='small'
                   class='session-button'
                   {{on 'click' @controller.logout}}

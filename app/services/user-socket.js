@@ -1,5 +1,4 @@
 /* eslint-disable ember/no-get */
-import classic from 'ember-classic-decorator';
 import Service, { inject as service } from '@ember/service';
 // TODO restore in #202
 // import { A } from '@ember/array';
@@ -7,7 +6,6 @@ import Service, { inject as service } from '@ember/service';
 // import Ember from 'ember';
 // import config from '../config/environment';
 
-@classic
 export default class UserSocketService extends Service /*extends PhoenixSocket*/ {
   @service('session')
   session;
