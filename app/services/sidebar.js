@@ -1,6 +1,4 @@
-/* eslint-disable ember/no-classic-classes, ember/no-get */
-import classic from 'ember-classic-decorator';
-import { computed } from '@ember/object';
+/* eslint-disable ember/no-get */
 import { tracked } from '@glimmer/tracking';
 import Service, { inject as service } from '@ember/service';
 import { runTask } from 'ember-lifeline';
@@ -8,10 +6,8 @@ import { runTask } from 'ember-lifeline';
 import ObjectProxy from '@ember/object/proxy';
 import PromiseProxyMixin from '@ember/object/promise-proxy-mixin';
 
-@classic
 class ObjectPromiseProxy extends ObjectProxy.extend(PromiseProxyMixin) {}
 
-@classic
 export default class SidebarService extends Service {
   @service overlaps;
   @service session;
@@ -24,8 +20,9 @@ export default class SidebarService extends Service {
   @tracked open = false;
 
   navComponent = null;
+  postsRequestProxy = null;
+  ridesRequestProxy = null;
 
-  @computed('userSocket.present.length')
   get userCount() {
     const count = this.get('userSocket.present.length');
 
@@ -36,29 +33,34 @@ export default class SidebarService extends Service {
     }
   }
 
-  @computed
   get postsRequest() {
-    return ObjectPromiseProxy.create({
-      promise: this.store.findAll('post').then((posts) => {
-        return {
-          posts,
-        };
-      }),
-    });
+    if (!this.postsRequestProxy) {
+      this.postsRequestProxy = ObjectPromiseProxy.create({
+        promise: this.store.findAll('post').then((posts) => {
+          return {
+            posts,
+          };
+        }),
+      });
+    }
+
+    return this.postsRequestProxy;
   }
 
-  @computed
   get ridesRequest() {
-    return ObjectPromiseProxy.create({
-      promise: this.store.findAll('ride').then((rides) => {
-        return {
-          rides,
-        };
-      }),
-    });
+    if (!this.ridesRequestProxy) {
+      this.ridesRequestProxy = ObjectPromiseProxy.create({
+        promise: this.store.findAll('ride').then((rides) => {
+          return {
+            rides,
+          };
+        }),
+      });
+    }
+
+    return this.ridesRequestProxy;
   }
 
-  @computed('postsRequest.posts.@each.unread')
   get unreadCount() {
     let posts = this.get('postsRequest.posts');
 
@@ -69,7 +71,6 @@ export default class SidebarService extends Service {
     }
   }
 
-  @computed('ridesRequest.rides.@each.requiresConfirmation')
   get requiresConfirmationCount() {
     let rides = this.get('ridesRequest.rides');
 
@@ -80,13 +81,6 @@ export default class SidebarService extends Service {
     }
   }
 
-  @computed(
-    'session.currentUser.admin',
-    'userCount',
-    'unreadCount',
-    'overlaps.count',
-    'requiresConfirmationCount',
-  )
   get notificationCount() {
     if (this.session.get('currentUser.admin')) {
       return (
