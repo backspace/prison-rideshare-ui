@@ -52,6 +52,3 @@ jobs:
         with:
           junit_files: junit.xml
           check_name: Test Results
-
-      - name: Upload to Coveralls
-        uses: coverallsapp/github-action@v2
