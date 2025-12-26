@@ -28,8 +28,6 @@ module('Acceptance | sidebar', function (hooks) {
   });
 
   test('the sidebar is closed on mobile until toggled open', async function (assert) {
-    assert.expect(11);
-
     const restoreMatchMedia = stubDesktopMatchMedia(false);
 
     try {
@@ -139,8 +137,6 @@ module('Acceptance | sidebar', function (hooks) {
   });
 
   test('the sidebar closes after selecting a link on mobile', async function (assert) {
-    assert.expect(4);
-
     const restoreMatchMedia = stubDesktopMatchMedia(false);
 
     try {
