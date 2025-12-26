@@ -16,6 +16,16 @@ export default class LogController extends Controller {
   @service
   postReadings;
 
+  get anyUnread() {
+    return this.model.filter((p) => p.unread).length > 0;
+  }
+
+  get sortedPosts() {
+    let posts = Array.from(this.model);
+    posts.sort((a, b) => b.insertedAt - a.insertedAt);
+    return posts;
+  }
+
   @action
   newPost() {
     this.set(

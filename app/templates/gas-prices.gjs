@@ -1,7 +1,5 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import take from 'ember-composable-helpers/helpers/take';
-import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import {
   HdsCardContainer,
@@ -36,10 +34,7 @@ export default RouteTemplate(
         </:head>
 
         <:body as |Body|>
-          {{#each
-            (take 10 (sortBy 'insertedAt:desc' @controller.model))
-            as |gasPrice|
-          }}
+          {{#each @controller.recentPrices as |gasPrice|}}
             <Body.Tr data-test-gas-prices-row>
               <Body.Td class='date' data-test-gas-prices-date>
                 {{momentFormat gasPrice.insertedAt 'ddd, MMM D'}}

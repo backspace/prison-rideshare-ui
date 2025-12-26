@@ -1,7 +1,5 @@
 import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
-import filterBy from 'ember-composable-helpers/helpers/filter-by';
-import sortBy from 'ember-composable-helpers/helpers/sort-by';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import eq from 'ember-truth-helpers/helpers/eq';
 import MobiledocEditor from 'ember-mobiledoc-editor/components/mobiledoc-editor/component';
@@ -38,7 +36,7 @@ export default RouteTemplate(
             <Head.Th class='meta-column'>Meta</Head.Th>
             <Head.Th class='content-column'>Content</Head.Th>
             <Head.Th class='actions-column'>
-              {{#if (filterBy 'unread' @controller.model)}}
+              {{#if @controller.anyUnread}}
                 <HdsButton
                   type='button'
                   @text='Mark all read'
@@ -53,7 +51,7 @@ export default RouteTemplate(
         </:head>
 
         <:body as |Body|>
-          {{#each (sortBy 'insertedAt:desc' @controller.model) as |post|}}
+          {{#each @controller.sortedPosts as |post|}}
             {{#unless post.isNew}}
               <Body.Tr data-test-log-post-row>
                 <Body.Td class='meta'>
