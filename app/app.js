@@ -4,8 +4,14 @@ import Application from '@ember/application';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
 import config from 'prison-rideshare-ui/config/environment';
+import * as Sentry from '@sentry/ember';
 import { registerDateLibrary } from 'ember-power-calendar';
 import DateUtils from 'ember-power-calendar-moment';
+
+Sentry.init({
+  dsn: config.sentry.dsn,
+  sendDefaultPii: true,
+});
 
 registerDateLibrary(DateUtils);
 
