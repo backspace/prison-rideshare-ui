@@ -37,6 +37,7 @@
     "@glimmer/tracking": "^1.1.2",
     "@hashicorp/design-system-components": "^4.24.0",
     "@hashicorp/design-system-tokens": "^3.0.0",
+    "@percy/cli": "^1.31.6",
     "@percy/ember": "^2.1.4",
     "@sentry/ember": "^10.32.1",
     "bluebird": "^3.7.2",
