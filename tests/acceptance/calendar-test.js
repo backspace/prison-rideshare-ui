@@ -5,7 +5,7 @@ import { setupApplicationTest } from '../helpers/application-tests';
 import { Response } from 'miragejs';
 import { overrideRoute } from '../helpers/override-route';
 import { authenticateSession } from 'ember-simple-auth/test-support';
-import { percySnapshot } from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import { pollTaskFor } from 'ember-lifeline/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/calendar';

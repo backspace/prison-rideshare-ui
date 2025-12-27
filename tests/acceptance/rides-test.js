@@ -2,7 +2,7 @@
 import { click, currentURL, findAll, waitUntil } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import { Response } from 'miragejs';
 
 import { authenticateSession } from 'ember-simple-auth/test-support';

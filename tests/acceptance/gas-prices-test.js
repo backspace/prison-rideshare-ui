@@ -1,8 +1,7 @@
 /* eslint-disable qunit/require-expect */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
-
+import percySnapshot from '@percy/ember';
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import { getPageTitle } from 'ember-page-title/test-support';
 

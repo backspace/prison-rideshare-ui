@@ -2,8 +2,7 @@
 import { currentRouteName, currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
-
+import percySnapshot from '@percy/ember';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 import { Response } from 'miragejs';
 import { overrideRoute } from '../helpers/override-route';
