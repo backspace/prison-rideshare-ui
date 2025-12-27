@@ -91,7 +91,7 @@ module('Acceptance | reset password', function (hooks) {
     await resetPage.fillPassword('x');
     await resetPage.submit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(
       shared.inlineAlert.text,

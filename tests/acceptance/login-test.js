@@ -90,7 +90,7 @@ module('Acceptance | login', function (hooks) {
     await page.fillPassword('wrong-password');
     await page.submit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(currentURL(), '/login');
     assert.strictEqual(

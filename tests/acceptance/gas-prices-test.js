@@ -38,7 +38,7 @@ module('Acceptance | gas prices', function (hooks) {
   test('it lists gas prices and reïmbursement rates', async function (assert) {
     await page.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(getPageTitle(), 'Gas prices · Prison Rideshare');
     assert.strictEqual(

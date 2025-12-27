@@ -80,7 +80,7 @@ module('Acceptance | debts', function (hooks) {
   test('debts are listed', async function (assert) {
     await page.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(getPageTitle(), 'Debts · Prison Rideshare');
     assert.strictEqual(

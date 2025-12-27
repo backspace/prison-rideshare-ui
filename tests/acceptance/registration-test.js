@@ -75,7 +75,7 @@ module('Acceptance | registration', function (hooks) {
 
     await page.submit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(currentURL(), '/register');
     assert.strictEqual(

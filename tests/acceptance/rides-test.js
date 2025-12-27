@@ -77,7 +77,7 @@ module('Acceptance | rides', function (hooks) {
     });
 
     await page.visit();
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(getPageTitle(), 'Rides · Prison Rideshare');
     assert.strictEqual(
@@ -517,7 +517,7 @@ module('Acceptance | rides', function (hooks) {
     // FIXME not really here, but keyboard input for this is broken, and hovering
     await page.form.institution.choose('Rockwood');
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await page.form.submit();
 

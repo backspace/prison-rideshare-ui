@@ -96,7 +96,7 @@ module('Acceptance | users', function (hooks) {
       'expected the non-admin to be marked as present',
     );
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     const leavePresenceDiffMessage = { joins: {}, leaves: {} };
     leavePresenceDiffMessage.leaves[`User:${this.nonAdmin.id}`] = {};

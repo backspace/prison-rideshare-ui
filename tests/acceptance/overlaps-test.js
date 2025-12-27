@@ -37,7 +37,7 @@ module('Acceptance | overlaps', function (hooks) {
 
     await page.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(shared.ridesBadge.text, '1');
 

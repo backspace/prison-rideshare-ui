@@ -25,7 +25,7 @@ module('Acceptance | forgot', function (hooks) {
 
     await forgotPage.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await forgotPage.fillEmail('hello@example.com');
     await forgotPage.submit();

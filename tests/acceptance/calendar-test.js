@@ -138,7 +138,7 @@ module('Acceptance | calendar', function (hooks) {
       3,
       'expected the commitment to have been deleted on the server',
     );
-    percySnapshot(assert);
+    await percySnapshot(assert);
   });
 
   test('slots can be committed to', async function (assert) {
@@ -478,7 +478,7 @@ module('Acceptance | calendar', function (hooks) {
       'expected the submit button to be highlighted when the record is dirty',
     );
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
     await page.person.submitButton.click();
 
     const [person] = this.server.db.people;
@@ -666,7 +666,7 @@ module('Acceptance | calendar', function (hooks) {
       'expected the contact information to be revealed',
     );
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await page.nextMonth.click();
 

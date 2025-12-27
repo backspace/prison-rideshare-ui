@@ -204,7 +204,7 @@ module('Acceptance | reimbursements', function (hooks) {
       'expected the car expense to have been donated',
     );
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
   });
 
   test('process reimbursements', async function (assert) {

@@ -90,7 +90,7 @@ module('Acceptance | reports', function (hooks) {
     await page.notes.fillIn('These r the notes');
     await page.donation.click();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await page.submitButton.click();
 

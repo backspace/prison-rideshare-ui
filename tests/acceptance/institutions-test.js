@@ -20,7 +20,7 @@ module('Acceptance | institutions', function (hooks) {
   test('institutions can be listed and edited', async function (assert) {
     await page.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(getPageTitle(), 'Institutions · Prison Rideshare');
     assert.strictEqual(
@@ -62,7 +62,7 @@ module('Acceptance | institutions', function (hooks) {
     await page.form.nameField.fillIn('Remand Centre');
     await page.form.farField.click();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await page.form.submit();
 
