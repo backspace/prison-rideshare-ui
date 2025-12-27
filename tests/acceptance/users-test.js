@@ -1,8 +1,7 @@
 /* eslint-disable qunit/require-expect */
 import { module, skip, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
-
+import percySnapshot from '@percy/ember';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/users';
@@ -97,7 +96,7 @@ module('Acceptance | users', function (hooks) {
       'expected the non-admin to be marked as present',
     );
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     const leavePresenceDiffMessage = { joins: {}, leaves: {} };
     leavePresenceDiffMessage.leaves[`User:${this.nonAdmin.id}`] = {};

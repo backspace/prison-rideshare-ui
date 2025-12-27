@@ -1,7 +1,7 @@
 /* eslint-disable qunit/require-expect */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/log';
@@ -47,7 +47,7 @@ module('Acceptance | log', function (hooks) {
 
     await page.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(getPageTitle(), 'Log · Prison Rideshare');
     assert.strictEqual(shared.logCount.text, '1');
@@ -134,7 +134,7 @@ module('Acceptance | log', function (hooks) {
 
     await page.posts[0].editButton.click();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await page.form.content.field.fillIn('new post content');
     await page.form.cancel();

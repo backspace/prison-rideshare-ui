@@ -1,8 +1,7 @@
 /* eslint-disable qunit/require-expect */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
-
+import percySnapshot from '@percy/ember';
 import page from 'prison-rideshare-ui/tests/pages/gas-prices';
 import { getPageTitle } from 'ember-page-title/test-support';
 
@@ -39,7 +38,7 @@ module('Acceptance | gas prices', function (hooks) {
   test('it lists gas prices and reïmbursement rates', async function (assert) {
     await page.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(getPageTitle(), 'Gas prices · Prison Rideshare');
     assert.strictEqual(

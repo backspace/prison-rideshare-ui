@@ -3,8 +3,7 @@ import { currentURL } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { Response } from 'miragejs';
-import { percySnapshot } from 'ember-percy';
-
+import percySnapshot from '@percy/ember';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import page from 'prison-rideshare-ui/tests/pages/register';
@@ -76,7 +75,7 @@ module('Acceptance | registration', function (hooks) {
 
     await page.submit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(currentURL(), '/register');
     assert.strictEqual(
