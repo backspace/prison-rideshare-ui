@@ -2,7 +2,7 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import { currentURL } from '@ember/test-helpers';
-import { percySnapshot } from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import { Response } from 'miragejs';
 import { overrideRoute } from '../helpers/override-route';
 
@@ -91,7 +91,7 @@ module('Acceptance | reset password', function (hooks) {
     await resetPage.fillPassword('x');
     await resetPage.submit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     assert.strictEqual(
       shared.inlineAlert.text,

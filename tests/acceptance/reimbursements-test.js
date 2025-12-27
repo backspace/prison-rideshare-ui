@@ -1,8 +1,7 @@
 /* eslint-disable qunit/require-expect */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
-
+import percySnapshot from '@percy/ember';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import reimbursementsPage from 'prison-rideshare-ui/tests/pages/reimbursements';
@@ -205,7 +204,7 @@ module('Acceptance | reimbursements', function (hooks) {
       'expected the car expense to have been donated',
     );
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
   });
 
   test('process reimbursements', async function (assert) {

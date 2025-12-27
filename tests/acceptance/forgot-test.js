@@ -1,7 +1,7 @@
 /* eslint-disable qunit/require-expect */
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import { percySnapshot } from 'ember-percy';
+import percySnapshot from '@percy/ember';
 import { Response } from 'miragejs';
 
 import { getPageTitle } from 'ember-page-title/test-support';
@@ -25,7 +25,7 @@ module('Acceptance | forgot', function (hooks) {
 
     await forgotPage.visit();
 
-    percySnapshot(assert);
+    await percySnapshot(assert);
 
     await forgotPage.fillEmail('hello@example.com');
     await forgotPage.submit();

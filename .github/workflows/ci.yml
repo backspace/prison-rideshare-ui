@@ -42,7 +42,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
       - name: Run Tests
-        run: pnpm test:ember
+        run: pnpm test:ember:with-percy
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
 

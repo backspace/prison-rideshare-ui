@@ -22,7 +22,8 @@
     "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
     "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
-    "test:ember": "ember test"
+    "test:ember": "ember test",
+    "test:ember:with-percy": "percy exec -- ember test"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.3",
@@ -37,6 +38,8 @@
     "@glimmer/tracking": "^1.1.2",
     "@hashicorp/design-system-components": "^4.24.0",
     "@hashicorp/design-system-tokens": "^3.0.0",
+    "@percy/cli": "^1.31.6",
+    "@percy/ember": "^5.0.0",
     "@sentry/ember": "^10.32.1",
     "bluebird": "^3.7.2",
     "broccoli-asset-rev": "^3.0.0",
@@ -75,7 +78,6 @@
     "ember-modifier": "^4.2.2",
     "ember-moment": "^10.0.0",
     "ember-page-title": "^8.2.4",
-    "ember-percy": "^1.6.0",
     "ember-power-calendar": "^1.1.0",
     "ember-power-calendar-moment": "^1.0.2",
     "ember-power-select": "^8.11.0",
