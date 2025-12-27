@@ -68,8 +68,8 @@ importers:
         specifier: ^1.31.6
         version: 1.31.6(typescript@5.9.2)
       '@percy/ember':
-        specifier: ^3.0.0
-        version: 3.0.1
+        specifier: ^5.0.0
+        version: 5.0.0(@babel/core@7.28.4)(@glint/template@1.6.1)(webpack@5.101.3)
       '@sentry/ember':
         specifier: ^10.32.1
         version: 10.32.1(@glint/template@1.6.1)(ember-cli@4.12.3(@types/node@24.5.2)(babel-core@6.26.3)(handlebars@4.7.8)(underscore@1.13.7))(webpack@5.101.3)
@@ -1517,9 +1517,9 @@ packages:
   '@percy/dom@1.31.6':
     resolution: {integrity: sha512-JjAK38zKqtCefWi+XIDcx8b3OEOw9E+zIcgdcueOS4sGtWKaw3G1sFVuUDiA4p2u+AvNFnyZ4Bda+KKexcnZMQ==}
 
-  '@percy/ember@3.0.1':
-    resolution: {integrity: sha512-TOTwai5AsjtpAUWnCijKp8djfsWXfo4eUfF0Wc4QUjba+d3rk9FzvcppjJSmDPSJplyBlAyv1bxO1NMIfr80WQ==}
-    engines: {node: '>= 14'}
+  '@percy/ember@5.0.0':
+    resolution: {integrity: sha512-Nod2k3zMUQKnAK29dO9Xp4tdIMUiLrEffntLXjHtQroEq2wqCTeS6gfLLEjV++TgPE0q2ehex/fd2QXzgKFKEA==}
+    engines: {node: '>= 16'}
 
   '@percy/env@1.31.6':
     resolution: {integrity: sha512-MngvudIHRMd09c59HXXszTey3zlDvlgTB42/tcJFuGGM/jwMw7suJeQXyt+G+7f+MIa/TMmiOeYCW4mYWoMuAg==}
@@ -9361,12 +9361,16 @@ snapshots:
 
   '@percy/dom@1.31.6': {}
 
-  '@percy/ember@3.0.1':
+  '@percy/ember@5.0.0(@babel/core@7.28.4)(@glint/template@1.6.1)(webpack@5.101.3)':
     dependencies:
       '@percy/sdk-utils': 1.31.6
-      ember-cli-babel: 7.26.11
+      ember-auto-import: 2.11.0(@glint/template@1.6.1)(webpack@5.101.3)
+      ember-cli-babel: 8.2.0(@babel/core@7.28.4)
     transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
       - supports-color
+      - webpack
 
   '@percy/env@1.31.6':
     dependencies:
