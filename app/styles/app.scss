@@ -32,7 +32,8 @@ body.ember-application {
 
 html {
   /* Reports and notes looked huge on iOS */
-  text-size-adjust: 100%;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-size-adjust: 100%;
 }
 
 .app-frame--sidebar-closed {
