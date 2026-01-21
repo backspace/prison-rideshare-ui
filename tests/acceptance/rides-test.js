@@ -315,6 +315,24 @@ module('Acceptance | rides', function (hooks) {
     );
   });
 
+  test('shows the end year when a ride spans years', async function (assert) {
+    this.server.create('ride', {
+      name: 'New Year Ride',
+      start: new Date(2010, 11, 31, 23, 0),
+      end: new Date(2011, 0, 1, 1, 0),
+    });
+
+    await page.visit();
+
+    const newYearRide = page.rides[page.rides.length - 1];
+
+    assert.ok(newYearRide, 'expected the new year ride to be present');
+    assert.strictEqual(
+      newYearRide.date,
+      'Fri Dec 31 2010 11p — Sat Jan 1 2011 1a',
+    );
+  });
+
   test('selecting an existing visitor replaces the typed value', async function (assert) {
     this.server.create('ride', {
       name: 'Octavia Butler',

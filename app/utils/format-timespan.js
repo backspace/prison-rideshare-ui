@@ -30,7 +30,17 @@ export default function formatTimespan(moment, start, end, date = true) {
   let startDateString = moment.moment(start).format('YYYY-MM-DD');
   let endDateString = moment.moment(end).format('YYYY-MM-DD');
 
-  if (startDateString !== endDateString) {
+  let yearsDiffer = Boolean(
+    start && end && start.getFullYear() !== end.getFullYear(),
+  );
+
+  if (yearsDiffer) {
+    if (!endTime.includes('a')) {
+      endTime += 'a';
+    }
+
+    endTime = `ddd MMM D YYYY ${endTime}`;
+  } else if (startDateString !== endDateString) {
     endTime = `ddd ${endTime}`;
   }
 
