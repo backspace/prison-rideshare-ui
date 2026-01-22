@@ -8,6 +8,7 @@ import formatTimespan from 'prison-rideshare-ui/utils/format-timespan';
 import parseTimespan from 'prison-rideshare-ui/utils/parse-timespan';
 import deduplicateVisitorSuggestions from 'prison-rideshare-ui/utils/deduplicate-visitor-suggestions';
 import {
+  HdsAlert,
   HdsModal,
   HdsButton,
   HdsButtonSet,
@@ -67,10 +68,14 @@ export default class RideForm extends Component {
 
       <M.Body>
         {{#if this.editingWarning}}
-          <div data-test-editing-warning>
-            <HdsIcon @name='alert-triangle' @size='16' />
-            {{this.editingWarning}}
-          </div>
+          <HdsAlert
+            @type='inline'
+            @color='critical'
+            data-test-editing-warning
+            as |A|
+          >
+            <A.Description>{{this.editingWarning}}</A.Description>
+          </HdsAlert>
         {{/if}}
 
         {{#if this.errorMessage}}
