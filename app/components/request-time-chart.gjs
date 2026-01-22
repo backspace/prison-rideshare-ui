@@ -23,7 +23,7 @@ export default class RequestTimeChart extends Component {
     />
 
     {{#if this.excludedRides.length}}
-      <details class='request-time-exclusions'>
+      <details class='chart-addendum'>
         <summary>
           Rides excluded from visit times chart (duration over
           {{MAX_RIDE_DURATION_HOURS}}

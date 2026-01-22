@@ -25,6 +25,11 @@ export default class RequestsAndReimbursementsChart extends Component {
       @theme={{this.theme}}
       @callback={{this.afterRenderCallback}}
     />
+    <div class='chart-addendum'>
+      <div>Total distance: {{this.totalDistanceDisplay}} km</div>
+      <div>Total reimbursements: ${{this.totalReimbursementsDisplay}}</div>
+      <div>Total food expenses: ${{this.totalFoodExpensesDisplay}}</div>
+    </div>
   </template>
 
   rendered = false;
@@ -174,6 +179,61 @@ export default class RequestsAndReimbursementsChart extends Component {
         },
       ],
     };
+  }
+
+  @computed('rides.@each.distance')
+  get totalDistance() {
+    return (this.rides || []).reduce((sum, ride) => {
+      return sum + (ride.get('distance') || 0);
+    }, 0);
+  }
+
+  @computed(
+    'rides.@each.reimbursementFoodExpensesSum',
+    'rides.@each.reimbursementCarExpensesSum',
+  )
+  get totalReimbursements() {
+    return (
+      (this.rides || []).reduce((sum, ride) => {
+        return (
+          sum +
+          ride.get('reimbursementFoodExpensesSum') +
+          ride.get('reimbursementCarExpensesSum')
+        );
+      }, 0) / 100
+    );
+  }
+
+  @computed('rides.@each.reimbursementFoodExpensesSum')
+  get totalFoodExpenses() {
+    return (
+      (this.rides || []).reduce((sum, ride) => {
+        return sum + ride.get('reimbursementFoodExpensesSum');
+      }, 0) / 100
+    );
+  }
+
+  @computed('totalDistance')
+  get totalDistanceDisplay() {
+    return this.formatNumber(this.totalDistance, 1);
+  }
+
+  @computed('totalReimbursements')
+  get totalReimbursementsDisplay() {
+    return this.formatNumber(this.totalReimbursements, 2);
+  }
+
+  @computed('totalFoodExpenses')
+  get totalFoodExpensesDisplay() {
+    return this.formatNumber(this.totalFoodExpenses, 2);
+  }
+
+  formatNumber(value, fractionDigits) {
+    if (!Number.isFinite(value)) {
+      return '0';
+    }
+
+    return value.toFixed(fractionDigits);
   }
 
   @action
