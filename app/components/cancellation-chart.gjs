@@ -14,24 +14,40 @@ export default class CancellationChart extends Component {
       @theme={{this.theme}}
     />
   </template>
-  @computed('rides.@each.cancellationReason', 'grouping')
+  @computed(
+    'rides.@each.{cancellationReason,passengers,cancelled,complete,combinedWith}',
+    'grouping',
+  )
   get reasonToCount() {
     const grouping = this.grouping;
+    const rides = this.rides || [];
+    const ridesById = new Map(rides.map((ride) => [ride.get('id'), ride]));
 
-    return this.rides.reduce((reasonToCount, ride) => {
+    const filteredRides =
+      grouping === 'rides'
+        ? rides.filter((ride) => !ride.belongsTo('combinedWith').id())
+        : rides;
+
+    return filteredRides.reduce((reasonToCount, ride) => {
       const rideAddition = grouping === 'rides' ? 1 : ride.get('passengers');
+      const combinedWith =
+        grouping === 'passengers' ? ride.belongsTo('combinedWith') : null;
+      const parentId = combinedWith?.id();
+      const statusRide = parentId
+        ? ridesById.get(parentId) || combinedWith.value() || ride
+        : ride;
 
       let key;
 
-      if (ride.get('cancelled')) {
-        const reason = ride.get('cancellationReason');
+      if (statusRide.get('cancelled')) {
+        const reason = statusRide.get('cancellationReason');
         if (reasons.includes(reason)) {
           key = reason;
         } else {
           key = 'other';
         }
       } else {
-        if (ride.get('complete')) {
+        if (statusRide.get('complete')) {
           key = 'report complete';
         } else {
           key = 'report incomplete';
