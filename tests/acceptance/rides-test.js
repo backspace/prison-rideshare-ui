@@ -166,7 +166,10 @@ module('Acceptance | rides', function (hooks) {
     );
 
     await page.form.timespan.fillIn('Dec 26 2300 from 9a to 11:30');
-    assert.notOk(page.form.timespanResult.hasWarning);
+    assert.notOk(page.form.timespanResult.hasPastWarning);
+
+    await page.form.timespan.fillIn('dec 26 2300 4pm to dec 29 11');
+    assert.ok(page.form.timespanResult.hasDurationWarning);
 
     await page.form.cancel();
 
@@ -510,7 +513,7 @@ module('Acceptance | rides', function (hooks) {
 
     await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
 
-    assert.ok(page.form.timespanResult.hasWarning);
+    assert.ok(page.form.timespanResult.hasPastWarning);
 
     await page.form.overridable.click();
 

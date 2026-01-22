@@ -107,7 +107,7 @@ export default class RideForm extends Component {
           <HdsFormField @layout='vertical' data-test-timespan-result as |Field|>
             <Field.Label>Ride times</Field.Label>
             <Field.Control>
-              <HdsSegmentedGroup as |SegmentedGroup|>
+              <HdsSegmentedGroup class='timespan-result' as |SegmentedGroup|>
                 <SegmentedGroup.TextInput
                   id={{Field.id}}
                   aria-describedby={{Field.ariaDescribedBy}}
@@ -124,9 +124,14 @@ export default class RideForm extends Component {
                 />
               </HdsSegmentedGroup>
             </Field.Control>
-            {{#if this.timespanWarning}}
-              <Field.Error data-test-timespan-warning>
+            {{#if this.timespanWarningPast}}
+              <Field.Error data-test-timespan-warning-past>
                 This request is in the past
+              </Field.Error>
+            {{/if}}
+            {{#if this.timespanWarningLong}}
+              <Field.Error data-test-timespan-warning-duration>
+                This request is longer than 24 hours
               </Field.Error>
             {{/if}}
           </HdsFormField>
@@ -494,11 +499,31 @@ export default class RideForm extends Component {
   }
 
   @computed('ride.{start,end}')
-  get timespanWarning() {
+  get timespanWarningPast() {
     const start = this.get('ride.start');
     const end = this.get('ride.end');
 
     return start && end && start < new Date();
+  }
+
+  @computed('ride.{start,end}')
+  get timespanWarningLong() {
+    const start = this.get('ride.start');
+    const end = this.get('ride.end');
+
+    if (!start || !end) {
+      return false;
+    }
+
+    const durationMs = end - start;
+    const maxDurationMs = 24 * 60 * 60 * 1000;
+
+    return durationMs > maxDurationMs;
+  }
+
+  @computed('timespanWarningPast', 'timespanWarningLong')
+  get timespanWarning() {
+    return this.timespanWarningPast || this.timespanWarningLong;
   }
 
   @computed('ride.validationErrors.{start.[],end.[]}')

@@ -189,7 +189,8 @@ export default create({
     timespanResult: {
       scope: '[data-test-timespan-result]',
       value: value('input'),
-      hasWarning: isVisible('[data-test-timespan-warning]'),
+      hasPastWarning: isVisible('[data-test-timespan-warning-past]'),
+      hasDurationWarning: isVisible('[data-test-timespan-warning-duration]'),
     },
 
     timespanOverrideButton: {
