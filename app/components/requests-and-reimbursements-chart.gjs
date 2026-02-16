@@ -5,6 +5,8 @@ import Component from '@ember/component';
 import moment from 'moment-timezone';
 import HighCharts from 'ember-highcharts/components/high-charts';
 
+const MAX_RIDE_DURATION_HOURS = 24;
+
 function countRidesOrVisitors(rides, grouping) {
   if (grouping === 'rides') {
     return rides.length;
@@ -17,6 +19,45 @@ function countRidesOrVisitors(rides, grouping) {
   }
 }
 
+function rideStatusForVisitHours(ride, ridesById) {
+  const combinedWith = ride.belongsTo('combinedWith');
+  const parentId = combinedWith?.id();
+
+  if (!parentId) {
+    return ride;
+  }
+
+  return ridesById.get(parentId) || combinedWith.value() || ride;
+}
+
+function visitHoursForRide(ride, grouping, ridesById) {
+  const statusRide = rideStatusForVisitHours(ride, ridesById);
+
+  if (ride.get('cancelled') || statusRide.get('cancelled')) {
+    return 0;
+  }
+
+  const start = ride.get('start');
+  const end = ride.get('end');
+
+  if (!start || !end) {
+    return 0;
+  }
+
+  const durationHours = moment(end).diff(start, 'hours', true);
+
+  if (
+    !Number.isFinite(durationHours) ||
+    durationHours <= 0 ||
+    durationHours > MAX_RIDE_DURATION_HOURS
+  ) {
+    return 0;
+  }
+
+  const multiplier = grouping === 'passengers' ? ride.get('passengers') : 1;
+  return durationHours * multiplier;
+}
+
 export default class RequestsAndReimbursementsChart extends Component {
   <template>
     <HighCharts
@@ -27,6 +68,10 @@ export default class RequestsAndReimbursementsChart extends Component {
     />
     <div class='chart-addendum'>
       <div>Total distance: {{this.totalDistanceDisplay}} km</div>
+      <div>Total visit hours (excluding long visits with separate dropoff and
+        pickup rides):
+        {{this.totalVisitHoursDisplay}}
+        hours</div>
       <div>Total reimbursements: ${{this.totalReimbursementsDisplay}}</div>
       <div>Total food expenses: ${{this.totalFoodExpensesDisplay}}</div>
     </div>
@@ -57,6 +102,24 @@ export default class RequestsAndReimbursementsChart extends Component {
     return Object.keys(this.timeGroups).sort();
   }
 
+  @computed(
+    'grouping',
+    'rides.@each.{start,end,passengers,cancelled,combinedWith}',
+    'timeGroupKeys',
+    'timeGroups',
+  )
+  get visitHoursByTimeGroup() {
+    const grouping = this.grouping;
+    const rides = this.rides || [];
+    const ridesById = new Map(rides.map((ride) => [ride.get('id'), ride]));
+
+    return this.timeGroupKeys.map((timeGroupKey) => {
+      return (this.timeGroups[timeGroupKey] || []).reduce((sum, ride) => {
+        return sum + visitHoursForRide(ride, grouping, ridesById);
+      }, 0);
+    });
+  }
+
   timeGroupForRide(ride) {
     const start = ride.get('start');
 
@@ -67,7 +130,13 @@ export default class RequestsAndReimbursementsChart extends Component {
     }
   }
 
-  @computed('grouping', 'timeGroupKeys', 'timeGrouping', 'timeGroups')
+  @computed(
+    'grouping',
+    'timeGroupKeys',
+    'timeGrouping',
+    'timeGroups',
+    'visitHoursByTimeGroup',
+  )
   get data() {
     const timeGroups = this.timeGroups;
     const grouping = this.grouping;
@@ -94,6 +163,12 @@ export default class RequestsAndReimbursementsChart extends Component {
           );
         }),
         stack: 'Requests',
+      },
+      {
+        name: 'Visit hours',
+        type: 'spline',
+        yAxis: 3,
+        data: this.visitHoursByTimeGroup,
       },
       {
         name: 'Distance',
@@ -177,6 +252,14 @@ export default class RequestsAndReimbursementsChart extends Component {
           },
           opposite: true,
         },
+        {
+          title: {
+            text: 'Visit hours',
+          },
+          labels: {
+            format: '{value}h',
+          },
+        },
       ],
     };
   }
@@ -213,6 +296,19 @@ export default class RequestsAndReimbursementsChart extends Component {
     );
   }
 
+  @computed(
+    'grouping',
+    'rides.@each.{start,end,passengers,cancelled,combinedWith}',
+  )
+  get totalVisitHours() {
+    const rides = this.rides || [];
+    const ridesById = new Map(rides.map((ride) => [ride.get('id'), ride]));
+
+    return rides.reduce((sum, ride) => {
+      return sum + visitHoursForRide(ride, this.grouping, ridesById);
+    }, 0);
+  }
+
   @computed('totalDistance')
   get totalDistanceDisplay() {
     return this.formatNumber(this.totalDistance, 1);
@@ -226,6 +322,11 @@ export default class RequestsAndReimbursementsChart extends Component {
   @computed('totalFoodExpenses')
   get totalFoodExpensesDisplay() {
     return this.formatNumber(this.totalFoodExpenses, 2);
+  }
+
+  @computed('totalVisitHours')
+  get totalVisitHoursDisplay() {
+    return this.formatNumber(this.totalVisitHours, 1);
   }
 
   formatNumber(value, fractionDigits) {
