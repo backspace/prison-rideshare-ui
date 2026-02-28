@@ -272,8 +272,7 @@ export default class RequestsAndReimbursementsChart extends Component {
   }
 
   @computed(
-    'rides.@each.reimbursementFoodExpensesSum',
-    'rides.@each.reimbursementCarExpensesSum',
+    'rides.@each.{reimbursementFoodExpensesSum,reimbursementCarExpensesSum}',
   )
   get totalReimbursements() {
     return (
