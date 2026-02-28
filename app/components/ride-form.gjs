@@ -410,34 +410,37 @@ export default class RideForm extends Component {
 
             {{#if this.ride.firstTime}}
               <div data-test-first-time-points>
-                Some notes for first-time riders:
+                Tell them:
+                <ul>
+                  <li>drivers and coordinators are all volunteers</li>
+                  <li>
+                    we don’t screen drivers, but let us know if you have any
+                    concerns
+                  </li>
+                  <li>
+                    requesting early increases your chances of getting a ride;
+                    can request before you have a visit scheduled
+                  </li>
+                  <li>
+                    meetings happen monthly; share date and location of the next
+                    one
+                  </li>
+                  <li>do you need help signing up for a visit?</li>
+                  <li>
+                    can we add you to the email list for monthly rideshare info
+                    and events; not required to access rides
+                  </li>
+                </ul>
+                Coordinators:
                 <ul>
                   <li>
-                    the drivers and coordinators are all volunteering
+                    unsure how to help with visit signup? Contact your buddy or
+                    <a href='mailto:barnone.wpg@gmail.com'>
+                      barnone.wpg@gmail.com
+                    </a>
                   </li>
                   <li>
-                    we don’t screen drivers, but please let us know if you have
-                    any concerns
-                  </li>
-                  <li>
-                    it’s more likely you’ll get a ride if you request early; you
-                    can even do it before you have a visit scheduled
-                  </li>
-                  <li>
-                    open meetings happen monthly; share date and location of the
-                    next
-                  </li>
-                  <li>
-                    do you need help figuring out how to sign up for a visit?
-                    <ul>
-                      <li>
-                        if you are a coordinator and are unsure how to help,
-                        contact your buddy or
-                        <a href='mailto:barnone.wpg@gmail.com'>
-                          barnone.wpg@gmail.com
-                        </a>
-                      </li>
-                    </ul>
+                    see log for notes on how to add an address to the email list
                   </li>
                 </ul>
               </div>
