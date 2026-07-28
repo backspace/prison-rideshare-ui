@@ -52,4 +52,30 @@ module('Unit | Model | ride', function (hooks) {
       'expected each word in the query to be matched independently',
     );
   });
+
+  test('visitorName prefers the visitor record and falls back to the name attribute', function (assert) {
+    const store = this.owner.lookup('service:store');
+
+    const namelessRide = store.createRecord('ride', {});
+    assert.strictEqual(namelessRide.get('visitorName'), undefined);
+
+    namelessRide.set('name', 'Legacy Name');
+    assert.strictEqual(
+      namelessRide.get('visitorName'),
+      'Legacy Name',
+      'expected visitorName to recompute after the name changes',
+    );
+
+    const visitor = store.createRecord('person', { name: 'Octavia Butler' });
+    const visitorRide = store.createRecord('ride', {
+      visitor,
+      name: 'Legacy Name',
+    });
+    assert.strictEqual(visitorRide.get('visitorName'), 'Octavia Butler');
+
+    assert.ok(
+      visitorRide.matches('octavia'),
+      'expected search to match on the visitor name',
+    );
+  });
 });
