@@ -369,6 +369,53 @@ module('Acceptance | rides', function (hooks) {
     assert.strictEqual(page.form.name.value, 'Octavia Butler');
   });
 
+  test('selecting a suggestion associates its visitor record with the ride', async function (assert) {
+    const octavia = this.server.create('person', { name: 'Octavia Butler' });
+
+    this.server.create('ride', {
+      visitor: octavia,
+      address: '123 Earthseed Way',
+      contact: '204-555-1111',
+    });
+
+    await page.visit();
+    await page.newRide();
+
+    await page.form.timespan.fillIn('Dec 26 2016 from 9a to 11:30');
+
+    await click('[data-test-visitor-select]');
+    await page.form.name.searchInput.fillIn('Oct');
+    await waitUntil(() =>
+      findAll('.ember-power-select-option').some((option) =>
+        option.textContent.includes('Octavia Butler'),
+      ),
+    );
+
+    const option = findAll('.ember-power-select-option').find((el) =>
+      el.textContent.includes('Octavia Butler'),
+    );
+    await click(option);
+
+    assert.strictEqual(page.form.name.value, 'Octavia Butler');
+    assert.strictEqual(page.form.address.value, '123 Earthseed Way');
+
+    await page.form.submit();
+
+    const serverRides = this.server.db.rides;
+    const lastRide = serverRides[serverRides.length - 1];
+
+    assert.strictEqual(
+      lastRide.visitorId,
+      octavia.id,
+      'expected the new ride to be associated with the visitor record',
+    );
+    assert.strictEqual(
+      lastRide.name,
+      'Octavia Butler',
+      'expected the legacy name to still be written during the transition',
+    );
+  });
+
   test('completed rides can be shown and cleared', async function (assert) {
     this.server.create('ride');
     this.server.create('ride');
