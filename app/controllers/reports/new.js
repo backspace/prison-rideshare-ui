@@ -108,8 +108,18 @@ export default class NewController extends Controller {
         this.set('editingRide', undefined);
         this.router.transitionTo('application');
         window.scrollTo(0, 0);
-      } catch {
-        this.set('errorMessage', 'There was an error saving your report!');
+      } catch (error) {
+        const details = (error?.errors ?? [])
+          .filter((e) => e.source?.pointer?.startsWith('/data/attributes'))
+          .map((e) => e.detail || e.title)
+          .filter(Boolean);
+
+        this.set(
+          'errorMessage',
+          details.length
+            ? `There was an error saving your report: ${details.join(', ')}`
+            : 'There was an error saving your report!',
+        );
       }
     } else {
       this.set('errorMessage', 'Please choose a ride');

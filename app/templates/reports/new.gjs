@@ -71,12 +71,15 @@ export default RouteTemplate(
             {{#if @controller.editingRide}}
               <Form.Section>
                 {{#let
-                  (gt @controller.editingRide.validationErrors.distance 0)
-                  (@controller.editingRide.validationErrors.distance)
+                  (gt
+                    @controller.editingRide.validationErrors.distance.length 0
+                  )
+                  @controller.editingRide.validationErrors.distance
                   as |hasDistanceErrors distanceErrors|
                 }}
                   <HdsFormTextInputField
                     type='number'
+                    step='any'
                     @value={{@controller.editingRide.distance}}
                     @isInvalid={{hasDistanceErrors}}
                     @isRequired={{true}}
@@ -98,60 +101,126 @@ export default RouteTemplate(
 
               {{#if @controller.editingRide.donatable}}
                 <Form.Section>
-                  <HdsFormCheckboxField
-                    checked={{if
-                      @controller.editingRide.donation
-                      true
-                      undefined
-                    }}
-                    data-test-report-donation
-                    {{on 'change' @controller.updateDonation}}
-                    as |Field|
-                  >
-                    <Field.Label>Donate your gas reimbursement</Field.Label>
-                  </HdsFormCheckboxField>
+                  {{#let
+                    (gt
+                      @controller.editingRide.validationErrors.donation.length 0
+                    )
+                    @controller.editingRide.validationErrors.donation
+                    as |hasErrors errors|
+                  }}
+                    <HdsFormCheckboxField
+                      checked={{if
+                        @controller.editingRide.donation
+                        true
+                        undefined
+                      }}
+                      data-test-report-donation
+                      {{on 'change' @controller.updateDonation}}
+                      as |Field|
+                    >
+                      <Field.Label>Donate your gas reimbursement</Field.Label>
+                      {{#if hasErrors}}
+                        <Field.Error data-test-report-donation-error>
+                          {{#each errors as |error|}}
+                            {{error}}
+                          {{/each}}
+                        </Field.Error>
+                      {{/if}}
+                    </HdsFormCheckboxField>
+                  {{/let}}
                 </Form.Section>
               {{/if}}
 
               <Form.Section>
-                <HdsFormTextInputField
-                  type='number'
-                  @value={{@controller.editingRide.foodExpensesDollars}}
-                  data-test-report-food-expenses
-                  {{on 'input' @controller.updateFoodExpenses}}
-                  as |Field|
-                >
-                  <Field.Label>Food expenses if wanting reimbursement</Field.Label>
-                </HdsFormTextInputField>
+                {{#let
+                  (gt
+                    @controller.editingRide.validationErrors.foodExpenses.length
+                    0
+                  )
+                  @controller.editingRide.validationErrors.foodExpenses
+                  as |hasErrors errors|
+                }}
+                  <HdsFormTextInputField
+                    type='number'
+                    @value={{@controller.editingRide.foodExpensesDollars}}
+                    @isInvalid={{hasErrors}}
+                    data-test-report-food-expenses
+                    {{on 'input' @controller.updateFoodExpenses}}
+                    as |Field|
+                  >
+                    <Field.Label>Food expenses if wanting reimbursement</Field.Label>
+                    {{#if hasErrors}}
+                      <Field.Error data-test-report-food-expenses-error>
+                        {{#each errors as |error|}}
+                          {{error}}
+                        {{/each}}
+                      </Field.Error>
+                    {{/if}}
+                  </HdsFormTextInputField>
+                {{/let}}
               </Form.Section>
 
               {{#if @controller.editingRide.overridable}}
                 <Form.Section>
-                  <HdsFormTextInputField
-                    type='number'
-                    @value={{@controller.editingRide.carExpensesDollars}}
-                    data-test-report-car-expenses
-                    {{on 'input' @controller.updateCarExpenses}}
-                    as |Field|
-                  >
-                    <Field.Label>Car expenses</Field.Label>
-                  </HdsFormTextInputField>
+                  {{#let
+                    (gt
+                      @controller.editingRide.validationErrors.carExpenses.length
+                      0
+                    )
+                    @controller.editingRide.validationErrors.carExpenses
+                    as |hasErrors errors|
+                  }}
+                    <HdsFormTextInputField
+                      type='number'
+                      @value={{@controller.editingRide.carExpensesDollars}}
+                      @isInvalid={{hasErrors}}
+                      data-test-report-car-expenses
+                      {{on 'input' @controller.updateCarExpenses}}
+                      as |Field|
+                    >
+                      <Field.Label>Car expenses</Field.Label>
+                      {{#if hasErrors}}
+                        <Field.Error data-test-report-car-expenses-error>
+                          {{#each errors as |error|}}
+                            {{error}}
+                          {{/each}}
+                        </Field.Error>
+                      {{/if}}
+                    </HdsFormTextInputField>
+                  {{/let}}
                 </Form.Section>
               {{/if}}
 
               <Form.Section>
-                <HdsFormTextareaField
-                  @value={{@controller.editingRide.reportNotes}}
-                  data-test-report-notes
-                  {{on 'input' @controller.updateReportNotes}}
-                  as |Field|
-                >
-                  <Field.Label>Notes</Field.Label>
-                  <Field.HelperText>
-                    Anything unusual, like paying the driver for gas instead of
-                    the car owner.
-                  </Field.HelperText>
-                </HdsFormTextareaField>
+                {{#let
+                  (gt
+                    @controller.editingRide.validationErrors.reportNotes.length
+                    0
+                  )
+                  @controller.editingRide.validationErrors.reportNotes
+                  as |hasErrors errors|
+                }}
+                  <HdsFormTextareaField
+                    @value={{@controller.editingRide.reportNotes}}
+                    @isInvalid={{hasErrors}}
+                    data-test-report-notes
+                    {{on 'input' @controller.updateReportNotes}}
+                    as |Field|
+                  >
+                    <Field.Label>Notes</Field.Label>
+                    <Field.HelperText>
+                      Anything unusual, like paying the driver for gas instead
+                      of the car owner.
+                    </Field.HelperText>
+                    {{#if hasErrors}}
+                      <Field.Error data-test-report-notes-error>
+                        {{#each errors as |error|}}
+                          {{error}}
+                        {{/each}}
+                      </Field.Error>
+                    {{/if}}
+                  </HdsFormTextareaField>
+                {{/let}}
               </Form.Section>
 
               <Form.Footer as |Footer|>

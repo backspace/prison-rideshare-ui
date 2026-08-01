@@ -116,6 +116,21 @@ module('Acceptance | reports', function (hooks) {
     );
   });
 
+  test('submit a report with a decimal distance', async function (assert) {
+    await page.visit();
+
+    await page.rides[0].click();
+    await page.distance.fillIn(84.2);
+    await page.foodExpenses.fillIn(25.5);
+
+    await page.submitButton.click();
+
+    const changedRide = this.server.db.rides[1];
+
+    assert.strictEqual(changedRide.distance, 84.2);
+    assert.strictEqual(shared.toast.text, 'Your report was saved');
+  });
+
   test('a fallback shows when no rides need a report', async function (assert) {
     this.server.db.rides.remove();
     await page.visit();
@@ -159,6 +174,65 @@ module('Acceptance | reports', function (hooks) {
     await page.rides[0].click();
 
     assert.strictEqual(page.distance.value, '');
+  });
+
+  test('a validation failure displays the error details', async function (assert) {
+    overrideRoute(
+      this.server,
+      'patch',
+      '/rides/:id',
+      () =>
+        new Response(
+          422,
+          {},
+          {
+            errors: [
+              {
+                detail: 'Distance is invalid',
+                source: { pointer: '/data/attributes/distance' },
+                title: 'is invalid',
+              },
+              {
+                detail: 'Food expenses must be greater than -1',
+                source: { pointer: '/data/attributes/food-expenses' },
+                title: 'must be greater than -1',
+              },
+              {
+                detail: 'Report notes are too long',
+                source: { pointer: '/data/attributes/report-notes' },
+                title: 'is too long',
+              },
+            ],
+          },
+        ),
+    );
+
+    await page.visit();
+
+    await page.rides[0].click();
+    await page.distance.fillIn(75);
+
+    await page.submitButton.click();
+
+    assert.strictEqual(
+      shared.inlineAlert.text,
+      'There was an error saving your report: Distance is invalid, Report notes are too long, Food expenses must be greater than -1',
+    );
+    assert.strictEqual(
+      page.distanceError.text,
+      'Distance is invalid',
+      'expected the distance field to show its error',
+    );
+    assert.strictEqual(
+      page.foodExpensesError.text,
+      'Food expenses must be greater than -1',
+      'expected the food expenses field to show its error',
+    );
+    assert.strictEqual(
+      page.notesError.text,
+      'Report notes are too long',
+      'expected the notes field to show its error',
+    );
   });
 
   test('a failure to save keeps the values and displays an error', async function (assert) {
