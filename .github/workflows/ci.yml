@@ -6,12 +6,33 @@ on:
       - main
       - master
   pull_request: {}
+  schedule:
+    # Catches advisories published against code nobody touched
+    - cron: "0 9 * * 1"
 
 concurrency:
   group: ci-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
 jobs:
+  audit:
+    name: 'Audit'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.30.1
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+      # Only what ships to browsers: the build-tooling tree has a long tail of
+      # transitive advisories that dependabot works through without gating CI
+      - name: Audit production dependencies
+        run: pnpm audit --prod
+
   lint:
     name: 'Lint'
     runs-on: ubuntu-latest
