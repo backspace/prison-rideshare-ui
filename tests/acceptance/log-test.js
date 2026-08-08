@@ -1,4 +1,5 @@
 /* eslint-disable qunit/require-expect */
+import { find } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
 import percySnapshot from '@percy/ember';
@@ -8,7 +9,6 @@ import page from 'prison-rideshare-ui/tests/pages/log';
 import loginPage from 'prison-rideshare-ui/tests/pages/login';
 import shared from 'prison-rideshare-ui/tests/pages/shared';
 import { getPageTitle } from 'ember-page-title/test-support';
-import stringToMobiledoc from 'prison-rideshare-ui/tests/helpers/string-to-mobiledoc';
 
 module('Acceptance | log', function (hooks) {
   setupApplicationTest(hooks);
@@ -20,14 +20,14 @@ module('Acceptance | log', function (hooks) {
     });
 
     this.server.create('post', {
-      content: stringToMobiledoc('hello'),
+      content: 'hello',
       poster: this.server.create('user'),
       unread: true,
       insertedAt: new Date(2018, 6, 6, 14),
     });
 
     this.server.create('post', {
-      content: stringToMobiledoc('ya'),
+      content: 'ya',
       poster,
       unread: false,
       insertedAt: new Date(2018, 7, 7, 14, 18, 22),
@@ -90,7 +90,7 @@ module('Acceptance | log', function (hooks) {
     await page.visit();
 
     await page.newPost();
-    await page.form.content.field.fillIn('hello');
+    await page.form.content.field.type('hello');
 
     assert.strictEqual(page.posts.length, 2);
 
@@ -99,7 +99,76 @@ module('Acceptance | log', function (hooks) {
     assert.strictEqual(page.posts.length, 3);
 
     const [, , post] = this.server.db.posts;
-    assert.strictEqual(post.content, stringToMobiledoc('hello'));
+    assert.strictEqual(post.content, 'hello');
+  });
+
+  test('markdown in a post is rendered, and raw HTML is escaped', async function (assert) {
+    this.server.db.posts.remove();
+
+    this.server.create('post', {
+      content:
+        '# Heading\n\nSome **bold** text.\n\n- a bullet\n\n<script>alert(1)</script>',
+      poster: this.server.create('user'),
+      insertedAt: new Date(2018, 6, 6, 14),
+    });
+
+    await authenticateSession({ access_token: 'abcdef' });
+    await page.visit();
+
+    const content = find('[data-test-log-post-content]');
+
+    assert.dom('h1', content).hasText('Heading');
+    assert.dom('strong', content).hasText('bold');
+    assert.dom('li', content).hasText('a bullet');
+    assert
+      .dom('script', content)
+      .doesNotExist('expected raw HTML to be escaped rather than rendered');
+    assert.ok(
+      content.textContent.includes('<script>alert(1)</script>'),
+      'expected the escaped HTML to show as text',
+    );
+  });
+
+  test('the editor shows existing markdown as formatted text', async function (assert) {
+    // The second post is the one the signed-in user may edit.
+    const [, editable] = this.server.db.posts;
+    this.server.db.posts.update(editable.id, {
+      content: '# Title\n\nwith **bold** and a list\n\n- one\n- two',
+    });
+
+    await authenticateSession({ access_token: 'abcdef' });
+
+    await page.visit();
+    await page.posts[0].editButton.click();
+
+    const surface = find('[data-test-markdown-editor-surface]');
+
+    assert.dom('h1', surface).hasText('Title');
+    assert.dom('strong', surface).hasText('bold');
+    assert.dom('ul li', surface).exists({ count: 2 });
+    assert
+      .dom(surface)
+      .doesNotContainText('**', 'expected no raw markdown syntax on screen');
+  });
+
+  test('the toolbar formats the selection', async function (assert) {
+    await authenticateSession({ access_token: 'abcdef' });
+
+    await page.visit();
+    await page.newPost();
+
+    await page.form.content.field.type('important');
+    await page.form.content.field.selectAll();
+    await page.form.content.bold();
+
+    assert
+      .dom('strong', find('[data-test-markdown-editor-surface]'))
+      .hasText('important');
+
+    await page.form.submit();
+
+    const posts = this.server.db.posts;
+    assert.strictEqual(posts[posts.length - 1].content, '**important**');
   });
 
   test('post validation errors are displayed', async function (assert) {
@@ -136,7 +205,7 @@ module('Acceptance | log', function (hooks) {
 
     await percySnapshot(assert);
 
-    await page.form.content.field.fillIn('new post content');
+    await page.form.content.field.type('new post content');
     await page.form.cancel();
 
     assert.ok(page.form.isHidden);
@@ -145,10 +214,10 @@ module('Acceptance | log', function (hooks) {
     let posts = this.server.db.posts;
     let post = posts[posts.length - 1];
 
-    assert.strictEqual(post.content, stringToMobiledoc('ya'));
+    assert.strictEqual(post.content, 'ya');
 
     await page.posts[0].editButton.click();
-    await page.form.content.field.fillIn('new content');
+    await page.form.content.field.type('new content');
 
     await page.form.submit();
 
@@ -157,7 +226,7 @@ module('Acceptance | log', function (hooks) {
     posts = this.server.db.posts;
     post = posts[posts.length - 1];
 
-    assert.strictEqual(post.content, stringToMobiledoc('new content'));
+    assert.strictEqual(post.content, 'new content');
   });
 
   test('posts can be deleted', async function (assert) {

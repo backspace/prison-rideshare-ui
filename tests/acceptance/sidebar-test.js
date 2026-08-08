@@ -1,7 +1,6 @@
 import { visit } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { setupApplicationTest } from '../helpers/application-tests';
-import stringToMobiledoc from 'prison-rideshare-ui/tests/helpers/string-to-mobiledoc';
 import { authenticateSession } from 'ember-simple-auth/test-support';
 
 import rides from 'prison-rideshare-ui/tests/pages/rides';
@@ -86,7 +85,7 @@ module('Acceptance | sidebar', function (hooks) {
 
   test('a badge is shown on the toggle when notifications exist and the sidebar is closed', async function (assert) {
     this.server.create('post', {
-      content: stringToMobiledoc('hello'),
+      content: 'hello',
       poster: this.server.create('user'),
       unread: true,
       insertedAt: new Date(2018, 6, 6, 14),

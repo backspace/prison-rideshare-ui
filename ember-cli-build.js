@@ -23,6 +23,9 @@ module.exports = async function (defaults) {
       plugins: [
         require.resolve('decorator-transforms'),
         require.resolve('ember-concurrency/async-arrow-task-transform'),
+        // Required for dynamic import() to be code-split into its own chunk
+        // rather than left as a bare specifier the browser cannot resolve.
+        require.resolve('ember-auto-import/babel-plugin'),
       ],
     },
     'ember-cli-babel': {

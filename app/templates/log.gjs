@@ -2,10 +2,7 @@ import RouteTemplate from 'ember-route-template';
 import ToolbarHeader from 'prison-rideshare-ui/components/toolbar-header';
 import momentFormat from 'ember-moment/helpers/moment-format';
 import eq from 'ember-truth-helpers/helpers/eq';
-import MobiledocEditor from 'ember-mobiledoc-editor/components/mobiledoc-editor/component';
-import MobiledocToolbar from 'ember-mobiledoc-editor/components/mobiledoc-toolbar/component';
 import { fn } from '@ember/helper';
-import DOMRenderer from 'ember-mobiledoc-dom-renderer';
 import { modifier } from 'ember-modifier';
 import { on } from '@ember/modifier';
 import {
@@ -15,6 +12,8 @@ import {
   HdsModal,
   HdsTable,
 } from '@hashicorp/design-system-components/components';
+import renderMarkdown from 'prison-rideshare-ui/utils/render-markdown';
+import MarkdownEditor from 'prison-rideshare-ui/components/markdown-editor';
 
 export default RouteTemplate(
   <template>
@@ -65,7 +64,7 @@ export default RouteTemplate(
 
                 <Body.Td
                   class='log-content'
-                  {{renderMobiledoc post.bodyJson}}
+                  {{renderMarkdownInto post.body}}
                   data-test-log-post-content
                 />
 
@@ -165,15 +164,11 @@ export default RouteTemplate(
               as |Form|
             >
               <Form.Section>
-                <div class='layout layout-sm-column content'>
-                  <MobiledocEditor
-                    @mobiledoc={{@controller.editingPost.bodyJson}}
-                    @autofocus={{true}}
-                    @on-change={{@controller.updatePostBody}}
-                    as |editor|
-                  >
-                    <MobiledocToolbar @editor={{editor}} />
-                  </MobiledocEditor>
+                <div class='content' data-test-log-form-content>
+                  <MarkdownEditor
+                    @value={{@controller.editingPost.body}}
+                    @onChange={{@controller.updatePostBody}}
+                  />
                 </div>
 
                 {{#if @controller.editingPost.validationErrors.body}}
@@ -214,16 +209,7 @@ export default RouteTemplate(
   </template>,
 );
 
-const renderMobiledoc = modifier((element, [mobiledoc]) => {
-  if (!mobiledoc) {
-    element.innerHTML = '';
-    return;
-  }
-
-  let renderer = new DOMRenderer({ dom: document, cards: [], atoms: [] });
-  let { result, teardown } = renderer.render(mobiledoc);
-  element.innerHTML = '';
-  element.appendChild(result);
-
-  return teardown;
+// renderMarkdown escapes any raw HTML, so the result is safe to assign.
+const renderMarkdownInto = modifier((element, [markdown]) => {
+  element.innerHTML = renderMarkdown(markdown);
 });

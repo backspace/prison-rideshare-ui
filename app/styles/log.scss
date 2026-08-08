@@ -1,21 +1,89 @@
-.mobiledoc-toolbar {
-  padding: 0;
+.markdown-editor {
+  position: relative;
+  border: 1px solid rgb(0 0 0 / 20%);
+  border-radius: 4px;
 
-  li {
-    display: inline;
+  .markdown-editor__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-bottom: 1px solid rgb(0 0 0 / 12%);
   }
 
-  .mobiledoc-toolbar__button {
-    &[title='Pull Quote'],
-    &[title='Link'],
-    &[title='Subheading'] {
-      display: none;
+  .markdown-editor__button {
+    min-width: 2rem;
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: rgb(0 0 0 / 6%);
     }
+
+    &.is-active {
+      background: rgb(0 0 0 / 10%);
+      border-color: rgb(0 0 0 / 20%);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+  }
+
+  .markdown-editor__surface {
+    min-height: 12rem;
+    padding: 0.5rem 0.75rem;
+    overflow-y: auto;
+
+    &:focus {
+      outline: 2px solid rgb(0 0 255 / 30%);
+      outline-offset: -2px;
+    }
+
+    *:first-child {
+      margin-top: 0;
+    }
+
+    blockquote {
+      margin-left: 0;
+      padding-left: 0.75rem;
+      border-left: 3px solid rgb(0 0 0 / 15%);
+    }
+
+    .editor-bold {
+      font-weight: bold;
+    }
+
+    .editor-italic {
+      font-style: italic;
+    }
+  }
+
+  .markdown-editor__loading,
+  .markdown-editor__failed {
+    padding: 0.5rem 0.75rem;
+    opacity: 0.7;
+  }
+
+  .markdown-editor__loading {
+    position: absolute;
+    inset-block-start: 2.5rem;
+    inset-inline-start: 0;
   }
 }
 
 .log-content {
   *:first-child {
     margin-top: 0;
+  }
+
+  blockquote {
+    margin-left: 0;
+    padding-left: 0.75rem;
+    border-left: 3px solid rgb(0 0 0 / 15%);
   }
 }

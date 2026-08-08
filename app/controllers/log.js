@@ -43,7 +43,7 @@ export default class LogController extends Controller {
 
   @action
   updatePostBody(body) {
-    this.editingPost.set('body', JSON.stringify(body));
+    this.editingPost.set('body', body);
   }
 
   @action

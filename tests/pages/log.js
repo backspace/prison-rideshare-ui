@@ -6,6 +6,8 @@ import {
   visitable,
 } from 'ember-cli-page-object';
 
+import { selectableContents, typeable } from './editable';
+
 export default create({
   visit: visitable('/log'),
   newPost: clickable('[data-test-log-new-post]'),
@@ -46,7 +48,14 @@ export default create({
     content: {
       scope: '[data-test-log-form]',
       field: {
-        scope: '.mobiledoc-editor__editor',
+        scope: '[data-test-markdown-editor-surface]',
+
+        type: typeable(),
+        selectAll: selectableContents(),
+      },
+      bold: clickable('[data-test-markdown-editor-bold]'),
+      loading: {
+        scope: '[data-test-markdown-editor-loading]',
       },
       error: {
         scope: '[data-test-log-form-error]',
