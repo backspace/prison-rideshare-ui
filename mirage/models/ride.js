@@ -3,6 +3,8 @@ import { Model, belongsTo, hasMany } from 'miragejs';
 export default Model.extend({
   institution: belongsTo(),
 
+  visitor: belongsTo('person', { inverse: 'visitings' }),
+
   driver: belongsTo('person', { inverse: 'drivings' }),
   carOwner: belongsTo('person', { inverse: 'carOwnings' }),
 

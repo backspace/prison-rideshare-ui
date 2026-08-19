@@ -18,8 +18,12 @@ export default function deduplicateVisitorSuggestions(rides) {
 
 function ridesAreDissimilar(a, b) {
   return (
-    a.name.toLowerCase() !== b.name.toLowerCase() ||
-    a.address.toLowerCase() !== b.address.toLowerCase() ||
-    a.contact.toLowerCase() !== b.contact.toLowerCase()
+    visitorName(a).toLowerCase() !== visitorName(b).toLowerCase() ||
+    (a.address || '').toLowerCase() !== (b.address || '').toLowerCase() ||
+    (a.contact || '').toLowerCase() !== (b.contact || '').toLowerCase()
   );
+}
+
+function visitorName(ride) {
+  return ride.visitorName || ride.name || '';
 }

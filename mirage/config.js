@@ -11,13 +11,14 @@ export default function (config) {
       this.namespace = '/api';
 
       this.get('/rides', function ({ rides }, { queryParams, requestHeaders }) {
-        if (queryParams['filter[name]']) {
-          // FIXME this is a mess, no better way???
-          const nameFilter = queryParams['filter[name]'].toLowerCase();
+        if (queryParams['filter[visitor]']) {
+          const visitorFilter = queryParams['filter[visitor]'].toLowerCase();
           const matchingRides = rides
             .all()
             .models.filter((ride) =>
-              (ride.name || '').toLowerCase().includes(nameFilter),
+              (ride.visitor?.name || ride.name || '')
+                .toLowerCase()
+                .includes(visitorFilter),
             );
           return {
             data: matchingRides.map((ride) => this.serialize(ride)['data']),
