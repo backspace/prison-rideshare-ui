@@ -173,8 +173,8 @@ importers:
         specifier: ^8.1.2
         version: 8.1.2
       ember-highcharts:
-        specifier: ^3.2.1
-        version: 3.2.2(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3))(highcharts@12.4.0)
+        specifier: ^7.0.0
+        version: 7.0.0(@glint/template@1.6.1)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3))(highcharts@12.4.0)
       ember-inflector:
         specifier: ^4.0.0
         version: 4.0.3(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3))
@@ -3599,15 +3599,11 @@ packages:
     resolution: {integrity: sha512-uNmv1cPG/4qsac8oIf5txJ2FZ8p88LEpG4P3dNcjsJS98Y8hd0GPMFwVqpnzI78Lz7VYRGQWY4jnE4qm5R3j4g==}
     engines: {node: 12.* || 14.* || >= 16}
 
-  ember-highcharts@3.2.2:
-    resolution: {integrity: sha512-WJGtWNJEwIfborJeBlp7zvv1aDBPzLPt2nxKQWCDB8wzeoJdIv7iJi88Jqhb77Voyk7ill2EtkeLbntCr26mSA==}
-    engines: {node: '>= 12.*'}
+  ember-highcharts@7.0.0:
+    resolution: {integrity: sha512-fTlm9kHNU8il13sKnJFDV/OajUS1piM/4MuUhdA+KUrF+Hs1Mn0hk1gwH3Th8bu9Bjao16pOy2Jk2T8fjx105w==}
     peerDependencies:
-      highcharts: '>= 5.0.0'
-
-  ember-holy-futuristic-template-namespacing-batman@1.2.1:
-    resolution: {integrity: sha512-JwlBWz4rNNLs+LBbh/ZCq9rQpsFbuG4Tzmx/n887LMDcuIAMNGORcEiPtqZvX/MC2MLKfjGCirtVa5vCTyxxcA==}
-    engines: {node: 8.* || 10.* || >= 12.*}
+      ember-source: '>= 3.28.0'
+      highcharts: '>= 10.0.0'
 
   ember-in-element-polyfill@1.0.1:
     resolution: {integrity: sha512-eHs+7D7PuQr8a1DPqsJTsEyo3FZ1XuH6WEZaEBPDa9s0xLlwByCNKl8hi1EbXOgvgEZNHHi9Rh0vjxyfakrlgg==}
@@ -7354,10 +7350,6 @@ packages:
 
   validate-peer-dependencies@1.2.0:
     resolution: {integrity: sha512-nd2HUpKc6RWblPZQ2GDuI65sxJ2n/UqZwSBVtj64xlWjMx0m7ZB2m9b2JS3v1f+n9VWH/dd1CMhkHfP6pIdckA==}
-
-  validate-peer-dependencies@2.2.0:
-    resolution: {integrity: sha512-8X1OWlERjiUY6P6tdeU9E0EwO8RA3bahoOVG7ulOZT5MqgNDUO/BQoVjYiHPcNe+v8glsboZRIw9iToMAA2zAA==}
-    engines: {node: '>= 12'}
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
@@ -12332,36 +12324,18 @@ snapshots:
       - '@glint/template'
       - supports-color
 
-  ember-highcharts@3.2.2(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3))(highcharts@12.4.0):
+  ember-highcharts@7.0.0(@glint/template@1.6.1)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3))(highcharts@12.4.0):
     dependencies:
+      '@babel/core': 7.28.4
       '@ember/render-modifiers': 2.1.0(@babel/core@7.28.4)(@glint/template@1.6.1)(ember-source@5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3))
-      broccoli-funnel: 3.0.8
-      broccoli-merge-trees: 4.2.0
+      '@ember/test-waiters': 3.1.0
+      '@embroider/addon-shim': 1.10.0
+      decorator-transforms: 2.3.0(patch_hash=daaf70dcf904cf2d805d085a6528bf51c0554bb9a602cfdd5025c76d86e07eb9)(@babel/core@7.28.4)
       deepmerge: 4.3.1
-      ember-auto-import: 2.12.0(@glint/template@1.6.1)(webpack@5.101.3)
-      ember-cli-babel: 7.26.11
-      ember-cli-htmlbars: 6.3.0
-      ember-copy: 2.0.1
-      ember-holy-futuristic-template-namespacing-batman: 1.2.1
+      ember-source: 5.12.0(@glimmer/component@1.1.2(@babel/core@7.28.4))(@glint/template@1.6.1)(rsvp@4.8.5)(webpack@5.101.3)
       highcharts: 12.4.0
-      validate-peer-dependencies: 2.2.0
-      webpack: 5.101.3
     transitivePeerDependencies:
-      - '@babel/core'
       - '@glint/template'
-      - '@swc/core'
-      - ember-source
-      - esbuild
-      - supports-color
-      - uglify-js
-      - webpack-cli
-
-  ember-holy-futuristic-template-namespacing-batman@1.2.1:
-    dependencies:
-      ember-cli-babel: 7.26.11
-      ember-cli-version-checker: 5.1.2
-      silent-error: 1.1.1
-    transitivePeerDependencies:
       - supports-color
 
   ember-in-element-polyfill@1.0.1:
@@ -16871,11 +16845,6 @@ snapshots:
   validate-peer-dependencies@1.2.0:
     dependencies:
       resolve-package-path: 3.1.0
-      semver: 7.7.2
-
-  validate-peer-dependencies@2.2.0:
-    dependencies:
-      resolve-package-path: 4.0.3
       semver: 7.7.2
 
   vary@1.1.2: {}
