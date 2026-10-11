@@ -29,6 +29,7 @@ export default Model.extend({
   requestConfirmed: attr(),
 
   name: attr(),
+  visitor: belongsTo('person', { async: true, inverse: 'visitings' }),
 
   institution: belongsTo('institution', { async: true, inverse: null }),
   rate: attr('number'),
@@ -145,8 +146,14 @@ export default Model.extend({
     },
   ),
 
-  namePlusPassengers: computed('name', 'passengers', function () {
-    const name = this.name;
+  // Falls back to the legacy name attribute for rides predating visitor records
+  visitorName: computed('visitor.name', 'name', function () {
+    const visitor = this.belongsTo('visitor').value();
+    return visitor?.name || this.name;
+  }),
+
+  namePlusPassengers: computed('visitorName', 'passengers', function () {
+    const name = this.visitorName;
     const passengers = this.passengers;
 
     if (passengers > 1) {
@@ -208,7 +215,7 @@ export default Model.extend({
     'institution.name',
     'driver.name',
     'carOwner.name',
-    'name',
+    'visitorName',
     'address',
     function () {
       return `${
@@ -219,7 +226,7 @@ export default Model.extend({
         this.get('driver.name') === undefined ? '' : this.get('driver.name')
       } ${
         this.get('carOwner.name') === undefined ? '' : this.get('carOwner.name')
-      } ${this.name === undefined ? '' : this.name} ${
+      } ${this.visitorName === undefined ? '' : this.visitorName} ${
         this.address
       }`.toLowerCase();
     },

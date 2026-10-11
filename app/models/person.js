@@ -20,6 +20,8 @@ export default Model.extend({
   reimbursements: hasMany('reimbursement', { async: true, inverse: 'person' }),
   debts: hasMany('debt', { async: true, inverse: 'person' }),
 
+  visitings: hasMany('ride', { async: true, inverse: 'visitor' }),
+
   drivings: hasMany('ride', { async: true, inverse: 'driver' }),
   carOwnings: hasMany('ride', { async: true, inverse: 'carOwner' }),
 
